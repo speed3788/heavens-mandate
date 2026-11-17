@@ -1,0 +1,4 @@
+# Sound effects (Pixabay license: not shared in this repo). Music files stay.
+snd/*.mp3
+!snd/music_menu.mp3
+!snd/music_battle.mp3
