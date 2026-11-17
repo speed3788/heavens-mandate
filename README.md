@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 7.2**: live online battles, members-only Synergies, hold income, and more (see Changes below).
+**Build 7.3**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -28,9 +28,11 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 ## Changes since 7.0
 
 - **Synergies:** Pair, Two Pair, Three and Four of a Kind boost only the slots that make them. All Synergy bonuses are doubled, including Monolith Vanguard (Flush).
-- **Hold income:** while SEND is charged and you hold, income rises +1/s every second, up to 10/s total before 9:00 and 20/s from 9:00. It resets when you send.
-- **7:00 Assault:** SEND recharges in 10 seconds.
-- **Top right counter:** shows enemy | your soldiers on the bridge.
-- **Profile:** fixes, plus Settings → Text Size (Small / Medium / Large).
-- **Locked content:** secret Synergies and late-match timeline entries now unlock only by playing.
+- **Income:** 10 gold a second, minus 1 for every 2 soldiers on the bridge (never below 1).
+- **SEND recharge:** 20s, then 10s from 7:00, always ready from 9:00.
+- **Soldier cap:** 20 soldiers on the bridge, 35 from 9:00, 40 from 15:00. SEND shows BRIDGE FULL if your wave won't fit.
+- **Lancer:** 190 HP and 10 damage. Cao Cao's charge stuns and knocks back the 3 closest enemies.
+- **Barracks:** the card stack is now called the Barracks.
+- **Interface:** units stack by rank (Celestial on top). The top-right counter shows enemy | your soldiers. Profile fixes and Settings → Text Size.
+- **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.
