@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 9.4**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 9.6**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -48,6 +48,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **8.9 art:** chibi fortresses at both ends of the bridge (they show damage at 66% and 33% HP). Base Strike flashes a red seal on the gate and sends out a gold ink ring.
 - **9.0 art:** each staging slot shows its suit's general (in gray). At 21 it shows the hero, in full color at Celestial. Huanglong's 500 hit now lands on the fortress.
 - **9.1–9.2:** a plain "21" on Apex/Celestial slots. Soldier cap 19 before 9:00, and income reaches 0 at a full bridge.
+- **9.5–9.6:** new How a Match Works pictures. Foot Soldier groups are now 5: 3 Foot Soldiers (3 dmg/hit) and 2 new Spear Soldiers (Lancer reach, 5 dmg/hit).
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.
