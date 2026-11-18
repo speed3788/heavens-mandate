@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 7.5</title>
+<title>Heaven's Mandate · Build 7.6</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -852,6 +852,15 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 #battleLog>*{flex-shrink:0!important}
 #battleLog .bl-waves-scroll{max-height:none!important;overflow:visible!important}
 #battleLog .bl-waves{align-items:start;max-height:none!important;overflow:visible!important}#sndBox{position:absolute;right:16px;top:44px;display:flex;gap:6px;z-index:20}.sndbtn{font:700 10px/1 system-ui,sans-serif;padding:5px 8px;border-radius:7px;border:1px solid var(--gold-d);background:rgba(0,0,0,.35);color:var(--gold-l);cursor:pointer}.sndbtn.off{opacity:.45;text-decoration:line-through}[hidden]{display:none!important}#aiMode,#sndBox,#startGame{display:none!important}#toast{z-index:150!important}</style>
+<style>
+.hfx{position:absolute;left:13px;bottom:0;width:0;height:0;pointer-events:none;z-index:3}
+.hfx-bolt{position:absolute;left:-30px;bottom:-6px;width:50px;height:150px;background:url(fx/hero_bolt.png) center bottom/contain no-repeat;
+  filter:drop-shadow(0 0 6px rgba(255,205,80,.85));animation:hfxBolt .75s ease-out forwards}
+.hfx-ring{position:absolute;left:-60px;bottom:-20px;width:120px;height:40px;background:url(fx/hero_ring.png) center/contain no-repeat;
+  opacity:0;transform:scale(.25);animation:hfxRing .85s ease-out .1s forwards}
+@keyframes hfxBolt{0%{clip-path:inset(0 0 100% 0);opacity:1}16%{clip-path:inset(0 0 0 0);opacity:1}28%{opacity:.5}38%{opacity:1}55%{opacity:.85}100%{opacity:0;clip-path:inset(0 0 0 0)}}
+@keyframes hfxRing{0%{opacity:1;transform:scale(.25)}55%{opacity:.95}100%{opacity:0;transform:scale(1.4)}}
+</style>
 </head>
 <body>
 
@@ -860,7 +869,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #7.5</div>
+    <div class="sub">Build #7.6</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -1434,10 +1443,10 @@ function renderPlayerFormations(){
 
 // ── Sound files (Nov 16) ──
 const SFX_LOCKED=false; // 7.5: sound effects on again, CC0 sounds only
-const SND_FILES=['stage','minute','hero_awaken']; // CC0 only (the older Pixabay sounds are not shipped)
-const SND_GAIN={stage:.55,minute:.45,hero_awaken:.6,card_land:.55,card_shuffle:.5,bust:.6,gong:.55,coin:.3,send:.6,atk_clubs:.2,atk_spades:.2,atk_diamonds:.2,atk_hearts:.22,
+const SND_FILES=['stage','minute','hero_awaken','hero_enter']; // CC0 only (the older Pixabay sounds are not shipped)
+const SND_GAIN={stage:.55,minute:.45,hero_awaken:.6,hero_enter:.6,card_land:.55,card_shuffle:.5,bust:.6,gong:.55,coin:.3,send:.6,atk_clubs:.2,atk_spades:.2,atk_diamonds:.2,atk_hearts:.22,
   die_clubs:.32,die_spades:.32,die_diamonds:.32,die_hearts:.32,stun:.28,knock:.3,burn:.28,heal:.3,base_hit:.4,horn:.55,roar:.75};
-const SND_GAP={stage:1500,minute:1500,hero_awaken:700,atk_clubs:110,atk_spades:110,atk_diamonds:110,atk_hearts:160,die_clubs:140,die_spades:140,die_diamonds:140,die_hearts:140,
+const SND_GAP={stage:1500,minute:1500,hero_awaken:700,hero_enter:500,atk_clubs:110,atk_spades:110,atk_diamonds:110,atk_hearts:160,die_clubs:140,die_spades:140,die_diamonds:140,die_hearts:140,
   stun:180,knock:180,burn:220,heal:220,base_hit:900,coin:50,card_land:40,gong:400,bust:150};
 const SND={buf:{},last:{},active:0,on:true,music:true,loaded:false,mus:{},cur:null};
 SND.mvol=0.7;SND.svol=0.8;SND.menuOff=false;
@@ -1700,7 +1709,7 @@ function dropCard(i,faceUp){
   if(info.bust){const burned=slot.slice();S.discard.push(...burned);S.slots[i]=[];
     renderSlots();renderHUD();bustFx(i,burned);snd('coin');snd('bust');say('BUST!','bad');return true;}
   renderSlots(i);renderHUD();snd('card_land');snd('coin');
-  if(info.tier==='natural'){snd('gong');if(S.log)S.log.pNat++;say('CELESTIAL RANK! HERO AWAKENED','nat');}
+  if(info.tier==='natural'){snd('hero_awaken');if(S.log)S.log.pNat++;say('CELESTIAL RANK! HERO AWAKENED','nat');}
   else if(info.tier==='c21')say('APEX RANK!','good');
   return true;
 }
@@ -1737,6 +1746,11 @@ function bustFx(i,cards){
 }
 
 /* ════ UNIT SYSTEM ════ */
+/* Celestial hero steps onto the bridge: golden lightning strikes its spot, a gold ring spreads, powerup sound */
+function heroStrikeFx(u){snd('hero_enter',u.side==='p'?1:.7);if(!u.el)return;
+  // walks out looking Apex; the Celestial glow switches on once the lightning has struck
+  u.el.classList.remove('cel');setTimeout(()=>{if(u.alive&&u.el)u.el.classList.add('cel');},280);
+  const f=document.createElement('i');f.className='hfx';f.innerHTML='<i class="hfx-bolt"></i><i class="hfx-ring"></i>';u.el.appendChild(f);setTimeout(()=>f.remove(),1300);}
 function spawnUnit(suit,sumVal,tier,side,bHP,bATK,bSPD,formHand,bASPD,domSuit,bDEFflat,bDEFpct,flushStack){
   const st=SUIT_STATS[suit];
   const multHP=tierMultHP(tier,sumVal);
@@ -1764,8 +1778,8 @@ function spawnUnit(suit,sumVal,tier,side,bHP,bATK,bSPD,formHand,bASPD,domSuit,bD
   el.innerHTML=(useSpr?'<div class="spw"><div class="sp"></div><div class="sp gl"></div></div>':'')+'<span style="position:relative;z-index:1">'+st.icon+'</span>'
     +'<div class="udef"><div class="udeff"></div></div>'
     +'<div class="uhp"><div class="uhpf" style="background:'+(side==='p'?'#4ae890':'#4090e8')+'"></div></div>';
-  $('unitLayer').appendChild(el);u.el=el;S.units.push(u);if(suit==='F')u._fodder=true;
-  if(tier==='natural'){snd('hero_awaken',side==='p'?1:.7);if(S.log)S.log[side+'Hero']=(S.log[side+'Hero']||0)+1;}
+  $('unitLayer').appendChild(el);u.el=el;S.units.push(u);if(tier==='natural')heroStrikeFx(u);if(suit==='F')u._fodder=true;
+  if(tier==='natural'){if(S.log)S.log[side+'Hero']=(S.log[side+'Hero']||0)+1;}
   // ♣ Clubs hero (Dian Wei) — summons a Fortified Clubs copy with the same Synergy, marching right behind him
   if(suit==='\u2663'&&tier==='natural'){u._summon=()=>{if(!S.running)return;const c=spawnUnit('\u2663',17,'tempered',side,(bHP||1)*0.5,(bATK||1)*0.5,bSPD,formHand,bASPD,domSuit,bDEFflat,bDEFpct,flushStack);c._copy=true;heroFx(c,'TWIN GUARD');};}
   return u;
