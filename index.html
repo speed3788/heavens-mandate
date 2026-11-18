@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 8.1</title>
+<title>Heaven's Mandate · Build 8.2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -875,7 +875,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #8.1</div>
+    <div class="sub">Build #8.2</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -5959,22 +5959,22 @@ function avOk(a){return AV_LIST.indexOf(a)>=0?a:'foot_soldier';}
 /* 8.1 locked avatars: lifetime goals (all modes). Synergy uses are counted when a match is saved. */
 function avUses(){try{return JSON.parse(localStorage.getItem('hm_syn_uses')||'{}')||{};}catch(e){return{};}}
 function expertWins(){try{return +localStorage.getItem('hm_expert_wins')||0;}catch(e){return 0;}}
-const AV_LOCK={sun_shangxiang:u=>(u.pair||0)>=10,zhurong:u=>(u.three||0)>=10,lu_lingqi:u=>(u.twopair||0)>=10,guan_yinping:u=>(u.four||0)>=10,
-  war_qilin:u=>(u.fullhouse||0)>=10,barded_warhorse:u=>(u.flush||0)>=10,white_cloud_tiger:u=>(u.fiveoak||0)>=10,jade_spirit_stag:u=>(u.straight||0)>=10,
+const AV_LOCK={sun_shangxiang:u=>(u.pair||0)>=100,zhurong:u=>(u.three||0)>=100,lu_lingqi:u=>(u.twopair||0)>=100,guan_yinping:u=>(u.four||0)>=100,
+  war_qilin:u=>(u.fullhouse||0)>=100,barded_warhorse:u=>(u.flush||0)>=100,white_cloud_tiger:u=>(u.fiveoak||0)>=100,jade_spirit_stag:u=>(u.straight||0)>=100,
   extra_lubu_horse:u=>(u.royal||0)>=1,extra_white_lion:u=>(u.mandate||0)>=1,extra_zhuge_horse:u=>(u.sflush||0)>=1,
   extra_soldier_horse:()=>hardWins()>=EXPERT_WINS_NEEDED,huanglong:u=>(u.mandate||0)+(u.royal||0)+(u.sflush||0)>=10,robot:()=>expertWins()>=10,
   zhang_fei:u=>(u.u_c0||0)>=10,dian_wei:u=>(u.u_c1||0)>=10,ma_chao:u=>(u.u_s0||0)>=10,cao_cao:u=>(u.u_s1||0)>=10,
   guan_yu:u=>(u.u_d0||0)>=10,lu_bu:u=>(u.u_d1||0)>=10,liu_bei:u=>(u.u_h0||0)>=10,zhuge_liang:u=>(u.u_h1||0)>=10};
 /* hints for locked avatars: [text, progress -> [have, need]] */
-const _c=k=>u=>[u[k]||0,10],_one=k=>u=>[u[k]||0,1];
+const _c=k=>u=>[u[k]||0,10],_c30=k=>u=>[u[k]||0,100],_one=k=>u=>[u[k]||0,1];
 const AV_HINT={zhang_fei:['Summon Zhang Fei (♣ Standard or Fortified) 10 times in any mode',_c('u_c0')],dian_wei:['Summon Dian Wei (♣ Apex or Celestial) 10 times in any mode',_c('u_c1')],
   ma_chao:['Summon Ma Chao (♠ Standard or Fortified) 10 times in any mode',_c('u_s0')],cao_cao:['Summon Cao Cao (♠ Apex or Celestial) 10 times in any mode',_c('u_s1')],
   guan_yu:['Summon Guan Yu (♦ Standard or Fortified) 10 times in any mode',_c('u_d0')],lu_bu:['Summon Lü Bu (♦ Apex or Celestial) 10 times in any mode',_c('u_d1')],
   liu_bei:['Summon Liu Bei (♥ Standard or Fortified) 10 times in any mode',_c('u_h0')],zhuge_liang:['Summon Zhuge Liang (♥ Apex or Celestial) 10 times in any mode',_c('u_h1')],
-  sun_shangxiang:['“Two arrows from one quiver fly truest.”',_c('pair')],lu_lingqi:['“One pair guards the left, one pair guards the right.”',_c('twopair')],
-  zhurong:['“A fire needs three stones to stand.”',_c('three')],guan_yinping:['“A great hall stands on four pillars, never three.”',_c('four')],
-  war_qilin:['“When three and two live under one roof, the house is full.”',_c('fullhouse')],barded_warhorse:['“Five banners of one color move like one great stone.”',_c('flush')],
-  white_cloud_tiger:['“When five voices sing the same note, the tiger wakes.”',_c('fiveoak')],jade_spirit_stag:['“The stag climbs one stone at a time and never skips a step.”',_c('straight')],
+  sun_shangxiang:['“Two arrows from one quiver fly truest.”',_c30('pair')],lu_lingqi:['“One pair guards the left, one pair guards the right.”',_c30('twopair')],
+  zhurong:['“A fire needs three stones to stand.”',_c30('three')],guan_yinping:['“A great hall stands on four pillars, never three.”',_c30('four')],
+  war_qilin:['“When three and two live under one roof, the house is full.”',_c30('fullhouse')],barded_warhorse:['“Five banners of one color move like one great stone.”',_c30('flush')],
+  white_cloud_tiger:['“When five voices sing the same note, the tiger wakes.”',_c30('fiveoak')],jade_spirit_stag:['“The stag climbs one stone at a time and never skips a step.”',_c30('straight')],
   extra_lubu_horse:['“Seventeen is where the Emperor’s road begins, and the summit is where it ends. Walk it in one color.”',_one('royal')],
   extra_zhuge_horse:['“Five steps in a row, all under one banner, and the nine dragons answer.”',_one('sflush')],
   extra_white_lion:['“When all five stand at the summit together, Heaven speaks.”',_one('mandate')],
