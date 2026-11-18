@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 7.7</title>
+<title>Heaven's Mandate · Build 7.8</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -869,7 +869,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #7.7</div>
+    <div class="sub">Build #7.8</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -3464,7 +3464,7 @@ html, .hm-body {
 .htp-lede { font-size: .95rem; color: var(--fg-dim); line-height: 1.55; max-width: 62ch; }
 .htp-lede b { color: var(--gold-light); font-weight: 600; }
 
-.htp-suits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.htp-suits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; align-items: start; }
 @media (max-width: 640px) { .htp-suits { grid-template-columns: 1fr; } }
 .htp-suit {
   background: var(--surface); border: 1px solid var(--border); border-radius: 3px;
@@ -3497,6 +3497,13 @@ html, .hm-body {
 .htp-stat .v { font-family: var(--f-ui); font-size: .95rem; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; margin-top: 1px; }
 .htp-stat .v small { font-size: .65rem; font-weight: 600; color: var(--fg-dim); }
 .htp-special { display: flex; flex-direction: column; gap: 5px; padding: 0; margin: 0; }
+.htp-more{margin-top:4px;border-top:1px solid var(--border);padding-top:8px}
+.htp-more>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;font-family:var(--f-ui);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);padding:4px 0;user-select:none}
+.htp-more>summary::-webkit-details-marker{display:none}
+.htp-more>summary::after{content:'';width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin-top:-4px;transition:transform .2s}
+.htp-more[open]>summary::after{transform:rotate(225deg);margin-top:3px}
+.htp-more>summary:hover{color:var(--gold-light)}
+.htp-more[open]>.htp-special{margin-top:8px}
 .htp-special li { list-style: none; font-size: .88rem; color: var(--fg-dim); line-height: 1.45; padding-left: 14px; position: relative; }
 .htp-special li::before { content: "◆"; position: absolute; left: 0; top: 1px; font-size: .55rem; color: var(--gold-dim); }
 .htp-special li b { color: var(--ink); font-weight: 600; }
@@ -5050,12 +5057,12 @@ html, .hm-body {
               <div class="htp-stat"><div class="k">Move Speed</div><div class="v">19</div></div>
               <div class="htp-stat"><div class="k">Attack</div><div class="v">1.0<small>s</small></div></div>
             </div>
-            <ul class="htp-special">
+            <details class="htp-more"><summary>Skills &amp; Details</summary><ul class="htp-special">
               <li><b>Armor first.</b> Its 50 armor soaks hits before HP is touched — it holds the line so others can fight.</li><li><b>Stand Firm.</b> Takes 5% less damage for every extra enemy hitting it at the same time, up to 20% less.</li>
               <li>Put it at the front of your wave to protect fragile Vanguards.</li>
               <li><b>Hero awakens (Celestial only) — Twin Guard:</b> the first time Dian Wei takes damage, he calls for backup — a Fortified Zhang Fei sets out from your end of the bridge and marches up to join the fight. It has half the usual HP and damage and keeps Dian Wei's Synergy bonus, if he has one.</li>
               <li><b>Rank effect — Stun:</b> each hit has a chance to stun the enemy for 2 seconds (it can't move or attack). Chance: 8% Standard · 12% Fortified · 16% Apex · 20% Celestial, plus any Status Chance from its Synergy.</li>
-            </ul>
+            </ul></details>
           </div>
 
           <div class="htp-suit spades">
@@ -5072,12 +5079,12 @@ html, .hm-body {
               <div class="htp-stat"><div class="k">Move Speed</div><div class="v">23</div></div>
               <div class="htp-stat"><div class="k">Attack</div><div class="v">1.0<small>s</small></div></div>
             </div>
-            <ul class="htp-special">
+            <details class="htp-more"><summary>Skills &amp; Details</summary><ul class="htp-special">
               <li><b>Fastest marcher.</b> Gets to the fight first.</li>
               <li><b>Strikes over allies.</b> Its long spear lets it wait behind a Clubs tank and still hit the enemy in front.</li>
-              <li><b>Hero awakens (Celestial only) — Soul Unbound:</b> as soon as an enemy is on the bridge, his spirit dashes to the first enemy for a 3× damage hit that knocks it back and stuns it for 3 seconds, then snaps back to his body marching with the group. The spirit can't be hit — only the body can.</li>
+              <li><b>Hero awakens (Celestial only) — Soul Unbound:</b> as soon as an enemy is on the bridge, his spirit dashes to the first enemy for a 3× damage hit. That enemy and the 2 closest to it are knocked back and stunned for 3 seconds. Then the spirit snaps back to his body marching with the group. The spirit can't be hit — only the body can.</li>
               <li><b>Rank effect — Knockback:</b> each hit has a chance to knock the enemy back 55 px, so it has to walk back in. Chance: 8% Standard · 12% Fortified · 16% Apex · 20% Celestial, plus any Status Chance from its Synergy.</li>
-            </ul>
+            </ul></details>
           </div>
 
           <div class="htp-suit diamonds">
@@ -5094,12 +5101,12 @@ html, .hm-body {
               <div class="htp-stat"><div class="k">Move Speed</div><div class="v">19</div></div>
               <div class="htp-stat"><div class="k">Attack</div><div class="v">1.15<small>s</small></div></div>
             </div>
-            <ul class="htp-special">
+            <details class="htp-more"><summary>Skills &amp; Details</summary><ul class="htp-special">
               <li><b>Piercing wave.</b> Each guan dao swing sends a wave down the lane that hits up to 3 enemies in its path — full damage, then 70%, then 50%. Best against bunched-up waves.</li>
               <li><b>Very fragile.</b> Only 100 HP — keep a tank in front of it.</li>
               <li><b>Hero awakens (Celestial only) — Long Reach:</b> the wave travels 50% farther, reaching enemies behind their frontline, and hits all 3 enemies for full damage.</li>
               <li><b>Rank effect — Burn:</b> every enemy the wave hits has its own chance to catch fire: 1 damage every 0.5s for 3s. Burn eats armor first (armor only loses half as much), then HP. Chance: 8% Standard · 12% Fortified · 16% Apex · 20% Celestial, plus any Status Chance from its Synergy.</li>
-            </ul>
+            </ul></details>
           </div>
 
           <div class="htp-suit hearts">
@@ -5116,12 +5123,12 @@ html, .hm-body {
               <div class="htp-stat"><div class="k">Move Speed</div><div class="v">18</div></div>
               <div class="htp-stat"><div class="k">Attack</div><div class="v">1.5<small>s</small></div></div>
             </div>
-            <ul class="htp-special">
+            <details class="htp-more"><summary>Skills &amp; Details</summary><ul class="htp-special">
               <li><b>Behind allies (Support Stance):</b> +10% move speed and +2% attack speed to nearby friends.</li>
               <li><b>Out in front (Attack Stance):</b> base armor rises from 5 to 20, damage rises from 7 to 9 per hit, and it pulses every 2.8s, hitting every nearby enemy for its hit damage. Rank and Synergy bonuses apply on top. Only the <b>front-most</b> Hearts takes this stance — any Hearts behind another ally stays in Support.</li>
               <li><b>Hero awakens (Celestial only) — Eight Trigrams:</b> always boosts nearby allies <i>and</i> keeps Attack Stance's 9-base damage and 20-base armor, even from the back line. It pulses only when it's the front-most soldier, and takes 10% less damage while it's out front.</li>
               <li><b>Rank effect — Heal:</b> each attack or pulse has a chance to instantly heal every ally within 140 px (itself too) for 3% of their max HP. Chance: 8% Standard · 12% Fortified · 16% Apex · 20% Celestial, plus any Status Chance from its Synergy.</li>
-            </ul>
+            </ul></details>
           </div>
 
           <div class="htp-suit fodder">
@@ -5138,12 +5145,12 @@ html, .hm-body {
               <div class="htp-stat"><div class="k">Move Speed</div><div class="v">19</div></div>
               <div class="htp-stat"><div class="k">Attack</div><div class="v">1.0<small>s</small></div></div>
             </div>
-            <ul class="htp-special">
+            <details class="htp-more"><summary>Skills &amp; Details</summary><ul class="htp-special">
               <li><b>Marches on its own.</b> Each base sends out 3 Foot Soldiers at 0:00 and then every 30 seconds — no cards, no gold, no SEND needed.</li>
               <li><b>Rally to defend.</b> The first time each of your barricades is hit, 3 extra Foot Soldiers march out from your base (once per barricade).</li>
               <li><b>Only while your barricades stand.</b> They keep coming as long as at least one of your barricades is up, and stop once both have fallen.</li>
               <li><b>Very weak.</b> No Synergies and no Ranks. They soak up a few hits and slow a push, but won't win a fight alone. Worth <b>3 gold</b> when killed, and they don't lower your income.</li>
-            </ul>
+            </ul></details>
           </div>
         </div>
 
