@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 8.8</title>
+<title>Heaven's Mandate · Build 8.9</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -295,7 +295,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 #phaseLabel{font-size:10px;font-weight:900;letter-spacing:2px;color:#4a9e6a}
 #matchTime{font-size:20px;font-weight:900;font-family:Georgia,serif;color:var(--gold-l);letter-spacing:2px}
 /* bases */
-.base{position:absolute;top:70px;width:38px;border-radius:8px;padding:4px 3px;z-index:6;
+.base{position:absolute;top:70px;width:38px;border-radius:8px;padding:4px 3px;z-index:8;
   display:flex;flex-direction:column;align-items:center;gap:2px;font-size:8px;font-weight:800}
 /* v6.1: artist towers stand at each end of the bridge, behind the deck; HP plate sits on the stone base */
 .tower{position:absolute;bottom:258px;height:142px;background:center bottom/contain no-repeat;z-index:0;pointer-events:none;
@@ -876,7 +876,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #8.8</div>
+    <div class="sub">Build #8.9</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -946,7 +946,8 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
     <div class="twrs">
     </div>
   </div>
-  <div id="bridge"><div id="unitLayer"></div></div>
+  <div id="bridge">
+    <div class="cbase" id="cbE" data-st="0"><i class="cseal"></i></div><div class="cbase" id="cbP" data-st="0"><i class="cseal"></i></div><div id="unitLayer"></div></div>
 
   <!-- left cluster -->
   <div id="shoe" title="Click the barracks, then click a slot. Or drag from the barracks onto a slot."><div class="card back"></div><div class="card back"></div><div class="card back"></div></div>
@@ -1678,6 +1679,7 @@ function renderHUD(){
   {const en=((typeof NET!=='undefined')&&NET.online)?(NET.oppName||'Opponent'):'CPU ('+({blind:'Easy',reactive:'Normal',hard:'Hard',expert:'Expert'}[AI_MODE]||'Easy')+')';if($('eName').textContent!==en)$('eName').textContent=en;const _A=window.AVS||{},ea=((typeof NET!=='undefined')&&NET.online)?(_A.opp||'foot_soldier'):(_A.cpu||'foot_soldier'),ei=$('eAv');if(ei&&ei.dataset.av!==ea){ei.dataset.av=ea;ei.src='av/'+ea+'.webp';}}
   $('pHpFill').style.width=(Math.max(0,S.pBaseHP)/BASE_HP*100)+'%';
   $('eHpFill').style.width=(Math.max(0,S.eBaseHP)/BASE_HP*100)+'%';
+  for(const [id,hp] of [['cbP',S.pBaseHP],['cbE',S.eBaseHP]]){const el=$(id);if(!el)continue;const f=Math.max(0,hp)/BASE_HP,st=f>2/3?'0':f>1/3?'1':'2';if(el.dataset.st!==st)el.dataset.st=st;}  // 8.9 fortress looks
   // pre-match overlay
   const pm=$('preMatch');
   if(S.preMatch){pm.style.display='flex';$('pmCount').textContent=Math.ceil(S.preMatchTime);$('bridge').classList.add('grey');}
@@ -2037,8 +2039,9 @@ function baseStrike(side){if(!S.barr||!S.barr[side]||S.barr[side].some(b=>b.aliv
     t.stunUntil=Math.max(t.stunUntil||0,performance.now()+BASE_STRIKE_STUN);
     if(t.el){if(!t.el.querySelector('.stunbolt'))t.el.insertAdjacentHTML('beforeend','<div class="stunbolt"></div>');t.el.classList.add('stunned');}
     fxTag(t,'BASE STRIKE','fxstun');dealDamage(t,BASE_STRIKE_DMG,null);n++;});
-  const w=document.createElement('div');w.className='bstrike '+(side==='p'?'fromR':'fromL');w.style.left=(side==='p'?BRIDGE_W:0)+'px';
-  w.style.setProperty('--r',BASE_STRIKE_R+'px');const L=$('unitLayer');if(L){L.appendChild(w);setTimeout(()=>w.remove(),650);}
+  const w=document.createElement('div');w.className='bstrike '+(side==='p'?'ringP':'ringE');w.style.left=(side==='p'?BRIDGE_W:0)+'px';
+  w.style.setProperty('--r',BASE_STRIKE_R+'px');const L=$('unitLayer');if(L){L.appendChild(w);setTimeout(()=>w.remove(),750);}
+  const cb=$(side==='p'?'cbP':'cbE');if(cb){cb.classList.remove('struck');void cb.offsetWidth;cb.classList.add('struck');setTimeout(()=>cb.classList.remove('struck'),950);}
   snd('stun',side==='p'?1:.7);}
 /* 8.4: a wave soldier shoves back enemies near its spawn point once, when it appears (no damage) */
 const SPAWN_SHOVE_R=90,SPAWN_SHOVE_D=55;
@@ -2975,9 +2978,17 @@ S=newState();barrInit();S.aiWave=0;aiReset();fit();renderAll();raf=requestAnimat
 #hmSurrBtn{font:800 11px/1 system-ui,sans-serif;letter-spacing:.06em;padding:8px 12px;border-radius:9px;border:1px solid #7a2a1e;background:rgba(80,18,10,.55);color:#ffb39f;cursor:pointer}
 #hmSurrBtn:hover{background:rgba(130,30,16,.7)}
 body.hm-paused #stage *{animation-play-state:paused!important}
-.bstrike{position:absolute;bottom:6px;height:64px;width:0;pointer-events:none;z-index:4;border-radius:50%;background:radial-gradient(ellipse at center,rgba(255,226,140,.55),rgba(255,190,60,.18) 55%,rgba(255,190,60,0) 70%);animation:bstrikeA .6s ease-out forwards}
-.bstrike.fromR{transform:translateX(-50%)}.bstrike.fromL{transform:translateX(-50%)}
-@keyframes bstrikeA{0%{width:20px;opacity:1}100%{width:calc(var(--r)*2);opacity:0}}
+/* 8.9 chibi fortresses + Base Strike art */
+.tower{opacity:.3}
+.cbase{position:absolute;bottom:22px;height:104px;width:104px;background:center bottom/contain no-repeat;z-index:5;pointer-events:none;filter:drop-shadow(0 4px 5px rgba(0,0,0,.55))}
+#cbE{left:-58px;background-image:url(fx/baseE_0.webp)}#cbE[data-st='1']{background-image:url(fx/baseE_1.webp)}#cbE[data-st='2']{background-image:url(fx/baseE_2.webp)}
+#cbP{right:-58px;background-image:url(fx/baseP_0.webp)}#cbP[data-st='1']{background-image:url(fx/baseP_1.webp)}#cbP[data-st='2']{background-image:url(fx/baseP_2.webp)}
+.cseal{position:absolute;left:50%;bottom:16px;width:34px;height:34px;margin-left:-17px;background:center/contain no-repeat url(fx/seal.webp);opacity:0;pointer-events:none}
+.cbase.struck .cseal{animation:csealA .9s ease-out}
+@keyframes csealA{0%{opacity:0;transform:scale(1.8)}15%{opacity:1;transform:scale(1);filter:drop-shadow(0 0 10px rgba(255,80,40,.95))}70%{opacity:1}100%{opacity:0;transform:scale(.95)}}
+.bstrike{position:absolute;bottom:-8px;height:60px;width:calc(var(--r)*2);margin-left:calc(var(--r)*-1);background:center/100% 100% no-repeat;pointer-events:none;z-index:4;animation:bstrikeA .7s ease-out forwards}
+.bstrike.ringP{background-image:url(fx/ring_player.webp)}.bstrike.ringE{background-image:url(fx/ring_enemy.webp)}
+@keyframes bstrikeA{0%{transform:scale(.15);opacity:1}70%{opacity:.9}100%{transform:scale(1);opacity:0}}
 .avpop{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:99999;display:flex;align-items:center;gap:12px;padding:10px 16px 10px 10px;background:linear-gradient(135deg,#1a2a20,#0d1712);border:1px solid #c9a84c;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.55),0 0 18px rgba(201,168,76,.25);cursor:pointer;animation:avpopIn .35s ease-out;max-width:calc(100vw - 32px)}
 .avpop img{width:56px;height:56px;border-radius:50%;border:2px solid #c9a84c;background:radial-gradient(circle at 50% 40%,#2a3a2c,#0d1712);object-fit:cover;flex-shrink:0}
 .avpop-t{display:flex;flex-direction:column;gap:2px;font-family:system-ui,sans-serif}.avpop-t b{color:#f2d58a;font-size:15px;letter-spacing:.02em}.avpop-t small{color:#b9c2b8;font-size:12px}
