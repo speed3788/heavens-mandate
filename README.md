@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 9.2**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 9.3**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -44,7 +44,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **Expert computer (8.0):** counts cards, reads your waves and answers them, with less predictable timing.
 - **8.1 balance:** Final Siege at 12:00 and Last Siege at 15:00. Five Tiger and Heaven's Mandate no longer heal, and Heaven's Mandate gets +30% Move Speed, ATK and ATK Speed. Armor Shred is replaced by armor: Dragon & Tiger +30%, Flowing Serpent +24%, Nine Dragons +24%, Emperor's +30%.
 - **8.4:** each soldier you send shoves nearby enemies back once when it appears at your base. An "Avatar unlocked!" pop-up shows new avatars.
-- **8.8 Base Strike:** once both of a side's barricades are broken, its base strikes back when hit: every enemy within 150px is stunned for 1s and takes 10 damage (5s cooldown).
+- **Base Strike (9.3):** the first enemy hit on a side's inner barricade switches it on. Then every 5s while that barricade (or later the base) is being hit, the base stuns every enemy nearby for 1s and takes 10% of their max HP (armor soaks it first).
 - **8.9 art:** chibi fortresses at both ends of the bridge (they show damage at 66% and 33% HP). Base Strike flashes a red seal on the gate and sends out a gold ink ring.
 - **9.0 art:** each staging slot shows its suit's general (in gray). At 21 it shows the hero, in full color at Celestial. Huanglong's 500 hit now lands on the fortress.
 - **9.1–9.2:** a plain "21" on Apex/Celestial slots. Soldier cap 19 before 9:00, and income reaches 0 at a full bridge.
