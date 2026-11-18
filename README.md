@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 7.6**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 7.7**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -33,7 +33,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **Soldier cap:** 20 soldiers on the bridge, 35 from 9:00, 40 from 15:00. SEND shows BRIDGE FULL if your wave won't fit.
 - **Tank:** 50 armor and Stand Firm (5% less damage for each extra enemy hitting it, up to 20%).
 - **Regen:** Monolith Supports heal 6% every 3s. Five Tiger regens 4% every 3s, Heaven's Mandate 4% every 2s.
-- **Lancer:** 190 HP and 10 damage. Cao Cao's charge stuns and knocks back the 3 closest enemies.
+- **Lancer:** 190 HP and 10 damage. **Vanguard:** 9 damage. Cao Cao's charge stuns and knocks back the 3 closest enemies.
 - **Hero entrance:** a golden ink lightning bolt and shockwave ring (`fx/`) strike when a Celestial hero steps onto the bridge. The hero then lights up with the Celestial glow.
 - **Barracks:** the card stack is now called the Barracks.
 - **Match Time** on the Battle Report and in Match History.

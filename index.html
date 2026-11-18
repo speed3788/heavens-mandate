@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 7.6</title>
+<title>Heaven's Mandate · Build 7.7</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -869,7 +869,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #7.6</div>
+    <div class="sub">Build #7.7</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -1078,7 +1078,7 @@ const SUIT_STATS={
   'F':{icon:'\u2694',name:'Foot Soldier',baseHP:100,baseDPS:2,atkMs:1000,range:32,combatRange:32,speed:19,def:0,cls:'su-f'},  // Nov 15: fodder (no Synergies, no Ranks)
   '\u2663':{icon:'\u{1F6E1}',baseHP:270,baseDPS:8,atkMs:1000,range:32,combatRange:32,speed:19,def:50,cls:'su-c'},
   '\u2660':{icon:'\u2694',baseHP:190,baseDPS:10,atkMs:1000,range:65,combatRange:65,speed:23,def:15,cls:'su-s'},
-  '\u2666':{icon:'\u{1F319}',baseHP:100,baseDPS:10,atkMs:1150,range:150,combatRange:80,speed:19,def:3,cls:'su-d'},
+  '\u2666':{icon:'\u{1F319}',baseHP:100,baseDPS:9,atkMs:1150,range:150,combatRange:80,speed:19,def:3,cls:'su-d'},
   '\u2665':{icon:'\u2728',baseHP:210,baseDPS:7,atkMs:1500,range:140,combatRange:60,speed:18,def:5,cls:'su-h'},
 };
 function tierMultHP(tier,sum){
@@ -5088,7 +5088,7 @@ html, .hm-body {
             </div>
             <div class="htp-stats">
               <div class="htp-stat"><div class="k">HP</div><div class="v">100</div></div>
-              <div class="htp-stat"><div class="k">Damage</div><div class="v">10<small>/hit</small></div></div>
+              <div class="htp-stat"><div class="k">Damage</div><div class="v">9<small>/hit</small></div></div>
               <div class="htp-stat"><div class="k">Armor</div><div class="v">3</div></div>
               <div class="htp-stat"><div class="k">Range</div><div class="v">Longest</div></div>
               <div class="htp-stat"><div class="k">Move Speed</div><div class="v">19</div></div>
@@ -5732,7 +5732,7 @@ function hmNotice(msg){const n=document.createElement('div');n.className='hm-not
 /* ═══ ONLINE (Step 1: rooms + ready check + countdown). PeerJS = browser-to-browser (WebRTC) with a free public
    matchmaking server. Add ?net=local to the URL to test with two tabs of the same browser (no internet needed). ═══ */
 const NET_LOCAL=/[?&]net=local/.test(location.search);
-const NET_PUB_SLOTS=12,NET_PREFIX='hm75-';
+const NET_PUB_SLOTS=12,NET_PREFIX='hm77-';
 const NET={peer:null,conn:null,role:null,code:null,pub:false,meReady:false,themReady:false,busy:false,search:null,
   oppName:null,online:false,view:false,flip:false,local:false,noFwd:false,out:[],gNew:3,gPrimed:false,vready:false,ended:false,tick:null,n:0};
 const _CODE_CH='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -5741,7 +5741,7 @@ function netLib(){return new Promise((res,rej)=>{if(NET_LOCAL||window.Peer)retur
   const add=(src,next)=>{const sc=document.createElement('script');sc.src=src;sc.onload=()=>res();sc.onerror=next;document.head.appendChild(sc);};
   add('https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js',()=>add('https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js',()=>rej(new Error('lib'))));});}
 /* tiny local stand-in for PeerJS over BroadcastChannel (two tabs, same browser) */
-function LocalPeer(id){const bc=new BroadcastChannel('hm75-net'),me=id||('x'+Math.random().toString(36).slice(2,10)),L={},conns={};let open=false;
+function LocalPeer(id){const bc=new BroadcastChannel('hm77-net'),me=id||('x'+Math.random().toString(36).slice(2,10)),L={},conns={};let open=false;
   const P={id:me,_l:L,on(e,f){(L[e]=L[e]||[]).push(f);return P;},emit(e,...a){(L[e]||[]).forEach(f=>f(...a));},
     destroy(){Object.values(conns).forEach(c=>c.close());bc.close();open=false;},
     connect(to){const cid=Math.random().toString(36).slice(2);const c=mkConn(cid,to);conns[cid]=c;bc.postMessage({k:'dial',to,from:me,cid});
