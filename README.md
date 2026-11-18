@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 9.3**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 9.4**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -31,7 +31,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **Income:** 10 gold a second with an empty bridge, sliding evenly down to 0 when your soldiers fill the bridge to the cap.
 - **SEND recharge:** 15s, then 10s from 7:00, always ready from 9:00.
 - **Card cost:** 10g, 15g from 12:00, 20g from 15:00.
-- **Soldier cap:** 19 soldiers on the bridge, 20 from 9:00, 25 from 12:00. SEND shows BRIDGE FULL if your wave won't fit.
+- **Soldier cap:** 19 soldiers on the bridge, 20 from 9:00, 25 from 12:00, and no limit from 15:00 (income still reaches 0 at 25 soldiers). SEND shows BRIDGE FULL if your wave won't fit.
 - **Tank:** 50 armor and Stand Firm (5% less damage for each extra enemy hitting it, up to 20%).
 - **Healing:** Monolith Supports heal 6% every 3s (Five Tiger and Heaven's Mandate no longer heal).
 - **Lancer:** 190 HP and 10 damage. **Vanguard:** 9 damage. Cao Cao's charge stuns and knocks back the 3 closest enemies.
@@ -44,7 +44,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **Expert computer (8.0):** counts cards, reads your waves and answers them, with less predictable timing.
 - **8.1 balance:** Final Siege at 12:00 and Last Siege at 15:00. Five Tiger and Heaven's Mandate no longer heal, and Heaven's Mandate gets +30% Move Speed, ATK and ATK Speed. Armor Shred is replaced by armor: Dragon & Tiger +30%, Flowing Serpent +24%, Nine Dragons +24%, Emperor's +30%.
 - **8.4:** each soldier you send shoves nearby enemies back once when it appears at your base. An "Avatar unlocked!" pop-up shows new avatars.
-- **Base Strike (9.3):** the first enemy hit on a side's inner barricade switches it on. Then every 5s while that barricade (or later the base) is being hit, the base stuns every enemy nearby for 1s and takes 10% of their max HP (armor soaks it first).
+- **Base Strike (9.4):** the first enemy hit on a side's inner barricade switches it on. Then every 5s, hits on that barricade stun every enemy nearby for 1s. Once the barricade is broken, hits on the base stun them and take 10% of their max HP (armor soaks it first).
 - **8.9 art:** chibi fortresses at both ends of the bridge (they show damage at 66% and 33% HP). Base Strike flashes a red seal on the gate and sends out a gold ink ring.
 - **9.0 art:** each staging slot shows its suit's general (in gray). At 21 it shows the hero, in full color at Celestial. Huanglong's 500 hit now lands on the fortress.
 - **9.1–9.2:** a plain "21" on Apex/Celestial slots. Soldier cap 19 before 9:00, and income reaches 0 at a full bridge.
