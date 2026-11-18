@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 7.9**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 8.1**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -39,6 +39,9 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **Match Time** on the Battle Report and in Match History.
 - **Interface:** units stack by rank (Celestial on top). The top-right counter shows enemy | your soldiers. Profile fixes and Settings → Text Size.
 - **How to Play:** unit cards show only the base stats; tap "Skills & Details" to open the rest.
-- **Avatars:** pick one of 22 chibi avatars (`av/`) on your Profile. It shows next to your base in battle, and your opponent sees it online.
+- **Avatars:** 23 chibi avatars (`av/`). The Foot Soldier is open from the start, and the rest unlock by playing (hover a locked face for a hint). Yours shows next to your base in battle, and your opponent sees it online. The computer is the Robot.
+- **Expert computer (8.0):** counts cards, reads your waves and answers them, with less predictable timing.
+- **8.1 balance:** Final Siege at 12:00 and Last Siege at 15:00. Five Tiger and Heaven's Mandate no longer heal, and Heaven's Mandate gets +30% Move Speed, ATK and ATK Speed. Armor Shred is replaced by armor: Dragon & Tiger +30%, Flowing Serpent +24%, Nine Dragons +24%, Emperor's +30%.
+- **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 7.9</title>
+<title>Heaven's Mandate · Build 8.1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -875,7 +875,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #7.9</div>
+    <div class="sub">Build #8.1</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -968,7 +968,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
     <button class="aibtn active" data-ai="blind" type="button" title="Easy: builds random suits, no High-Hand bonus">Easy</button>
     <button class="aibtn" data-ai="reactive" type="button" title="Normal: counters your suits and gets the High-Hand bonus">Normal</button>
     <button class="aibtn" data-ai="hard" type="button" title="Hard: hunts Synergies and high totals, draws faster, waits for strong waves">Hard</button>
-    <button class="aibtn locked" data-ai="expert" type="button" title="Expert: Hard + counts cards. Unlocks after 10 wins on Hard">Expert</button>
+    <button class="aibtn locked" data-ai="expert" type="button" title="Expert: counts cards, reads your waves and answers them. Unlocks after 10 wins on Hard">Expert</button>
   </div>
   <div id="sendCol">
     <div id="synergy"><span class="sh-sub">Stack 2+ slots to see your formation</span></div>
@@ -1005,13 +1005,13 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
       ['Dual Flanks','Two Pair','2 pairs of same totals · only those 4 get it',['+6% Max HP','+6% Armor','+6% ATK','+6% Status Chance']],
       ['Tri-Point Spearhead','Three of a Kind','3 slots, same total · only those 3 get it',['+12% Max HP','+12% ATK','+12% Armor']],
       ['Four Pillars','Four of a Kind','4 slots, same total · only those 4 get it',['+20% Max HP','+20% ATK','+20% Armor','+20% Status Chance']],
-      ['Five Tiger Phalanx','Five of a Kind','All 5 slots, same total',['+24% Max HP','+24% ATK','+24% Armor','+24% Move Speed','+24% Status Chance','+4% Max HP every 3s while fighting']],
-      ["Heaven's Mandate",'All 5 = 21','5 slots each totalling 21 (any mix)',['+40% Max HP','+40% Armor','+20% ATK','+20% Move Speed','+20% ATK Speed','+4% Max HP every 2s while fighting','Huanglong dragon sweep: burns (10 / 0.5s for 4s) and stuns each enemy for 3s','Dragon reaches enemy base: 500 dmg'],'mandate'],
-      ['Dragon & Tiger Citadel','Full House','3 same total + 2 same total',['+30% Max HP','+20% ATK','+20% Move Speed','+20% ATK Speed','+20% Status Chance','Armor Shred: +20% dmg to armor, +5% to HP once armor is gone']],
+      ['Five Tiger Phalanx','Five of a Kind','All 5 slots, same total',['+24% Max HP','+24% ATK','+24% Armor','+24% Move Speed','+24% Status Chance']],
+      ["Heaven's Mandate",'All 5 = 21','5 slots each totalling 21 (any mix)',['+40% Max HP','+40% Armor','+30% ATK','+30% Move Speed','+30% ATK Speed','Huanglong dragon sweep: burns (10 / 0.5s for 4s) and stuns each enemy for 3s','Dragon reaches enemy base: 500 dmg'],'mandate'],
+      ['Dragon & Tiger Citadel','Full House','3 same total + 2 same total',['+30% Max HP','+30% Armor','+20% ATK','+20% Move Speed','+20% ATK Speed','+20% Status Chance']],
       ['Monolith Vanguard','Flush','5 slots, same suit',['+20% Max HP','+20% ATK','♣ +10% base armor','♠ +20% ATK Speed','♦ +20% attack range','♥ heals 6% of Max HP every 3s','Stacks with any same-total Synergy']],
-      ['Flowing Serpent','Straight','5 consecutive totals',['+24% Max HP','+24% ATK','+30% Move Speed','+24% ATK Speed','+24% Status Chance','Armor Shred: +20% dmg to armor, +10% to HP once armor is gone']],
+      ['Flowing Serpent','Straight','5 consecutive totals',['+24% Max HP','+24% Armor','+24% ATK','+30% Move Speed','+24% ATK Speed','+24% Status Chance']],
       ['Nine Dragons Convergence','Straight Flush','5 consecutive totals, same suit',['Monolith Vanguard + Flowing Serpent','Huanglong dragon sweep: burns and stuns each enemy it passes'],'sflush'],
-      ["Emperor's Sovereign Army",'Royal Flush','Totals 17-18-19-20-21, same suit',['Monolith Vanguard + Flowing Serpent, all ×1.25','Armor Shred: +25% dmg to armor, +6.25% to HP once armor is gone','Huanglong dragon sweep: burns and stuns each enemy it passes','Dragon reaches enemy base: 500 dmg'],'royal'],
+      ["Emperor's Sovereign Army",'Royal Flush','Totals 17-18-19-20-21, same suit',['Monolith Vanguard + Flowing Serpent, all ×1.25','+30% Armor','Huanglong dragon sweep: burns and stuns each enemy it passes','Dragon reaches enemy base: 500 dmg'],'royal'],
       ['High-Hand','Slot total 17+','Each slot that totals 17-21',['+2% DPS per slot (max +10%)','From 9:00 Grand Siege: +4% per slot (max +20%)','Stacks with every Synergy']]
     ];
     const KEY='hm_syn_unlocked';
@@ -1156,9 +1156,9 @@ function evalPoker(slots){
   // v6.1: two families — TOTALS (Pair…Five of a Kind, biggest one only) and SUIT (Flush).
   // A wave that earns one of each gets BOTH bonuses.
   let tot=null;
-  if(counts[0]===5)tot=mk('fiveoak',null,'+24% HP/ATK/Armor/Spd/Status · +4% HP/3s','All 5 same sum');
+  if(counts[0]===5)tot=mk('fiveoak',null,'+24% HP/ATK/Armor/Spd/Status','All 5 same sum');
   else if(counts[0]>=4)tot=mk('four',null,'+20% HP/ATK/Armor/Status (the 4 only)','4 same sum');
-  else if(n===5&&counts[0]===3&&counts[1]===2)tot=mk('fullhouse',null,'+30% HP · +20% ATK/Spd/AS/Status · Armor Shred','3oak+pair');
+  else if(n===5&&counts[0]===3&&counts[1]===2)tot=mk('fullhouse',null,'+30% HP/Armor · +20% ATK/Spd/AS/Status','3oak+pair');
   else if(counts[0]>=3)tot=mk('three',null,'+12% HP/ATK/Armor (the 3 only)','3 same sum');
   else if(counts[0]>=2&&counts[1]>=2)tot=mk('twopair',null,'+6% HP/Armor/ATK/Status (both pairs only)','2 pairs');
   else if(counts[0]>=2)tot=mk('pair',null,'+6% HP/Armor (the pair only)','2 same sum');
@@ -1168,7 +1168,7 @@ function evalPoker(slots){
     return mk('flush',flushSuit,'+20% HP/ATK · '+el,'5-suit '+flushSuit);
   }
   // Straight (strict 5-card) — can't share slots with a totals Synergy (all 5 totals differ)
-  if(n===5&&isStrictStraight(slots))return mk('straight',null,'+24% HP/ATK/AS/Status · +30% Spd · Armor Shred','5 consec. sums');
+  if(n===5&&isStrictStraight(slots))return mk('straight',null,'+24% HP/Armor/ATK/AS/Status · +30% Spd','5 consec. sums');
   if(tot)return tot;
   return{hand:'none',...FORMATIONS.none,buffLine:'No synergy',subLine:'',flushSuit:null};
 }
@@ -1798,14 +1798,14 @@ function getFormBuff(hand,slotCount){
     pair:    {hp:1.03, atk:1,    spd:1,    aspd:1,    def:0,   defPct:1.03},
     twopair: {hp:1.03, atk:1.03, spd:1,    aspd:1,    def:0,   defPct:1.03, fx:0.03},
     three:   {hp:1.06, atk:1.06, spd:1,    aspd:1,    def:0,   defPct:1.06},
-    straight:{hp:1.12, atk:1.12, spd:1.15, aspd:1.12, def:0,   defPct:1, fx:0.12},  // v6.1: +10% HP/ATK added
+    straight:{hp:1.12, atk:1.12, spd:1.15, aspd:1.12, def:0,   defPct:1.12, fx:0.12},  // 8.1: +24% Armor replaces Armor Shred
     flush:   {hp:1,    atk:1,    spd:1,    aspd:1,    def:0,   defPct:1},
-    sflush:  {hp:1.12, atk:1.12, spd:1.15, aspd:1.12, def:0,   defPct:1, fx:0.12},   // = Flowing Serpent (+ Monolith suit bonus)
-    royal:   {hp:1.15, atk:1.15, spd:1.1875,aspd:1.15,def:0, defPct:1, fx:0.15},  // Nine Dragons x1.25
-    fullhouse:{hp:1.15,atk:1.10, spd:1.10, aspd:1.10, def:0,   defPct:1, fx:0.10},  // Nov 14: armor removed, gains armor shred
+    sflush:  {hp:1.12, atk:1.12, spd:1.15, aspd:1.12, def:0,   defPct:1.12, fx:0.12},   // = Flowing Serpent (+ Monolith suit bonus)
+    royal:   {hp:1.15, atk:1.15, spd:1.1875,aspd:1.15,def:0, defPct:1.15, fx:0.15},  // Nine Dragons x1.25
+    fullhouse:{hp:1.15,atk:1.10, spd:1.10, aspd:1.10, def:0,   defPct:1.15, fx:0.10},  // 8.1: +30% Armor replaces Armor Shred
     four:    {hp:1.10, atk:1.10, spd:1,    aspd:1,    def:0,   defPct:1.10, fx:0.10},
     fiveoak: {hp:1.12, atk:1.12, spd:1.12, aspd:1,    def:0,   defPct:1.12, fx:0.12},  // v6.1 nerf: HP +20% -> +15%
-    mandate: {hp:1.20, atk:1.10, spd:1.10, aspd:1.10, def:0,   defPct:1.20}  // Nov 2026 nerf
+    mandate: {hp:1.20, atk:1.15, spd:1.15, aspd:1.15, def:0,   defPct:1.20}  // 8.1: Move/ATK/ATK Speed +30%
   }[hand])||{hp:1,atk:1,spd:1,aspd:1,def:0,defPct:1};
 }
 // v6.1: kill bounty scales with the rank of the unit killed
@@ -1943,12 +1943,12 @@ function celestialHit(t){
   t.stunUntil=performance.now()+MANDATE_STUN_MS;
   if(t.el){t.el.classList.add('stunned');const z=document.createElement('i');z.className='bolt';z.textContent='\u26a1';t.el.appendChild(z);setTimeout(()=>z.remove(),600);}
 }
-/* ══ Twin Dragon Reckoning 双龍清算 (secret, 20:00) ══
+/* ══ Twin Dragon Reckoning 双龍清算 (secret, 15:00 since 8.1) ══
    One Huang Long flies from each fortress; no burn/stun, each base takes 500.
    If a base would fall (500 HP or less), the match ends: higher Base HP wins. Exact tie: both bases drop to 1 HP — next hit wins.
    From then on the shoe only holds A, J, Q, K. */
 function HH_PER(){return S.phase>=3?0.04:0.02;}  // High-Hand per slot
-const RECKON_AT=1200,COURT=['A','J','Q','K'],OPEN_AT=900;
+const RECKON_AT=900,COURT=['A','J','Q','K'],OPEN_AT=720;  // 8.1: Final Siege 12:00, Last Siege 15:00
 function heavensEye(){
   S.openShoe=true;snd('stage');hmPhaseReached('p15');say('FINAL SIEGE — the barracks are open to both sides, soldier limit 40','phase');
   {const g=document.createElement('div');g.className='siegeban';g.textContent='FINAL SIEGE';$('stage').appendChild(g);setTimeout(()=>g.remove(),3050);}
@@ -2059,7 +2059,7 @@ function heroFx(u,txt){
   f.style.left=Math.max(0,Math.min(BRIDGE_W-60,u.x))+'px';$('unitLayer').appendChild(f);setTimeout(()=>f.remove(),900);
 }
 /* Armor Shred: +X% damage to armor, and +Y% to HP once armor is gone. Units only (never base/barricades). */
-const SHRED={fullhouse:[0.20,0.05],straight:[0.20,0.10],sflush:[0.20,0.05],royal:[0.25,0.0625]};
+const SHRED={};  // 8.1: Armor Shred removed (those Synergies give +Armor instead)
 function dealDamage(target,amount,attacker){
   if(!target||!target.alive)return;
   if(target._summon&&amount>0){const f=target._summon;target._summon=null;f();}
@@ -2201,7 +2201,7 @@ function unitTick(dt){
     const inRange=nearest&&Math.abs(nearest.x-u.x)<=u.combatRange;
     if(inRange){
       // Formation combat regen (DEF + HP)
-      if(u.formHand==='fiveoak'||u.formHand==='mandate'){
+      if(false){  // 8.1: Five Tiger / Heaven's Mandate healing removed
         const defRegen=0; // v6.1: Five Tiger and Heaven's Mandate no longer regenerate armor
         const rAmt=Math.max(1,Math.round(u.maxHp*0.04)),rMs=u.formHand==='fiveoak'?3000:2000;  // 7.5: Five Tiger 4% max HP / 3s, Mandate 4% / 2s
         if(u.maxDef>0) u.def=Math.min(u.maxDef,u.def+(defRegen*dt/1000));
@@ -2374,7 +2374,7 @@ function aiSmartDraw(){
     const top=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]||b-a)[0];
     const goal=top?+top:(AI.goalSum||19);
     const cands=sl.map((x,i)=>({i,info:evalHand(x),bc:aiBustChance(x,counting)}))
-      .filter(c=>!c.info.bust&&c.info.sum<goal&&(c.info.sum<=11||c.bc<0.45))
+      .filter(c=>!c.info.bust&&c.info.sum<goal&&(c.info.sum<=11||c.bc<(counting?0.6:0.45)))  // 8.0: Expert keeps drawing while the counted odds are good
       .sort((a,b)=>a.bc-b.bc);
     if(cands.length)t=cands[0].i;
   }
@@ -2400,7 +2400,7 @@ function aiReset(){
   AI.drawClock=0;AI.goldClock=0;AI.opened=false;AI.patience=0;
   AI.attnState='DRAFTING';AI.attnClock=0;AI.attnDuration=4000;
   AI.lockedSuit=null;AI.commitLocked=false;AI.deliberateDelay=0;
-  AI.targetSuit=null;AI.targetSum=18;
+  AI.targetSuit=null;AI.targetSum=18;AI.xGo=null;AI.xWait=null;
   AI.hud={state:'DRAFTING',cycles:0,reconCount:0,draftCount:0,lastRecon:null};
 }
 
@@ -2529,11 +2529,25 @@ function aiTick(dt){
         const syn=wp&&wp.hand!=='none';
         const pushed=S.units.filter(u=>u.alive&&u.side==='p'&&!u._fodder).length>=4;
         sendNow=pushed||(syn&&(ready.length===5||AI.patience>=4000))||AI.patience>=12000;
+        if(AI_MODE==='expert')sendNow=aiExpertSend(sendNow,ready,pushed);
       }
       if(sendNow){aiSendWave();AI.targetSuit=null;AI.targetSum=17+Math.floor(Math.random()*4);AI.goalSum=19+Math.floor(Math.random()*2);}
     }
   }
 }
+
+// 8.0 Expert: reads the player and keeps its timing hard to learn
+function aiExpertSend(go,ready,pushed){
+  const T=S.matchTime,foe=S.units.filter(u=>u.alive&&u.side==='p'&&!u._fodder),own=S.units.filter(u=>u.alive&&u.side==='e'&&!u._fodder).length;
+  if(S.phase>=3&&ready.length>=3&&own<6)go=true;                                   // Grand Siege: keep the pressure on
+  if(!pushed&&!foe.length&&S.phase<3&&ready.length<5&&AI.patience<12000)go=false;    // empty bridge: no half lines
+  if(foe.filter(u=>u.x>BRIDGE_W*0.6).length>=3&&ready.length>=4)go=true;            // you just sent: answer it
+  const big=S.energyReady&&countReady(S.slots)>=4&&!foe.length&&!pushed;              // you're about to send a big wave
+  if(big&&S.phase<3){if(AI.xWait==null)AI.xWait=T;if(T-AI.xWait<6)go=false;}else AI.xWait=null;
+  if(!go){AI.xGo=null;return false;}
+  if(AI.xGo==null)AI.xGo=T+Math.random()*2.5;                                         // small random wait
+  if(T<AI.xGo)return false;
+  AI.xGo=null;AI.xWait=null;return true;}
 
 function aiSendWave(){
   if(bridgeFull(soldiersOn('e'),AI.slots.filter(sl=>sl.length>=2).length))return;
@@ -2588,7 +2602,7 @@ function aiSendWave(){
 function soldiersOn(side){let n=0;S.units.forEach(u=>{if(u.alive&&!u._fodder&&u.side===side)n++;});return n;}
 var SOLDIER_CAP=20;
 /* before 9:00: the whole wave has to fit under 20 soldiers */
-function capNow(){return S.matchTime>=900?40:S.phase>=3?35:20;}
+function capNow(){return S.matchTime>=OPEN_AT?40:S.phase>=3?35:20;}
 function bridgeFull(on,ready){return on+ready>capNow();}
 /* Cao Cao's charge: the target + the 2 enemies closest to it */
 function ccChargeTargets(u,T){const foe=u.side==='p'?'e':'p';
@@ -2644,7 +2658,7 @@ function sendWave(){
     return sum+st.baseDPS*tierMultATK(u.tier,u.sum)*(u.buffAtk||1)*highHandMult;
   },0)*10)/10;
   const _pSL=toSpawn.map(u=>u.suit+u.sum+(u.tier==='natural'?'(H)':''));
-  S.log.pWaves.push({wave:S.waves,hand:wp.hand,handName:wp.name||wp.hand,slots:rSlots.length,suits:_pSL,slotLabels:_pSL,dps:Math.round(_pWaveDPS*10)/10,time:Math.round(S.matchTime)});
+  S.log.pWaves.push({wave:S.waves,hand:wp.hand,fl:wp.flushStack?1:0,handName:wp.name||wp.hand,slots:rSlots.length,suits:_pSL,slotLabels:_pSL,dps:Math.round(_pWaveDPS*10)/10,time:Math.round(S.matchTime)});
   // Full House DEF applied at spawn via defPct buff
   renderAll();
   let msg='Wave '+S.waves+' — '+deployed+' units marching';
@@ -2669,6 +2683,7 @@ function fodderTick(dt){
 let last=null,raf=null;
 function loop(now){
   if((typeof NET!=='undefined')&&NET.view){last=now;netViewFrame(now);raf=requestAnimationFrame(loop);return;}
+  if(S.paused&&!((typeof NET!=='undefined')&&NET.online)){last=now;raf=requestAnimationFrame(loop);return;}  // 8.1 pause (vs computer only)
   if(!last)last=now;const dt=Math.min(now-last,100);last=now;
   // pre-match countdown — energy bar fills during prep so SEND is ready when match starts
   if(S.preMatch){
@@ -2696,7 +2711,7 @@ function loop(now){
   if(S.goldClock>=1000){S.goldClock-=1000;flyText('+'+inc,true);}
   // v6.1: +100 gold every full minute (both sides)
   const mins=Math.floor(S.matchTime/60);
-  if(mins>(S.minutesPaid||0)){S.minutesPaid=mins;if([7,9,15,20].indexOf(mins)<0)snd('minute');S.gold+=100;AI.gold+=100;if(S.log){S.log.pInc+=100;S.log.eInc+=100;}flyText('+100',true);say('+100 gold — the treasury pays out','good');}
+  if(mins>(S.minutesPaid||0)){S.minutesPaid=mins;if([7,9,12,15].indexOf(mins)<0)snd('minute');S.gold+=100;AI.gold+=100;if(S.log){S.log.pInc+=100;S.log.eInc+=100;}flyText('+100',true);say('+100 gold — the treasury pays out','good');}
   unitTick(dt);towerTick(dt);siegeTick(dt);aiTick(dt);fodderTick(dt);
   // FIX: stop loop on match end instead of continuing
   if(S.pBaseHP<=0||S.eBaseHP<=0){
@@ -2707,7 +2722,9 @@ function loop(now){
     setTimeout(()=>{
       netSay(S.pBaseHP<=0?(S.surrendered?'DEFEAT — You surrendered':'DEFEAT — Your base has fallen!'):'VICTORY — The Mandate is yours!',S.pBaseHP<=0?'bad':'nat');
       if(S.eBaseHP<=0&&AI_MODE==='hard'&&!S.winCounted&&!((typeof NET!=='undefined')&&NET.online)){S.winCounted=true;addHardWin();refreshExpertLock();
-        if(hardWins()===EXPERT_WINS_NEEDED)setTimeout(()=>say('EXPERT UNLOCKED — the computer now counts cards','nat'),1400);}
+        if(hardWins()===EXPERT_WINS_NEEDED)setTimeout(()=>say('EXPERT UNLOCKED — the computer now counts cards and reads your waves','nat'),1400);}
+      if(S.eBaseHP<=0&&AI_MODE==='expert'&&!S.xwCounted&&!((typeof NET!=='undefined')&&NET.online)){S.xwCounted=true;try{localStorage.setItem('hm_expert_wins',expertWins()+1);}catch(e){}
+        if(expertWins()===10)setTimeout(()=>say('New avatar unlocked! Check your Profile.','nat'),2200);}
       setTimeout(()=>hmWipe(showBattleLog),S.surrendered?400:800);
     },100);
     raf=requestAnimationFrame(loop);return;
@@ -2939,6 +2956,7 @@ S=newState();barrInit();S.aiWave=0;aiReset();fit();renderAll();raf=requestAnimat
 #hmGear:hover{background:rgba(232,195,90,.15)}
 #hmSurrBtn{font:800 11px/1 system-ui,sans-serif;letter-spacing:.06em;padding:8px 12px;border-radius:9px;border:1px solid #7a2a1e;background:rgba(80,18,10,.55);color:#ffb39f;cursor:pointer}
 #hmSurrBtn:hover{background:rgba(130,30,16,.7)}
+body.hm-paused #stage *{animation-play-state:paused!important}
 /* boot + loading screens */
 .hm-full{background:radial-gradient(ellipse at 50% 38%,#173225 0%,#0b1611 58%,#050a07 100%);flex-direction:column;text-align:center;gap:6px;overflow:hidden}
 .hm-full::before{content:"";position:absolute;inset:-20%;background:radial-gradient(circle at 20% 80%,rgba(232,195,90,.07),transparent 40%),radial-gradient(circle at 85% 15%,rgba(45,140,90,.10),transparent 42%);pointer-events:none}
@@ -3526,6 +3544,15 @@ html, .hm-body {
 .av-opt:hover{transform:scale(1.06);border-color:#6b5a2a}
 .av-opt img{width:100%;height:100%;object-fit:cover;display:block}
 .av-opt.on{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.35)}
+.av-opt{position:relative}
+.av-opt.locked{cursor:default}
+.av-opt.locked:hover{transform:none;border-color:#2c3b31}
+.av-opt.locked img{filter:grayscale(1) brightness(.28)}
+.av-lock{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#9a8a5a}
+.av-opt.locked.hinted{cursor:help}
+.av-opt.locked.hinted:hover{border-color:#6b5a2a}
+.av-hint[hidden]{display:none!important}
+.av-hint{margin-top:12px;padding:8px 12px;border:1px solid #6b5a2a;border-radius:8px;background:rgba(201,168,76,.08);color:var(--gold);font-size:.85rem;text-align:center}
 .htp-av-note{margin:4px 0 18px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;color:var(--fg-dim,#b9c2b8);font-size:.9rem}
 .htp-av-note b{color:var(--gold)}
 .htp-special li { list-style: none; font-size: .88rem; color: var(--fg-dim); line-height: 1.45; padding-left: 14px; position: relative; }
@@ -4349,6 +4376,12 @@ html, .hm-body {
 .pf-tabs{display:inline-flex;border:1px solid var(--gold-dim);border-radius:999px;overflow:hidden;margin:0 auto 16px;position:relative;left:50%;transform:translateX(-50%)}
 .pf-tab{all:unset;cursor:pointer;padding:9px 20px;font-family:var(--f-ui);font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-dim)}
 .pf-tab.on{background:rgba(201,168,76,.16);color:var(--gold)}
+.pf-dtabs{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:0 0 -8px}
+.pf-dtab{all:unset;cursor:pointer;padding:6px 14px;border:1px solid var(--border);border-radius:999px;font-family:var(--f-ui);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-dim)}
+.pf-dtab:hover{color:var(--gold)}
+.pf-dtab.on{border-color:var(--gold-dim);background:rgba(201,168,76,.12);color:var(--gold)}
+.stats-grid.cpu4{grid-template-columns:repeat(4,1fr)}
+@media (max-width:480px){.stats-grid.cpu4{grid-template-columns:repeat(2,1fr)}}
 .stat-sub{font-size:.66rem;color:var(--fg-faint);letter-spacing:.08em;margin-top:2px;text-transform:uppercase}
 .pf-career{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0 22px;padding:6px 16px;margin-bottom:26px;border:1px solid var(--border);border-radius:6px;background:var(--surface)}
 .pf-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);min-width:0}
@@ -4497,7 +4530,7 @@ html, .hm-body {
 
   <!-- PROFILE / STATS -->
   <section class="screen" id="screen-profile">
-    <div class="av-ov" id="avOv" hidden onclick="if(event.target===this)hmAvClose()"><div class="av-card" role="dialog" aria-label="Choose Avatar"><div class="av-h">Choose Avatar<button type="button" class="av-x" onclick="hmAvClose()" aria-label="Close">✕</button></div><div class="av-grid" id="avGrid"></div></div></div>
+    <div class="av-ov" id="avOv" hidden onclick="if(event.target===this)hmAvClose()"><div class="av-card" role="dialog" aria-label="Choose Avatar"><div class="av-h">Choose Avatar<button type="button" class="av-x" onclick="hmAvClose()" aria-label="Close">✕</button></div><div class="av-grid" id="avGrid"></div><div class="av-hint" id="avHint" role="status" hidden></div></div></div>
     <div class="profile-header">
       <div class="inner">
         <button type="button" class="profile-avatar" id="pfAvBtn" onclick="hmAvOpen()" aria-label="Change avatar"><img id="pfAv" src="av/foot_soldier.webp" alt=""><span class="pa-edit" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></span></button>
@@ -4513,7 +4546,9 @@ html, .hm-body {
         <div class="pf-tabs" role="tablist" aria-label="Stats type">
           <button type="button" role="tab" class="pf-tab on" data-pf="unranked" onclick="hmPfTab('unranked')">Unranked</button>
           <button type="button" role="tab" class="pf-tab" data-pf="ranked" onclick="hmPfTab('ranked')">Ranked</button>
+          <button type="button" role="tab" class="pf-tab" data-pf="cpu" onclick="hmPfTab('cpu')">Computer</button>
         </div>
+        <div class="pf-dtabs" id="pfDiff" role="tablist" aria-label="Computer difficulty" hidden><button type="button" class="pf-dtab" data-d="blind" onclick="hmPfDiff('blind')">Easy</button><button type="button" class="pf-dtab" data-d="reactive" onclick="hmPfDiff('reactive')">Normal</button><button type="button" class="pf-dtab" data-d="hard" onclick="hmPfDiff('hard')">Hard</button><button type="button" class="pf-dtab" data-d="expert" onclick="hmPfDiff('expert')">Expert</button></div>
         <div class="stats-grid" id="pfMain"></div>
         <div class="section-head"><div class="section-title">Career Stats</div><div class="section-sub" id="pfCareerSub">Totals across all your battles</div></div>
         <div class="pf-career" id="pfCareer"></div>
@@ -4659,7 +4694,6 @@ html, .hm-body {
             <span class="syn-buff spd">+24% Move Speed</span>
             <span class="syn-buff atk">+24% ATK</span>
             <span class="syn-buff fx">+24% Status Chance</span>
-            <span class="syn-buff regen">+4% Max HP every 3s while fighting</span>
           </div>
           <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-clubs_10" style="left:0px"></i><i class="ci ci-clubs_9" style="left:16px"></i></div><div class="sx-tot"><span>♣</span>19</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_K" style="left:0px"></i><i class="ci ci-hearts_9" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>19</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_Q" style="left:0px"></i><i class="ci ci-diamonds_9" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>19</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_J" style="left:0px"></i><i class="ci ci-spades_9" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>19</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-clubs_10" style="left:0px"></i><i class="ci ci-clubs_9" style="left:16px"></i></div><div class="sx-tot"><span>♣</span>19</div></div></div>
         </div>
@@ -4715,10 +4749,9 @@ html, .hm-body {
             <div class="syn-buff-list">
               <span class="syn-buff hp">+40% Max HP</span>
               <span class="syn-buff def">+40% Armor</span>
-              <span class="syn-buff spd">+20% Move Speed</span>
-              <span class="syn-buff atk">+20% ATK</span>
-              <span class="syn-buff aspd">+20% ATK Speed</span>
-              <span class="syn-buff regen">+4% Max HP every 2s while fighting</span>
+              <span class="syn-buff spd">+30% Move Speed</span>
+              <span class="syn-buff atk">+30% ATK</span>
+              <span class="syn-buff aspd">+30% ATK Speed</span>
               <span class="syn-buff mandate-buff">⚡ Wrath of Heaven lightning stun · 3s</span>
               <span class="syn-buff mandate-buff">🐉 Huanglong dragon sweep · burns + stuns each enemy it passes · Celestial Burn 10/0.5s × 4s (80 total)</span>
               <span class="syn-buff mandate-buff">Dragon reaches enemy Base: 500 dmg</span>
@@ -4743,7 +4776,7 @@ html, .hm-body {
             <span class="syn-buff spd">+20% Move Speed</span>
             <span class="syn-buff atk">+20% ATK</span>
             <span class="syn-buff aspd">+20% ATK Speed</span><span class="syn-buff fx">+20% Status Chance</span>
-            <span class="syn-buff debuff">Armor Shred: +20% damage to enemy armor · +5% damage to HP once armor is gone</span>
+            <span class="syn-buff def">+30% Armor</span>
           </div>
           <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-clubs_10" style="left:0px"></i><i class="ci ci-clubs_8" style="left:16px"></i></div><div class="sx-tot"><span>♣</span>18</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_K" style="left:0px"></i><i class="ci ci-hearts_8" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>18</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_Q" style="left:0px"></i><i class="ci ci-diamonds_8" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>18</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_9" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>14</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-clubs_8" style="left:0px"></i><i class="ci ci-clubs_6" style="left:16px"></i></div><div class="sx-tot"><span>♣</span>14</div></div></div>
         </div>
@@ -4785,7 +4818,7 @@ html, .hm-body {
             <span class="syn-buff atk">+24% ATK</span>
             <span class="syn-buff spd">+30% Move Speed</span>
             <span class="syn-buff aspd">+24% ATK Speed</span><span class="syn-buff fx">+24% Status Chance</span>
-            <span class="syn-buff debuff">Armor Shred: +20% damage to enemy armor · +10% damage to HP once armor is gone</span>
+            <span class="syn-buff def">+24% Armor</span>
           </div>
           <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-clubs_9" style="left:0px"></i><i class="ci ci-clubs_5" style="left:16px"></i></div><div class="sx-tot"><span>♣</span>14</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_K" style="left:0px"></i><i class="ci ci-hearts_5" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>15</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_10" style="left:0px"></i><i class="ci ci-diamonds_6" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>16</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_J" style="left:0px"></i><i class="ci ci-spades_7" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>17</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-clubs_10" style="left:0px"></i><i class="ci ci-clubs_8" style="left:16px"></i></div><div class="sx-tot"><span>♣</span>18</div></div></div>
         </div>
@@ -4837,7 +4870,7 @@ html, .hm-body {
               <span class="syn-buff atk">+24% ATK</span>
               <span class="syn-buff spd">+30% Move Speed</span>
               <span class="syn-buff aspd">+24% ATK Speed</span><span class="syn-buff fx">+24% Status Chance</span>
-              <span class="syn-buff debuff">Armor Shred: +20% damage to enemy armor · +5% damage to HP once armor is gone</span>
+              <span class="syn-buff def">+24% Armor</span>
               <span class="syn-buff clubs">Your suit's Flush bonus</span>
               <span class="syn-buff mandate-buff">🐉 Huanglong dragon sweep · burns + stuns each enemy it passes · Celestial Burn 10/0.5s × 4s (80 total) · 3s stun</span>
             </div>
@@ -4893,7 +4926,7 @@ html, .hm-body {
               <span class="syn-buff atk">+30% ATK</span>
               <span class="syn-buff spd">+37.5% Move Speed</span>
               <span class="syn-buff aspd">+30% ATK Speed</span><span class="syn-buff fx">+30% Status Chance</span>
-              <span class="syn-buff debuff">Armor Shred: +25% damage to enemy armor · +6.25% damage to HP once armor is gone</span>
+              <span class="syn-buff def">+30% Armor</span>
               <span class="syn-buff clubs">Your suit's Flush bonus ×1.25</span>
               <span class="syn-buff mandate-buff">🐉 Huanglong dragon sweep · burns + stuns each enemy it passes · Celestial Burn 10/0.5s × 4s (80 total) · 3s stun</span>
               <span class="syn-buff mandate-buff">Dragon reaches enemy Base: 500 dmg</span>
@@ -5041,13 +5074,13 @@ html, .hm-body {
           </li>
           <li class="htp-step"><div class="htp-step-body">
             <div class="htp-step-title">Break the enemy base</div>
-            <div class="htp-step-text">Soldiers fight anything they meet on the bridge. They march <b>25% faster on your half</b> of the bridge and <b>25% slower once they cross into the enemy's half</b>. Each base (<b>3,500 HP</b>) is guarded by <b>two barricades</b>: a <b>500 HP</b> one halfway down your side and a <b>1,000 HP</b> one right in front of the base. Enemy soldiers must <b>stop and break each barricade</b> before they can pass; barricades don't fight back and stay broken. Armor Shred only works on soldiers, not on barricades or the base. Any soldier that reaches the enemy base damages it every second. <b>First to take down the enemy base wins.</b></div>
+            <div class="htp-step-text">Soldiers fight anything they meet on the bridge. They march <b>25% faster on your half</b> of the bridge and <b>25% slower once they cross into the enemy's half</b>. Each base (<b>3,500 HP</b>) is guarded by <b>two barricades</b>: a <b>500 HP</b> one halfway down your side and a <b>1,000 HP</b> one right in front of the base. Enemy soldiers must <b>stop and break each barricade</b> before they can pass; barricades don't fight back and stay broken. Any soldier that reaches the enemy base damages it every second. <b>First to take down the enemy base wins.</b></div>
           </div>
             <figure class="htp-step-fig"><img src="data:image/webp;base64,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" alt="Game screen: the enemy base HP bar and its two barricades highlighted, with soldiers attacking" loading="lazy"></figure>
           </li>
         </ol>
 
-        <p class="htp-av-note"><b>Your avatar:</b> tap the face on your Profile to choose one of 22 avatars. It shows next to your base in battle, and online your opponent sees it too.</p>
+        <p class="htp-av-note"><b>Your avatar:</b> tap the face on your Profile to choose your avatar. More avatars unlock as you play. It shows next to your base in battle, and online your opponent sees it too.</p>
 
         <!-- ── TIMELINE ── -->
         <div class="syn-tier-label">Match timeline</div>
@@ -5057,11 +5090,11 @@ html, .hm-body {
           <div class="htp-phase"><div class="t">9:00</div><div class="n">Grand Siege</div><div class="d"><div class="kv"><span>Card Cost</span><b>20g</b></div><div class="kv"><span>Send Recharge</span><b>None</b></div><div class="kv"><span>Max Soldiers</span><b>35</b></div><div class="kv"><span>Siege Damage</span><b>×2</b></div><div class="kv"><span>High-Hand</span><b>+4% / slot</b></div></div></div>
           <div class="htp-phase locked" data-ph="p15" role="button" tabindex="0" aria-label="Locked phase — reach it in a match to reveal" onclick="revealPhase(this)">
             <div class="ph-lock"><div class="t">?? : ??</div><div class="n">Locked</div><div class="d">Survive long enough to find out…</div></div>
-            <div class="ph-real" hidden><div class="t">15:00</div><div class="n">Final Siege</div><div class="d"><div class="kv"><span>Card Cost</span><b>20g</b></div><div class="kv"><span>Send Recharge</span><b>None</b></div><div class="kv"><span>Max Soldiers</span><b>40</b></div><div class="kv"><span>Barracks</span><b>Open</b></div></div></div>
+            <div class="ph-real" hidden><div class="t">12:00</div><div class="n">Final Siege</div><div class="d"><div class="kv"><span>Card Cost</span><b>20g</b></div><div class="kv"><span>Send Recharge</span><b>None</b></div><div class="kv"><span>Max Soldiers</span><b>40</b></div><div class="kv"><span>Barracks</span><b>Open</b></div></div></div>
           </div>
           <div class="htp-phase locked" data-ph="p20" role="button" tabindex="0" aria-label="Locked phase — reach it in a match to reveal" onclick="revealPhase(this)">
             <div class="ph-lock"><div class="t">?? : ??</div><div class="n">Locked</div><div class="d">Survive long enough to find out…</div></div>
-            <div class="ph-real" hidden><div class="t">20:00</div><div class="n">Last Siege. Really.</div><div class="d"><div class="kv"><span>Card Cost</span><b>20g</b></div><div class="kv"><span>Send Recharge</span><b>None</b></div><div class="kv"><span>Max Soldiers</span><b>40</b></div><div class="kv"><span>Both Bases</span><b>−500 HP</b></div><div class="kv"><span>Tiebreak</span><b>More HP wins</b></div><div class="kv"><span>Barracks</span><b>A, J, Q, K only</b></div></div></div>
+            <div class="ph-real" hidden><div class="t">15:00</div><div class="n">Last Siege. Really.</div><div class="d"><div class="kv"><span>Card Cost</span><b>20g</b></div><div class="kv"><span>Send Recharge</span><b>None</b></div><div class="kv"><span>Max Soldiers</span><b>40</b></div><div class="kv"><span>Both Bases</span><b>−500 HP</b></div><div class="kv"><span>Tiebreak</span><b>More HP wins</b></div><div class="kv"><span>Barracks</span><b>A, J, Q, K only</b></div></div></div>
           </div>
         </div>
 
@@ -5421,7 +5454,7 @@ html, .hm-body {
       <button class="hm-diff" data-d="blind" type="button" onclick="hmStartVsCpu('blind')"><span class="dn">Easy</span><span class="dd">Builds random suits. No High-Hand bonus.</span></button>
       <button class="hm-diff" data-d="reactive" type="button" onclick="hmStartVsCpu('reactive')"><span class="dn">Normal</span><span class="dd">Counters your suits and gets the High-Hand bonus.</span></button>
       <button class="hm-diff" data-d="hard" type="button" onclick="hmStartVsCpu('hard')"><span class="dn">Hard</span><span class="dd">Hunts Synergies and high totals, draws faster, waits for strong waves.</span></button>
-      <button class="hm-diff" data-d="expert" type="button" onclick="hmStartVsCpu('expert')"><span class="dn">Expert</span><span class="dd" id="hmExpertTxt">Hard + counts cards.</span></button>
+      <button class="hm-diff" data-d="expert" type="button" onclick="hmStartVsCpu('expert')"><span class="dn">Expert</span><span class="dd" id="hmExpertTxt">Counts cards, reads your waves and answers them.</span></button>
     </div>
     <div class="hm-row"><button class="hm-btn hm-ghost" type="button" onclick="hmCloseDiff()">Cancel</button></div>
   </div>
@@ -5456,7 +5489,16 @@ html, .hm-body {
     <div class="hm-arow"><div class="al"><b>Sound Effects</b><small>Cards, attacks, status effects</small></div>
       <input class="hm-vol" id="hmSfxVol" type="range" min="0" max="100" aria-label="Sound effects volume"><span class="hm-vv" id="hmSfxVv"></span>
       <button class="hm-tog" id="hmSfxOn" type="button" role="switch" aria-label="Sound effects on/off"></button></div>
-    <div class="hm-row"><button class="hm-btn hm-danger" id="hmSurrBtn" type="button" onclick="hmCloseAudio();hmAskSurrender()" hidden>🏳 Surrender</button><button class="hm-btn" type="button" onclick="hmCloseAudio()">Done</button></div>
+    <div class="hm-row"><button class="hm-btn hm-danger" id="hmSurrBtn" type="button" onclick="hmCloseAudio();hmAskSurrender()" hidden>🏳 Surrender</button><button class="hm-btn" id="hmPauseBtn" type="button" onclick="hmPause()" hidden>⏸ Pause</button><button class="hm-btn" type="button" onclick="hmCloseAudio()">Done</button></div>
+  </div>
+</div>
+
+<!-- 8.1 pause (vs the computer) -->
+<div class="hm-ov hm-modal-bg" id="hmPaused" hidden>
+  <div class="hm-card" role="dialog" aria-modal="true" aria-labelledby="hmPausedH" style="width:min(360px,100%);text-align:center">
+    <h2 class="hm-h" id="hmPausedH">Paused</h2>
+    <p class="hm-sub">The battle is stopped. Take your time.</p>
+    <div class="hm-row" style="justify-content:center"><button class="hm-btn" type="button" onclick="hmResume()">▶ Resume</button></div>
   </div>
 </div>
 
@@ -5691,7 +5733,10 @@ $('hmSfxVol').addEventListener('input',e=>{const a=hmAudioState();a.sfx=e.target
 $('hmSfxVol').addEventListener('change',()=>snd('coin',1.4));
 $('hmMusOn').addEventListener('click',()=>{const a=hmAudioState();a.musicOn=!a.musicOn;hmAudioSet(a);});
 $('hmSfxOn').addEventListener('click',()=>{const a=hmAudioState();a.sfxOn=!a.sfxOn;hmAudioSet(a);});
-function hmOpenAudio(){hmAudioSync();hmShow('hmAudio',true);}
+function hmOpenAudio(){hmAudioSync();const vsCpu=HM.inGame&&S&&(S.running||S.preMatch)&&!((typeof NET!=='undefined')&&NET.online);
+  $('hmPauseBtn').hidden=!vsCpu;const sub=document.querySelector('#hmAudio .hm-sub');if(sub)sub.textContent=vsCpu?'Tap Pause to stop the battle.':'The battle keeps going while this is open.';hmShow('hmAudio',true);}
+function hmPause(){if((typeof NET!=='undefined')&&NET.online)return;hmCloseAudio();S.paused=true;document.body.classList.add('hm-paused');hmShow('hmPaused',true);}
+function hmResume(){S.paused=false;document.body.classList.remove('hm-paused');hmShow('hmPaused',false);}
 function hmCloseAudio(){hmShow('hmAudio',false);}
 
 /* ── boot screen: load the sounds, then "Tap to begin" (that tap also unlocks audio) ── */
@@ -5715,7 +5760,7 @@ function hmCloseAudio(){hmShow('hmAudio',false);}
 function hmOpenDiff(){
   const n=hardWins(),lock=n<EXPERT_WINS_NEEDED,b=document.querySelector('.hm-diff[data-d=expert]');
   b.classList.toggle('locked',lock);b.setAttribute('aria-disabled',lock?'true':'false');
-  $('hmExpertTxt').textContent=lock?('🔒 Win '+EXPERT_WINS_NEEDED+' matches on Hard to unlock ('+Math.min(n,EXPERT_WINS_NEEDED)+'/'+EXPERT_WINS_NEEDED+').'):'Hard + counts cards.';
+  $('hmExpertTxt').textContent=lock?('🔒 Win '+EXPERT_WINS_NEEDED+' matches on Hard to unlock ('+Math.min(n,EXPERT_WINS_NEEDED)+'/'+EXPERT_WINS_NEEDED+').'):'Counts cards, reads your waves and answers them.';
   hmShow('hmDiff',true);}
 function hmCloseDiff(){hmShow('hmDiff',false);}
 function hmPvpSoon(btn){const l=btn.querySelector('.menu-btn-sub');const o=l.textContent;l.textContent='Online battles arrive in a later build';setTimeout(()=>l.textContent=o,1600);}
@@ -5724,7 +5769,7 @@ function hmTip(){let i;do{i=Math.floor(Math.random()*HM.tips.length);}while(HM.t
   $('hmTip').innerHTML='<blockquote>'+esc(t.q)+'<cite>— '+esc(t.c)+'</cite></blockquote><p><b>'+esc(t.t)+'.</b> '+esc(t.b)+'</p>';}
 function hmStartVsCpu(mode){
   if(mode==='expert'&&hardWins()<EXPERT_WINS_NEEDED)return;
-  AI_MODE=mode;AI.targetSuit=null;HM.mode='practice';AVS.cpu=AV_LIST[Math.floor(Math.random()*AV_LIST.length)];HM.opp='CPU ('+({blind:'Easy',reactive:'Normal',hard:'Hard',expert:'Expert'}[mode])+')';document.querySelectorAll('.aibtn').forEach(b=>b.classList.toggle('active',b.dataset.ai===mode));
+  AI_MODE=mode;AI.targetSuit=null;HM.mode='practice';AVS.cpu='robot';S.paused=false;document.body.classList.remove('hm-paused');hmShow('hmPaused',false);HM.opp='CPU ('+({blind:'Easy',reactive:'Normal',hard:'Hard',expert:'Expert'}[mode])+')';document.querySelectorAll('.aibtn').forEach(b=>b.classList.toggle('active',b.dataset.ai===mode));
   hmShow('hmDiff',false);hmTip();$('hmLoadCpu').textContent='CPU · '+({blind:'Easy',reactive:'Normal',hard:'Hard',expert:'Expert'}[mode]);
   const L=$('hmLoad');L.classList.remove('out');L.hidden=false;const bar=$('hmLoadBar');bar.style.transition='none';bar.style.width='0';void bar.offsetWidth;
   bar.style.transition='width 2.6s cubic-bezier(.3,.1,.2,1)';bar.style.width='100%';
@@ -5766,7 +5811,7 @@ function hmNotice(msg){const n=document.createElement('div');n.className='hm-not
 /* ═══ ONLINE (Step 1: rooms + ready check + countdown). PeerJS = browser-to-browser (WebRTC) with a free public
    matchmaking server. Add ?net=local to the URL to test with two tabs of the same browser (no internet needed). ═══ */
 const NET_LOCAL=/[?&]net=local/.test(location.search);
-const NET_PUB_SLOTS=12,NET_PREFIX='hm79-';
+const NET_PUB_SLOTS=12,NET_PREFIX='hm81-';
 const NET={peer:null,conn:null,role:null,code:null,pub:false,meReady:false,themReady:false,busy:false,search:null,
   oppName:null,online:false,view:false,flip:false,local:false,noFwd:false,out:[],gNew:3,gPrimed:false,vready:false,ended:false,tick:null,n:0};
 const _CODE_CH='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -5775,7 +5820,7 @@ function netLib(){return new Promise((res,rej)=>{if(NET_LOCAL||window.Peer)retur
   const add=(src,next)=>{const sc=document.createElement('script');sc.src=src;sc.onload=()=>res();sc.onerror=next;document.head.appendChild(sc);};
   add('https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js',()=>add('https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js',()=>rej(new Error('lib'))));});}
 /* tiny local stand-in for PeerJS over BroadcastChannel (two tabs, same browser) */
-function LocalPeer(id){const bc=new BroadcastChannel('hm79-net'),me=id||('x'+Math.random().toString(36).slice(2,10)),L={},conns={};let open=false;
+function LocalPeer(id){const bc=new BroadcastChannel('hm81-net'),me=id||('x'+Math.random().toString(36).slice(2,10)),L={},conns={};let open=false;
   const P={id:me,_l:L,on(e,f){(L[e]=L[e]||[]).push(f);return P;},emit(e,...a){(L[e]||[]).forEach(f=>f(...a));},
     destroy(){Object.values(conns).forEach(c=>c.close());bc.close();open=false;},
     connect(to){const cid=Math.random().toString(36).slice(2);const c=mkConn(cid,to);conns[cid]=c;bc.postMessage({k:'dial',to,from:me,cid});
@@ -5906,46 +5951,87 @@ function pfLoad(){try{const v=JSON.parse(localStorage.getItem(PF_KEY)||'null');i
 function pfSave(p){for(let k=0;k<4;k++){try{localStorage.setItem(PF_KEY,JSON.stringify(p));return;}catch(e){ // storage full: drop the oldest full reports first
   const withRep=p.matches.filter(m=>m.rep);withRep.slice(0,Math.max(1,Math.ceil(withRep.length/3))).forEach(m=>delete m.rep);}}}
 HM.name=(function(){try{let n=localStorage.getItem('hm_guest');if(!n){n='Guest'+(1000+Math.floor(Math.random()*9000));localStorage.setItem('hm_guest',n);}return n;}catch(e){return'Guest'+(1000+Math.floor(Math.random()*9000));}})();
-HM.mode='practice';HM.opp='CPU';HM.pfTab='unranked';HM.replay=false;
+HM.mode='practice';HM.opp='CPU';HM.pfTab='unranked';HM.pfDiff='blind';HM.replay=false;
 function hmApplyName(){$('pName').textContent=HM.name;$('hmLoadMe').textContent=HM.name;const R=hmSR();if(R&&R.getElementById('pfName'))R.getElementById('pfName').textContent=HM.name;hmAvApply();}
 /* 7.9 avatars: all free; saved in this browser */
-const AV_LIST=['zhang_fei','dian_wei','ma_chao','cao_cao','guan_yu','lu_bu','liu_bei','zhuge_liang','foot_soldier','sun_shangxiang','zhurong','lu_lingqi','guan_yinping','war_qilin','barded_warhorse','white_cloud_tiger','jade_spirit_stag','extra_lubu_horse','extra_white_lion','extra_zhuge_horse','extra_soldier_horse','huanglong'];
+const AV_LIST=['foot_soldier','zhang_fei','dian_wei','ma_chao','cao_cao','guan_yu','lu_bu','liu_bei','zhuge_liang','sun_shangxiang','zhurong','lu_lingqi','guan_yinping','war_qilin','barded_warhorse','white_cloud_tiger','jade_spirit_stag','extra_lubu_horse','extra_white_lion','extra_zhuge_horse','extra_soldier_horse','huanglong','robot'];
 function avOk(a){return AV_LIST.indexOf(a)>=0?a:'foot_soldier';}
-window.AVS={me:avOk((function(){try{return localStorage.getItem('hm_avatar');}catch(e){return null;}})()),cpu:'foot_soldier',opp:'foot_soldier'};
+/* 8.1 locked avatars: lifetime goals (all modes). Synergy uses are counted when a match is saved. */
+function avUses(){try{return JSON.parse(localStorage.getItem('hm_syn_uses')||'{}')||{};}catch(e){return{};}}
+function expertWins(){try{return +localStorage.getItem('hm_expert_wins')||0;}catch(e){return 0;}}
+const AV_LOCK={sun_shangxiang:u=>(u.pair||0)>=10,zhurong:u=>(u.three||0)>=10,lu_lingqi:u=>(u.twopair||0)>=10,guan_yinping:u=>(u.four||0)>=10,
+  war_qilin:u=>(u.fullhouse||0)>=10,barded_warhorse:u=>(u.flush||0)>=10,white_cloud_tiger:u=>(u.fiveoak||0)>=10,jade_spirit_stag:u=>(u.straight||0)>=10,
+  extra_lubu_horse:u=>(u.royal||0)>=1,extra_white_lion:u=>(u.mandate||0)>=1,extra_zhuge_horse:u=>(u.sflush||0)>=1,
+  extra_soldier_horse:()=>hardWins()>=EXPERT_WINS_NEEDED,huanglong:u=>(u.mandate||0)+(u.royal||0)+(u.sflush||0)>=10,robot:()=>expertWins()>=10,
+  zhang_fei:u=>(u.u_c0||0)>=10,dian_wei:u=>(u.u_c1||0)>=10,ma_chao:u=>(u.u_s0||0)>=10,cao_cao:u=>(u.u_s1||0)>=10,
+  guan_yu:u=>(u.u_d0||0)>=10,lu_bu:u=>(u.u_d1||0)>=10,liu_bei:u=>(u.u_h0||0)>=10,zhuge_liang:u=>(u.u_h1||0)>=10};
+/* hints for locked avatars: [text, progress -> [have, need]] */
+const _c=k=>u=>[u[k]||0,10],_one=k=>u=>[u[k]||0,1];
+const AV_HINT={zhang_fei:['Summon Zhang Fei (♣ Standard or Fortified) 10 times in any mode',_c('u_c0')],dian_wei:['Summon Dian Wei (♣ Apex or Celestial) 10 times in any mode',_c('u_c1')],
+  ma_chao:['Summon Ma Chao (♠ Standard or Fortified) 10 times in any mode',_c('u_s0')],cao_cao:['Summon Cao Cao (♠ Apex or Celestial) 10 times in any mode',_c('u_s1')],
+  guan_yu:['Summon Guan Yu (♦ Standard or Fortified) 10 times in any mode',_c('u_d0')],lu_bu:['Summon Lü Bu (♦ Apex or Celestial) 10 times in any mode',_c('u_d1')],
+  liu_bei:['Summon Liu Bei (♥ Standard or Fortified) 10 times in any mode',_c('u_h0')],zhuge_liang:['Summon Zhuge Liang (♥ Apex or Celestial) 10 times in any mode',_c('u_h1')],
+  sun_shangxiang:['“Two arrows from one quiver fly truest.”',_c('pair')],lu_lingqi:['“One pair guards the left, one pair guards the right.”',_c('twopair')],
+  zhurong:['“A fire needs three stones to stand.”',_c('three')],guan_yinping:['“A great hall stands on four pillars, never three.”',_c('four')],
+  war_qilin:['“When three and two live under one roof, the house is full.”',_c('fullhouse')],barded_warhorse:['“Five banners of one color move like one great stone.”',_c('flush')],
+  white_cloud_tiger:['“When five voices sing the same note, the tiger wakes.”',_c('fiveoak')],jade_spirit_stag:['“The stag climbs one stone at a time and never skips a step.”',_c('straight')],
+  extra_lubu_horse:['“Seventeen is where the Emperor’s road begins, and the summit is where it ends. Walk it in one color.”',_one('royal')],
+  extra_zhuge_horse:['“Five steps in a row, all under one banner, and the nine dragons answer.”',_one('sflush')],
+  extra_white_lion:['“When all five stand at the summit together, Heaven speaks.”',_one('mandate')],
+  huanglong:['“Call down the sky’s three great wonders, and the golden dragon will stay.”',u=>[(u.mandate||0)+(u.royal||0)+(u.sflush||0),10]],
+  extra_soldier_horse:['“Walk the hard road to victory, and a wiser teacher waits at its end.”',()=>[hardWins(),EXPERT_WINS_NEEDED]],
+  robot:['“The student who beats the master may wear the master’s face.”',()=>[expertWins(),10]]};
+function avHintText(a){const h=AV_HINT[a];if(!h)return'';const pr=h[1](avUses());return h[0]+' · '+Math.min(pr[0],pr[1])+'/'+pr[1];}
+function avHint(a){const R=hmSR(),el=R&&R.getElementById('avHint');if(!el)return;const t=avHintText(a);el.textContent=t;el.hidden=!t;}
+function avUnlocked(a,u){const f=AV_LOCK[a];return !f||!!f(u||avUses());}
+window.AVS={me:avOk((function(){try{return localStorage.getItem('hm_avatar');}catch(e){return null;}})()),cpu:'robot',opp:'foot_soldier'};
+if(!avUnlocked(AVS.me))AVS.me='foot_soldier';
 function hmAvApply(){const s='av/'+AVS.me+'.webp',p=$('pAv');if(p&&p.getAttribute('src')!==s)p.src=s;const R=hmSR(),f=R&&R.getElementById('pfAv');if(f&&f.getAttribute('src')!==s)f.src=s;
   const g=R&&R.getElementById('avGrid');if(g)g.querySelectorAll('.av-opt').forEach(b=>b.classList.toggle('on',b.dataset.av===AVS.me));}
 function hmAvOpen(){const R=hmSR();if(!R)return;const g=R.getElementById('avGrid');
-  if(!g.firstChild)g.innerHTML=AV_LIST.map(a=>'<button type="button" class="av-opt" data-av="'+a+'" onclick="hmAvPick(this.dataset.av)" aria-label="Avatar"><img src="av/'+a+'.webp" alt="" loading="lazy"></button>').join('');
-  hmAvApply();R.getElementById('avOv').hidden=false;try{snd('card_land');}catch(e){}}
+  const U=avUses();g.innerHTML=AV_LIST.map(a=>{const ok=avUnlocked(a,U);return '<button type="button" class="av-opt'+(ok?'':' locked'+(AV_HINT[a]?' hinted':''))+'" data-av="'+a+'"'+(ok?' onclick="hmAvPick(this.dataset.av)" aria-label="Avatar"':(AV_HINT[a]?' onclick="avHint(this.dataset.av)" onmouseenter="avHint(this.dataset.av)" title="'+avHintText(a)+'" aria-label="Locked avatar: '+avHintText(a)+'"':' disabled aria-label="Locked avatar"'))+'><img src="av/'+a+'.webp" alt="" loading="lazy">'+(ok?'':'<span class="av-lock" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>')+'</button>';}).join('');
+  hmAvApply();{const _h=R.getElementById('avHint');if(_h)_h.hidden=true;}R.getElementById('avOv').hidden=false;try{snd('card_land');}catch(e){}}
 function hmAvClose(){const R=hmSR();if(R)R.getElementById('avOv').hidden=true;}
-function hmAvPick(a){AVS.me=avOk(a);try{localStorage.setItem('hm_avatar',AVS.me);}catch(e){}hmAvApply();setTimeout(hmAvClose,160);}
+function hmAvPick(a){if(!avUnlocked(a))return;AVS.me=avOk(a);try{localStorage.setItem('hm_avatar',AVS.me);}catch(e){}hmAvApply();setTimeout(hmAvClose,160);}
 function pfRecord(){
   const L=S.log;if(!L)return;const win=S.eBaseHP<=0;
   const n={c:0,s:0,d:0,h:0};L.pWaves.forEach(w=>(w.slotLabels||w.suits||[]).forEach(l=>{const k=BL_SC[String(l)[0]];if(k)n[k]++;}));
   const best=L.pWaves.reduce((b,x)=>(!b||(x.dps||0)>(b.dps||0))?x:b,null);
   let top=null;L.pWaves.forEach(w=>{const i=PF_ORDER.indexOf(w.hand||'none');if(i>0&&(!top||i>top.i))top={i,name:w.handName||w.hand};});
-  const m={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:Date.now(),mode:HM.mode,opp:HM.opp,ranked:false,
+  const m={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:Date.now(),mode:HM.mode,opp:HM.opp,ranked:false,diff:HM.mode==='practice'?AI_MODE:null,
     res:win?'win':(S.surrendered?'surr':'loss'),dur:Math.round(L.duration||0),waves:L.pWaves.length,units:n,
     kills:L.pKills||0,fodder:L.pFodder||0,gold:Math.round((L.pInc||0)+(L.pBounty||0)),bounty:L.pBounty||0,cards:L.pCards||0,busts:L.pBusts||0,
     nat:L.pNat||0,hero:L.pHero||0,mandate:L.pMandate||0,best:best?{name:(!best.hand||best.hand==='none')?'No Synergy':(best.handName||best.hand),dps:Math.round((best.dps||0)*10)/10}:null,top,
     rep:{res:$('blResult').textContent,pl:$('blPlayer').innerHTML,ai:$('blAI').innerHTML,wp:$('blWavesP').innerHTML,we:$('blWavesE').innerHTML}};
-  const p=pfLoad();p.matches.push(m);pfSave(p);hmRenderProfile();}
+  const p=pfLoad();p.matches.push(m);pfSave(p);hmRenderProfile();pfCountUses(L.pWaves);}
+/* 8.1: lifetime Synergy uses (for avatar unlocks). A Flush combo also counts as Monolith Vanguard. */
+function pfCountUses(waves){const before=AV_LIST.filter(a=>avUnlocked(a));const u=avUses();
+  (waves||[]).forEach(w=>{const h=w.hand||'none';if(h!=='none')u[h]=(u[h]||0)+1;
+    (w.slotLabels||w.suits||[]).forEach(l=>{l=String(l);const k=BL_SC[l[0]];if(!k)return;const sm=parseInt(l.slice(1),10)||0;const key='u_'+k+(sm>=21?1:0);u[key]=(u[key]||0)+1;});
+    if(h!=='flush'&&h!=='sflush'&&h!=='royal'&&(w.fl||/Monolith/.test(w.handName||'')))u.flush=(u.flush||0)+1;});
+  try{localStorage.setItem('hm_syn_uses',JSON.stringify(u));}catch(e){}
+  const n=AV_LIST.filter(a=>avUnlocked(a,u)&&before.indexOf(a)<0).length;if(n)setTimeout(()=>say(n>1?n+' new avatars unlocked! Check your Profile.':'New avatar unlocked! Check your Profile.','nat'),900);}
 // save each live match once, right after its Battle Report is drawn
 const _hmShowBL=showBattleLog;
 showBattleLog=function(){_hmShowBL();$('blDownload').hidden=false;$('blClose').textContent='Main Menu';if(!HM.replay&&HM.inGame&&!S._pfSaved){S._pfSaved=true;try{pfRecord();}catch(e){console.error(e);}}};
 function pfFmt(sec){sec=Math.max(0,Math.round(sec||0));return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');}
 function pfNum(x){return Math.round(x||0).toLocaleString();}
 function hmPfTab(t){HM.pfTab=t;hmRenderProfile();}
+function hmPfDiff(d){HM.pfDiff=d;hmRenderProfile();}
+function pfDiffOf(m){return m.diff||({'CPU (Easy)':'blind','CPU (Normal)':'reactive','CPU (Hard)':'hard','CPU (Expert)':'expert'}[m.opp])||'blind';}
 function hmRenderProfile(){const R=hmSR();if(!R||!R.getElementById('pfMain'))return;const g=i=>R.getElementById(i);
   R.querySelectorAll('.pf-tab').forEach(b=>b.classList.toggle('on',b.dataset.pf===HM.pfTab));
-  const ranked=HM.pfTab==='ranked',all=pfLoad().matches,ms=all.filter(m=>!!m.ranked===ranked);
+  const cpu=HM.pfTab==='cpu',ranked=HM.pfTab==='ranked',all=pfLoad().matches,ms=all.filter(m=>cpu?m.mode==='practice':(m.mode!=='practice'&&!!m.ranked===ranked));
+  g('pfDiff').hidden=!cpu;g('pfMain').classList.toggle('cpu4',cpu);R.querySelectorAll('.pf-dtab').forEach(b=>b.classList.toggle('on',b.dataset.d===HM.pfDiff));
   const W=ms.filter(m=>m.res==='win').length,Lo=ms.length-W;
   const cell=(v,l,sub)=>'<div class="stat-cell"><div class="stat-val'+(v==='—'?' empty':'')+'">'+v+'</div><div class="stat-label">'+l+'</div>'+(sub?'<div class="stat-sub">'+sub+'</div>':'')+'</div>';
   const eloSub=ranked?'':'Ranked only';
-  g('pfMain').innerHTML=cell(ms.length?W:'—','Wins')+cell(ms.length?Lo:'—','Losses')+cell(ms.length?Math.round(W/ms.length*100)+'%':'—','Win Rate')
+  if(cpu){const dm=ms.filter(m=>pfDiffOf(m)===HM.pfDiff),dw=dm.filter(m=>m.res==='win').length;
+    g('pfMain').innerHTML=cell(dm.length?dw:'—','Wins')+cell(dm.length?dm.length-dw:'—','Losses')+cell(dm.length?Math.round(dw/dm.length*100)+'%':'—','Win Rate')+cell(dm.length||'—','Games Played');}
+  else g('pfMain').innerHTML=cell(ms.length?W:'—','Wins')+cell(ms.length?Lo:'—','Losses')+cell(ms.length?Math.round(W/ms.length*100)+'%':'—','Win Rate')
     +cell('—','Highest Elo',eloSub)+cell('—','Current Elo',eloSub)+cell(ms.length||'—','Matches');
-  g('pfCareerSub').textContent=ranked?'Totals across all your ranked battles':'Totals across all your unranked battles';
-  if(!ms.length){g('pfCareer').innerHTML='<div class="pf-empty">'+(ranked?'No ranked battles yet. Ranked play opens in a future update.':'No battles yet. Your totals will appear here after your first match.')+'</div>';}
+  g('pfCareerSub').textContent=cpu?'Totals across all your battles vs the computer':ranked?'Totals across all your ranked battles':'Totals across all your unranked online battles';
+  if(!ms.length){g('pfCareer').innerHTML='<div class="pf-empty">'+(ranked?'No ranked battles yet. Ranked play opens in a future update.':cpu?'No battles vs the computer yet. Your totals will appear here after your first match.':'No online battles yet. Your totals will appear here after your first online match.')+'</div>';}
   else{const sum=f=>ms.reduce((a,m)=>a+(f(m)||0),0);const U={c:sum(m=>m.units.c),s:sum(m=>m.units.s),d:sum(m=>m.units.d),h:sum(m=>m.units.h)};
     const ut=U.c+U.s+U.d+U.h,fav=Object.keys(U).sort((a,b)=>U[b]-U[a])[0];const cards=sum(m=>m.cards),busts=sum(m=>m.busts);
     let top=null;ms.forEach(m=>{if(m.top&&(!top||m.top.i>top.i))top=m.top;});
@@ -5972,7 +6058,7 @@ function hmRenderProfile(){const R=hmSR();if(!R||!R.getElementById('pfMain'))ret
       return '<button type="button" class="pf-match" onclick="hmViewReport(\''+m.id+'\')"><span class="pf-res '+m.res+'">'+({win:'Victory',loss:'Defeat',surr:'Surrendered'}[m.res])+'</span>'
         +'<span class="pf-mid"><div class="pf-mode">'+(MODE[m.mode]||m.mode)+' · '+m.opp+'</div><div class="pf-when"><span class="pf-mt">Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b></span> · '+when+'</div></span>'
         +'<span class="pf-go">'+(m.rep?'Full Report ›':'')+'</span></button>';}).join('')
-    :'<div class="empty-history">'+(ranked?'No ranked matches yet.':'No matches yet.<br>Play a battle to see your history here.')+'</div>';}
+    :'<div class="empty-history">'+(ranked?'No ranked matches yet.':cpu?'No matches vs the computer yet.<br>Play a battle to see your history here.':'No online matches yet.<br>Play online to see your history here.')+'</div>';}
 // reopen a saved Battle Report from Match History
 function hmViewReport(id){const m=pfLoad().matches.find(x=>x.id===id);if(!m||!m.rep)return;
   hmWipe(()=>{HM.replay=true;$('blResult').textContent=m.rep.res;$('blTime').innerHTML='Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b>';$('blPlayer').innerHTML=m.rep.pl;$('blAI').innerHTML=m.rep.ai;$('blWavesP').innerHTML=m.rep.wp;$('blWavesE').innerHTML=m.rep.we;
