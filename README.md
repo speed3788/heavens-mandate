@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 8.6**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 8.8**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -29,8 +29,9 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 
 - **Synergies:** Pair, Two Pair, Three and Four of a Kind boost only the slots that make them. All Synergy bonuses are doubled, including Monolith Vanguard (Flush).
 - **Income:** 10 gold a second, minus 1 for every 2 soldiers on the bridge (never below 1).
-- **SEND recharge:** 20s, then 10s from 7:00, always ready from 9:00.
-- **Soldier cap:** 20 soldiers on the bridge, 35 from 9:00, 40 from 12:00. SEND shows BRIDGE FULL if your wave won't fit.
+- **SEND recharge:** 15s, then 10s from 7:00, always ready from 9:00.
+- **Card cost:** 10g, 15g from 12:00, 20g from 15:00.
+- **Soldier cap:** 18 soldiers on the bridge, 20 from 9:00, 25 from 12:00. SEND shows BRIDGE FULL if your wave won't fit.
 - **Tank:** 50 armor and Stand Firm (5% less damage for each extra enemy hitting it, up to 20%).
 - **Healing:** Monolith Supports heal 6% every 3s (Five Tiger and Heaven's Mandate no longer heal).
 - **Lancer:** 190 HP and 10 damage. **Vanguard:** 9 damage. Cao Cao's charge stuns and knocks back the 3 closest enemies.
@@ -43,6 +44,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **Expert computer (8.0):** counts cards, reads your waves and answers them, with less predictable timing.
 - **8.1 balance:** Final Siege at 12:00 and Last Siege at 15:00. Five Tiger and Heaven's Mandate no longer heal, and Heaven's Mandate gets +30% Move Speed, ATK and ATK Speed. Armor Shred is replaced by armor: Dragon & Tiger +30%, Flowing Serpent +24%, Nine Dragons +24%, Emperor's +30%.
 - **8.4:** each soldier you send shoves nearby enemies back once when it appears at your base. An "Avatar unlocked!" pop-up shows new avatars.
+- **8.8 Base Strike:** once both of a side's barricades are broken, its base strikes back when hit: every enemy within 150px is stunned for 1s and takes 10 damage (5s cooldown).
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.
