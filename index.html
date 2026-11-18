@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 8.2</title>
+<title>Heaven's Mandate · Build 8.3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -875,7 +875,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #8.2</div>
+    <div class="sub">Build #8.3</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -5959,10 +5959,10 @@ function avOk(a){return AV_LIST.indexOf(a)>=0?a:'foot_soldier';}
 /* 8.1 locked avatars: lifetime goals (all modes). Synergy uses are counted when a match is saved. */
 function avUses(){try{return JSON.parse(localStorage.getItem('hm_syn_uses')||'{}')||{};}catch(e){return{};}}
 function expertWins(){try{return +localStorage.getItem('hm_expert_wins')||0;}catch(e){return 0;}}
-const AV_LOCK={sun_shangxiang:u=>(u.pair||0)>=100,zhurong:u=>(u.three||0)>=100,lu_lingqi:u=>(u.twopair||0)>=100,guan_yinping:u=>(u.four||0)>=100,
-  war_qilin:u=>(u.fullhouse||0)>=100,barded_warhorse:u=>(u.flush||0)>=100,white_cloud_tiger:u=>(u.fiveoak||0)>=100,jade_spirit_stag:u=>(u.straight||0)>=100,
-  extra_lubu_horse:u=>(u.royal||0)>=1,extra_white_lion:u=>(u.mandate||0)>=1,extra_zhuge_horse:u=>(u.sflush||0)>=1,
-  extra_soldier_horse:()=>hardWins()>=EXPERT_WINS_NEEDED,huanglong:u=>(u.mandate||0)+(u.royal||0)+(u.sflush||0)>=10,robot:()=>expertWins()>=10,
+const AV_LOCK={sun_shangxiang:u=>(u.o_pair||0)>=100,zhurong:u=>(u.o_three||0)>=100,lu_lingqi:u=>(u.o_twopair||0)>=100,guan_yinping:u=>(u.o_four||0)>=100,
+  war_qilin:u=>(u.o_fullhouse||0)>=100,barded_warhorse:u=>(u.o_flush||0)>=100,white_cloud_tiger:u=>(u.o_fiveoak||0)>=100,jade_spirit_stag:u=>(u.o_straight||0)>=100,
+  extra_lubu_horse:u=>(u.o_royal||0)>=1,extra_white_lion:u=>(u.o_mandate||0)>=1,extra_zhuge_horse:u=>(u.o_sflush||0)>=1,
+  extra_soldier_horse:()=>hardWins()>=EXPERT_WINS_NEEDED,huanglong:u=>(u.o_mandate||0)+(u.o_royal||0)+(u.o_sflush||0)>=10,robot:()=>expertWins()>=10,
   zhang_fei:u=>(u.u_c0||0)>=10,dian_wei:u=>(u.u_c1||0)>=10,ma_chao:u=>(u.u_s0||0)>=10,cao_cao:u=>(u.u_s1||0)>=10,
   guan_yu:u=>(u.u_d0||0)>=10,lu_bu:u=>(u.u_d1||0)>=10,liu_bei:u=>(u.u_h0||0)>=10,zhuge_liang:u=>(u.u_h1||0)>=10};
 /* hints for locked avatars: [text, progress -> [have, need]] */
@@ -5971,17 +5971,18 @@ const AV_HINT={zhang_fei:['Summon Zhang Fei (♣ Standard or Fortified) 10 times
   ma_chao:['Summon Ma Chao (♠ Standard or Fortified) 10 times in any mode',_c('u_s0')],cao_cao:['Summon Cao Cao (♠ Apex or Celestial) 10 times in any mode',_c('u_s1')],
   guan_yu:['Summon Guan Yu (♦ Standard or Fortified) 10 times in any mode',_c('u_d0')],lu_bu:['Summon Lü Bu (♦ Apex or Celestial) 10 times in any mode',_c('u_d1')],
   liu_bei:['Summon Liu Bei (♥ Standard or Fortified) 10 times in any mode',_c('u_h0')],zhuge_liang:['Summon Zhuge Liang (♥ Apex or Celestial) 10 times in any mode',_c('u_h1')],
-  sun_shangxiang:['“Two arrows from one quiver fly truest.”',_c30('pair')],lu_lingqi:['“One pair guards the left, one pair guards the right.”',_c30('twopair')],
-  zhurong:['“A fire needs three stones to stand.”',_c30('three')],guan_yinping:['“A great hall stands on four pillars, never three.”',_c30('four')],
-  war_qilin:['“When three and two live under one roof, the house is full.”',_c30('fullhouse')],barded_warhorse:['“Five banners of one color move like one great stone.”',_c30('flush')],
-  white_cloud_tiger:['“When five voices sing the same note, the tiger wakes.”',_c30('fiveoak')],jade_spirit_stag:['“The stag climbs one stone at a time and never skips a step.”',_c30('straight')],
-  extra_lubu_horse:['“Seventeen is where the Emperor’s road begins, and the summit is where it ends. Walk it in one color.”',_one('royal')],
-  extra_zhuge_horse:['“Five steps in a row, all under one banner, and the nine dragons answer.”',_one('sflush')],
-  extra_white_lion:['“When all five stand at the summit together, Heaven speaks.”',_one('mandate')],
-  huanglong:['“Call down the sky’s three great wonders, and the golden dragon will stay.”',u=>[(u.mandate||0)+(u.royal||0)+(u.sflush||0),10]],
+  sun_shangxiang:['“Two arrows from one quiver fly truest.”',_c30('o_pair')],lu_lingqi:['“One pair guards the left, one pair guards the right.”',_c30('o_twopair')],
+  zhurong:['“A fire needs three stones to stand.”',_c30('o_three')],guan_yinping:['“A great hall stands on four pillars, never three.”',_c30('o_four')],
+  war_qilin:['“When three and two live under one roof, the house is full.”',_c30('o_fullhouse')],barded_warhorse:['“Five banners of one color move like one great stone.”',_c30('o_flush')],
+  white_cloud_tiger:['“When five voices sing the same note, the tiger wakes.”',_c30('o_fiveoak')],jade_spirit_stag:['“The stag climbs one stone at a time and never skips a step.”',_c30('o_straight')],
+  extra_lubu_horse:['“Seventeen is where the Emperor’s road begins, and the summit is where it ends. Walk it in one color.”',_one('o_royal')],
+  extra_zhuge_horse:['“Five steps in a row, all under one banner, and the nine dragons answer.”',_one('o_sflush')],
+  extra_white_lion:['“When all five stand at the summit together, Heaven speaks.”',_one('o_mandate')],
+  huanglong:['“Call down the sky’s three great wonders, and the golden dragon will stay.”',u=>[(u.o_mandate||0)+(u.o_royal||0)+(u.o_sflush||0),10]],
   extra_soldier_horse:['“Walk the hard road to victory, and a wiser teacher waits at its end.”',()=>[hardWins(),EXPERT_WINS_NEEDED]],
   robot:['“The student who beats the master may wear the master’s face.”',()=>[expertWins(),10]]};
-function avHintText(a){const h=AV_HINT[a];if(!h)return'';const pr=h[1](avUses());return h[0]+' · '+Math.min(pr[0],pr[1])+'/'+pr[1];}
+const AV_ONLINE=['sun_shangxiang','lu_lingqi','zhurong','guan_yinping','war_qilin','barded_warhorse','white_cloud_tiger','jade_spirit_stag','extra_lubu_horse','extra_zhuge_horse','extra_white_lion','huanglong'];
+function avHintText(a){const h=AV_HINT[a];if(!h)return'';const pr=h[1](avUses());return h[0]+' · '+Math.min(pr[0],pr[1])+'/'+pr[1]+(AV_ONLINE.indexOf(a)>=0?' · online battles only':'');}
 function avHint(a){const R=hmSR(),el=R&&R.getElementById('avHint');if(!el)return;const t=avHintText(a);el.textContent=t;el.hidden=!t;}
 function avUnlocked(a,u){const f=AV_LOCK[a];return !f||!!f(u||avUses());}
 window.AVS={me:avOk((function(){try{return localStorage.getItem('hm_avatar');}catch(e){return null;}})()),cpu:'robot',opp:'foot_soldier'};
@@ -6006,9 +6007,10 @@ function pfRecord(){
   const p=pfLoad();p.matches.push(m);pfSave(p);hmRenderProfile();pfCountUses(L.pWaves);}
 /* 8.1: lifetime Synergy uses (for avatar unlocks). A Flush combo also counts as Monolith Vanguard. */
 function pfCountUses(waves){const before=AV_LIST.filter(a=>avUnlocked(a));const u=avUses();
-  (waves||[]).forEach(w=>{const h=w.hand||'none';if(h!=='none')u[h]=(u[h]||0)+1;
+  const on=HM.mode==='skirmish'||HM.mode==='custom';  // 8.3: Synergy faces only count battles vs another player
+  (waves||[]).forEach(w=>{const h=w.hand||'none';if(on&&h!=='none')u['o_'+h]=(u['o_'+h]||0)+1;
     (w.slotLabels||w.suits||[]).forEach(l=>{l=String(l);const k=BL_SC[l[0]];if(!k)return;const sm=parseInt(l.slice(1),10)||0;const key='u_'+k+(sm>=21?1:0);u[key]=(u[key]||0)+1;});
-    if(h!=='flush'&&h!=='sflush'&&h!=='royal'&&(w.fl||/Monolith/.test(w.handName||'')))u.flush=(u.flush||0)+1;});
+    if(on&&h!=='flush'&&h!=='sflush'&&h!=='royal'&&(w.fl||/Monolith/.test(w.handName||'')))u.o_flush=(u.o_flush||0)+1;});
   try{localStorage.setItem('hm_syn_uses',JSON.stringify(u));}catch(e){}
   const n=AV_LIST.filter(a=>avUnlocked(a,u)&&before.indexOf(a)<0).length;if(n)setTimeout(()=>say(n>1?n+' new avatars unlocked! Check your Profile.':'New avatar unlocked! Check your Profile.','nat'),900);}
 // save each live match once, right after its Battle Report is drawn
