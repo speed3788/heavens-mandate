@@ -1,4 +1,7 @@
-# Sound effects (Pixabay license: not shared in this repo). Music files stay.
+# Sound effects: only CC0 sounds and our own music are shared in this repo.
 snd/*.mp3
 !snd/music_menu.mp3
 !snd/music_battle.mp3
+!snd/stage.mp3
+!snd/minute.mp3
+!snd/hero_awaken.mp3

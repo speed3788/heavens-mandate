@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 7.4**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 7.5**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -22,7 +22,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 ## Notes
 
 - Guest profiles and match history are saved in your browser (playtest only).
-- Sound effects are turned off in this build. The sound effect files (from Pixabay) are kept out of this repo because their license doesn't allow sharing the files on their own.
+- Sound effects: only CC0 (public domain) sounds are included: `stage.mp3` (7:00, 9:00, 15:00, 20:00), `minute.mp3` (each minute mark) and `hero_awaken.mp3` (a Celestial hero enters the battle). Older Pixabay sound effects are kept out of this repo because their license doesn't allow sharing the files on their own.
 - Music was made with Suno.
 
 ## Changes since 7.0
@@ -31,6 +31,8 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **Income:** 10 gold a second, minus 1 for every 2 soldiers on the bridge (never below 1).
 - **SEND recharge:** 20s, then 10s from 7:00, always ready from 9:00.
 - **Soldier cap:** 20 soldiers on the bridge, 35 from 9:00, 40 from 15:00. SEND shows BRIDGE FULL if your wave won't fit.
+- **Tank:** 50 armor and Stand Firm (5% less damage for each extra enemy hitting it, up to 20%).
+- **Regen:** Monolith Supports heal 6% every 3s. Five Tiger regens 4% every 3s, Heaven's Mandate 4% every 2s.
 - **Lancer:** 190 HP and 10 damage. Cao Cao's charge stuns and knocks back the 3 closest enemies.
 - **Barracks:** the card stack is now called the Barracks.
 - **Match Time** on the Battle Report and in Match History.

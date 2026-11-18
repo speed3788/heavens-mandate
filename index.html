@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 7.4</title>
+<title>Heaven's Mandate · Build 7.5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -860,7 +860,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #7.4</div>
+    <div class="sub">Build #7.5</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -990,10 +990,10 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
       ['Dual Flanks','Two Pair','2 pairs of same totals · only those 4 get it',['+6% Max HP','+6% Armor','+6% ATK','+6% Status Chance']],
       ['Tri-Point Spearhead','Three of a Kind','3 slots, same total · only those 3 get it',['+12% Max HP','+12% ATK','+12% Armor']],
       ['Four Pillars','Four of a Kind','4 slots, same total · only those 4 get it',['+20% Max HP','+20% ATK','+20% Armor','+20% Status Chance']],
-      ['Five Tiger Phalanx','Five of a Kind','All 5 slots, same total',['+24% Max HP','+24% ATK','+24% Armor','+24% Move Speed','+24% Status Chance','+3 HP every 3s while fighting']],
-      ["Heaven's Mandate",'All 5 = 21','5 slots each totalling 21 (any mix)',['+40% Max HP','+40% Armor','+20% ATK','+20% Move Speed','+20% ATK Speed','+5 HP every 2s while fighting','Huanglong dragon sweep: burns (10 / 0.5s for 4s) and stuns each enemy for 3s','Dragon reaches enemy base: 500 dmg'],'mandate'],
+      ['Five Tiger Phalanx','Five of a Kind','All 5 slots, same total',['+24% Max HP','+24% ATK','+24% Armor','+24% Move Speed','+24% Status Chance','+4% Max HP every 3s while fighting']],
+      ["Heaven's Mandate",'All 5 = 21','5 slots each totalling 21 (any mix)',['+40% Max HP','+40% Armor','+20% ATK','+20% Move Speed','+20% ATK Speed','+4% Max HP every 2s while fighting','Huanglong dragon sweep: burns (10 / 0.5s for 4s) and stuns each enemy for 3s','Dragon reaches enemy base: 500 dmg'],'mandate'],
       ['Dragon & Tiger Citadel','Full House','3 same total + 2 same total',['+30% Max HP','+20% ATK','+20% Move Speed','+20% ATK Speed','+20% Status Chance','Armor Shred: +20% dmg to armor, +5% to HP once armor is gone']],
-      ['Monolith Vanguard','Flush','5 slots, same suit',['+20% Max HP','+20% ATK','♣ +10% base armor','♠ +20% ATK Speed','♦ +20% attack range','♥ heals 20% of Max HP every 3s','Stacks with any same-total Synergy']],
+      ['Monolith Vanguard','Flush','5 slots, same suit',['+20% Max HP','+20% ATK','♣ +10% base armor','♠ +20% ATK Speed','♦ +20% attack range','♥ heals 6% of Max HP every 3s','Stacks with any same-total Synergy']],
       ['Flowing Serpent','Straight','5 consecutive totals',['+24% Max HP','+24% ATK','+30% Move Speed','+24% ATK Speed','+24% Status Chance','Armor Shred: +20% dmg to armor, +10% to HP once armor is gone']],
       ['Nine Dragons Convergence','Straight Flush','5 consecutive totals, same suit',['Monolith Vanguard + Flowing Serpent','Huanglong dragon sweep: burns and stuns each enemy it passes'],'sflush'],
       ["Emperor's Sovereign Army",'Royal Flush','Totals 17-18-19-20-21, same suit',['Monolith Vanguard + Flowing Serpent, all ×1.25','Armor Shred: +25% dmg to armor, +6.25% to HP once armor is gone','Huanglong dragon sweep: burns and stuns each enemy it passes','Dragon reaches enemy base: 500 dmg'],'royal'],
@@ -1067,7 +1067,7 @@ function suitClass(s){return s?'suit-'+({'♥':'h','♦':'d','♣':'c','♠':'s'
 function suitIconHTML(s){if(!s)return'';return'<span class="suit-icon si-'+SUIT_CLS[s]+'">'+s+'</span>';}
 const SUIT_STATS={
   'F':{icon:'\u2694',name:'Foot Soldier',baseHP:100,baseDPS:2,atkMs:1000,range:32,combatRange:32,speed:19,def:0,cls:'su-f'},  // Nov 15: fodder (no Synergies, no Ranks)
-  '\u2663':{icon:'\u{1F6E1}',baseHP:270,baseDPS:8,atkMs:1000,range:32,combatRange:32,speed:19,def:40,cls:'su-c'},
+  '\u2663':{icon:'\u{1F6E1}',baseHP:270,baseDPS:8,atkMs:1000,range:32,combatRange:32,speed:19,def:50,cls:'su-c'},
   '\u2660':{icon:'\u2694',baseHP:190,baseDPS:10,atkMs:1000,range:65,combatRange:65,speed:23,def:15,cls:'su-s'},
   '\u2666':{icon:'\u{1F319}',baseHP:100,baseDPS:10,atkMs:1150,range:150,combatRange:80,speed:19,def:3,cls:'su-d'},
   '\u2665':{icon:'\u2728',baseHP:210,baseDPS:7,atkMs:1500,range:140,combatRange:60,speed:18,def:5,cls:'su-h'},
@@ -1127,7 +1127,7 @@ function evalPoker(slots){
     // v6.1: Bai Wu removed — any 5 x 21 is now Heaven's Mandate (+ Flush effect if all one suit)
     const m=mk('mandate',null,'Huanglong Dragon Sweep · 500 Base DMG','All 5 slots = 21');
     const fs=suits.every(x=>x===suits[0])?suits[0]:null;
-    return fs?withFlush(m,fs,{'♥':'+20% HP/3s','♦':'+20% range','♣':'+10% armor','♠':'+20% AS'}[fs]):m;
+    return fs?withFlush(m,fs,{'♥':'+6% HP/3s','♦':'+20% range','♣':'+10% armor','♠':'+20% AS'}[fs]):m;
   }
   const sc={};sums.forEach(v=>sc[v]=(sc[v]||0)+1);const counts=Object.values(sc).sort((a,b)=>b-a);
   const sC={};suits.forEach(s=>sC[s]=(sC[s]||0)+1);
@@ -1141,14 +1141,14 @@ function evalPoker(slots){
   // v6.1: two families — TOTALS (Pair…Five of a Kind, biggest one only) and SUIT (Flush).
   // A wave that earns one of each gets BOTH bonuses.
   let tot=null;
-  if(counts[0]===5)tot=mk('fiveoak',null,'+24% HP/ATK/Armor/Spd/Status · +3 HP/3s','All 5 same sum');
+  if(counts[0]===5)tot=mk('fiveoak',null,'+24% HP/ATK/Armor/Spd/Status · +4% HP/3s','All 5 same sum');
   else if(counts[0]>=4)tot=mk('four',null,'+20% HP/ATK/Armor/Status (the 4 only)','4 same sum');
   else if(n===5&&counts[0]===3&&counts[1]===2)tot=mk('fullhouse',null,'+30% HP · +20% ATK/Spd/AS/Status · Armor Shred','3oak+pair');
   else if(counts[0]>=3)tot=mk('three',null,'+12% HP/ATK/Armor (the 3 only)','3 same sum');
   else if(counts[0]>=2&&counts[1]>=2)tot=mk('twopair',null,'+6% HP/Armor/ATK/Status (both pairs only)','2 pairs');
   else if(counts[0]>=2)tot=mk('pair',null,'+6% HP/Armor (the pair only)','2 same sum');
   if(flushSuit){
-    const el={'♥':'+20% HP/3s','♦':'+20% range','♣':'+10% armor','♠':'+20% AS'}[flushSuit];
+    const el={'♥':'+6% HP/3s','♦':'+20% range','♣':'+10% armor','♠':'+20% AS'}[flushSuit];
     if(tot)return withFlush(tot,flushSuit,el);
     return mk('flush',flushSuit,'+20% HP/ATK · '+el,'5-suit '+flushSuit);
   }
@@ -1433,12 +1433,11 @@ function renderPlayerFormations(){
 }
 
 // ── Sound files (Nov 16) ──
-const SFX_LOCKED=true; // sound effects are off for now: the files are not in this build
-const SND_FILES=['card_land','card_shuffle','bust','gong','coin','send','atk_clubs','atk_spades','atk_diamonds','atk_hearts',
-  'die_clubs','die_spades','die_diamonds','die_hearts','stun','knock','burn','heal','base_hit','horn','roar'];
-const SND_GAIN={card_land:.55,card_shuffle:.5,bust:.6,gong:.55,coin:.3,send:.6,atk_clubs:.2,atk_spades:.2,atk_diamonds:.2,atk_hearts:.22,
+const SFX_LOCKED=false; // 7.5: sound effects on again, CC0 sounds only
+const SND_FILES=['stage','minute','hero_awaken']; // CC0 only (the older Pixabay sounds are not shipped)
+const SND_GAIN={stage:.55,minute:.45,hero_awaken:.6,card_land:.55,card_shuffle:.5,bust:.6,gong:.55,coin:.3,send:.6,atk_clubs:.2,atk_spades:.2,atk_diamonds:.2,atk_hearts:.22,
   die_clubs:.32,die_spades:.32,die_diamonds:.32,die_hearts:.32,stun:.28,knock:.3,burn:.28,heal:.3,base_hit:.4,horn:.55,roar:.75};
-const SND_GAP={atk_clubs:110,atk_spades:110,atk_diamonds:110,atk_hearts:160,die_clubs:140,die_spades:140,die_diamonds:140,die_hearts:140,
+const SND_GAP={stage:1500,minute:1500,hero_awaken:700,atk_clubs:110,atk_spades:110,atk_diamonds:110,atk_hearts:160,die_clubs:140,die_spades:140,die_diamonds:140,die_hearts:140,
   stun:180,knock:180,burn:220,heal:220,base_hit:900,coin:50,card_land:40,gong:400,bust:150};
 const SND={buf:{},last:{},active:0,on:true,music:true,loaded:false,mus:{},cur:null};
 SND.mvol=0.7;SND.svol=0.8;SND.menuOff=false;
@@ -1747,7 +1746,7 @@ function spawnUnit(suit,sumVal,tier,side,bHP,bATK,bSPD,formHand,bASPD,domSuit,bD
   // v6.1 Flush: flat bonus to the suit's BASE stat (Synergy multipliers then apply on top). Royal = x1.5.
   const isFlush=formHand==='flush'||formHand==='sflush'||formHand==='royal'||!!flushStack;
   const fm=formHand==='royal'?1.25:1;
-  const FB=isFlush?{'\u2663':{defP:0.10},'\u2660':{aspdP:0.20},'\u2666':{rngP:0.20},'\u2665':{regenP:0.20}}[suit]||{}:{};  // Nov 14: Monolith % bonuses
+  const FB=isFlush?{'\u2663':{defP:0.10},'\u2660':{aspdP:0.20},'\u2666':{rngP:0.20},'\u2665':{regenP:0.06}}[suit]||{}:{};  // Nov 14: Monolith % bonuses
   const baseDef=(st.def||0)*(1+(FB.defP||0)*fm)*tierMultDEF(tier,sumVal);
   const flatDefBonus=bDEFflat||0;
   const defPctBonus=bDEFpct||1;
@@ -1766,7 +1765,7 @@ function spawnUnit(suit,sumVal,tier,side,bHP,bATK,bSPD,formHand,bASPD,domSuit,bD
     +'<div class="udef"><div class="udeff"></div></div>'
     +'<div class="uhp"><div class="uhpf" style="background:'+(side==='p'?'#4ae890':'#4090e8')+'"></div></div>';
   $('unitLayer').appendChild(el);u.el=el;S.units.push(u);if(suit==='F')u._fodder=true;
-  if(tier==='natural'){snd('gong',side==='p'?.75:.5,.82);if(S.log)S.log[side+'Hero']=(S.log[side+'Hero']||0)+1;}
+  if(tier==='natural'){snd('hero_awaken',side==='p'?1:.7);if(S.log)S.log[side+'Hero']=(S.log[side+'Hero']||0)+1;}
   // ♣ Clubs hero (Dian Wei) — summons a Fortified Clubs copy with the same Synergy, marching right behind him
   if(suit==='\u2663'&&tier==='natural'){u._summon=()=>{if(!S.running)return;const c=spawnUnit('\u2663',17,'tempered',side,(bHP||1)*0.5,(bATK||1)*0.5,bSPD,formHand,bASPD,domSuit,bDEFflat,bDEFpct,flushStack);c._copy=true;heroFx(c,'TWIN GUARD');};}
   return u;
@@ -1931,7 +1930,7 @@ function celestialHit(t){
 function HH_PER(){return S.phase>=3?0.04:0.02;}  // High-Hand per slot
 const RECKON_AT=1200,COURT=['A','J','Q','K'],OPEN_AT=900;
 function heavensEye(){
-  S.openShoe=true;hmPhaseReached('p15');say('FINAL SIEGE — the barracks are open to both sides, soldier limit 40','phase');
+  S.openShoe=true;snd('stage');hmPhaseReached('p15');say('FINAL SIEGE — the barracks are open to both sides, soldier limit 40','phase');
   {const g=document.createElement('div');g.className='siegeban';g.textContent='FINAL SIEGE';$('stage').appendChild(g);setTimeout(()=>g.remove(),3050);}
   renderOpenShoe();
 }
@@ -1951,7 +1950,7 @@ function dragonFlyFx(side){
 }
 function baseStrikeFx(id){const b=$(id);b.classList.remove('mandateHit');void b.offsetWidth;b.classList.add('mandateHit');const z=document.createElement('i');z.className='mstrike';b.appendChild(z);setTimeout(()=>z.remove(),950);}
 function twinDragonReckoning(){
-  S.reckon=true;hmPhaseReached('p20');
+  S.reckon=true;snd('stage');hmPhaseReached('p20');
   say('LAST SIEGE. REALLY. — two dragons clash!','phase');
   {const g=document.createElement('div');g.className='siegeban';g.textContent='LAST SIEGE. REALLY.';g.style.fontSize='34px';g.style.whiteSpace='nowrap';$('stage').appendChild(g);setTimeout(()=>g.remove(),3050);}
   // only the royal court remains in the shoe
@@ -2052,6 +2051,8 @@ function dealDamage(target,amount,attacker){
   if(target.suit==='\u2665'&&target.tier==='natural'&&target.stance==='attack')amount*=0.90; // Eight Trigrams
   // Expose debuff: +20% damage taken
   if(target.debuffs?.expose)amount=Math.round(amount*(1+target.debuffs.expose));
+  // ♣ Tank — Stand Firm: 5% less damage for each extra enemy that hit it in the last second (max 20%)
+  if(target.suit==='\u2663'&&!target._fodder&&attacker&&attacker.side&&attacker.side!==target.side){const _T=S.matchTime;const _h=target._hitBy||(target._hitBy=new Map());_h.set(attacker,_T);for(const [k,v] of _h)if(_T-v>1||!k.alive)_h.delete(k);_h.set(attacker,_T);amount*=1-Math.min(0.20,0.05*(_h.size-1));}
   let remaining=amount;
   if(target.def>0){
     const m=sh?1+sh[0]:1;
@@ -2174,7 +2175,7 @@ function unitTick(dt){
       }
       if(u.stance==='attack'){u.pulseClock+=dt;if(u.pulseClock>=2800){u.pulseClock=0;heartsPulse(u);}}
     }
-    if(u.flushRegen){u._frClk=(u._frClk||0)+dt;if(u._frClk>=3000){u._frClk-=3000;u.hp=Math.min(u.maxHp,u.hp+u.flushRegen);}} // Monolith Hearts: +10% max HP every 3s
+    if(u.flushRegen){u._frClk=(u._frClk||0)+dt;if(u._frClk>=3000){u._frClk-=3000;u.hp=Math.min(u.maxHp,u.hp+u.flushRegen);}} // Monolith Hearts: +6% max HP every 3s
     const enemies=S.units.filter(e=>e.alive&&e.side!==u.side);
     const nearest=enemies.reduce((best,e)=>{const d=Math.abs(e.x-u.x);return(!best||d<Math.abs(best.x-u.x))?e:best;},null);
     const inRange=nearest&&Math.abs(nearest.x-u.x)<=u.combatRange;
@@ -2182,7 +2183,7 @@ function unitTick(dt){
       // Formation combat regen (DEF + HP)
       if(u.formHand==='fiveoak'||u.formHand==='mandate'){
         const defRegen=0; // v6.1: Five Tiger and Heaven's Mandate no longer regenerate armor
-        const rAmt=u.formHand==='fiveoak'?3:5,rMs=u.formHand==='fiveoak'?3000:2000;  // Nov 14: Five Tiger +3 HP / 3s, Mandate +5 HP / 2s
+        const rAmt=Math.max(1,Math.round(u.maxHp*0.04)),rMs=u.formHand==='fiveoak'?3000:2000;  // 7.5: Five Tiger 4% max HP / 3s, Mandate 4% / 2s
         if(u.maxDef>0) u.def=Math.min(u.maxDef,u.def+(defRegen*dt/1000));
         u._crClk=(u._crClk||0)+dt;if(u._crClk>=rMs){u._crClk-=rMs;u.hp=Math.min(u.maxHp,u.hp+rAmt);}
       }
@@ -2660,10 +2661,10 @@ function loop(now){
   }
   if(!S.running){renderHUD();raf=requestAnimationFrame(loop);return;}
   S.matchTime+=dt/1000;if(S.log)S.log.duration=S.matchTime;updateDrawCost();
-  if(S.phase===1&&S.matchTime>=PHASE2_AT){S.phase=2;S.energyProgress=0;S.energyReady=false;if((typeof NET!=='undefined')&&NET.online){AI.energyProgress=0;AI.energyReady=false;}say('ASSAULT — SEND now recharges in 10 seconds!','phase');}
+  if(S.phase===1&&S.matchTime>=PHASE2_AT){S.phase=2;snd('stage');S.energyProgress=0;S.energyReady=false;if((typeof NET!=='undefined')&&NET.online){AI.energyProgress=0;AI.energyReady=false;}say('ASSAULT — SEND now recharges in 10 seconds!','phase');}
   if(S.running&&!S.openShoe&&S.matchTime>=OPEN_AT)heavensEye();
   if(S.running&&!S.reckon&&S.matchTime>=RECKON_AT)twinDragonReckoning();
-  if(S.phase===2&&S.matchTime>=PHASE3_AT){S.phase=3;say('GRAND SIEGE — double damage to bases & barricades, no SEND recharge, soldier limit 35, High-Hand doubles!','phase');{const g=document.createElement('div');g.className='siegeban';g.textContent='GRAND SIEGE';$('stage').appendChild(g);setTimeout(()=>g.remove(),3050);}}
+  if(S.phase===2&&S.matchTime>=PHASE3_AT){S.phase=3;snd('stage');say('GRAND SIEGE — double damage to bases & barricades, no SEND recharge, soldier limit 35, High-Hand doubles!','phase');{const g=document.createElement('div');g.className='siegeban';g.textContent='GRAND SIEGE';$('stage').appendChild(g);setTimeout(()=>g.remove(),3050);}}
   const eMS=sendMs();
   
   if(!S.energyReady&&S.phase>=3){S.energyProgress=1;S.energyReady=true;}
@@ -2675,7 +2676,7 @@ function loop(now){
   if(S.goldClock>=1000){S.goldClock-=1000;flyText('+'+inc,true);}
   // v6.1: +100 gold every full minute (both sides)
   const mins=Math.floor(S.matchTime/60);
-  if(mins>(S.minutesPaid||0)){S.minutesPaid=mins;S.gold+=100;AI.gold+=100;if(S.log){S.log.pInc+=100;S.log.eInc+=100;}flyText('+100',true);say('+100 gold — the treasury pays out','good');}
+  if(mins>(S.minutesPaid||0)){S.minutesPaid=mins;if([7,9,15,20].indexOf(mins)<0)snd('minute');S.gold+=100;AI.gold+=100;if(S.log){S.log.pInc+=100;S.log.eInc+=100;}flyText('+100',true);say('+100 gold — the treasury pays out','good');}
   unitTick(dt);towerTick(dt);siegeTick(dt);aiTick(dt);fodderTick(dt);
   // FIX: stop loop on match end instead of continuing
   if(S.pBaseHP<=0||S.eBaseHP<=0){
@@ -4612,7 +4613,7 @@ html, .hm-body {
             <span class="syn-buff spd">+24% Move Speed</span>
             <span class="syn-buff atk">+24% ATK</span>
             <span class="syn-buff fx">+24% Status Chance</span>
-            <span class="syn-buff regen">+3 HP every 3s while fighting</span>
+            <span class="syn-buff regen">+4% Max HP every 3s while fighting</span>
           </div>
           <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-clubs_10" style="left:0px"></i><i class="ci ci-clubs_9" style="left:16px"></i></div><div class="sx-tot"><span>♣</span>19</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_K" style="left:0px"></i><i class="ci ci-hearts_9" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>19</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_Q" style="left:0px"></i><i class="ci ci-diamonds_9" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>19</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_J" style="left:0px"></i><i class="ci ci-spades_9" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>19</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-clubs_10" style="left:0px"></i><i class="ci ci-clubs_9" style="left:16px"></i></div><div class="sx-tot"><span>♣</span>19</div></div></div>
         </div>
@@ -4671,7 +4672,7 @@ html, .hm-body {
               <span class="syn-buff spd">+20% Move Speed</span>
               <span class="syn-buff atk">+20% ATK</span>
               <span class="syn-buff aspd">+20% ATK Speed</span>
-              <span class="syn-buff regen">+5 HP every 2s while fighting</span>
+              <span class="syn-buff regen">+4% Max HP every 2s while fighting</span>
               <span class="syn-buff mandate-buff">⚡ Wrath of Heaven lightning stun · 3s</span>
               <span class="syn-buff mandate-buff">🐉 Huanglong dragon sweep · burns + stuns each enemy it passes · Celestial Burn 10/0.5s × 4s (80 total)</span>
               <span class="syn-buff mandate-buff">Dragon reaches enemy Base: 500 dmg</span>
@@ -4717,7 +4718,7 @@ html, .hm-body {
             <span class="syn-buff clubs">♣ +10% base armor</span>
             <span class="syn-buff spades">♠ +20% ATK Speed</span>
             <span class="syn-buff diamonds">♦ +20% attack range</span>
-            <span class="syn-buff hearts">♥ heals 20% of Max HP every 3s</span>
+            <span class="syn-buff hearts">♥ heals 6% of Max HP every 3s</span>
           </div>
           <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_10" style="left:0px"></i><i class="ci ci-diamonds_7" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>17</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_9" style="left:0px"></i><i class="ci ci-diamonds_4" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>13</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_K" style="left:0px"></i><i class="ci ci-diamonds_5" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>15</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_8" style="left:0px"></i><i class="ci ci-diamonds_3" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>11</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_Q" style="left:0px"></i><i class="ci ci-diamonds_9" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>19</div></div></div>
           <div class="syn-note-line">Stacks with any same-total Synergy — both bonuses apply</div>
@@ -4795,7 +4796,7 @@ html, .hm-body {
               <span class="syn-buff mandate-buff">🐉 Huanglong dragon sweep · burns + stuns each enemy it passes · Celestial Burn 10/0.5s × 4s (80 total) · 3s stun</span>
             </div>
           <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_7" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>12</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_8" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>13</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_9" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>14</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_10" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>15</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_K" style="left:0px"></i><i class="ci ci-spades_6" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>16</div></div></div>
-            <div class="syn-note-line">Flush: +20% HP &amp; ATK · ♣ +10% armor · ♠ +20% ATK Speed · ♦ +20% range · ♥ heals 20% Max HP / 3s</div>
+            <div class="syn-note-line">Flush: +20% HP &amp; ATK · ♣ +10% armor · ♠ +20% ATK Speed · ♦ +20% range · ♥ heals 6% Max HP / 3s</div>
             <div class="syn-unlock-stamp mandate">Achievement Unlocked — Nine Dragons Convergence</div>
           </div>
         </div>
@@ -4852,7 +4853,7 @@ html, .hm-body {
               <span class="syn-buff mandate-buff">Dragon reaches enemy Base: 500 dmg</span>
             </div>
           <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_10" style="left:0px"></i><i class="ci ci-hearts_7" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>17</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_K" style="left:0px"></i><i class="ci ci-hearts_8" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>18</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_Q" style="left:0px"></i><i class="ci ci-hearts_9" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>19</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_K" style="left:0px"></i><i class="ci ci-hearts_Q" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>20</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_A" style="left:0px"></i><i class="ci ci-hearts_K" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>21</div></div></div>
-            <div class="syn-note-line">Flush ×1.25: +25% HP &amp; ATK · ♣ +12.5% armor · ♠ +25% ATK Speed · ♦ +25% range · ♥ heals 25% Max HP / 3s</div>
+            <div class="syn-note-line">Flush ×1.25: +25% HP &amp; ATK · ♣ +12.5% armor · ♠ +25% ATK Speed · ♦ +25% range · ♥ heals 7.5% Max HP / 3s</div>
             <div class="syn-unlock-stamp mandate">Achievement Unlocked — Emperor's Sovereign Army</div>
           </div>
         </div>
@@ -5030,13 +5031,13 @@ html, .hm-body {
             <div class="htp-stats">
               <div class="htp-stat"><div class="k">HP</div><div class="v">270</div></div>
               <div class="htp-stat"><div class="k">Damage</div><div class="v">8<small>/hit</small></div></div>
-              <div class="htp-stat"><div class="k">Armor</div><div class="v">40</div></div>
+              <div class="htp-stat"><div class="k">Armor</div><div class="v">50</div></div>
               <div class="htp-stat"><div class="k">Range</div><div class="v">Melee</div></div>
               <div class="htp-stat"><div class="k">Move Speed</div><div class="v">19</div></div>
               <div class="htp-stat"><div class="k">Attack</div><div class="v">1.0<small>s</small></div></div>
             </div>
             <ul class="htp-special">
-              <li><b>Armor first.</b> Its 40 armor soaks hits before HP is touched — it holds the line so others can fight.</li>
+              <li><b>Armor first.</b> Its 50 armor soaks hits before HP is touched — it holds the line so others can fight.</li><li><b>Stand Firm.</b> Takes 5% less damage for every extra enemy hitting it at the same time, up to 20% less.</li>
               <li>Put it at the front of your wave to protect fragile Vanguards.</li>
               <li><b>Hero awakens (Celestial only) — Twin Guard:</b> the first time Dian Wei takes damage, he calls for backup — a Fortified Zhang Fei sets out from your end of the bridge and marches up to join the fight. It has half the usual HP and damage and keeps Dian Wei's Synergy bonus, if he has one.</li>
               <li><b>Rank effect — Stun:</b> each hit has a chance to stun the enemy for 2 seconds (it can't move or attack). Chance: 8% Standard · 12% Fortified · 16% Apex · 20% Celestial, plus any Status Chance from its Synergy.</li>
@@ -5209,9 +5210,9 @@ html, .hm-body {
               <div class="settings-row-sub">Card draws, unit attacks, status effects</div>
             </div>
             <div class="vol-ctl">
-              <input type="range" class="vol" id="sfxVol" min="0" max="100" value="80" aria-label="Sound effects volume" oninput="volLabel(this);bgmApply()" disabled style="opacity:.4;cursor:not-allowed">
+              <input type="range" class="vol" id="sfxVol" min="0" max="100" value="80" aria-label="Sound effects volume" oninput="volLabel(this);bgmApply()">
               <span class="vol-val">80%</span>
-              <div class="toggle" id="sfxOn" role="switch" aria-label="Toggle SFX" aria-disabled="true" style="opacity:.4;cursor:not-allowed;pointer-events:none"></div>
+              <div class="toggle on" id="sfxOn" onclick="this.classList.toggle('on');volMute(this);bgmApply()" role="switch" aria-label="Toggle SFX"></div>
             </div>
           </div>
           <div class="settings-row">
@@ -5717,7 +5718,7 @@ function hmNotice(msg){const n=document.createElement('div');n.className='hm-not
 /* ═══ ONLINE (Step 1: rooms + ready check + countdown). PeerJS = browser-to-browser (WebRTC) with a free public
    matchmaking server. Add ?net=local to the URL to test with two tabs of the same browser (no internet needed). ═══ */
 const NET_LOCAL=/[?&]net=local/.test(location.search);
-const NET_PUB_SLOTS=12,NET_PREFIX='hm73-';
+const NET_PUB_SLOTS=12,NET_PREFIX='hm75-';
 const NET={peer:null,conn:null,role:null,code:null,pub:false,meReady:false,themReady:false,busy:false,search:null,
   oppName:null,online:false,view:false,flip:false,local:false,noFwd:false,out:[],gNew:3,gPrimed:false,vready:false,ended:false,tick:null,n:0};
 const _CODE_CH='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -5726,7 +5727,7 @@ function netLib(){return new Promise((res,rej)=>{if(NET_LOCAL||window.Peer)retur
   const add=(src,next)=>{const sc=document.createElement('script');sc.src=src;sc.onload=()=>res();sc.onerror=next;document.head.appendChild(sc);};
   add('https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js',()=>add('https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js',()=>rej(new Error('lib'))));});}
 /* tiny local stand-in for PeerJS over BroadcastChannel (two tabs, same browser) */
-function LocalPeer(id){const bc=new BroadcastChannel('hm73-net'),me=id||('x'+Math.random().toString(36).slice(2,10)),L={},conns={};let open=false;
+function LocalPeer(id){const bc=new BroadcastChannel('hm75-net'),me=id||('x'+Math.random().toString(36).slice(2,10)),L={},conns={};let open=false;
   const P={id:me,_l:L,on(e,f){(L[e]=L[e]||[]).push(f);return P;},emit(e,...a){(L[e]||[]).forEach(f=>f(...a));},
     destroy(){Object.values(conns).forEach(c=>c.close());bc.close();open=false;},
     connect(to){const cid=Math.random().toString(36).slice(2);const c=mkConn(cid,to);conns[cid]=c;bc.postMessage({k:'dial',to,from:me,cid});
