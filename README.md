@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 7.8**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 7.9**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -39,5 +39,6 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **Match Time** on the Battle Report and in Match History.
 - **Interface:** units stack by rank (Celestial on top). The top-right counter shows enemy | your soldiers. Profile fixes and Settings → Text Size.
 - **How to Play:** unit cards show only the base stats; tap "Skills & Details" to open the rest.
+- **Avatars:** pick one of 22 chibi avatars (`av/`) on your Profile. It shows next to your base in battle, and your opponent sees it online.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.
