@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 7.3**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 7.4**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -33,6 +33,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **Soldier cap:** 20 soldiers on the bridge, 35 from 9:00, 40 from 15:00. SEND shows BRIDGE FULL if your wave won't fit.
 - **Lancer:** 190 HP and 10 damage. Cao Cao's charge stuns and knocks back the 3 closest enemies.
 - **Barracks:** the card stack is now called the Barracks.
+- **Match Time** on the Battle Report and in Match History.
 - **Interface:** units stack by rank (Celestial on top). The top-right counter shows enemy | your soldiers. Profile fixes and Settings → Text Size.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.

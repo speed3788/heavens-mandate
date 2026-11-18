@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 7.3</title>
+<title>Heaven's Mandate · Build 7.4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -760,6 +760,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 #battleLog h2{font-size:22px;font-weight:900;letter-spacing:3px;color:var(--gold);
   text-transform:uppercase;margin:0 0 4px}
 .bl-result{font-size:13px;font-weight:700;letter-spacing:2px;margin-bottom:14px}
+.bl-time{font-size:13px;letter-spacing:1.5px;color:#cdbf94;margin:-8px 0 16px}.bl-time b{color:#fff1c8;font-size:15px}
 .bl-result.victory{color:#7fe0b0}.bl-result.defeat{color:var(--vermilion)}
 .bl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:540px;margin-bottom:12px}
 .bl-card{background:rgba(255,255,255,.04);border:1px solid rgba(232,195,90,.2);
@@ -859,7 +860,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #7.3</div>
+    <div class="sub">Build #7.4</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -881,6 +882,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
   <div id="battleLog">
     <h2>Battle Report</h2>
     <div class="bl-result" id="blResult"></div>
+    <div class="bl-time" id="blTime"></div>
     <div class="bl-grid">
       <div class="bl-col" id="blPlayer"></div>
       <div class="bl-col" id="blAI"></div>
@@ -1171,7 +1173,7 @@ function showBattleLog(){
   {const h=document.getElementById('blWavesEH');if(h)h.textContent=((typeof NET!=='undefined')&&NET.online)?'⚔ '+HM.opp+"'s Waves":'🤖 Enemy Waves';}
   const L=S.log;
   const win=S.eBaseHP<=0;
-  const dur=fmtTime((L.duration||0)*1000);
+  const dur=fmtTime((L.duration||0)*1000);{const _t=document.getElementById('blTime');if(_t)_t.innerHTML='Match Time: <b>'+dur+'</b>';}
 
   // Result
   const res=document.getElementById('blResult');
@@ -4292,7 +4294,8 @@ html, .hm-body {
 
 :host{display:block}
 .hm-body{min-height:100%}
-.soon-chip{font-family:var(--f-ui);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-dim);border:1px solid var(--border-gold);border-radius:999px;padding:5px 10px}\n.pf-unlock{display:flex;align-items:center;gap:14px;margin-top:16px;padding:14px 16px;background:var(--surface);border:1px solid var(--border-gold);border-radius:6px}
+.soon-chip{font-family:var(--f-ui);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-dim);border:1px solid var(--border-gold);border-radius:999px;padding:5px 10px}
+.pf-unlock{display:flex;align-items:center;gap:14px;margin-top:16px;padding:14px 16px;background:var(--surface);border:1px solid var(--border-gold);border-radius:6px}
 .pf-unlock-txt{flex:1;min-width:0}.pf-unlock-h{font-family:var(--f-display);font-size:.9rem;color:var(--gold);margin-bottom:3px}
 .pf-unlock-s{font-size:.82rem;color:var(--fg-dim)}
 .pf-unlock-btn{all:unset;cursor:pointer;padding:8px 14px;border:1px solid var(--gold-dim);border-radius:3px;font-family:var(--f-ui);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
@@ -4333,12 +4336,13 @@ html, .hm-body {
 .battle-card .bc-kind{font-family:'Cinzel',Georgia,serif;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--jade-light)}
 .battle-card .bc-desc{color:var(--fg-dim);font-size:.98rem;line-height:1.4;margin-top:6px}
 .hm-body{zoom:var(--hm-zoom,1)}
-.pf-unlock-bottom{margin:0 auto 34px}
+.pf-unlock.pf-unlock-bottom{margin:10px 0 34px}
 .pf-units span{display:inline-block;margin-left:1.1em;white-space:nowrap}.pf-units span:first-child{margin-left:.4em}
 .hm-tsz{display:inline-flex;border:1px solid var(--gold-dim);border-radius:999px;overflow:hidden;flex:none}
 .hm-tsz button{all:unset;cursor:pointer;padding:7px 14px;font-family:var(--f-ui);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-dim)}
 .hm-tsz button.on{background:rgba(201,168,76,.18);color:var(--gold)}
 .syn-card.tier-mandate-locked{cursor:not-allowed}
+.pf-mt b{color:var(--gold);font-weight:700}
 </style><div class="hm-body">
 
 <!-- ── SAFE AREA TOP BAND ── -->
@@ -4468,13 +4472,13 @@ html, .hm-body {
         <div class="pf-career" id="pfCareer"></div>
         <div class="section-head"><div class="section-title">Match History</div><div class="section-sub" id="pfHistSub">All matches · newest first</div></div>
         <div id="pfHist"></div>
-      </div>
-      <div class="inner pf-unlock pf-unlock-bottom">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="14" cy="14" r="13" stroke="#4a3a18" stroke-width="1"/><path d="M14 8v6M14 18v2" stroke="#c9a84c" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <div class="pf-unlock-txt"><div class="pf-unlock-h">Unlock Full Game</div>
-          <div class="pf-unlock-s">One-time $2.99 purchase saves all match history and Elo across sessions.</div></div>
-        <button type="button" class="pf-unlock-btn" onclick="openPaywall()">Unlock</button>
-      </div>
+        <div class="inner pf-unlock pf-unlock-bottom">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true"><circle cx="14" cy="14" r="13" stroke="#4a3a18" stroke-width="1"/><path d="M14 8v6M14 18v2" stroke="#c9a84c" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <div class="pf-unlock-txt"><div class="pf-unlock-h">Unlock Full Game</div>
+            <div class="pf-unlock-s">One-time $2.99 purchase saves all match history and Elo across sessions.</div></div>
+          <button type="button" class="pf-unlock-btn" onclick="openPaywall()">Unlock</button>
+        </div>
+        </div>
 
     </div>
   </section>
@@ -5906,12 +5910,12 @@ function hmRenderProfile(){const R=hmSR();if(!R||!R.getElementById('pfMain'))ret
   g('pfHist').innerHTML=ms.length?ms.slice().reverse().map(m=>{const d=new Date(m.t);
       const when=d.toLocaleDateString(undefined,{month:'short',day:'numeric'})+', '+d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
       return '<button type="button" class="pf-match" onclick="hmViewReport(\''+m.id+'\')"><span class="pf-res '+m.res+'">'+({win:'Victory',loss:'Defeat',surr:'Surrendered'}[m.res])+'</span>'
-        +'<span class="pf-mid"><div class="pf-mode">'+(MODE[m.mode]||m.mode)+' · '+m.opp+'</div><div class="pf-when">'+pfFmt(m.dur)+' · '+when+'</div></span>'
+        +'<span class="pf-mid"><div class="pf-mode">'+(MODE[m.mode]||m.mode)+' · '+m.opp+'</div><div class="pf-when"><span class="pf-mt">Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b></span> · '+when+'</div></span>'
         +'<span class="pf-go">'+(m.rep?'Full Report ›':'')+'</span></button>';}).join('')
     :'<div class="empty-history">'+(ranked?'No ranked matches yet.':'No matches yet.<br>Play a battle to see your history here.')+'</div>';}
 // reopen a saved Battle Report from Match History
 function hmViewReport(id){const m=pfLoad().matches.find(x=>x.id===id);if(!m||!m.rep)return;
-  hmWipe(()=>{HM.replay=true;$('blResult').textContent=m.rep.res;$('blPlayer').innerHTML=m.rep.pl;$('blAI').innerHTML=m.rep.ai;$('blWavesP').innerHTML=m.rep.wp;$('blWavesE').innerHTML=m.rep.we;
+  hmWipe(()=>{HM.replay=true;$('blResult').textContent=m.rep.res;$('blTime').innerHTML='Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b>';$('blPlayer').innerHTML=m.rep.pl;$('blAI').innerHTML=m.rep.ai;$('blWavesP').innerHTML=m.rep.wp;$('blWavesE').innerHTML=m.rep.we;
     $('blDownload').hidden=true;const c=$('blClose');c.textContent='Back to Profile';
     c.onclick=()=>hmWipe(()=>{$('battleLog').classList.remove('show');HM.replay=false;c.onclick=()=>hmToMenu();$('hmMenu').hidden=false;try{showScreen('profile',null);}catch(e){}hmRenderProfile();});
     $('hmMenu').hidden=true;$('battleLog').scrollTop=0;$('battleLog').classList.add('show');});}
