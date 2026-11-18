@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 8.4**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 8.5**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 

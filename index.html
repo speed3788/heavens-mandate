@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 8.4</title>
+<title>Heaven's Mandate · Build 8.5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -875,7 +875,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #8.4</div>
+    <div class="sub">Build #8.5</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -4541,7 +4541,7 @@ html, .hm-body {
 
   <!-- PROFILE / STATS -->
   <section class="screen" id="screen-profile">
-    <div class="av-ov" id="avOv" hidden onclick="if(event.target===this)hmAvClose()"><div class="av-card" role="dialog" aria-label="Choose Avatar"><div class="av-h">Choose Avatar<button type="button" class="av-x" onclick="hmAvClose()" aria-label="Close">✕</button></div><div class="av-grid" id="avGrid"></div><div class="av-hint" id="avHint" role="status" hidden></div></div></div>
+    <div class="av-ov" id="avOv" hidden onclick="if(event.target===this)hmAvClose()"><div class="av-card" role="dialog" aria-label="Choose Avatar"><div class="av-h">Choose Avatar<button type="button" class="av-x" onclick="hmAvClose()" aria-label="Close">✕</button></div><div class="av-grid" id="avGrid" onmouseleave="avHint(null)"></div><div class="av-hint" id="avHint" role="status" hidden></div></div></div>
     <div class="profile-header">
       <div class="inner">
         <button type="button" class="profile-avatar" id="pfAvBtn" onclick="hmAvOpen()" aria-label="Change avatar"><img id="pfAv" src="av/foot_soldier.webp" alt=""><span class="pa-edit" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></span></button>
@@ -5994,7 +5994,7 @@ const AV_HINT={zhang_fei:['Summon Zhang Fei (♣ Standard or Fortified) 10 times
   robot:['“The student who beats the master may wear the master’s face.”',()=>[expertWins(),10]]};
 const AV_ONLINE=['sun_shangxiang','lu_lingqi','zhurong','guan_yinping','war_qilin','barded_warhorse','white_cloud_tiger','jade_spirit_stag','extra_lubu_horse','extra_zhuge_horse','extra_white_lion','huanglong'];
 function avHintText(a){const h=AV_HINT[a];if(!h)return'';const pr=h[1](avUses());return h[0]+' · '+Math.min(pr[0],pr[1])+'/'+pr[1]+(AV_ONLINE.indexOf(a)>=0?' · online battles only':'');}
-function avHint(a){const R=hmSR(),el=R&&R.getElementById('avHint');if(!el)return;const t=avHintText(a);el.textContent=t;el.hidden=!t;}
+function avHint(a){const R=hmSR(),el=R&&R.getElementById('avHint');if(!el)return;const t=(a&&!avUnlocked(a))?avHintText(a):'';el.textContent=t;el.hidden=!t;}
 function avUnlocked(a,u){const f=AV_LOCK[a];return !f||!!f(u||avUses());}
 window.AVS={me:avOk((function(){try{return localStorage.getItem('hm_avatar');}catch(e){return null;}})()),cpu:'robot',opp:'foot_soldier'};
 if(!avUnlocked(AVS.me))AVS.me='foot_soldier';
@@ -6003,7 +6003,7 @@ if(!avSeen())avCheckNew();  // first visit: nothing to announce yet
 function hmAvApply(){const s='av/'+AVS.me+'.webp',p=$('pAv');if(p&&p.getAttribute('src')!==s)p.src=s;const R=hmSR(),f=R&&R.getElementById('pfAv');if(f&&f.getAttribute('src')!==s)f.src=s;
   const g=R&&R.getElementById('avGrid');if(g)g.querySelectorAll('.av-opt').forEach(b=>b.classList.toggle('on',b.dataset.av===AVS.me));}
 function hmAvOpen(){const R=hmSR();if(!R)return;const g=R.getElementById('avGrid');
-  const U=avUses();g.innerHTML=AV_LIST.map(a=>{const ok=avUnlocked(a,U);return '<button type="button" class="av-opt'+(ok?'':' locked'+(AV_HINT[a]?' hinted':''))+'" data-av="'+a+'"'+(ok?' onclick="hmAvPick(this.dataset.av)" aria-label="Avatar"':(AV_HINT[a]?' onclick="avHint(this.dataset.av)" onmouseenter="avHint(this.dataset.av)" title="'+avHintText(a)+'" aria-label="Locked avatar: '+avHintText(a)+'"':' disabled aria-label="Locked avatar"'))+'><img src="av/'+a+'.webp" alt="" loading="lazy">'+(ok?'':'<span class="av-lock" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>')+'</button>';}).join('');
+  const U=avUses();g.innerHTML=AV_LIST.map(a=>{const ok=avUnlocked(a,U);return '<button type="button" class="av-opt'+(ok?'':' locked'+(AV_HINT[a]?' hinted':''))+'" data-av="'+a+'"'+(ok?' onclick="hmAvPick(this.dataset.av)" onmouseenter="avHint(null)" aria-label="Avatar"':(AV_HINT[a]?' onclick="avHint(this.dataset.av)" onmouseenter="avHint(this.dataset.av)" title="'+avHintText(a)+'" aria-label="Locked avatar: '+avHintText(a)+'"':' disabled aria-label="Locked avatar"'))+'><img src="av/'+a+'.webp" alt="" loading="lazy">'+(ok?'':'<span class="av-lock" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>')+'</button>';}).join('');
   hmAvApply();{const _h=R.getElementById('avHint');if(_h)_h.hidden=true;}R.getElementById('avOv').hidden=false;try{snd('card_land');}catch(e){}}
 function hmAvClose(){const R=hmSR();if(R)R.getElementById('avOv').hidden=true;}
 function hmAvPick(a){if(!avUnlocked(a))return;AVS.me=avOk(a);try{localStorage.setItem('hm_avatar',AVS.me);}catch(e){}hmAvApply();setTimeout(hmAvClose,160);}
