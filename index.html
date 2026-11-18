@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 9.7</title>
+<title>Heaven's Mandate · Build 9.8</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -882,7 +882,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #9.7</div>
+    <div class="sub">Build #9.8</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -1960,7 +1960,7 @@ function celestialHit(t){
 function HH_PER(){return S.phase>=3?0.04:0.02;}  // High-Hand per slot
 const RECKON_AT=900,COURT=['A','J','Q','K'],OPEN_AT=720;  // 8.1: Final Siege 12:00, Last Siege 15:00
 function heavensEye(){
-  S.openShoe=true;snd('stage');hmPhaseReached('p15');say('FINAL SIEGE — the barracks are open to both sides, soldier limit 30','phase');
+  S.openShoe=true;snd('stage');hmPhaseReached('p15');say('FINAL SIEGE — the barracks are open to both sides, soldier limit 25','phase');
   {const g=document.createElement('div');g.className='siegeban';g.textContent='FINAL SIEGE';$('stage').appendChild(g);setTimeout(()=>g.remove(),3050);}
   renderOpenShoe();
 }
@@ -2633,8 +2633,8 @@ function aiSendWave(){
 function soldiersOn(side){let n=0;S.units.forEach(u=>{if(u.alive&&!u._fodder&&u.side===side)n++;});return n;}
 var SOLDIER_CAP=20;
 /* the whole wave has to fit under the soldier cap (8.7: 18 / 20 from 9:00 / 25 from 12:00) */
-function capNow(){return S.matchTime>=RECKON_AT?Infinity:S.matchTime>=OPEN_AT?30:S.phase>=3?25:S.phase>=2?20:19;}  // 9.7: 19 / 20 / 25 / 30 / none
-function incomeCap(){return Math.min(30,capNow());}  // 9.7: from 15:00 income slides as if the cap were 30  // income keeps sliding as if the cap were 25
+function capNow(){return S.matchTime>=RECKON_AT?Infinity:S.matchTime>=OPEN_AT?25:S.phase>=3?24:S.phase>=2?20:19;}  // 9.8: 19 / 20 / 24 / 25 / none
+function incomeCap(){return Math.min(25,capNow());}  // 9.8: from 15:00 income slides as if the cap were 25  // income keeps sliding as if the cap were 25
 function bridgeFull(on,ready){return on+ready>capNow();}
 /* Cao Cao's charge: the target + the 2 enemies closest to it */
 function ccChargeTargets(u,T){const foe=u.side==='p'?'e':'p';
@@ -2732,7 +2732,7 @@ function loop(now){
   if(S.phase===1&&S.matchTime>=PHASE2_AT){S.phase=2;snd('stage');S.energyProgress=0;S.energyReady=false;if((typeof NET!=='undefined')&&NET.online){AI.energyProgress=0;AI.energyReady=false;}say('ASSAULT — SEND now recharges in 10 seconds, soldier limit 20!','phase');}
   if(S.running&&!S.openShoe&&S.matchTime>=OPEN_AT)heavensEye();
   if(S.running&&!S.reckon&&S.matchTime>=RECKON_AT)twinDragonReckoning();
-  if(S.phase===2&&S.matchTime>=PHASE3_AT){S.phase=3;snd('stage');say('GRAND SIEGE — double damage to bases & barricades, no SEND recharge, soldier limit 25, faster on your half, High-Hand doubles!','phase');{const g=document.createElement('div');g.className='siegeban';g.textContent='GRAND SIEGE';$('stage').appendChild(g);setTimeout(()=>g.remove(),3050);}}
+  if(S.phase===2&&S.matchTime>=PHASE3_AT){S.phase=3;snd('stage');say('GRAND SIEGE — double damage to bases & barricades, no SEND recharge, soldier limit 24, faster on your half, High-Hand doubles!','phase');{const g=document.createElement('div');g.className='siegeban';g.textContent='GRAND SIEGE';$('stage').appendChild(g);setTimeout(()=>g.remove(),3050);}}
   const eMS=sendMs();
   
   if(!S.energyReady&&S.phase>=3){S.energyProgress=1;S.energyReady=true;}
@@ -5143,10 +5143,10 @@ html, .hm-body {
         <div class="htp-timeline">
           <div class="htp-phase"><div class="t">0:00</div><div class="n">The March</div><div class="d"><div class="kv"><span>Card Cost</span><b>10g</b></div><div class="kv"><span>Send Recharge</span><b>15s</b></div><div class="kv"><span>Max Soldiers</span><b>19</b></div></div></div>
           <div class="htp-phase"><div class="t">7:00</div><div class="n">Assault</div><div class="d"><div class="kv"><span>Card Cost</span><b>10g</b></div><div class="kv"><span>Send Recharge</span><b>10s</b></div><div class="kv"><span>Max Soldiers</span><b>20</b></div></div></div>
-          <div class="htp-phase"><div class="t">9:00</div><div class="n">Grand Siege</div><div class="d"><div class="kv"><span>Card Cost</span><b>10g</b></div><div class="kv"><span>Send Recharge</span><b>None</b></div><div class="kv"><span>Max Soldiers</span><b>25</b></div><div class="kv"><span>Siege Damage</span><b>×2</b></div><div class="kv"><span>High-Hand</span><b>+4% / slot</b></div></div></div>
+          <div class="htp-phase"><div class="t">9:00</div><div class="n">Grand Siege</div><div class="d"><div class="kv"><span>Card Cost</span><b>10g</b></div><div class="kv"><span>Send Recharge</span><b>None</b></div><div class="kv"><span>Max Soldiers</span><b>24</b></div><div class="kv"><span>Siege Damage</span><b>×2</b></div><div class="kv"><span>High-Hand</span><b>+4% / slot</b></div></div></div>
           <div class="htp-phase locked" data-ph="p15" role="button" tabindex="0" aria-label="Locked phase — reach it in a match to reveal" onclick="revealPhase(this)">
             <div class="ph-lock"><div class="t">?? : ??</div><div class="n">Locked</div><div class="d">Survive long enough to find out…</div></div>
-            <div class="ph-real" hidden><div class="t">12:00</div><div class="n">Final Siege</div><div class="d"><div class="kv"><span>Card Cost</span><b>15g</b></div><div class="kv"><span>Send Recharge</span><b>None</b></div><div class="kv"><span>Max Soldiers</span><b>30</b></div><div class="kv"><span>Barracks</span><b>Open</b></div></div></div>
+            <div class="ph-real" hidden><div class="t">12:00</div><div class="n">Final Siege</div><div class="d"><div class="kv"><span>Card Cost</span><b>15g</b></div><div class="kv"><span>Send Recharge</span><b>None</b></div><div class="kv"><span>Max Soldiers</span><b>25</b></div><div class="kv"><span>Barracks</span><b>Open</b></div></div></div>
           </div>
           <div class="htp-phase locked" data-ph="p20" role="button" tabindex="0" aria-label="Locked phase — reach it in a match to reveal" onclick="revealPhase(this)">
             <div class="ph-lock"><div class="t">?? : ??</div><div class="n">Locked</div><div class="d">Survive long enough to find out…</div></div>
@@ -5887,7 +5887,7 @@ function hmNotice(msg){const n=document.createElement('div');n.className='hm-not
 /* ═══ ONLINE (Step 1: rooms + ready check + countdown). PeerJS = browser-to-browser (WebRTC) with a free public
    matchmaking server. Add ?net=local to the URL to test with two tabs of the same browser (no internet needed). ═══ */
 const NET_LOCAL=/[?&]net=local/.test(location.search);
-const NET_PUB_SLOTS=12,NET_PREFIX='hm97-';
+const NET_PUB_SLOTS=12,NET_PREFIX='hm98-';
 const NET={peer:null,conn:null,role:null,code:null,pub:false,meReady:false,themReady:false,busy:false,search:null,
   oppName:null,online:false,view:false,flip:false,local:false,noFwd:false,out:[],gNew:3,gPrimed:false,vready:false,ended:false,tick:null,n:0};
 const _CODE_CH='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -5896,7 +5896,7 @@ function netLib(){return new Promise((res,rej)=>{if(NET_LOCAL||window.Peer)retur
   const add=(src,next)=>{const sc=document.createElement('script');sc.src=src;sc.onload=()=>res();sc.onerror=next;document.head.appendChild(sc);};
   add('https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js',()=>add('https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js',()=>rej(new Error('lib'))));});}
 /* tiny local stand-in for PeerJS over BroadcastChannel (two tabs, same browser) */
-function LocalPeer(id){const bc=new BroadcastChannel('hm97-net'),me=id||('x'+Math.random().toString(36).slice(2,10)),L={},conns={};let open=false;
+function LocalPeer(id){const bc=new BroadcastChannel('hm98-net'),me=id||('x'+Math.random().toString(36).slice(2,10)),L={},conns={};let open=false;
   const P={id:me,_l:L,on(e,f){(L[e]=L[e]||[]).push(f);return P;},emit(e,...a){(L[e]||[]).forEach(f=>f(...a));},
     destroy(){Object.values(conns).forEach(c=>c.close());bc.close();open=false;},
     connect(to){const cid=Math.random().toString(36).slice(2);const c=mkConn(cid,to);conns[cid]=c;bc.postMessage({k:'dial',to,from:me,cid});
