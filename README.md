@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 9.8**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 9.9**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -50,6 +50,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **9.1–9.2:** a plain "21" on Apex/Celestial slots. Soldier cap 19 before 9:00, and income reaches 0 at a full bridge.
 - **9.5–9.6:** new How a Match Works pictures. Foot Soldier groups are now 5: 3 Foot Soldiers (3 dmg/hit) and 2 new Spear Soldiers (Lancer reach, 5 dmg/hit).
 - **9.7:** from 9:00, soldiers move 50% faster on their own half of the bridge (was 25%).
+- **9.9:** a secret avatar (a black silhouette until you unlock it), and a Code box in Settings → About.
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.
