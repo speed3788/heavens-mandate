@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 10.0**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 10.2**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -41,7 +41,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **Interface:** units stack by rank (Celestial on top). The top-right counter shows enemy | your soldiers. Profile fixes and Settings → Text Size.
 - **How to Play:** unit cards show only the base stats; tap "Skills & Details" to open the rest.
 - **Avatars:** 23 chibi avatars (`av/`). The Foot Soldier is open from the start, and the rest unlock by playing (hover a locked face for a hint; Synergy faces unlock only in online battles vs another player). Yours shows next to your base in battle, and your opponent sees it online. The computer is the Robot.
-- **Expert computer (8.0):** counts cards, reads your waves and answers them, with less predictable timing.
+- **Expert computer (8.0):** a fourth, toughest level. Win 10 matches on Hard to unlock it.
 - **8.1 balance:** Final Siege at 12:00 and Last Siege at 15:00. Five Tiger and Heaven's Mandate no longer heal, and Heaven's Mandate gets +30% Move Speed, ATK and ATK Speed. Armor Shred is replaced by armor: Dragon & Tiger +30%, Flowing Serpent +24%, Nine Dragons +24%, Emperor's +30%.
 - **8.4:** each soldier you send shoves nearby enemies back once when it appears at your base. An "Avatar unlocked!" pop-up shows new avatars.
 - **Base Strike (9.4):** the first enemy hit on a side's inner barricade switches it on. Then every 5s, hits on that barricade stun every enemy nearby for 1s. Once the barricade is broken, hits on the base stun them and take 5% of their max HP (armor soaks it first).
@@ -52,6 +52,8 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **9.7:** from 9:00, soldiers move 50% faster on their own half of the bridge (was 25%).
 - **9.9:** a secret avatar (a black silhouette until you unlock it), and a Code box in Settings → About.
 - **10.0:** fix: the face-up Barracks card from a match that reached 12:00 no longer stays on screen in your next match.
+- **10.1:** the High-Hand bonus is gone. Fortified soldiers now gain +2% (was +1%) HP, damage, armor and ATK speed for each number above 17.
+- **10.2:** Easy, Normal, Hard and Expert now play very differently. Avatars show next to names in the room lobby, the VS screen, the Battle Report and Match History. The secret avatar takes longer to unlock.
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.

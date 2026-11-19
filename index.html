@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 10.0</title>
+<title>Heaven's Mandate · Build 10.2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -802,7 +802,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 #battleLog .bl-result{font-size:13px;font-weight:700;letter-spacing:2px;margin-bottom:14px;}
 #battleLog .bl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:680px;margin-bottom:12px;}
 #battleLog .bl-col{background:rgba(255,255,255,.04);border-radius:8px;padding:10px 14px;}
-#battleLog .bl-col h3{font-size:9px;font-weight:800;letter-spacing:2px;color:var(--gold);margin:0 0 8px;text-transform:uppercase;}
+#battleLog .bl-col h3 .nav{width:24px;height:24px}.bl-col h3{display:flex;align-items:center;gap:7px;font-size:9px;font-weight:800;letter-spacing:2px;color:var(--gold);margin:0 0 8px;text-transform:uppercase;}
 #battleLog .bl-stat{display:flex;justify-content:space-between;font-size:9px;margin-bottom:4px;color:rgba(255,241,184,.7);}
 #battleLog .bl-stat span{color:var(--gold-l);font-weight:700;}
 #battleLog .bl-waves{width:100%;max-width:680px;margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
@@ -882,7 +882,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #10.0</div>
+    <div class="sub">Build #10.2</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -973,10 +973,10 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
   <!-- [TEMP] AI mode toggle -->
   <div id="aiMode">
     <span class="ailbl">CPU</span>
-    <button class="aibtn active" data-ai="blind" type="button" title="Easy: builds random suits, no High-Hand bonus">Easy</button>
-    <button class="aibtn" data-ai="reactive" type="button" title="Normal: counters your suits and gets the High-Hand bonus">Normal</button>
-    <button class="aibtn" data-ai="hard" type="button" title="Hard: hunts Synergies and high totals, draws faster, waits for strong waves">Hard</button>
-    <button class="aibtn locked" data-ai="expert" type="button" title="Expert: counts cards, reads your waves and answers them. Unlocks after 10 wins on Hard">Expert</button>
+    <button class="aibtn active" data-ai="blind" type="button">Easy</button>
+    <button class="aibtn" data-ai="reactive" type="button">Normal</button>
+    <button class="aibtn" data-ai="hard" type="button">Hard</button>
+    <button class="aibtn locked" data-ai="expert" type="button">Expert</button>
   </div>
   <div id="sendCol">
     <div id="synergy"><span class="sh-sub">Stack 2+ slots to see your formation</span></div>
@@ -1019,8 +1019,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
       ['Monolith Vanguard','Flush','5 slots, same suit',['+20% Max HP','+20% ATK','♣ +10% base armor','♠ +20% ATK Speed','♦ +20% attack range','♥ heals 6% of Max HP every 3s','Stacks with any same-total Synergy']],
       ['Flowing Serpent','Straight','5 consecutive totals',['+24% Max HP','+24% Armor','+24% ATK','+30% Move Speed','+24% ATK Speed','+24% Status Chance']],
       ['Nine Dragons Convergence','Straight Flush','5 consecutive totals, same suit',['Monolith Vanguard + Flowing Serpent','Huanglong dragon sweep: burns and stuns each enemy it passes'],'sflush'],
-      ["Emperor's Sovereign Army",'Royal Flush','Totals 17-18-19-20-21, same suit',['Monolith Vanguard + Flowing Serpent, all ×1.25','+30% Armor','Huanglong dragon sweep: burns and stuns each enemy it passes','Dragon reaches enemy base: 500 dmg'],'royal'],
-      ['High-Hand','Slot total 17+','Each slot that totals 17-21',['+2% DPS per slot (max +10%)','From 9:00 Grand Siege: +4% per slot (max +20%)','Stacks with every Synergy']]
+      ["Emperor's Sovereign Army",'Royal Flush','Totals 17-18-19-20-21, same suit',['Monolith Vanguard + Flowing Serpent, all ×1.25','+30% Armor','Huanglong dragon sweep: burns and stuns each enemy it passes','Dragon reaches enemy base: 500 dmg'],'royal']
     ];
     const KEY='hm_syn_unlocked';
     function got(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}}
@@ -1099,16 +1098,16 @@ const SUIT_STATS={
 function tierMultHP(tier,sum){
   // 5.3-Trench: Fortified floor raised to 17
   if(tier==='natural')return 1.72;if(tier==='c21')return 1.70;  // Nov 15 rank rebalance
-  if(tier==='tempered')return sum>=17?1.25+0.01*(Math.min(sum,20)-17):1.0;return 1.0;
+  if(tier==='tempered')return sum>=17?1.25+0.02*(Math.min(sum,20)-17):1.0;return 1.0;
 }
 function tierMultATK(tier,sum){
   // 5.3-Trench: Fortified floor 17, fixed 1.1x ATK
   if(tier==='natural')return 1.42;if(tier==='c21')return 1.40;  // Nov 15 rank rebalance
-  if(tier==='tempered')return sum>=17?1.10+0.01*(Math.min(sum,20)-17):1.0;return 1.0;
+  if(tier==='tempered')return sum>=17?1.10+0.02*(Math.min(sum,20)-17):1.0;return 1.0;
 }
 // Nov 15: ranks also boost Armor and ATK Speed
-function tierMultDEF(tier,sum){if(tier==='natural')return 1.35;if(tier==='c21')return 1.25;if(tier==='tempered')return sum>=17?1.10+0.01*(Math.min(sum,20)-17):1.0;return 1.0;}
-function tierMultASPD(tier,sum){if(tier==='natural')return 1.22;if(tier==='c21')return 1.20;if(tier==='tempered')return sum>=17?1.05+0.01*(Math.min(sum,20)-17):1.0;return 1.0;}
+function tierMultDEF(tier,sum){if(tier==='natural')return 1.35;if(tier==='c21')return 1.25;if(tier==='tempered')return sum>=17?1.10+0.02*(Math.min(sum,20)-17):1.0;return 1.0;}
+function tierMultASPD(tier,sum){if(tier==='natural')return 1.22;if(tier==='c21')return 1.20;if(tier==='tempered')return sum>=17?1.05+0.02*(Math.min(sum,20)-17):1.0;return 1.0;}
 const FORMATIONS={
   none:{name:'Dispersed Skirmish',poker:'High Card',cls:''},
   pair:{name:'Twin Battalions',poker:'One Pair',cls:'h-pair'},
@@ -1206,7 +1205,7 @@ function showBattleLog(){
 
   // Player stats
   document.getElementById('blPlayer').innerHTML=`
-    <h3>⚔ Your Side</h3>
+    <h3><img class="nav" src="av/${(window.AVS&&AVS.me)||'foot_soldier'}.webp" alt="">⚔ Your Side</h3>
     <div class="bl-stat">Waves Sent <span>${L.pWaves.length}</span></div>
     <div class="bl-stat">Units Summoned ${blSummoned(L.pWaves)}</div>
     <div class="bl-stat">Cards Bought <span>${L.pCards||0}</span></div>
@@ -1220,7 +1219,7 @@ function showBattleLog(){
 
   // AI stats
   document.getElementById('blAI').innerHTML=`
-    <h3>${((typeof NET!=='undefined')&&NET.online)?'⚔ '+HM.opp:'🤖 Enemy Side'}</h3>
+    <h3><img class="nav" src="av/${((typeof NET!=='undefined')&&NET.online)?((window.AVS&&AVS.opp)||'foot_soldier'):((window.AVS&&AVS.cpu)||'robot')}.webp" alt="">${((typeof NET!=='undefined')&&NET.online)?'⚔ '+HM.opp:'🤖 Enemy Side'}</h3>
     <div class="bl-stat">Waves Sent <span>${L.eWaves.length}</span></div>
     <div class="bl-stat">Units Summoned ${blSummoned(L.eWaves)}</div>
     <div class="bl-stat">Cards Bought <span>${L.eCards||0}</span></div>
@@ -1375,17 +1374,13 @@ function renderSynergy(){
   const deployed=S.slots.filter(c=>c.length>=2).map(c=>({sum:evalHand(c).sum,suit:c[0].suit,natural:evalHand(c).tier==='natural'}));
   const r=evalPoker(deployed);const el=$('synergy');
   el.className=el.className.replace(/h-\w+/g,'').trim();
-  // ── v6: High-Hand bonus display ──
-  const _hhSlots=deployed.filter(s=>s.sum>=17).length;
-  const _hhBonus=_hhSlots>0?('<span class="sh-hh">⚔ '+_hhSlots+'/5 slots 17+ · +'+Math.round(_hhSlots*HH_PER()*100)+'% DPS</span>'):'';
   if(r.hand==='none'){
     el.classList.remove('active');
-    const _hhLine=_hhBonus;
-    el.innerHTML='<span class="sh-sub">Stack 2+ slots to see your formation</span>'+_hhLine;
+    el.innerHTML='<span class="sh-sub">Stack 2+ slots to see your formation</span>';
   }
   else{el.classList.add('active');if(r.cls)el.classList.add(r.cls);
     el.innerHTML='<span class="sh-name">'+r.name+(r.flushSuit?' '+r.flushSuit:'')+'</span>'
-      +'<span class="sh-buff">'+r.buffLine+'</span>'+_hhBonus
+      +'<span class="sh-buff">'+r.buffLine+'</span>'
       +'<span class="sh-sub">'+r.poker+(r.subLine?' · '+r.subLine:'')+'</span>';}
 }
 
@@ -1957,7 +1952,6 @@ function celestialHit(t){
    One Huang Long flies from each fortress; no burn/stun, each base takes 500.
    If a base would fall (500 HP or less), the match ends: higher Base HP wins. Exact tie: both bases drop to 1 HP — next hit wins.
    From then on the shoe only holds A, J, Q, K. */
-function HH_PER(){return S.phase>=3?0.04:0.02;}  // High-Hand per slot
 const RECKON_AT=900,COURT=['A','J','Q','K'],OPEN_AT=720;  // 8.1: Final Siege 12:00, Last Siege 15:00
 function heavensEye(){
   S.openShoe=true;snd('stage');hmPhaseReached('p15');say('FINAL SIEGE — the barracks are open to both sides, soldier limit 25','phase');
@@ -2364,10 +2358,9 @@ function siegeTick(dt){
 }
 /* ════════ AI OPPONENT (Build #5) ════════ */
 // Plays by the same rules as the player: own gold, own slots, 10g draws,
-// 3-slot SEND minimum, own energy bar. v6.1 difficulty: Easy = 'blind' (random suit, no High-Hand bonus) · Normal = 'reactive' (counters your suit + High-Hand bonus).
+// 3-slot SEND minimum, own energy bar. v6.1 difficulty: Easy = 'blind' · Normal = 'reactive' · Hard · Expert. 10.2: goal levels (AI_LV below).
 let AI_MODE='blind'; // 'blind'=Easy | 'reactive'=Normal | 'hard'=Hard | 'expert'=Expert (unlock: 10 Hard wins)
 const AI_SMART=()=>AI_MODE==='hard'||AI_MODE==='expert';
-const AI_HH=()=>AI_MODE!=='blind';                 // High-Hand bonus on Normal and up
 const AI_LABEL={blind:'EASY',reactive:'NORMAL',hard:'HARD',expert:'EXPERT'};
 const EXPERT_WINS_NEEDED=10;
 function hardWins(){try{return +localStorage.getItem('hm_hard_wins')||0;}catch(e){return 0;}}
@@ -2431,7 +2424,7 @@ function aiReset(){
   AI.drawClock=0;AI.goldClock=0;AI.opened=false;AI.patience=0;
   AI.attnState='DRAFTING';AI.attnClock=0;AI.attnDuration=4000;
   AI.lockedSuit=null;AI.commitLocked=false;AI.deliberateDelay=0;
-  AI.targetSuit=null;AI.targetSum=18;AI.xGo=null;AI.xWait=null;
+  AI.targetSuit=null;AI.targetSum=18;AI.xGo=null;AI.xWait=null;AI.goal=null;
   AI.hud={state:'DRAFTING',cycles:0,reconCount:0,draftCount:0,lastRecon:null};
 }
 
@@ -2507,73 +2500,96 @@ function aiTick(dt){
   }
   if((typeof NET!=='undefined')&&NET.online)return; // online: the other player decides
 
-  // ── Drawing decisions (5.2 simple loop) ──
+  // ── 10.2 computer levels: a hidden goal level each wave; steer cards toward it; send when it's ready or patience runs out ──
+  if(AI.goal==null)aiNewGoal();
   AI.drawClock+=dt;
-  if(AI_SMART()&&AI.drawClock>=1000){AI.drawClock=0;aiSmartDraw();}
-  else if(!AI_SMART()&&AI.drawClock>=1600){
-    AI.drawClock=0;
-    const pref=aiPreferredSuit();
-    // Formation-aware: find most common sum among ready slots to build pairs/three
-    const sumCounts={};
-    AI.slots.forEach(sl=>{
-      if(sl.length>=2){const info=evalHand(sl);if(!info.bust)sumCounts[info.sum]=(sumCounts[info.sum]||0)+1;}
-    });
-    const topSum=Object.keys(sumCounts).length?Object.keys(sumCounts).reduce((a,b)=>sumCounts[b]>sumCounts[a]?b:a):null;
-    let target=AI.slots.findIndex(sl=>sl.length===0);
-    if(target<0) target=AI.slots.findIndex(sl=>sl.length===1&&sl[0].suit===pref);
-    // Prefer 1-card slots where there's room to reach targetSum range
-    const ts=AI.targetSum||18;
-    if(target<0) target=AI.slots.findIndex(sl=>{
-      if(sl.length!==1)return false;
-      const cur=pip(sl[0].rank)||(sl[0].rank==='A'?11:0);
-      return cur>0&&cur<=ts-2;
-    });
-    if(target<0) target=AI.slots.findIndex(sl=>sl.length===1);
-    // Priority: top up slot matching most common sum (build synergy)
-    if(target<0&&topSum) target=AI.slots.findIndex(sl=>{
-      if(sl.length<2)return false;
-      const info=evalHand(sl);if(info.bust||info.sum>17)return false;
-      return String(info.sum)===topSum;
-    });
-    if(target<0) target=AI.slots.findIndex(sl=>{
-      if(sl.length<2)return false;
-      const info=evalHand(sl);
-      if(info.bust)return false;
-      if(info.sum<=13)return true;
-      if(info.sum<=17)return Math.random()<0.35;
-      return false;
-    });
-    if(target>=0)aiDraw(target);
-  }
-
-  // ── Send decision ──
+  if(AI.drawClock>=aiCfg().dms){AI.drawClock=0;aiGoalDraw();}
   if(AI.energyReady){
-    const q=aiHandQuality();
-    if(q>=0){
+    const ready=AI.slots.filter(x=>x.length>=2&&!evalHand(x).bust);
+    if(ready.length>=MIN_READY){
       AI.patience+=dt;
-      let sendNow = q>=5||AI.patience>=8000||(q>=3&&AI.patience>=4000)||
-                      S.units.filter(u=>u.alive&&u.side==='p'&&!u._fodder).length>=4;
-      if(AI_SMART()){
-        // Hard/Expert: hold for a Synergy and a full line, unless the player is pushing
-        const ready=AI.slots.filter(x=>x.length>=2);
-        const wp=evalPoker(ready.map(x=>({sum:evalHand(x).sum,suit:x[0].suit,natural:evalHand(x).tier==='natural'})));
-        const syn=wp&&wp.hand!=='none';
-        const pushed=S.units.filter(u=>u.alive&&u.side==='p'&&!u._fodder).length>=4;
-        sendNow=pushed||(syn&&(ready.length===5||AI.patience>=4000))||AI.patience>=12000;
-        if(AI_MODE==='expert')sendNow=aiExpertSend(sendNow,ready,pushed);
-      }
-      if(sendNow){aiSendWave();AI.targetSuit=null;AI.targetSum=17+Math.floor(Math.random()*4);AI.goalSum=19+Math.floor(Math.random()*2);}
+      const wp=evalPoker(ready.map(x=>({sum:evalHand(x).sum,suit:x[0].suit,natural:evalHand(x).tier==='natural'})));
+      const r=Math.max(AI_RANK[wp&&wp.hand]||0,(wp&&(wp.flushSuit||wp.flushStack))?4:0);
+      let go=r>=AI.goal||AI.patience>=aiCfg().give;
+      if(AI_MODE==='expert')go=aiExpertSend(go,ready,r);
+      if(go){const n0=S.aiWave||0;aiSendWave();if((S.aiWave||0)>n0){AI.targetSuit=null;aiNewGoal();}}
     }
   }
 }
+const AI_LV={blind:{w:[80,15,5,0],give:5000,dms:1600,noise:0.15},
+  reactive:{w:[25,35,40,0],give:12000,dms:1300},
+  hard:{w:[15,35,50,0],give:12000,dms:1000,peek:true},
+  expert:{w:[0,10,80,10],give:25000,dms:1000,peek:true,count:true,adapt:1.3}};
+const AI_RANK={none:0,high:0,pair:1,three:1,twopair:2,four:2,fullhouse:3,straight:3,flush:4,fiveoak:4,mandate:4,sflush:4,royal:4};
+function aiCfg(){return AI_LV[AI_MODE]||AI_LV.blind;}
+function aiNewGoal(){const w=aiCfg().w;let r=Math.random()*(w[0]+w[1]+w[2]+w[3]),g=4;for(let i=0;i<4;i++){if(r<w[i]){g=i+1;break;}r-=w[i];}AI.goal=g;}
+function aiPipv(r){return r==='A'?1:(r==='10'||r==='J'||r==='Q'||r==='K')?10:+r;}
+function aiHv(h,a){return a&&h+10<=21?h+10:h;}
+function aiW(){const w=new Array(11).fill(0);
+  if(aiCfg().count&&S.shoe.length)S.shoe.forEach(c=>w[aiPipv(c.rank)]++);else RANKS.forEach(r=>w[aiPipv(r)]+=4);
+  const t=w.reduce((a,b)=>a+b,0)||1;return w.map(x=>x/t);}
+function aiSuitQ(su){return S.shoe.length?S.shoe.filter(c=>c.suit===su).length/S.shoe.length:.25;}
+// chance (p) and expected cards (e) for a slot at hard total h (a = has an Ace) to end on exactly T (0 = any 17-21, null = keep drawing until bust)
+function aiReach(h,a,T,w,M){const k=h*64+(a?32:0)+(T==null?31:T);if(M[k])return M[k];const v=aiHv(h,a);let r;
+  if(h>21)r=[0,0];else if(T&&v===T)r=[1,0];else if(T===0&&v>=17)r=[1,0];
+  else{let p=0,e=1;for(let c=1;c<=10;c++)if(w[c]>0){const q=aiReach(h+c,a||c===1,T,w,M);p+=w[c]*q[0];e+=w[c]*q[1];}r=[p,e];}
+  return M[k]=r;}
+// expected cards for this slot to reach T (and suit su), counting restarts after a bust
+function aiCost(x,T,w,M,su){const z=aiReach(0,false,T,w,M);if(z[0]<=1e-6)return 99;let E0=z[1]/z[0];
+  if(su){const q=Math.max(.05,aiSuitQ(su));E0+=(1-q)/q*(1+aiReach(6,false,null,w,M)[1]);}
+  if(!x.length)return E0;const h=x.reduce((s,c)=>s+aiPipv(c.rank),0),a=x.some(c=>c.rank==='A'),v=aiHv(h,a);
+  if(su&&x[0].suit!==su)return aiReach(h,a,null,w,M)[1]+E0;
+  if(T?v===T:v>=17)return x.length>=2?0:1+.5*E0;
+  const r=aiReach(h,a,T,w,M);return r[1]+(1-r[0])*E0;}
+const AI_PERM=(function(){const o=[];const f=(a,r)=>{if(!r.length){o.push(a);return;}r.forEach((x,i)=>f(a.concat(x),r.filter((_,j)=>j!==i)));};f([],[0,1,2,3,4]);return o;})();
+const AI_C2=[],AI_C3=[];for(let a=0;a<5;a++)for(let b=a+1;b<5;b++){AI_C2.push([a,b]);for(let c=b+1;c<5;c++)AI_C3.push([a,b,c]);}
+// cheapest plan for a goal level: targets per slot (number = exact total, 0 = any 17-21, null = not needed) and a Flush suit
+function aiPlan(lvl,w,M){const sl=AI.slots,C={},I=[0,1,2,3,4];let best=null;
+  const c=(i,T,su)=>{const k=i+'|'+T+'|'+(su||'');return k in C?C[k]:(C[k]=aiCost(sl[i],T,w,M,su));};
+  const add=(e,tg,su)=>{if(!best||e<best.e)best={e,tg,su};};
+  if(lvl===1)for(let T=17;T<=21;T++)AI_C2.forEach(pr=>{const rest=I.filter(i=>!pr.includes(i)).map(i=>[c(i,0),i]).sort((a,b)=>a[0]-b[0])[0];
+    add(c(pr[0],T)+c(pr[1],T)+rest[0],I.map(i=>pr.includes(i)?T:i===rest[1]?0:null),null);});
+  if(lvl===1)for(let T=17;T<=21;T++)AI_C3.forEach(tr=>add(tr.reduce((s,i)=>s+c(i,T),0),I.map(i=>tr.includes(i)?T:null),null));
+  if(lvl===2)for(let T1=17;T1<=21;T1++){
+    I.forEach(odd=>add(I.reduce((s,i)=>s+(i===odd?0:c(i,T1)),0),I.map(i=>i===odd?null:T1),null));
+    for(let T2=T1+1;T2<=21;T2++)AI_C2.forEach(A=>{const L=I.filter(i=>!A.includes(i));
+      for(let x=0;x<L.length;x++)for(let y=x+1;y<L.length;y++){const Bb=[L[x],L[y]],tg=I.map(i=>A.includes(i)?T1:Bb.includes(i)?T2:null);
+        add(I.reduce((s,i)=>s+(tg[i]?c(i,tg[i]):0),0),tg,null);}});}
+  const fs=sl.map(x=>x.length?x[0].suit:null),suits=lvl<4?[null]:[null].concat(SUITS.filter(su=>fs.filter(f=>f===su).length>=3));
+  suits.forEach(su=>{
+    if(lvl===3||(lvl===4&&su))for(let a0=13;a0<=17;a0++){let be=1e9,bp=null;
+      AI_PERM.forEach(p=>{let e=0;for(let i=0;i<5;i++)e+=c(i,a0+p[i],su);if(e<be){be=e;bp=p;}});add(be,bp.map(v=>a0+v),su);}
+    if(lvl===3)for(let T1=17;T1<=21;T1++)for(let T2=17;T2<=21;T2++){if(T1===T2)continue;
+      AI_C3.forEach(tr=>{const tg=I.map(i=>tr.includes(i)?T1:T2);add(I.reduce((s,i)=>s+c(i,tg[i]),0),tg,null);});}
+    if(lvl===4){for(let T=17;T<=21;T++)add(I.reduce((s,i)=>s+c(i,T,su),0),[T,T,T,T,T],su);if(su)add(I.reduce((s,i)=>s+c(i,0,su),0),[0,0,0,0,0],su);}
+  });
+  return best;}
+function aiGoalDraw(){const cf=aiCfg(),sl=AI.slots;if(AI.gold<DRAW_COST||!S.shoe.length)return;
+  const w=aiW(),M={};let lvl=AI.goal||1;
+  if(cf.adapt&&lvl===4){const p4=aiPlan(4,w,M),p3=aiPlan(3,w,M);if(p4.e>cf.adapt*p3.e)lvl=3;}
+  const P=aiPlan(lvl,w,M),pref=AI_MODE!=='blind'?aiPreferredSuit():null,need=[];
+  sl.forEach((x,i)=>{const T=P.tg[i];if(T==null)return;
+    const h=x.reduce((s,c)=>s+aiPipv(c.rank),0),a=x.some(c=>c.rank==='A'),v=aiHv(h,a);
+    if(x.length&&P.su&&x[0].suit!==P.su){need.push([-1,i]);return;}
+    if(T===0){if(x.length>=2&&v>=17)return;need.push([x.length?aiReach(h,a,0,w,M)[0]:1,i]);return;}
+    if(x.length>=2&&v===T)return;const p=x.length?aiReach(h,a,T,w,M)[0]:1;need.push([x.length&&p<=0?-1:p,i]);});
+  if(!need.length){if(sl.filter(x=>x.length>=2).length>=MIN_READY)return;sl.forEach((x,i)=>{if(x.length<2)need.push([1,i]);});if(!need.length)return;}
+  const k=n=>n[0]-((pref&&sl[n[1]].length&&sl[n[1]][0].suit===pref)?.001:0);need.sort((A,Bb)=>k(A)-k(Bb));
+  let t=need[0][1];
+  if(cf.noise&&Math.random()<cf.noise){const o=[0,1,2,3,4].filter(i=>!sl[i].length||evalHand(sl[i]).sum<21);if(o.length)t=o[0|Math.random()*o.length];}
+  else if(cf.peek&&S.openShoe){const cn=S.shoe[S.shoe.length-1];let pick=null;
+    for(const [p,i] of need){const T=P.tg[i],n=evalHand([...sl[i],cn]);
+      if(p<0&&n.bust){pick=i;break;}
+      if(!n.bust&&((T&&n.sum===T)||(T===0&&n.sum>=17))){pick=i;break;}
+      if(!n.bust&&pick==null&&((T&&n.sum<T)||(T===0&&n.sum<17)))pick=i;}
+    if(pick==null)return;t=pick;}
+  aiDraw(t);}
 
 // 8.0 Expert: reads the player and keeps its timing hard to learn
-function aiExpertSend(go,ready,pushed){
-  const T=S.matchTime,foe=S.units.filter(u=>u.alive&&u.side==='p'&&!u._fodder),own=S.units.filter(u=>u.alive&&u.side==='e'&&!u._fodder).length;
-  if(S.phase>=3&&ready.length>=3&&own<6)go=true;                                   // Grand Siege: keep the pressure on
-  if(!pushed&&!foe.length&&S.phase<3&&ready.length<5&&AI.patience<12000)go=false;    // empty bridge: no half lines
-  if(foe.filter(u=>u.x>BRIDGE_W*0.6).length>=3&&ready.length>=4)go=true;            // you just sent: answer it
-  const big=S.energyReady&&countReady(S.slots)>=4&&!foe.length&&!pushed;              // you're about to send a big wave
+function aiExpertSend(go,ready,r){
+  const T=S.matchTime,foe=S.units.filter(u=>u.alive&&u.side==='p'&&!u._fodder);
+  if(!go&&r>=2&&foe.filter(u=>u.x>BRIDGE_W*0.6).length>=3&&ready.length>=4)go=true;   // you just sent: answer it
+  const big=S.energyReady&&countReady(S.slots)>=4&&!foe.length;                       // you're about to send a big wave
   if(big&&S.phase<3){if(AI.xWait==null)AI.xWait=T;if(T-AI.xWait<6)go=false;}else AI.xWait=null;
   if(!go){AI.xGo=null;return false;}
   if(AI.xGo==null)AI.xGo=T+Math.random()*2.5;                                         // small random wait
@@ -2619,8 +2635,6 @@ function aiSendWave(){
     const ai=ORDER.indexOf(a.suit),bi=ORDER.indexOf(b.suit);
     return (ai===-1?99:ai)-(bi===-1?99:bi);
   });
-  // v6.1 Normal difficulty: the computer also gets the High-Hand bonus (+4% ATK per slot above 17)
-  if(AI_HH()){const hh=1+HH_PER()*queue.filter(q=>q.sum>=17).length;queue.forEach(q=>{q.ba=(q.ba||1)*hh;});}
   queue.forEach((u,i)=>{
     if(i===0)spawnShove(spawnUnit(u.suit,u.sum,u.tier,'e',u.bh,u.ba,u.bs,u.bfh,u.baspd,u.bds,u.bdef,u.bdefpct,u.bfs));
     else setTimeout(()=>{if(S.running)spawnShove(spawnUnit(u.suit,u.sum,u.tier,'e',u.bh,u.ba,u.bs,u.bfh,u.baspd,u.bds,u.bdef,u.bdefpct,u.bfs));},i*400);
@@ -2668,15 +2682,9 @@ function sendWave(){
     const ai=SUIT_ORDER.indexOf(a.suit),bi=SUIT_ORDER.indexOf(b.suit);
     return (ai===-1?99:ai)-(bi===-1?99:bi);
   });
-  // ── v6: High-Hand DPS Multiplier (player only) ──
-  // For every slot with sum > 17 (strictly greater), grant +4% total wave DPS.
-  // All slots ≤17 = no bonus. Max: +20% (all 5 slots above 17).
-  // Applied by scaling each spawned unit's ATK buff before spawn.
-  const slotsAbove17=toSpawn.filter(u=>u.sum>=17).length;
-  const highHandMult=1+HH_PER()*slotsAbove17;
   // Stagger spawns 0.4s apart
   toSpawn.forEach((u,i)=>{
-    const finalAtk=(u.buffAtk||1)*highHandMult;
+    const finalAtk=(u.buffAtk||1);
     if(i===0&&!((typeof NET!=='undefined')&&NET.online))spawnShove(spawnUnit(u.suit,u.sum,u.tier,'p',u.buffHp,finalAtk,u.buffSpd,u.formHand,u.buffAspd,u.domSuit,u.buffDef,u.buffDefPct,u.flushStack));
     else setTimeout(()=>{
       if(S.running)spawnShove(spawnUnit(u.suit,u.sum,u.tier,_sd,u.buffHp,finalAtk,u.buffSpd,u.formHand,u.buffAspd,u.domSuit,u.buffDef,u.buffDefPct,u.flushStack));
@@ -2687,7 +2695,7 @@ function sendWave(){
   // Compute total DPS for this wave (sum of all unit DPS with buffs applied)
   const _pWaveDPS=Math.round(toSpawn.reduce((sum,u)=>{
     const st=SUIT_STATS[u.suit];
-    return sum+st.baseDPS*tierMultATK(u.tier,u.sum)*(u.buffAtk||1)*highHandMult;
+    return sum+st.baseDPS*tierMultATK(u.tier,u.sum)*(u.buffAtk||1);
   },0)*10)/10;
   const _pSL=toSpawn.map(u=>u.suit+u.sum+(u.tier==='natural'?'(H)':''));
   S.log.pWaves.push({wave:S.waves,hand:wp.hand,fl:wp.flushStack?1:0,handName:wp.name||wp.hand,slots:rSlots.length,suits:_pSL,slotLabels:_pSL,dps:Math.round(_pWaveDPS*10)/10,time:Math.round(S.matchTime)});
@@ -2732,7 +2740,7 @@ function loop(now){
   if(S.phase===1&&S.matchTime>=PHASE2_AT){S.phase=2;snd('stage');S.energyProgress=0;S.energyReady=false;if((typeof NET!=='undefined')&&NET.online){AI.energyProgress=0;AI.energyReady=false;}say('ASSAULT — SEND now recharges in 10 seconds, soldier limit 20!','phase');}
   if(S.running&&!S.openShoe&&S.matchTime>=OPEN_AT)heavensEye();
   if(S.running&&!S.reckon&&S.matchTime>=RECKON_AT)twinDragonReckoning();
-  if(S.phase===2&&S.matchTime>=PHASE3_AT){S.phase=3;snd('stage');say('GRAND SIEGE — double damage to bases & barricades, no SEND recharge, soldier limit 24, faster on your half, High-Hand doubles!','phase');{const g=document.createElement('div');g.className='siegeban';g.textContent='GRAND SIEGE';$('stage').appendChild(g);setTimeout(()=>g.remove(),3050);}}
+  if(S.phase===2&&S.matchTime>=PHASE3_AT){S.phase=3;snd('stage');say('GRAND SIEGE — double damage to bases & barricades, no SEND recharge, soldier limit 24, faster on your half!','phase');{const g=document.createElement('div');g.className='siegeban';g.textContent='GRAND SIEGE';$('stage').appendChild(g);setTimeout(()=>g.remove(),3050);}}
   const eMS=sendMs();
   
   if(!S.energyReady&&S.phase>=3){S.energyProgress=1;S.energyReady=true;}
@@ -2755,7 +2763,7 @@ function loop(now){
     setTimeout(()=>{
       netSay(S.pBaseHP<=0?(S.surrendered?'DEFEAT — You surrendered':'DEFEAT — Your base has fallen!'):'VICTORY — The Mandate is yours!',S.pBaseHP<=0?'bad':'nat');
       if(S.eBaseHP<=0&&AI_MODE==='hard'&&!S.winCounted&&!((typeof NET!=='undefined')&&NET.online)){S.winCounted=true;addHardWin();refreshExpertLock();
-        if(hardWins()===EXPERT_WINS_NEEDED)setTimeout(()=>say('EXPERT UNLOCKED — the computer now counts cards and reads your waves','nat'),1400);}
+        if(hardWins()===EXPERT_WINS_NEEDED)setTimeout(()=>say('EXPERT UNLOCKED','nat'),1400);}
       if(S.eBaseHP<=0&&AI_MODE==='expert'&&!S.xwCounted&&!((typeof NET!=='undefined')&&NET.online)){S.xwCounted=true;try{localStorage.setItem('hm_expert_wins',expertWins()+1);}catch(e){}
 }
       setTimeout(()=>hmWipe(showBattleLog),S.surrendered?400:800);
@@ -2943,7 +2951,7 @@ S=newState();barrInit();S.aiWave=0;aiReset();fit();renderAll();raf=requestAnimat
 .hm-pl{border:1px solid var(--hm-line);border-radius:12px;padding:16px 12px;text-align:center;min-height:96px;display:flex;flex-direction:column;justify-content:center;gap:4px}
 .hm-pl.in{border-color:#2d8c5a;background:rgba(45,140,90,.08)}.hm-pl .pn{font-family:Cinzel,Georgia,serif;letter-spacing:.1em;font-size:.95rem}
 .hm-pl .ps{color:var(--hm-dim);font-size:.9rem}.hm-pl .ps.ok{color:var(--hm-jade-l)}
-.hm-pl.wait .pn{color:var(--hm-dim)}.hm-pl.wait .pn::after{content:'';animation:hmDots 1.4s steps(4) infinite}
+.hm-pl.wait .pn{color:var(--hm-dim)}.hm-pl .pav{width:56px;height:56px;border-radius:50%;object-fit:cover;margin:0 auto 4px;border:2px solid var(--hm-line);background:#0d1a14}.hm-pl.wait .pn::after{content:'';animation:hmDots 1.4s steps(4) infinite}
 @keyframes hmDots{0%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
 .hm-vsx{font-family:Cinzel,Georgia,serif;font-weight:700;color:var(--hm-gold);font-size:1.3rem}
 .hm-start{font-family:Cinzel,Georgia,serif;font-weight:700;letter-spacing:.2em;text-transform:uppercase;font-size:1rem;padding:15px 20px;border-radius:12px;width:100%;
@@ -3036,7 +3044,7 @@ body.hm-paused #stage *{animation-play-state:paused!important}
 .hm-notice{position:fixed;left:50%;bottom:max(22px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:1300;max-width:calc(100% - 32px);
   padding:11px 16px;border-radius:10px;background:#1a1410;border:1px solid #7a2a1e;color:#ffcbbb;font-family:'Crimson Pro',Georgia,serif;font-size:1rem;box-shadow:0 10px 30px rgba(0,0,0,.5);animation:hmPop .2s ease-out}
 .hm-vs{display:flex;align-items:center;justify-content:center;gap:clamp(14px,4vw,34px);font-family:Cinzel,Georgia,serif;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
-.hm-vs .side{font-size:clamp(15px,3.2vw,22px)}.hm-vs .side.p{color:#7fe0a6}.hm-vs .side.e{color:#8fb8ff}
+.hm-vs .side{font-size:clamp(15px,3.2vw,22px);display:inline-flex;align-items:center;gap:.5em}.nav{width:2.1em;height:2.1em;border-radius:50%;object-fit:cover;flex:none;border:1px solid rgba(232,195,90,.55);background:#0d1a14}.hm-vs .side.p{color:#7fe0a6}.hm-vs .side.e{color:#8fb8ff}
 .hm-vs .x{font-size:clamp(22px,5vw,36px);color:var(--hm-gold);text-shadow:0 0 18px rgba(232,195,90,.4)}
 .hm-tip{max-width:560px;margin:30px auto 0;padding:0 8px}
 .hm-tip blockquote{margin:0;font-style:italic;font-size:clamp(16px,2.6vw,21px);line-height:1.4;color:var(--hm-fg);text-wrap:balance}
@@ -4464,7 +4472,7 @@ html, .hm-body {
 .pf-match:hover{border-color:var(--gold-dim)}
 .pf-res{flex:none;width:8.6em;font-family:var(--f-ui);font-weight:800;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase}
 .pf-res.win{color:var(--jade-light)}.pf-res.loss{color:#ff8f78}.pf-res.surr{color:#d9a08f}
-.pf-mid{flex:1;min-width:0}.pf-mode{font-weight:600}.pf-when{color:var(--fg-faint);font-size:.82rem}
+.pf-mid{flex:1;min-width:0}.pf-mode{font-weight:600}.pf-oav{flex:none;width:34px;height:34px;border-radius:50%;object-fit:cover;border:1px solid var(--border);background:#0d1a14}.pf-when{color:var(--fg-faint);font-size:.82rem}
 .pf-go{flex:none;color:var(--gold-dim);font-family:var(--f-ui);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase}
 .soon-wrap{min-height:calc(100vh - 140px);display:flex;align-items:center;justify-content:center;padding:32px 16px}
 .soon-card{text-align:center;max-width:420px;padding:36px 28px;border:1px solid var(--border);border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01))}
@@ -5008,22 +5016,6 @@ html, .hm-body {
         </div>
 
 
-        <!-- High-Hand note -->
-        <div class="syn-card" style="border-color:var(--border-gold);">
-          <div class="syn-card-head">
-            <div class="syn-rank" style="color:var(--gold);">⚔</div>
-            <div class="syn-name-wrap">
-              <div class="syn-name" style="color:var(--gold-light);">High-Hand DPS Multiplier</div>
-              <div class="syn-poker">Slot sum 17+ (per slot)</div>
-            </div>
-          </div>
-          <div class="syn-buff-list">
-            <span class="syn-buff atk">+2% DPS per slot with sum 17 or higher (max +10%)</span>
-            <span class="syn-buff atk">From 9:00 Grand Siege: +4% per slot (max +20%)</span>
-          </div>
-          <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-clubs_10" style="left:0px"></i><i class="ci ci-clubs_8" style="left:16px"></i></div><div class="sx-tot"><span>♣</span>18</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_K" style="left:0px"></i><i class="ci ci-hearts_7" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>17</div></div><div class="sx-slot"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_9" style="left:0px"></i><i class="ci ci-diamonds_5" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>14</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_Q" style="left:0px"></i><i class="ci ci-spades_K" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>20</div></div><div class="sx-slot"><div class="sx-stack" style="width:50px"><i class="ci ci-clubs_6" style="left:0px"></i><i class="ci ci-clubs_5" style="left:16px"></i></div><div class="sx-tot"><span>♣</span>11</div></div></div>
-          <div class="syn-note-line">Baked into each unit's ATK at spawn · stacks with every Synergy</div>
-        </div>
 
       </div>
     </div>
@@ -5157,7 +5149,7 @@ html, .hm-body {
         <div class="htp-timeline">
           <div class="htp-phase"><div class="t">0:00</div><div class="n">The March</div><div class="d"><div class="kv"><span>Card Cost</span><b>10g</b></div><div class="kv"><span>Send Recharge</span><b>15s</b></div><div class="kv"><span>Max Soldiers</span><b>19</b></div></div></div>
           <div class="htp-phase"><div class="t">7:00</div><div class="n">Assault</div><div class="d"><div class="kv"><span>Card Cost</span><b>10g</b></div><div class="kv"><span>Send Recharge</span><b>10s</b></div><div class="kv"><span>Max Soldiers</span><b>20</b></div></div></div>
-          <div class="htp-phase"><div class="t">9:00</div><div class="n">Grand Siege</div><div class="d"><div class="kv"><span>Card Cost</span><b>10g</b></div><div class="kv"><span>Send Recharge</span><b>None</b></div><div class="kv"><span>Max Soldiers</span><b>24</b></div><div class="kv"><span>Siege Damage</span><b>×2</b></div><div class="kv"><span>High-Hand</span><b>+4% / slot</b></div></div></div>
+          <div class="htp-phase"><div class="t">9:00</div><div class="n">Grand Siege</div><div class="d"><div class="kv"><span>Card Cost</span><b>10g</b></div><div class="kv"><span>Send Recharge</span><b>None</b></div><div class="kv"><span>Max Soldiers</span><b>24</b></div><div class="kv"><span>Siege Damage</span><b>×2</b></div></div></div>
           <div class="htp-phase locked" data-ph="p15" role="button" tabindex="0" aria-label="Locked phase — reach it in a match to reveal" onclick="revealPhase(this)">
             <div class="ph-lock"><div class="t">?? : ??</div><div class="n">Locked</div><div class="d">Survive long enough to find out…</div></div>
             <div class="ph-real" hidden><div class="t">12:00</div><div class="n">Final Siege</div><div class="d"><div class="kv"><span>Card Cost</span><b>15g</b></div><div class="kv"><span>Send Recharge</span><b>None</b></div><div class="kv"><span>Max Soldiers</span><b>25</b></div><div class="kv"><span>Barracks</span><b>Open</b></div></div></div>
@@ -5311,14 +5303,14 @@ html, .hm-body {
             <thead><tr><th>Rank</th><th>Slot total</th><th>HP</th><th>Damage</th><th>Armor</th><th>ATK Speed</th><th>Effect chance</th><th>Example</th><th>Unit</th></tr></thead>
             <tbody>
               <tr><td class="rk">Standard<small class="rk-sub">Soldier</small></td><td class="num">2 – 16</td><td class="num">×1.0</td><td class="num">×1.0</td><td class="num">×1.0</td><td class="num">×1.0</td><td class="num">8%</td><td class="rex" aria-label="9 and 5 make 14"><span class="rex-cards"><img src="data:image/webp;base64,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" alt=""><img src="data:image/webp;base64,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" alt=""></span><span class="rex-eq">= 14</span></td><td class="rwalk"><div class="hw-stage"><div class="hw-spr hw-gy"></div></div></td></tr>
-              <tr class="fort"><td class="rk">Fortified<small class="rk-sub">Soldier</small></td><td class="num">17 – 20</td><td class="num">+25–28%</td><td class="num">+10–13%</td><td class="num">+10–13%</td><td class="num">+5–8%</td><td class="num">12%</td><td class="rex" aria-label="10 and 8 make 18"><span class="rex-cards"><img src="data:image/webp;base64,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" alt=""><img src="data:image/webp;base64,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" alt=""></span><span class="rex-eq">= 18</span></td><td class="rwalk"><div class="hw-stage"><div class="hw-spr hw-gya"></div></div></td></tr>
+              <tr class="fort"><td class="rk">Fortified<small class="rk-sub">Soldier</small></td><td class="num">17 – 20</td><td class="num">+25–31%</td><td class="num">+10–16%</td><td class="num">+10–16%</td><td class="num">+5–11%</td><td class="num">12%</td><td class="rex" aria-label="10 and 8 make 18"><span class="rex-cards"><img src="data:image/webp;base64,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" alt=""><img src="data:image/webp;base64,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" alt=""></span><span class="rex-eq">= 18</span></td><td class="rwalk"><div class="hw-stage"><div class="hw-spr hw-gya"></div></div></td></tr>
               <tr class="apex"><td class="rk">Apex<small class="rk-sub">Hero</small></td><td class="num">21 (3+ cards)</td><td class="num">+70%</td><td class="num">+40%</td><td class="num">+25%</td><td class="num">+20%</td><td class="num">16%</td><td class="rex" aria-label="7, 4 and King make 21"><span class="rex-cards"><img src="data:image/webp;base64,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" alt=""><img src="data:image/webp;base64,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" alt=""><img src="data:image/webp;base64,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" alt=""></span><span class="rex-eq">= 21</span></td><td class="rwalk"><div class="hw-stage"><div class="hw-spr hw-lb"></div></div></td></tr>
               <tr class="cel"><td class="rk">Celestial<small class="rk-sub">Hero</small></td><td class="num">21 (Ace + 10/J/Q/K)</td><td class="num">+72%</td><td class="num">+42%</td><td class="num">+35%</td><td class="num">+22%</td><td class="num">20%</td><td class="rex" aria-label="Ace and King make a natural 21"><span class="rex-cards"><img src="data:image/webp;base64,UklGRnoFAABXRUJQVlA4WAoAAAAQAAAAOwAAWAAAQUxQSOIAAAABkCNr27I1thZ3d29hB+7uFZW27u5QUbEAKobO3d3dnfd57gpIck/SZSYiJsC6+FAVv1fxPDrceQXFly/vgOphnkUqiGM2VP4EEfMLDFZBbZhUmDABJYqBEKVTJVCVUnXBEFVBiPphiCYhRI/4WyvV/6GVivsESjQJIZqjmqFaoBqjKqSKocqj6oEhijIgtnlnsn2G8rgYEDt/MjlRRUKJXA2I/agChClalKgFQlRClUGVTJXyT5ZMlUVVD0PUTVUJIRqBEkFBq7KDTxVK/cB46C1oTz0tPIZnZ+cIZ2d7bS0AVlA4IHIEAABQFgCdASo8AFkAPmEokUYkIiGhKBK+MIAMCWcAzNeEf+b6NTzJ7Vbbd3Pf1vDvtb/4X8nOIvxj/tuND6v9Df+U8K6OP/leox/yeeD6Z9gj+W/1H/k9fL0Uf1PAk/WAZN3fa6u/6MY7PIOP3PSpAEQPmrDOY4xJG36wZ+J1DP3uR26QLa2/1ENSsdU9hWuyI3oyBlyrVlCHCLbOMuG4ufbUyYh/gUyeaj1Z/XJRRiIEer7JNUp7jUy+4xzgAP78dPJvlhrvjkZ+QXh51GxBBmYzjB9CjvxG8awOpO24udAiOHqIsmReDPYf0UJ66OOFkzqifQD0EfFkBHvF57P+jde9GC6/VUfR//80Alpj6HDU2B/IOe49Vs0Z2aOl8VnNU/IbdtuNECp76SZIuGbtUhZ+DZuN6W8B855IPjSfSt//1a3UDh/C/M++O/QYSeAFRnYSxbGKvDOVCj7NA3wJj6usNvD7+5XTboZXmUKvwFn0tbCeHXop2QSVK9yD774Xf21M6dVTtIT75UEkcBVk03rluzTZUj7rYMU4D+bxFqwbHcDHvD8E4/ocfHGBlPuCD53GZ7jljShexlMVVBY6Hv+a7vPTQricpVdWSRyiZp2a3fxLqlcFkIZPG64Oup+my/y9875iMf1ma99KGBNXBujVsGpgXEyFdJjhXSNOdw1OaiwY216KcvkgixqY/ZL+7Gr3zwum9um/OmUinDeVIcMHX0Vcw8+Hdx5febG4yJ8uokvdYZfPU8CDYFMGU8aWGPu9GIBWkJOVdR3O1YtGTIqpX24SR1n+/vEuoHJZy2jD6Pk5wMfSAAKXmr//26v6PGDbIZU6pOs6N5wEz7i1hh5LFGhWuPVuQjjmBFm17ys7l8KHoMrII8i6e69mttIwpOLRxb1qEohhPXyBhlp0RzvCtU3qRe2aizr+g/F6qbkh799HBXUKRRpmBF7m/3cKx/qsofwPaF7Cl407WvGGlsYI2Emc1MB64MfeH7BmouYm1w9VZQaNEuqSmTtbvXntsTnFmoiOnFF2kfDn73FxeCLQ09EDOILplwMvTp3xNK32+f9genEgsBq/GBjd2dwGYPich2nVzyAKtjR+YRZCYF3xgA0wRmykh6/upc9Kr93Quph56qN1XFkCIbNdfgDEsc7C8s65/jx7ltmULs9ytLkOY5rMQ65VuJ1tJ0s1v5FxXhRLdjswxmYyrD4C/yQE6V6zaChzkL0+MXwL5aXq/8ZbcH6n8dbW/CN6tWtsGIzKwesXhz/52zHA1O9HK4ubxWS6QJTdtJngTTq5jQyYZPxjTwUsP2qf7qcNY5O48WP1aIo+zO2OLZq6Aq1A0xfVZdB1M44XBetamsdbkIvc6F1LQcpHZw2R7flq7yIRe+hDv2afRNy/iSjewXEPcPcozivhHeQ7J2ni3iESG1rnfzj9b7NEJAbhdfjkudn8tN5qB3TaW3kwnD2no7fwZYf3jetg+diJv0M66K6QYBn64H9XnQc63MBtKEjT+6m/G7mcAAAA" alt=""><img src="data:image/webp;base64,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" alt=""></span><span class="rex-eq">= 21</span></td><td class="rwalk"><div class="hw-stage cel"><div class="hw-spr hw-lb"></div></div></td></tr>
               <tr class="broken"><td class="rk">Bust</td><td class="num">Over 21</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="rex" aria-label="King, 8 and 5 make 23 — bust"><span class="rex-cards"><img src="data:image/webp;base64,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" alt=""><img src="data:image/webp;base64,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" alt=""><img src="data:image/webp;base64,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" alt=""></span><span class="rex-eq">= 23</span></td><td class="rwalk num">—</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="htp-note">Fortified grows by +1% to every stat for each number above 17, so a 20 beats a 17. Celestial is the hero version of Apex — the hero's special skill awakens.</p>
+        <p class="htp-note">Fortified grows by +2% to every stat for each number above 17, so a 20 beats a 17. Celestial is the hero version of Apex — the hero's special skill awakens.</p>
 
         <!-- ── TIPS ── -->
         <div class="syn-tier-label">Tactician's tips</div>
@@ -5428,13 +5420,6 @@ html, .hm-body {
             </div>
             <div class="toggle on" onclick="this.classList.toggle('on')" role="switch" aria-label="Show DPS numbers"></div>
           </div>
-          <div class="settings-row">
-            <div class="settings-row-left">
-              <div class="settings-row-label">High-Hand Multiplier Display</div>
-              <div class="settings-row-sub">Show ⚔ bonus on synergy panel</div>
-            </div>
-            <div class="toggle on" onclick="this.classList.toggle('on')" role="switch" aria-label="Show high-hand bonus"></div>
-          </div>
         </div>
 
         <!-- ABOUT -->
@@ -5446,7 +5431,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#10.0 · Prototype</span>
+            <span class="settings-row-value">#10.2 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -5549,10 +5534,10 @@ html, .hm-body {
     <h2 class="hm-h" id="hmDiffH">Choose Your Opponent</h2>
     <p class="hm-sub">Battle the computer. Win on Hard to unlock Expert.</p>
     <div class="hm-diffs">
-      <button class="hm-diff" data-d="blind" type="button" onclick="hmStartVsCpu('blind')"><span class="dn">Easy</span><span class="dd">Builds random suits. No High-Hand bonus.</span></button>
-      <button class="hm-diff" data-d="reactive" type="button" onclick="hmStartVsCpu('reactive')"><span class="dn">Normal</span><span class="dd">Counters your suits and gets the High-Hand bonus.</span></button>
-      <button class="hm-diff" data-d="hard" type="button" onclick="hmStartVsCpu('hard')"><span class="dn">Hard</span><span class="dd">Hunts Synergies and high totals, draws faster, waits for strong waves.</span></button>
-      <button class="hm-diff" data-d="expert" type="button" onclick="hmStartVsCpu('expert')"><span class="dn">Expert</span><span class="dd" id="hmExpertTxt">Counts cards, reads your waves and answers them.</span></button>
+      <button class="hm-diff" data-d="blind" type="button" onclick="hmStartVsCpu('blind')"><span class="dn">Easy</span></button>
+      <button class="hm-diff" data-d="reactive" type="button" onclick="hmStartVsCpu('reactive')"><span class="dn">Normal</span></button>
+      <button class="hm-diff" data-d="hard" type="button" onclick="hmStartVsCpu('hard')"><span class="dn">Hard</span></button>
+      <button class="hm-diff" data-d="expert" type="button" onclick="hmStartVsCpu('expert')"><span class="dn">Expert</span><span class="dd" id="hmExpertTxt"></span></button>
     </div>
     <div class="hm-row"><button class="hm-btn hm-ghost" type="button" onclick="hmCloseDiff()">Cancel</button></div>
   </div>
@@ -5560,7 +5545,7 @@ html, .hm-body {
 
 <!-- match loading screen -->
 <div class="hm-ov hm-full" id="hmLoad" hidden>
-  <div class="hm-vs"><span class="side p" id="hmLoadMe">Guest</span><span class="x">VS</span><span class="side e" id="hmLoadCpu">CPU</span></div>
+  <div class="hm-vs"><span class="side p"><img class="nav" id="hmLoadMeAv" src="av/foot_soldier.webp" alt=""><span id="hmLoadMe">Guest</span></span><span class="x">VS</span><span class="side e"><span id="hmLoadCpu">CPU</span><img class="nav" id="hmLoadOppAv" src="av/robot.webp" alt=""></span></div>
   <div class="hm-bar"><i id="hmLoadBar"></i></div>
   <div class="hm-stat" id="hmLoadStat">Preparing the battlefield…</div>
   <div class="hm-lbl">Tactician's Tip</div>
@@ -5667,9 +5652,9 @@ html, .hm-body {
     </div>
     <div class="hm-panel">
       <div class="hm-players">
-        <div class="hm-pl in" id="hmP1"><div class="pn" id="hmP1n">Guest (You)</div><div class="ps" id="hmP1s">Host</div></div>
+        <div class="hm-pl in" id="hmP1"><img class="pav" id="hmP1a" src="av/foot_soldier.webp" alt=""><div class="pn" id="hmP1n">Guest (You)</div><div class="ps" id="hmP1s">Host</div></div>
         <div class="hm-vsx">VS</div>
-        <div class="hm-pl wait" id="hmP2"><div class="pn" id="hmP2n">Waiting for a player</div><div class="ps" id="hmP2s">Room is open</div></div>
+        <div class="hm-pl wait" id="hmP2"><img class="pav" id="hmP2a" src="av/foot_soldier.webp" alt="" style="visibility:hidden"><div class="pn" id="hmP2n">Waiting for a player</div><div class="ps" id="hmP2s">Room is open</div></div>
       </div>
     </div>
     <button class="hm-start" id="hmStartBtn" type="button" disabled onclick="hmPressStart()">Start</button>
@@ -5858,7 +5843,7 @@ function hmCloseAudio(){hmShow('hmAudio',false);}
 function hmOpenDiff(){
   const n=hardWins(),lock=n<EXPERT_WINS_NEEDED,b=document.querySelector('.hm-diff[data-d=expert]');
   b.classList.toggle('locked',lock);b.setAttribute('aria-disabled',lock?'true':'false');
-  $('hmExpertTxt').textContent=lock?('🔒 Win '+EXPERT_WINS_NEEDED+' matches on Hard to unlock ('+Math.min(n,EXPERT_WINS_NEEDED)+'/'+EXPERT_WINS_NEEDED+').'):'Counts cards, reads your waves and answers them.';
+  $('hmExpertTxt').textContent=lock?('🔒 Win '+EXPERT_WINS_NEEDED+' matches on Hard to unlock ('+Math.min(n,EXPERT_WINS_NEEDED)+'/'+EXPERT_WINS_NEEDED+').'):'';$('hmExpertTxt').style.display=lock?'':'none';
   hmShow('hmDiff',true);}
 function hmCloseDiff(){hmShow('hmDiff',false);}
 function hmPvpSoon(btn){const l=btn.querySelector('.menu-btn-sub');const o=l.textContent;l.textContent='Online battles arrive in a later build';setTimeout(()=>l.textContent=o,1600);}
@@ -5868,7 +5853,7 @@ function hmTip(){let i;do{i=Math.floor(Math.random()*HM.tips.length);}while(HM.t
 function hmStartVsCpu(mode){
   if(mode==='expert'&&hardWins()<EXPERT_WINS_NEEDED)return;
   AI_MODE=mode;AI.targetSuit=null;HM.mode='practice';AVS.cpu='robot';S.paused=false;document.body.classList.remove('hm-paused');hmShow('hmPaused',false);HM.opp='CPU ('+({blind:'Easy',reactive:'Normal',hard:'Hard',expert:'Expert'}[mode])+')';document.querySelectorAll('.aibtn').forEach(b=>b.classList.toggle('active',b.dataset.ai===mode));
-  hmShow('hmDiff',false);hmTip();$('hmLoadCpu').textContent='CPU · '+({blind:'Easy',reactive:'Normal',hard:'Hard',expert:'Expert'}[mode]);
+  hmShow('hmDiff',false);hmTip();$('hmLoadMeAv').src='av/'+AVS.me+'.webp';$('hmLoadOppAv').src='av/'+(AVS.cpu||'robot')+'.webp';$('hmLoadCpu').textContent='CPU · '+({blind:'Easy',reactive:'Normal',hard:'Hard',expert:'Expert'}[mode]);
   const L=$('hmLoad');L.classList.remove('out');L.hidden=false;const bar=$('hmLoadBar');bar.style.transition='none';bar.style.width='0';void bar.offsetWidth;
   bar.style.transition='width 2.6s cubic-bezier(.3,.1,.2,1)';bar.style.width='100%';
   const steps=['Preparing the battlefield…','Building the barricades…','Shuffling 4 decks into the barracks…','The armies take position…'];let k=0;$('hmLoadStat').textContent=steps[0];
@@ -5909,7 +5894,7 @@ function hmNotice(msg){const n=document.createElement('div');n.className='hm-not
 /* ═══ ONLINE (Step 1: rooms + ready check + countdown). PeerJS = browser-to-browser (WebRTC) with a free public
    matchmaking server. Add ?net=local to the URL to test with two tabs of the same browser (no internet needed). ═══ */
 const NET_LOCAL=/[?&]net=local/.test(location.search);
-const NET_PUB_SLOTS=12,NET_PREFIX='hm98-';
+const NET_PUB_SLOTS=12,NET_PREFIX='hm101-';
 const NET={peer:null,conn:null,role:null,code:null,pub:false,meReady:false,themReady:false,busy:false,search:null,
   oppName:null,online:false,view:false,flip:false,local:false,noFwd:false,out:[],gNew:3,gPrimed:false,vready:false,ended:false,tick:null,n:0};
 const _CODE_CH='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -5955,6 +5940,7 @@ function hmRoomUI(){
   $('hmP1n').textContent=HM.name+' (You)';$('hmP1s').textContent=(host?'Host':'Player 2')+(NET.meReady?' · Ready ✓':'');$('hmP1s').className='ps'+(NET.meReady?' ok':'');
   const p2=$('hmP2');p2.classList.toggle('wait',!has);p2.classList.toggle('in',has);
   $('hmP2n').textContent=has?(NET.oppName||(host?'Player 2':'Host')):'Waiting for a player';
+  {const a1=$('hmP1a'),a2=$('hmP2a'),s1='av/'+AVS.me+'.webp',s2='av/'+(AVS.opp||'foot_soldier')+'.webp';if(a1.getAttribute('src')!==s1)a1.src=s1;if(has&&a2.getAttribute('src')!==s2)a2.src=s2;a2.style.visibility=has?'visible':'hidden';}
   $('hmP2s').textContent=has?(NET.themReady?'Ready ✓':'Joined — not ready'):(host?(NET.pub?'Listed in Join a Game':'Share the room code'):'');
   $('hmP2s').className='ps'+(has&&NET.themReady?' ok':'');
   const b=$('hmStartBtn');b.disabled=!has;b.classList.toggle('ready',NET.meReady);
@@ -6083,8 +6069,8 @@ const AV_HINT={zhang_fei:['Summon Zhang Fei (♣ Standard or Fortified) 10 times
   huanglong:['“Call down the sky’s three great wonders, and the golden dragon will stay.”',u=>[(u.o_mandate||0)+(u.o_royal||0)+(u.o_sflush||0),10]],
   extra_soldier_horse:['“Walk the hard road to victory, and a wiser teacher waits at its end.”',()=>[hardWins(),EXPERT_WINS_NEEDED]],
   robot:['“The student who beats the master may wear the master’s face.”',()=>[expertWins(),10]],
-  bradley:['“Woof woof, woof woof woof, woof!” — Confucius’s Dog',()=>[unrankedOnline(),100]]};
-AV_LOCK.bradley=()=>bradleyCode()||unrankedOnline()>=100;
+  bradley:['“Woof woof, woof woof woof, woof!” — Confucius’s Dog',()=>[unrankedOnline(),888]]};
+AV_LOCK.bradley=()=>bradleyCode()||unrankedOnline()>=888;
 const AV_ONLINE=['bradley','sun_shangxiang','lu_lingqi','zhurong','guan_yinping','war_qilin','barded_warhorse','white_cloud_tiger','jade_spirit_stag','extra_lubu_horse','extra_zhuge_horse','extra_white_lion','huanglong'];
 function avHintText(a){const h=AV_HINT[a];if(!h)return'';const pr=h[1](avUses());return h[0]+' · '+Math.min(pr[0],pr[1])+'/'+pr[1]+(AV_ONLINE.indexOf(a)>=0?' · online battles only':'');}
 function avHint(a){const R=hmSR(),el=R&&R.getElementById('avHint');if(!el)return;const t=(a&&!avUnlocked(a))?avHintText(a):'';el.textContent=t;el.hidden=!t;}
@@ -6113,7 +6099,7 @@ function pfRecord(){
   const n={c:0,s:0,d:0,h:0};L.pWaves.forEach(w=>(w.slotLabels||w.suits||[]).forEach(l=>{const k=BL_SC[String(l)[0]];if(k)n[k]++;}));
   const best=L.pWaves.reduce((b,x)=>(!b||(x.dps||0)>(b.dps||0))?x:b,null);
   let top=null;L.pWaves.forEach(w=>{const i=PF_ORDER.indexOf(w.hand||'none');if(i>0&&(!top||i>top.i))top={i,name:w.handName||w.hand};});
-  const m={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:Date.now(),mode:HM.mode,opp:HM.opp,ranked:false,diff:HM.mode==='practice'?AI_MODE:null,
+  const m={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),t:Date.now(),mode:HM.mode,opp:HM.opp,oa:HM.mode==='practice'?(AVS.cpu||'robot'):(AVS.opp||'foot_soldier'),ranked:false,diff:HM.mode==='practice'?AI_MODE:null,
     res:win?'win':(S.surrendered?'surr':'loss'),dur:Math.round(L.duration||0),waves:L.pWaves.length,units:n,
     kills:L.pKills||0,fodder:L.pFodder||0,gold:Math.round((L.pInc||0)+(L.pBounty||0)),bounty:L.pBounty||0,cards:L.pCards||0,busts:L.pBusts||0,
     nat:L.pNat||0,hero:L.pHero||0,mandate:L.pMandate||0,best:best?{name:(!best.hand||best.hand==='none')?'No Synergy':(best.handName||best.hand),dps:Math.round((best.dps||0)*10)/10}:null,top,
@@ -6182,7 +6168,7 @@ function hmRenderProfile(){const R=hmSR();if(!R||!R.getElementById('pfMain'))ret
   g('pfHist').innerHTML=ms.length?ms.slice().reverse().map(m=>{const d=new Date(m.t);
       const when=d.toLocaleDateString(undefined,{month:'short',day:'numeric'})+', '+d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
       return '<button type="button" class="pf-match" onclick="hmViewReport(\''+m.id+'\')"><span class="pf-res '+m.res+'">'+({win:'Victory',loss:'Defeat',surr:'Surrendered'}[m.res])+'</span>'
-        +'<span class="pf-mid"><div class="pf-mode">'+(MODE[m.mode]||m.mode)+' · '+m.opp+'</div><div class="pf-when"><span class="pf-mt">Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b></span> · '+when+'</div></span>'
+        +'<img class="pf-oav" src="av/'+(m.oa||(m.mode==='practice'?'robot':'foot_soldier'))+'.webp" alt="">'+'<span class="pf-mid"><div class="pf-mode">'+(MODE[m.mode]||m.mode)+' · '+m.opp+'</div><div class="pf-when"><span class="pf-mt">Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b></span> · '+when+'</div></span>'
         +'<span class="pf-go">'+(m.rep?'Full Report ›':'')+'</span></button>';}).join('')
     :'<div class="empty-history">'+(ranked?'No ranked matches yet.':cpu?'No matches vs the computer yet.<br>Play a battle to see your history here.':'No online matches yet.<br>Play online to see your history here.')+'</div>';}
 // reopen a saved Battle Report from Match History
@@ -6341,7 +6327,7 @@ window.addEventListener('pagehide',()=>{if(NET.conn&&NET.conn.open){try{NET.conn
 function netStartMatch(){
   const host=NET.role==='host';NET.meReady=NET.themReady=false;NET.ended=false;NET.vready=false;NET.out.length=0;NET.n=0;NET.vp=null;NET.slotSig=null;NET.lastLog=null;NET.lastRx=performance.now();
   hmShow('hmRoom',false);HM.mode=NET.pub?'skirmish':'custom';HM.opp=NET.oppName||'Opponent';
-  hmTip();$('hmLoadCpu').textContent=HM.opp;
+  hmTip();$('hmLoadMeAv').src='av/'+AVS.me+'.webp';$('hmLoadOppAv').src='av/'+(AVS.opp||'foot_soldier')+'.webp';$('hmLoadCpu').textContent=HM.opp;
   const L=$('hmLoad');L.classList.remove('out');L.hidden=false;const bar=$('hmLoadBar');bar.style.transition='none';bar.style.width='0';void bar.offsetWidth;
   bar.style.transition='width 2.6s cubic-bezier(.3,.1,.2,1)';bar.style.width='100%';
   const steps=['Preparing the battlefield…','Building the barricades…','Shuffling 4 decks into the barracks…','The armies take position…'];let k=0;$('hmLoadStat').textContent=steps[0];
