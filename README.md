@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 10.5**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 10.6**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -57,6 +57,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **10.3 art:** new chibi menu art (`menu/`): a bridge banner with a brush-ink 天命 title on Play, pictures behind the Play cards, and scenery banners on Profile, Rank, Synergies and How to Play. A Ranked card is on the Play page (coming soon).
 - **10.4:** the opponent's color is now a muted red (was blue), the Play banner has the red fortress on the left and green on the right, your name and HP sit higher on the battle screen, and online your own soldiers' HP bars show your color.
 - **10.5:** the enemy's name and HP sit at the same height as yours.
+- **10.6:** a new look. The menus are now pale rice paper with ink-wash paintings (the chibi art is gone from the menus), the title screen shows the brush 天命, and the battle has a painted valley with a stone bridge. Synergies appear on brushstrokes colored by level (black, indigo, red, gold), Monolith Vanguard gets its own stroke, and Send is a sword that shows how many slots you have ready. Smoother play when the bridge is crowded.
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.
