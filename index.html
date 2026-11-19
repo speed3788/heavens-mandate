@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 9.9</title>
+<title>Heaven's Mandate · Build 10.0</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -882,7 +882,7 @@ html,body{margin:0;height:100%;background:#030a07;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #9.9</div>
+    <div class="sub">Build #10.0</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -1635,7 +1635,7 @@ function updateVignettes(){
 
 function renderHUD(){
   if(window.renderSuitTrack)renderSuitTrack();
-  if(S.openShoe)renderOpenShoe();
+  renderOpenShoe();  // 10.0: also clears a face-up card left over from the last match
   renderOppRow();
   renderOppFormations();
   renderPlayerFormations();
@@ -5446,7 +5446,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#9.9 · Prototype</span>
+            <span class="settings-row-value">#10.0 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
