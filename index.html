@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 10.9</title>
+<title>Heaven's Mandate · Build 11.0</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -883,7 +883,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #10.9</div>
+    <div class="sub">Build #11.0</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -935,7 +935,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
   <!-- phase timer -->
   <div id="phaseBar">
     <div id="phaseLabel">THE MARCH</div>
-    <div id="matchTime">0:00</div>
+    <div class="mt-row"><b id="wvE" class="uc-e" title="Enemy soldiers on the bridge">0</b><div id="matchTime">0:00</div><b id="wvP" class="uc-p" title="Your soldiers on the bridge">0</b></div>
   </div>
   <!-- v6.1 tower art -->
   <div class="tower" id="towerE"></div>
@@ -1678,7 +1678,7 @@ function renderHUD(){
   fb.disabled=!S.running||emptyCount===0||S.gold<DRAW_COST;
 
   $('shoeStat').textContent='Barracks: '+S.shoe.length+' / '+(DECKS*52);
-  {let ne=0,np=0;S.units.forEach(u=>{if(u.alive&&!u._fodder){if(u.side==='e')ne++;else np++;}});const w=$('waves');if(w._s!==ne+'|'+np){w._s=ne+'|'+np;w.innerHTML='<b class="uc-e">'+ne+'</b><i class="uc-sep">|</i><b class="uc-p">'+np+'</b>';}}
+  {let ne=0,np=0;S.units.forEach(u=>{if(u.alive&&!u._fodder){if(u.side==='e')ne++;else np++;}});const w=$('waves');if(w._s!==ne+'|'+np){w._s=ne+'|'+np;w.innerHTML='<b class="uc-e">'+ne+'</b><i class="uc-sep">|</i><b class="uc-p">'+np+'</b>';$('wvE').textContent=ne;$('wvP').textContent=np;}}
   const epct=Math.min(100,S.energyProgress*100);
   $('ebar').style.width=(locked?0:epct)+'%';
   $('ebar').classList.toggle('ph2',S.phase>=2);
@@ -3025,6 +3025,20 @@ S=newState();barrInit();S.aiWave=0;aiReset();fit();renderAll();raf=requestAnimat
 #synergy .sh-name.sh-2{margin-top:6px!important}
 #synergy .sh-name:has(+.sh-2){margin-bottom:2px!important}
 #hmGear .igear{display:block;width:20px;height:20px;margin:auto;background:url(menu/ink_gear.webp) center/contain no-repeat}
+
+/* ── 11.0 ── */
+#topRight #waves{display:none!important}
+#phaseBar .mt-row{display:flex;align-items:center;justify-content:center;gap:14px}
+#wvE,#wvP{min-width:22px;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1;text-shadow:0 0 6px rgba(236,224,198,.9)}
+#wvE{text-align:right}#wvP{text-align:left}
+#stage #playerForm{top:175px!important}
+#toast:not(.end){left:auto!important;right:54px!important;top:9px!important;transform:translateY(-6px)!important;font-size:12px!important;padding:5px 14px!important;max-width:380px;overflow:hidden;text-overflow:ellipsis}
+#toast.show:not(.end){transform:none!important}
+#battleLog .bl-wave-row{display:grid!important;grid-template-columns:30px minmax(0,1fr) 92px 38px 20px;column-gap:6px;align-items:center}
+#battleLog .bl-wave-row>span:nth-child(2){text-align:left}
+#battleLog .bl-wave-row>span:nth-child(3){text-align:center}
+#battleLog .bl-wave-row>span:nth-child(4){text-align:right}
+#battleLog .bl-wave-row>span:not(:nth-child(2)){white-space:nowrap}
 /* ── rice-paper theme (pop-ups over the battle) ── */
 :root{--hm-ob:#e9dcc2;--hm-ob2:#f3e9d5;--hm-line:#cdb894;--hm-gold:#9b3324;--hm-gold-d:#b4935a;--hm-jade:#3f6b4a;--hm-jade-l:#3f6b4a;--hm-fg:#2a2017;--hm-dim:#5a4834;--hm-red:#9b3324}
 .hm-full,.hm-page{background:#e9dcc2!important}
@@ -4806,7 +4820,7 @@ html, .hm-body {
 .battle-head{display:table;margin:4px auto 16px!important;padding:10px 32px!important}
 .battle-head .battle-title,.section-head .section-title{color:#2a2017!important;text-shadow:none!important}
 .battle-head .battle-sub,.section-head .section-sub{color:#5a4834!important}
-.battle-grid{margin-top:4px}.ilock{display:inline-block;width:12px;height:12px;background:url(menu/ink_lock.webp) center/contain no-repeat;margin-right:2px}
+.battle-grid{margin-top:4px}.battle-card:not(.bc-council)::before{bottom:auto!important;height:auto!important;aspect-ratio:3/2;-webkit-mask-image:linear-gradient(180deg,#000 68%,transparent 100%)!important;mask-image:linear-gradient(180deg,#000 68%,transparent 100%)!important}.battle-grid .battle-card:not(.bc-council){padding-top:calc(66.67% - 56px)!important}.battle-grid .battle-card:not(.bc-council) .bc-name{display:block;margin-bottom:4px;text-shadow:0 0 3px #f3e9d5,0 0 8px #f3e9d5,0 0 14px #f3e9d5!important}.ilock{display:inline-block;width:12px;height:12px;background:url(menu/ink_lock.webp) center/contain no-repeat;margin-right:2px}
 /* ── 10.7 menus ── */
 @media (min-width:641px){.battle-card:not(.bc-council){padding-top:150px!important}
  .battle-card:not(.bc-council)::before{-webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 50%)!important;mask-image:linear-gradient(180deg,#000 30%,transparent 50%)!important}}
@@ -5810,7 +5824,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#10.9 · Prototype</span>
+            <span class="settings-row-value">#11.0 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
