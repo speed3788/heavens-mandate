@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 10.8</title>
+<title>Heaven's Mandate · Build 10.9</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -883,7 +883,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #10.8</div>
+    <div class="sub">Build #10.9</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -1125,7 +1125,7 @@ const FORMATIONS={
 };
 function mk(hand,flushSuit,buffLine,subLine){return{hand,flushSuit,buffLine,subLine,...FORMATIONS[hand]};}
 // v6.1: a totals Synergy that is also a Flush keeps its own buffs AND gains the Flush on-hit effect
-function withFlush(w,suit,el){return{...w,flushStack:suit,flushSuit:suit,name:w.name+' + '+FORMATIONS.flush.name,poker:w.poker+' + Flush',buffLine:w.buffLine+' · '+el,subLine:w.subLine+' · 5-suit '+suit};}
+function withFlush(w,suit,el){return{...w,flushStack:suit,flushSuit:suit,name:w.name+' + '+FORMATIONS.flush.name,poker:w.poker+' + Flush',buffLine:w.buffLine+' · Monolith +20% HP/ATK · '+el,subLine:w.subLine+' · 5-suit '+suit};}
 // ── Sum-based straight detection ──
 // A straight = all 5 slots filled with 5 consecutive blackjack totals (any range)
 function isStrictStraight(slots){
@@ -1149,7 +1149,7 @@ function evalPoker(slots){
   // Summit tiers
   if(n===5&&sums.every(s=>s===21)){
     // v6.1: Bai Wu removed — any 5 x 21 is now Heaven's Mandate (+ Flush effect if all one suit)
-    const m=mk('mandate',null,'Huanglong Dragon Sweep · 500 Base DMG','All 5 slots = 21');
+    const m=mk('mandate',null,'+40% HP/Armor · +30% ATK/Spd/AS · Huanglong Dragon Sweep · 500 Base DMG','All 5 slots = 21');
     const fs=suits.every(x=>x===suits[0])?suits[0]:null;
     return fs?withFlush(m,fs,{'♥':'+6% HP/3s','♦':'+20% range','♣':'+10% armor','♠':'+20% AS'}[fs]):m;
   }
@@ -1159,9 +1159,9 @@ function evalPoker(slots){
   const flushSuit=n===5&&top[1]===5?top[0]:null;
   const flushSize=flushSuit?top[1]:0;
   // Royal Flush
-  if(n===5&&isRoyalFlush(slots))return mk('royal',flushSuit,'Monolith Vanguard + Flowing Serpent ×1.25','17-18-19-20-21 same suit');
+  if(n===5&&isRoyalFlush(slots))return mk('royal',flushSuit,'+30% HP/Armor/ATK/AS/Status · +37.5% Spd · Monolith +25% HP/ATK · '+{'♥':'+7.5% HP/3s','♦':'+25% range','♣':'+12.5% armor','♠':'+25% AS'}[flushSuit]+' · Huanglong Dragon Sweep · 500 Base DMG','17-18-19-20-21 same suit');
   // Straight Flush (strict 5-card)
-  if(n===5&&flushSuit&&isStrictStraight(slots))return mk('sflush',flushSuit,'Monolith Vanguard + Flowing Serpent','5 consec. sums same suit');
+  if(n===5&&flushSuit&&isStrictStraight(slots))return mk('sflush',flushSuit,'+24% HP/Armor/ATK/AS/Status · +30% Spd · Monolith +20% HP/ATK · '+{'♥':'+6% HP/3s','♦':'+20% range','♣':'+10% armor','♠':'+20% AS'}[flushSuit]+' · Huanglong Dragon Sweep','5 consec. sums same suit');
   // v6.1: two families — TOTALS (Pair…Five of a Kind, biggest one only) and SUIT (Flush).
   // A wave that earns one of each gets BOTH bonuses.
   let tot=null;
@@ -2750,7 +2750,7 @@ var _RA=[];function blSetRes(el,v){v=String(v||'');if(!v.includes('|')){const t=
 
 // 10.8: bonus line -> one box per bonus (same names and colors as the Synergies page)
 var HM_STAT={HP:['hp','Max HP'],Armor:['def','Armor'],ATK:['atk','ATK'],Spd:['spd','Move Speed'],AS:['aspd','ATK Speed'],Status:['fx','Status Chance']};
-var HM_FLUSH={'+6% HP/3s':['hearts','♥ heals 6% Max HP / 3s'],'+20% range':['diamonds','♦ +20% attack range'],'+10% armor':['clubs','♣ +10% base armor'],'+20% AS':['spades','♠ +20% ATK Speed']};
+var HM_FLUSH={'+7.5% HP/3s':['hearts','♥ heals 7.5% HP/3s'],'+25% range':['diamonds','♦ +25% attack range'],'+12.5% armor':['clubs','♣ +12.5% base armor'],'+25% AS':['spades','♠ +25% ATK Speed'],'+6% HP/3s':['hearts','♥ heals 6% HP/3s'],'+20% range':['diamonds','♦ +20% attack range'],'+10% armor':['clubs','♣ +10% base armor'],'+20% AS':['spades','♠ +20% ATK Speed']};
 function hmChips(line){
   const out=[];String(line||'').split(' · ').forEach(p=>{p=p.replace(/\s*\([^)]*\)/g,'').trim();if(!p)return;
     if(HM_FLUSH[p]){out.push(HM_FLUSH[p]);return;}
@@ -5810,7 +5810,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#10.8 · Prototype</span>
+            <span class="settings-row-value">#10.9 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
