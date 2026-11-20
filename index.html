@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 10.7</title>
+<title>Heaven's Mandate · Build 10.8</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -883,17 +883,17 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #10.7</div>
+    <div class="sub">Build #10.8</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
     <button id="reset" type="button" hidden>New Match</button>
-    <button id="hmGear" type="button" title="Options" aria-label="Options" onclick="hmOpenAudio()">⚙</button>
+    <button id="hmGear" type="button" title="Options" aria-label="Options" onclick="hmOpenAudio()"><i class="igear"></i></button>
   </div>
-  <div id="sndBox"><button id="sfxBtn" class="sndbtn" type="button" title="Sound effects on/off" onclick="toggleSfx()">🔊 SFX</button><button id="musBtn" class="sndbtn" type="button" title="Music on/off" onclick="toggleMusic()">♪ Music</button></div>
+  <div id="sndBox"><button id="sfxBtn" class="sndbtn" type="button" title="Sound effects on/off" onclick="toggleSfx()">SFX</button><button id="musBtn" class="sndbtn" type="button" title="Music on/off" onclick="toggleMusic()">Music</button></div>
   <div id="toast"></div>
   <div id="startGame">
-    <button id="startBtn" type="button">⚔ START GAME</button>
+    <button id="startBtn" type="button">START GAME</button>
   </div>
   <div id="preMatch">
     <div class="pmt">PREPARE YOUR RANKS</div>
@@ -911,11 +911,11 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
       <div class="bl-col" id="blAI"></div>
     </div>
     <div class="bl-waves">
-    <div class="bl-waves-col"><h3>⚔ Your Waves</h3><div id="blWavesP" class="bl-waves-scroll"></div></div>
-    <div class="bl-waves-col"><h3 id="blWavesEH">🤖 Enemy Waves</h3><div id="blWavesE" class="bl-waves-scroll"></div></div>
+    <div class="bl-waves-col"><h3>Your Waves</h3><div id="blWavesP" class="bl-waves-scroll"></div></div>
+    <div class="bl-waves-col"><h3 id="blWavesEH">Enemy Waves</h3><div id="blWavesE" class="bl-waves-scroll"></div></div>
   </div>
     <div class="bl-btns">
-      <button class="bl-btn" id="blDownload">⬇ Download Log</button>
+      <button class="bl-btn" id="blDownload">Download Log</button>
       <button class="bl-btn" id="blClose">Main Menu</button>
     </div>
   </div>
@@ -1004,7 +1004,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
   </script>
   <button id="synBtn" type="button" aria-expanded="false" aria-controls="synSheet">SYNERGIES</button>
   <div id="synSheet" hidden role="dialog" aria-label="Synergy cheat sheet">
-    <div class="ssHead"><span>Synergies</span><button class="ssX" type="button" aria-label="Close">✕</button></div>
+    <div class="ssHead"><span>Synergies</span><button class="ssX" type="button" aria-label="Close">×</button></div>
     <div class="ssList" id="ssList"></div>
   </div>
   <script>
@@ -1194,7 +1194,7 @@ function blBest(waves){const w=waves.reduce((b,x)=>(!b||(x.dps||0)>(b.dps||0))?x
   if(!w)return '<span>—</span>';const nm=(!w.hand||w.hand==='none')?'No Synergy':(w.handName||w.hand);
   return '<span>'+nm+' · <b>'+(Math.round((w.dps||0)*10)/10)+' DPS</b> <small class="bl-when">(wave '+w.wave+', '+fmtTime((w.time||0)*1000)+')</small></span>';}
 function showBattleLog(){
-  {const h=document.getElementById('blWavesEH');if(h)h.textContent=((typeof NET!=='undefined')&&NET.online)?'⚔ '+HM.opp+"'s Waves":'🤖 Enemy Waves';}
+  {const h=document.getElementById('blWavesEH');if(h)h.textContent=((typeof NET!=='undefined')&&NET.online)?HM.opp+"'s Waves":'Enemy Waves';}
   const L=S.log;
   const win=S.eBaseHP<=0;
   const dur=fmtTime((L.duration||0)*1000);{const _t=document.getElementById('blTime');if(_t)_t.innerHTML='Match Time: <b>'+dur+'</b>';}
@@ -1205,7 +1205,7 @@ function showBattleLog(){
 
   // Player stats
   document.getElementById('blPlayer').innerHTML=`
-    <h3><img class="nav" src="av/${(window.AVS&&AVS.me)||'foot_soldier'}.webp" alt="">⚔ Your Side</h3>
+    <h3><img class="nav" src="av/${(window.AVS&&AVS.me)||'foot_soldier'}.webp" alt="">Your Side</h3>
     <div class="bl-stat">Waves Sent <span>${L.pWaves.length}</span></div>
     <div class="bl-stat">Units Summoned ${blSummoned(L.pWaves)}</div>
     <div class="bl-stat">Cards Bought <span>${L.pCards||0}</span></div>
@@ -1219,7 +1219,7 @@ function showBattleLog(){
 
   // AI stats
   document.getElementById('blAI').innerHTML=`
-    <h3><img class="nav" src="av/${((typeof NET!=='undefined')&&NET.online)?((window.AVS&&AVS.opp)||'foot_soldier'):((window.AVS&&AVS.cpu)||'robot')}.webp" alt="">${((typeof NET!=='undefined')&&NET.online)?'⚔ '+HM.opp:'🤖 Enemy Side'}</h3>
+    <h3><img class="nav" src="av/${((typeof NET!=='undefined')&&NET.online)?((window.AVS&&AVS.opp)||'foot_soldier'):((window.AVS&&AVS.cpu)||'robot')}.webp" alt="">${((typeof NET!=='undefined')&&NET.online)?HM.opp:'Enemy Side'}</h3>
     <div class="bl-stat">Waves Sent <span>${L.eWaves.length}</span></div>
     <div class="bl-stat">Units Summoned ${blSummoned(L.eWaves)}</div>
     <div class="bl-stat">Cards Bought <span>${L.eCards||0}</span></div>
@@ -1380,8 +1380,8 @@ function renderSynergy(){
   }
   else{el.classList.add('active');if(r.cls)el.classList.add(r.cls);el.dataset.lv=(r.flushSuit&&r.hand!=='flush'&&/ \+ /.test(r.name))?(HM_LV[r.hand]||1):Math.max(HM_LV[r.hand]||1,r.flushSuit?4:0);
     el.innerHTML=(/ \+ /.test(r.name)?r.name.split(' + ').map((n,i,a)=>'<span class="sh-name'+(i?' sh-2':'')+'"'+(i?' data-lv="4"':'')+'>'+n+(i===a.length-1&&r.flushSuit?' '+r.flushSuit:'')+'</span>').join(''):'<span class="sh-name">'+r.name+(r.flushSuit?' '+r.flushSuit:'')+'</span>')
-      +'<span class="sh-buff">'+r.buffLine+'</span>'
-      +'<span class="sh-sub">'+r.poker+(r.subLine?' · '+r.subLine:'')+'</span>';}
+      +'<span class="sh-sub">'+r.poker+' · DPS '+hmWaveDps().toFixed(1)+'</span>'
+      +'<span class="sh-chips">'+hmChips(r.buffLine)+'</span>';}
 }
 
 /* ════ OPPONENT ROW RENDER ════ */
@@ -2747,6 +2747,23 @@ let last=null,raf=null;
 // 10.6: restart a CSS animation without forcing layout: drop the class now, add it back on the next frame
 var _RA=[];function blSetRes(el,v){v=String(v||'');if(!v.includes('|')){const t=v.toUpperCase();v=(t.includes('VICTORY')?'VICTORY':'DEFEAT')+'|'+(v.split('—')[1]||'').trim();}
   const [w,s]=v.split('|');el.dataset.r=v;el.className='bl-result'+(w==='VICTORY'?' win':' loss');el.style.color='';el.innerHTML='<span class="blw">'+w+'</span>'+(s?'<small>'+s+'</small>':'');}
+
+// 10.8: bonus line -> one box per bonus (same names and colors as the Synergies page)
+var HM_STAT={HP:['hp','Max HP'],Armor:['def','Armor'],ATK:['atk','ATK'],Spd:['spd','Move Speed'],AS:['aspd','ATK Speed'],Status:['fx','Status Chance']};
+var HM_FLUSH={'+6% HP/3s':['hearts','♥ heals 6% Max HP / 3s'],'+20% range':['diamonds','♦ +20% attack range'],'+10% armor':['clubs','♣ +10% base armor'],'+20% AS':['spades','♠ +20% ATK Speed']};
+function hmChips(line){
+  const out=[];String(line||'').split(' · ').forEach(p=>{p=p.replace(/\s*\([^)]*\)/g,'').trim();if(!p)return;
+    if(HM_FLUSH[p]){out.push(HM_FLUSH[p]);return;}
+    const m=/^([+\-][\d.]+%)\s+([A-Za-z/]+)$/.exec(p);
+    if(m&&m[2].split('/').every(k=>HM_STAT[k])){m[2].split('/').forEach(k=>out.push([HM_STAT[k][0],m[1]+' '+HM_STAT[k][1]]));return;}
+    out.push(['mandate-buff',p]);});
+  return out.map(([c,t])=>'<span class="sb sb-'+c+'">'+t+'</span>').join('');}
+// total DPS of the wave you'd send right now (same math as the Battle Report)
+function hmWaveDps(){
+  const rs=S.slots.filter(c=>c.length>=2).map(c=>({sum:evalHand(c).sum,suit:c[0].suit,natural:evalHand(c).tier==='natural'}));if(!rs.length)return 0;
+  const wp=evalPoker(rs),buff=getFormBuff(wp.hand,rs.length),mem=synMembers(rs.map(r=>r.sum),wp.hand),nob=getFormBuff('none');let j=0,t=0;
+  S.slots.forEach(c=>{if(c.length<2)return;const info=evalHand(c),b=mem.has(j++)?buff:nob;t+=SUIT_STATS[c[0].suit].baseDPS*tierMultATK(info.tier,info.sum)*(b.atk||1);});
+  return Math.round(t*10)/10;}
 function reAnim(el,c){if(!el)return;el.classList.remove(c);if(!_RA.length)requestAnimationFrame(()=>{const q=_RA;_RA=[];for(const [e,k] of q)if(e.isConnected&&!e.classList.contains('dead'))e.classList.add(k);});_RA.push([el,c]);}
 function loop(now){
   if((typeof NET!=='undefined')&&NET.view){last=now;netViewFrame(now);raf=requestAnimationFrame(loop);return;}
@@ -2996,6 +3013,18 @@ S=newState();barrInit();S.aiWave=0;aiReset();fit();renderAll();raf=requestAnimat
 #toast.end.win::before{background-image:url(menu/banner_gold.webp)}
 #toast.end small{display:block;margin-top:7px;font-size:12px;letter-spacing:2px;font-weight:900;color:#0e0805}
 #battleLog.show~#toast.end,body:has(#battleLog.show) #toast.end{opacity:0!important}
+
+/* ── 10.8 Synergy bonus boxes ── */
+#synergy .sh-buff{display:none!important}
+#synergy .sh-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 3px;width:204px;margin-top:5px;position:relative;z-index:1}
+#synergy .sb{display:inline-block;padding:1px 5px;border-radius:3px;border:1px solid;font-size:8px;font-weight:800;line-height:1.3;white-space:nowrap;box-shadow:0 1px 2px rgba(40,25,10,.25)}
+#synergy .sb-hp{background:linear-gradient(rgba(47,111,154,.16),rgba(47,111,154,.16)),#f3e9d5;color:#2f6f9a;border-color:rgba(47,111,154,.55)}#synergy .sb-atk{background:linear-gradient(rgba(163,58,50,.16),rgba(163,58,50,.16)),#f3e9d5;color:#a33a32;border-color:rgba(163,58,50,.55)}#synergy .sb-def{background:linear-gradient(rgba(63,122,90,.16),rgba(63,122,90,.16)),#f3e9d5;color:#3f7a5a;border-color:rgba(63,122,90,.55)}#synergy .sb-spd{background:linear-gradient(rgba(138,106,28,.16),rgba(138,106,28,.16)),#f3e9d5;color:#8a6a1c;border-color:rgba(138,106,28,.55)}#synergy .sb-aspd{background:linear-gradient(rgba(106,79,154,.16),rgba(106,79,154,.16)),#f3e9d5;color:#6a4f9a;border-color:rgba(106,79,154,.55)}#synergy .sb-fx{background:linear-gradient(rgba(168,100,28,.16),rgba(168,100,28,.16)),#f3e9d5;color:#a8641c;border-color:rgba(168,100,28,.55)}#synergy .sb-regen{background:linear-gradient(rgba(63,107,74,.16),rgba(63,107,74,.16)),#f3e9d5;color:#3f6b4a;border-color:rgba(63,107,74,.55)}#synergy .sb-clubs{background:linear-gradient(rgba(63,122,90,.16),rgba(63,122,90,.16)),#f3e9d5;color:#3f7a5a;border-color:rgba(63,122,90,.55)}#synergy .sb-spades{background:linear-gradient(rgba(58,90,122,.16),rgba(58,90,122,.16)),#f3e9d5;color:#3a5a7a;border-color:rgba(58,90,122,.55)}#synergy .sb-diamonds{background:linear-gradient(rgba(168,84,28,.16),rgba(168,84,28,.16)),#f3e9d5;color:#a8541c;border-color:rgba(168,84,28,.55)}#synergy .sb-hearts{background:linear-gradient(rgba(163,58,58,.16),rgba(163,58,58,.16)),#f3e9d5;color:#a33a3a;border-color:rgba(163,58,58,.55)}#synergy .sb-mandate-buff{background:linear-gradient(rgba(90,122,26,.16),rgba(90,122,26,.16)),#f3e9d5;color:#5a7a1a;border-color:rgba(90,122,26,.55)}
+#synergy .sh-sub{display:block!important;white-space:nowrap;position:relative;z-index:1;background:rgba(243,233,213,.9);border-radius:4px;padding:2px 8px!important;margin-top:5px!important;font-size:8.5px!important;font-weight:800!important;letter-spacing:.3px!important;color:#2a2017!important;opacity:1!important;text-shadow:0 0 6px rgba(236,224,198,.95),0 0 2px rgba(236,224,198,.95)!important}
+#synergy:not(.active) .sh-sub{display:none!important}
+#stage #synBtn{bottom:2px!important;right:10px!important}#topRight #hmGear{position:static!important;top:auto!important}
+#synergy .sh-name.sh-2{margin-top:6px!important}
+#synergy .sh-name:has(+.sh-2){margin-bottom:2px!important}
+#hmGear .igear{display:block;width:20px;height:20px;margin:auto;background:url(menu/ink_gear.webp) center/contain no-repeat}
 /* ── rice-paper theme (pop-ups over the battle) ── */
 :root{--hm-ob:#e9dcc2;--hm-ob2:#f3e9d5;--hm-line:#cdb894;--hm-gold:#9b3324;--hm-gold-d:#b4935a;--hm-jade:#3f6b4a;--hm-jade-l:#3f6b4a;--hm-fg:#2a2017;--hm-dim:#5a4834;--hm-red:#9b3324}
 .hm-full,.hm-page{background:#e9dcc2!important}
@@ -4585,7 +4614,7 @@ html, .hm-body {
 .htp-timeline{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))!important}
 .htp-phase.locked{cursor:pointer;border-style:dashed;border-color:rgba(232,195,90,.45);background:repeating-linear-gradient(135deg,rgba(232,195,90,.05) 0 8px,transparent 8px 16px),var(--surface)}
 .htp-phase.locked .ph-lock .t{color:var(--fg-faint)}
-.htp-phase.locked .ph-lock .n::before{content:"🔒 "}
+.htp-phase.locked .ph-lock .n::before{content:"";display:inline-block;width:.95em;height:.95em;margin-right:.3em;vertical-align:-.1em;background:url(menu/ink_lock.webp) center/contain no-repeat}
 .htp-phase.unlocked{border-color:var(--gold-light);box-shadow:0 0 0 1px rgba(232,195,90,.35) inset;cursor:default}
 .htp-walkers{margin-left:auto;display:flex;gap:6px;align-items:flex-end}
 .hw{position:relative;width:52px;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
@@ -4777,7 +4806,7 @@ html, .hm-body {
 .battle-head{display:table;margin:4px auto 16px!important;padding:10px 32px!important}
 .battle-head .battle-title,.section-head .section-title{color:#2a2017!important;text-shadow:none!important}
 .battle-head .battle-sub,.section-head .section-sub{color:#5a4834!important}
-.battle-grid{margin-top:4px}
+.battle-grid{margin-top:4px}.ilock{display:inline-block;width:12px;height:12px;background:url(menu/ink_lock.webp) center/contain no-repeat;margin-right:2px}
 /* ── 10.7 menus ── */
 @media (min-width:641px){.battle-card:not(.bc-council){padding-top:150px!important}
  .battle-card:not(.bc-council)::before{-webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 50%)!important;mask-image:linear-gradient(180deg,#000 30%,transparent 50%)!important}}
@@ -4937,7 +4966,7 @@ html, .hm-body {
             <span class="bc-desc">Jump into a match against a random player online.</span>
           </button>
           <button class="battle-card bc-ranked" type="button" aria-disabled="true" tabindex="-1">
-            <span class="bc-lock" aria-hidden="true">🔒 Coming Soon</span>
+            <span class="bc-lock" aria-hidden="true"><i class="ilock"></i>Coming Soon</span>
             <span class="bc-name">Ranked</span><span class="bc-kind">Ranked · Online</span>
             <span class="bc-desc">Climb the ranks against other players.</span>
           </button>
@@ -4957,7 +4986,7 @@ html, .hm-body {
 
   <!-- PROFILE / STATS -->
   <section class="screen" id="screen-profile">
-    <div class="av-ov" id="avOv" hidden onclick="if(event.target===this)hmAvClose()"><div class="av-card" role="dialog" aria-label="Choose Avatar"><div class="av-h">Choose Avatar<button type="button" class="av-x" onclick="hmAvClose()" aria-label="Close">✕</button></div><div class="av-grid" id="avGrid" onmouseleave="avHint(null)"></div><div class="av-brad" id="avBrad" hidden><div class="av-brad-t">Choose Bradley</div><div class="av-brad-row"></div><button type="button" class="av-brad-x" onclick="this.parentNode.hidden=true">Back</button></div><div class="av-hint" id="avHint" role="status" hidden></div></div></div>
+    <div class="av-ov" id="avOv" hidden onclick="if(event.target===this)hmAvClose()"><div class="av-card" role="dialog" aria-label="Choose Avatar"><div class="av-h">Choose Avatar<button type="button" class="av-x" onclick="hmAvClose()" aria-label="Close">×</button></div><div class="av-grid" id="avGrid" onmouseleave="avHint(null)"></div><div class="av-brad" id="avBrad" hidden><div class="av-brad-t">Choose Bradley</div><div class="av-brad-row"></div><button type="button" class="av-brad-x" onclick="this.parentNode.hidden=true">Back</button></div><div class="av-hint" id="avHint" role="status" hidden></div></div></div>
     <div class="profile-header bn-prof">
       <div class="inner">
         <button type="button" class="profile-avatar" id="pfAvBtn" onclick="hmAvOpen()" aria-label="Change avatar"><img id="pfAv" src="av/foot_soldier.webp" alt=""><span class="pa-edit" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></span></button>
@@ -5180,8 +5209,8 @@ html, .hm-body {
               <span class="syn-buff spd">+30% Move Speed</span>
               <span class="syn-buff atk">+30% ATK</span>
               <span class="syn-buff aspd">+30% ATK Speed</span>
-              <span class="syn-buff mandate-buff">⚡ Wrath of Heaven lightning stun · 3s</span>
-              <span class="syn-buff mandate-buff">🐉 Huanglong dragon sweep · burns + stuns each enemy it passes · Celestial Burn 10/0.5s × 4s (80 total)</span>
+              <span class="syn-buff mandate-buff">Wrath of Heaven lightning stun · 3s</span>
+              <span class="syn-buff mandate-buff">Huanglong dragon sweep · burns + stuns each enemy it passes · Celestial Burn 10/0.5s × 4s (80 total)</span>
               <span class="syn-buff mandate-buff">Dragon reaches enemy Base: 500 dmg</span>
             </div>
           <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:66px"><i class="ci ci-clubs_7" style="left:0px"></i><i class="ci ci-clubs_4" style="left:16px"></i><i class="ci ci-clubs_K" style="left:32px"></i></div><div class="sx-tot"><span>♣</span>21</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_A" style="left:0px"></i><i class="ci ci-hearts_K" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>21</div></div><div class="sx-slot on"><div class="sx-stack" style="width:66px"><i class="ci ci-diamonds_9" style="left:0px"></i><i class="ci ci-diamonds_2" style="left:16px"></i><i class="ci ci-diamonds_K" style="left:32px"></i></div><div class="sx-tot red"><span>♦</span>21</div></div><div class="sx-slot on"><div class="sx-stack" style="width:66px"><i class="ci ci-spades_J" style="left:0px"></i><i class="ci ci-spades_6" style="left:16px"></i><i class="ci ci-spades_5" style="left:32px"></i></div><div class="sx-tot"><span>♠</span>21</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-clubs_A" style="left:0px"></i><i class="ci ci-clubs_Q" style="left:16px"></i></div><div class="sx-tot"><span>♣</span>21</div></div></div>
@@ -5212,7 +5241,7 @@ html, .hm-body {
         <!-- Flush -->
         <div class="syn-card tier-uncommon">
           <div class="syn-card-head">
-            <div class="syn-rank">◆</div>
+            <div class="syn-rank">=</div>
             <div class="syn-name-wrap">
               <div class="syn-name">Monolith Vanguard</div>
               <div class="syn-poker">Flush <span class="syn-note">suit-specific</span></div>
@@ -5234,7 +5263,7 @@ html, .hm-body {
         <!-- Straight -->
         <div class="syn-card tier-uncommon">
           <div class="syn-card-head">
-            <div class="syn-rank">↗</div>
+            <div class="syn-rank">=</div>
             <div class="syn-name-wrap">
               <div class="syn-name">Flowing Serpent</div>
               <div class="syn-poker">Straight <span class="syn-note">5-card strict</span></div>
@@ -5300,7 +5329,7 @@ html, .hm-body {
               <span class="syn-buff aspd">+24% ATK Speed</span><span class="syn-buff fx">+24% Status Chance</span>
               <span class="syn-buff def">+24% Armor</span>
               <span class="syn-buff clubs">Your suit's Flush bonus</span>
-              <span class="syn-buff mandate-buff">🐉 Huanglong dragon sweep · burns + stuns each enemy it passes · Celestial Burn 10/0.5s × 4s (80 total) · 3s stun</span>
+              <span class="syn-buff mandate-buff">Huanglong dragon sweep · burns + stuns each enemy it passes · Celestial Burn 10/0.5s × 4s (80 total) · 3s stun</span>
             </div>
           <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_7" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>12</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_8" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>13</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_9" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>14</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_10" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>15</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_K" style="left:0px"></i><i class="ci ci-spades_6" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>16</div></div></div>
             <div class="syn-note-line">Flush: +20% HP &amp; ATK · ♣ +10% armor · ♠ +20% ATK Speed · ♦ +20% range · ♥ heals 6% Max HP / 3s</div>
@@ -5356,7 +5385,7 @@ html, .hm-body {
               <span class="syn-buff aspd">+30% ATK Speed</span><span class="syn-buff fx">+30% Status Chance</span>
               <span class="syn-buff def">+30% Armor</span>
               <span class="syn-buff clubs">Your suit's Flush bonus ×1.25</span>
-              <span class="syn-buff mandate-buff">🐉 Huanglong dragon sweep · burns + stuns each enemy it passes · Celestial Burn 10/0.5s × 4s (80 total) · 3s stun</span>
+              <span class="syn-buff mandate-buff">Huanglong dragon sweep · burns + stuns each enemy it passes · Celestial Burn 10/0.5s × 4s (80 total) · 3s stun</span>
               <span class="syn-buff mandate-buff">Dragon reaches enemy Base: 500 dmg</span>
             </div>
           <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_10" style="left:0px"></i><i class="ci ci-hearts_7" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>17</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_K" style="left:0px"></i><i class="ci ci-hearts_8" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>18</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_Q" style="left:0px"></i><i class="ci ci-hearts_9" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>19</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_K" style="left:0px"></i><i class="ci ci-hearts_Q" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>20</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_A" style="left:0px"></i><i class="ci ci-hearts_K" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>21</div></div></div>
@@ -5474,7 +5503,7 @@ html, .hm-body {
           </li>
           <li class="htp-step"><div class="htp-step-body">
             <div class="htp-step-title">Build Synergies</div>
-            <div class="htp-step-text">Your slot <b>totals</b> create <b>Synergies</b> — two slots at 19 make a Pair, five totals in a row make a Straight, and so on. The best Synergy buffs <b>only the slots that make it</b>: a Pair boosts its 2 slots, Three of a Kind its 3. Five-slot Synergies boost the whole wave. See the <button class="htp-link" onclick="showScreen('synergies')">Synergies tab</button> for every Synergy. During a match, tap <b>SYNERGIES</b> in the bottom-right corner for a quick cheat sheet — tap any Synergy to see its bonuses.</div>
+            <div class="htp-step-text">Your slot <b>totals</b> create <b>Synergies</b> — two slots at 19 make a Pair, five totals in a row make a Straight, and so on. The best Synergy buffs <b>only the slots that make it</b>: a Pair boosts its 2 slots, Three of a Kind its 3. Five-slot Synergies boost the whole wave. Under SEND you'll see your Synergy's name, its poker hand with the wave's DPS, and each bonus in its own colored box. See the <button class="htp-link" onclick="showScreen('synergies')">Synergies tab</button> for every Synergy. During a match, tap <b>SYNERGIES</b> in the bottom-right corner for a quick cheat sheet — tap any Synergy to see its bonuses.</div>
           </div>
             <figure class="htp-step-fig"><img src="menu/htp_4.webp" alt="Game screen: the Synergy box and SYNERGIES cheat-sheet button highlighted" loading="lazy"></figure>
           </li>
@@ -5605,7 +5634,7 @@ html, .hm-body {
 
           <div class="htp-suit fodder">
             <div class="htp-suit-head">
-              <div class="htp-glyph">⚔</div>
+              <div class="htp-glyph">兵</div>
               <div><div class="htp-suit-name">Foot Soldier</div><span class="htp-role">Fodder</span></div>
             <div class="htp-walkers" aria-label="Foot Soldier walking"><div class="hw" title="Foot Soldier"><div class="hw-stage"><div class="hw-spr hw-fs"></div></div></div></div>
             </div>
@@ -5626,7 +5655,7 @@ html, .hm-body {
           </div>
           <div class="htp-suit fodder">
             <div class="htp-suit-head">
-              <div class="htp-glyph">⚔</div>
+              <div class="htp-glyph">兵</div>
               <div><div class="htp-suit-name">Spear Soldier</div><span class="htp-role">Fodder</span></div>
             <div class="htp-walkers" aria-label="Spear Soldier walking"><div class="hw" title="Spear Soldier"><div class="hw-stage"><div class="hw-spr hw-ss"></div></div></div></div>
             </div>
@@ -5781,7 +5810,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#10.7 · Prototype</span>
+            <span class="settings-row-value">#10.8 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -5907,7 +5936,7 @@ html, .hm-body {
   <div class="hm-card" role="dialog" aria-modal="true" aria-labelledby="hmSurrH" style="width:min(380px,100%)">
     <h2 class="hm-h" id="hmSurrH">Surrender?</h2>
     <p class="hm-sub">You forfeit this battle and it counts as a loss. The computer wins.</p>
-    <div class="hm-row"><button class="hm-btn hm-ghost" type="button" onclick="hmCloseSurr()">Keep Fighting</button><button class="hm-btn hm-danger" type="button" onclick="hmSurrender()">🏳 Surrender</button></div>
+    <div class="hm-row"><button class="hm-btn hm-ghost" type="button" onclick="hmCloseSurr()">Keep Fighting</button><button class="hm-btn hm-danger" type="button" onclick="hmSurrender()">Surrender</button></div>
   </div>
 </div>
 
@@ -5922,7 +5951,7 @@ html, .hm-body {
     <div class="hm-arow"><div class="al"><b>Sound Effects</b><small>Cards, attacks, status effects</small></div>
       <input class="hm-vol" id="hmSfxVol" type="range" min="0" max="100" aria-label="Sound effects volume"><span class="hm-vv" id="hmSfxVv"></span>
       <button class="hm-tog" id="hmSfxOn" type="button" role="switch" aria-label="Sound effects on/off"></button></div>
-    <div class="hm-row"><button class="hm-btn hm-danger" id="hmSurrBtn" type="button" onclick="hmCloseAudio();hmAskSurrender()" hidden>🏳 Surrender</button><button class="hm-btn" id="hmPauseBtn" type="button" onclick="hmPause()" hidden>⏸ Pause</button><button class="hm-btn" type="button" onclick="hmCloseAudio()">Done</button></div>
+    <div class="hm-row"><button class="hm-btn hm-danger" id="hmSurrBtn" type="button" onclick="hmCloseAudio();hmAskSurrender()" hidden>Surrender</button><button class="hm-btn" id="hmPauseBtn" type="button" onclick="hmPause()" hidden>Pause</button><button class="hm-btn" type="button" onclick="hmCloseAudio()">Done</button></div>
   </div>
 </div>
 
@@ -5940,8 +5969,8 @@ html, .hm-body {
   <div class="wrap">
     <div class="hm-top"><button class="hm-back" type="button" onclick="hmClosePlay()">← Menu</button><h2 class="hm-ptitle">Choose a Battle</h2></div>
     <div class="hm-modes">
-      <button class="hm-mode" type="button" onclick="hmOpenPvp()"><span class="mi">⚔</span><span class="mk">PVP</span><span class="mn">Player vs Player</span><span class="md">Battle another player online. Join a public game or host a room for a friend.</span></button>
-      <button class="hm-mode" type="button" onclick="hmOpenDiff()"><span class="mi">🏯</span><span class="mk">PVCPU</span><span class="mn">Player vs Computer</span><span class="md">Practice against the computer, from Easy up to Expert.</span></button>
+      <button class="hm-mode" type="button" onclick="hmOpenPvp()"><span class="mi">戰</span><span class="mk">PVP</span><span class="mn">Player vs Player</span><span class="md">Battle another player online. Join a public game or host a room for a friend.</span></button>
+      <button class="hm-mode" type="button" onclick="hmOpenDiff()"><span class="mi">練</span><span class="mk">PVCPU</span><span class="mn">Player vs Computer</span><span class="md">Practice against the computer, from Easy up to Expert.</span></button>
     </div>
   </div>
 </div>
@@ -6193,7 +6222,7 @@ function hmCloseAudio(){hmShow('hmAudio',false);}
 function hmOpenDiff(){
   const n=hardWins(),lock=n<EXPERT_WINS_NEEDED,b=document.querySelector('.hm-diff[data-d=expert]');
   b.classList.toggle('locked',lock);b.setAttribute('aria-disabled',lock?'true':'false');
-  $('hmExpertTxt').textContent=lock?('🔒 Win '+EXPERT_WINS_NEEDED+' matches on Hard to unlock ('+Math.min(n,EXPERT_WINS_NEEDED)+'/'+EXPERT_WINS_NEEDED+').'):'';$('hmExpertTxt').style.display=lock?'':'none';
+  $('hmExpertTxt').textContent=lock?('Win '+EXPERT_WINS_NEEDED+' matches on Hard to unlock ('+Math.min(n,EXPERT_WINS_NEEDED)+'/'+EXPERT_WINS_NEEDED+').'):'';$('hmExpertTxt').style.display=lock?'':'none';
   hmShow('hmDiff',true);}
 function hmCloseDiff(){hmShow('hmDiff',false);}
 function hmPvpSoon(btn){const l=btn.querySelector('.menu-btn-sub');const o=l.textContent;l.textContent='Online battles arrive in a later build';setTimeout(()=>l.textContent=o,1600);}
@@ -6287,14 +6316,14 @@ function hmRoomUI(){
   $('hmSegPriv').disabled=$('hmSegPub').disabled=has||NET.busy;
   $('hmPrivTxt').textContent=NET.pub?'Public — anyone using Join a Game can join':'Private — only players with the code can join';
   $('hmCodePanel').hidden=!(host&&!NET.pub);$('hmCode').textContent=NET.code||'····';
-  $('hmP1n').textContent=HM.name+' (You)';$('hmP1s').textContent=(host?'Host':'Player 2')+(NET.meReady?' · Ready ✓':'');$('hmP1s').className='ps'+(NET.meReady?' ok':'');
+  $('hmP1n').textContent=HM.name+' (You)';$('hmP1s').textContent=(host?'Host':'Player 2')+(NET.meReady?' · Ready':'');$('hmP1s').className='ps'+(NET.meReady?' ok':'');
   const p2=$('hmP2');p2.classList.toggle('wait',!has);p2.classList.toggle('in',has);
   $('hmP2n').textContent=has?(NET.oppName||(host?'Player 2':'Host')):'Waiting for a player';
   {const a1=$('hmP1a'),a2=$('hmP2a'),s1='av/'+AVS.me+'.webp',s2='av/'+(AVS.opp||'foot_soldier')+'.webp';if(a1.getAttribute('src')!==s1)a1.src=s1;if(has&&a2.getAttribute('src')!==s2)a2.src=s2;a2.style.visibility=has?'visible':'hidden';}
-  $('hmP2s').textContent=has?(NET.themReady?'Ready ✓':'Joined — not ready'):(host?(NET.pub?'Listed in Join a Game':'Share the room code'):'');
+  $('hmP2s').textContent=has?(NET.themReady?'Ready':'Joined — not ready'):(host?(NET.pub?'Listed in Join a Game':'Share the room code'):'');
   $('hmP2s').className='ps'+(has&&NET.themReady?' ok':'');
   const b=$('hmStartBtn');b.disabled=!has;b.classList.toggle('ready',NET.meReady);
-  b.textContent=!has?'Start · waiting for a second player':(NET.meReady?(NET.themReady?'Starting…':'Ready ✓ · waiting for the other player'):'Start');}
+  b.textContent=!has?'Start · waiting for a second player':(NET.meReady?(NET.themReady?'Starting…':'Ready · waiting for the other player'):'Start');}
 function netWire(c){NET.conn=c;
   c.on('data',m=>{if(!m||typeof m!=='object')return;NET.lastRx=performance.now();if(m.t==='p')return;
     if(m.t==='ready'){NET.themReady=!!m.v;if(m.n)NET.oppName=m.n;if(m.a)AVS.opp=avOk(m.a);hmRoomUI();if(NET.role==='host')netMaybeGo();}
@@ -6328,7 +6357,7 @@ async function hmHostRoom(pub){hmShow('hmPvp',false);hmShow('hmCustom',false);ne
   hmShow('hmPlay',false);hmShow('hmRoom',true);hmRoomUI();await netHostOpen();}
 async function hmSetPublic(v){if(NET.role!=='host'||NET.busy||(NET.conn&&NET.conn.open)||NET.pub===v)return;
   try{NET.peer&&NET.peer.destroy();}catch(e){}NET.peer=null;NET.pub=v;NET.code=null;hmRoomUI();await netHostOpen();}
-function hmCopyCode(){const c=NET.code;if(!c)return;const done=()=>{$('hmCopyBtn').textContent='Copied ✓';setTimeout(()=>$('hmCopyBtn').textContent='Copy Code',1400);};
+function hmCopyCode(){const c=NET.code;if(!c)return;const done=()=>{$('hmCopyBtn').textContent='Copied';setTimeout(()=>$('hmCopyBtn').textContent='Copy Code',1400);};
   try{navigator.clipboard.writeText(c).then(done,()=>{selCode();});}catch(e){selCode();}
   function selCode(){const r=document.createRange();r.selectNodeContents($('hmCode'));const s=getSelection();s.removeAllRanges();s.addRange(r);$('hmCopyBtn').textContent='Code selected — copy it';}}
 /* guest: try to join one room id; resolves 'ok' | 'full' | 'none' */
@@ -6372,7 +6401,7 @@ function hmPressStart(){if(!(NET.conn&&NET.conn.open))return;NET.meReady=!NET.me
 function netMaybeGo(){if(NET.meReady&&NET.themReady&&NET.conn&&NET.conn.open){NET.conn.send({t:'go'});hmCountdown();}}
 function hmCountdown(){const o=$('hmCount');o.hidden=false;let n=3;$('hmCountL').textContent='Battle begins';
   const show=()=>{const e=$('hmCountN');e.textContent=n;e.style.animation='none';void e.offsetWidth;e.style.animation='';snd(n>0?'card_land':'horn');};
-  show();const iv=setInterval(()=>{n--;if(n>0)show();else{clearInterval(iv);$('hmCountN').textContent='⚔';$('hmCountL').textContent='Both armies are ready';snd('horn');
+  show();const iv=setInterval(()=>{n--;if(n>0)show();else{clearInterval(iv);$('hmCountN').textContent='戰';$('hmCountL').textContent='Both armies are ready';snd('horn');
     setTimeout(()=>{o.hidden=true;hmOnlineStepTwo();},1400);}},1000);}
 function hmOnlineStepTwo(){netStartMatch();}
 function hmLeaveRoom(){const c=NET.conn,p=NET.peer;try{c&&c.open&&c.send({t:'bye'});}catch(e){}NET.conn=null;NET.peer=null;NET.role=null;NET.meReady=NET.themReady=false;
@@ -6441,7 +6470,7 @@ function avBradPick(v){AVS.me=avOk(v);try{localStorage.setItem('hm_avatar',AVS.m
   const g=R.getElementById('avGrid'),im=g&&g.querySelector('.av-opt[data-av="bradley"] img');if(im)im.src='av/'+AVS.me+'.webp';setTimeout(hmAvClose,160);}
 /* 9.9 codes (Settings > About) */
 function hmRedeem(){const R=hmSR(),inp=R.getElementById('codeIn'),msg=R.getElementById('codeMsg');const v=(inp.value||'').trim().toLowerCase().replace(/\s+/g,'');
-  if(v==='ilovebradley'){if(bradleyCode()||avUnlocked('bradley')){msg.textContent='Bradley is already yours.';}else{try{localStorage.setItem('hm_code_bradley','1');}catch(e){}msg.textContent='Bradley unlocked! 🐾';avCheckNew();}}
+  if(v==='ilovebradley'){if(bradleyCode()||avUnlocked('bradley')){msg.textContent='Bradley is already yours.';}else{try{localStorage.setItem('hm_code_bradley','1');}catch(e){}msg.textContent='Bradley unlocked!';avCheckNew();}}
   else msg.textContent=v?'Unknown code.':'';msg.hidden=!msg.textContent;inp.value='';}
 function hmAvPick(a){if(!avUnlocked(a))return;if(a==='bradley'){avBradOpen();return;}AVS.me=avOk(a);try{localStorage.setItem('hm_avatar',AVS.me);}catch(e){}hmAvApply();setTimeout(hmAvClose,160);}
 function pfRecord(){
