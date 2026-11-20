@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 11.3</title>
+<title>Heaven's Mandate · Build 11.4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -883,7 +883,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #11.3</div>
+    <div class="sub">Build #11.4</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -1430,7 +1430,7 @@ function hmMarch(side){
   const us=S.units.filter(u=>u.alive&&u.side===side&&!u._fodder),W={};  // 11.1: free fodder soldiers aren't a wave you sent
   us.forEach(u=>{const w=u.wave||0;(W[w]||(W[w]=[])).push(u);});
   const rows=Object.values(W).map(units=>{const f=side==='p'?Math.min(...units.map(u=>u.x)):-Math.max(...units.map(u=>u.x));
-    const u0=units.find(x=>x.formHand&&x.formHand!=='none')||units[0],hand=u0?.formHand||'none';return {f,hand,stack:!!u0?.flushStack};});
+    const u0=units.find(x=>x.formHand&&x.formHand!=='none')||units[0];const lw=(S.log&&(side==='p'?S.log.pWaves:S.log.eWaves)||[]).find(w=>w.wave===(u0&&u0.wave));const hand=lw?(lw.hand||'none'):(u0?.formHand||'none');return {f,hand,stack:lw?!!lw.fl:!!u0?.flushStack};});
   rows.sort((a,b)=>a.f-b.f);
   const cls=side==='p'?'pform-line':'oform-line';
   if(!rows.length)return '';
@@ -2635,7 +2635,7 @@ function aiSendWave(){
     return sum+st.baseDPS*tierMultATK(sl.natural?'natural':evalHand(AI.slots.find(s2=>s2.length&&s2[0].suit===sl.suit&&evalHand(s2).sum===sl.sum)||[]).tier||'recruit',sl.sum)*(buff.atk||1);
   },0)*10)/10;
   const _eSL=rSlots.map(sl=>sl.suit+sl.sum+(sl.natural?'(H)':''));
-  S.log.eWaves.push({wave:S.aiWave,hand:wp.hand,handName:wp.name||wp.hand,slots:rSlots.length,suits:_eSL,slotLabels:_eSL,dps:Math.round(_eWaveDPS*10)/10,time:Math.round(S.matchTime)});
+  S.log.eWaves.push({wave:S.aiWave,fl:wp.flushStack?1:0,hand:wp.hand,handName:wp.name||wp.hand,slots:rSlots.length,suits:_eSL,slotLabels:_eSL,dps:Math.round(_eWaveDPS*10)/10,time:Math.round(S.matchTime)});
   // dominantWaveSuit: suit with ≥3 slots (Gemini spec, independent of poker hand)
   const _pSC={};rSlots.forEach(r=>{_pSC[r.suit]=(_pSC[r.suit]||0)+1;});
   let _pBS=null,_pMC=0;
@@ -4869,7 +4869,7 @@ html, .hm-body {
 .battle-head{display:table;margin:4px auto 16px!important;padding:10px 32px!important}
 .battle-head .battle-title,.section-head .section-title{color:#2a2017!important;text-shadow:none!important}
 .battle-head .battle-sub,.section-head .section-sub{color:#5a4834!important}
-.battle-grid{margin-top:4px}@media (max-width:640px){.battle-grid .bc-council:not(.bc-help)::before{background-size:cover!important;background-position:right 40%!important}}@media (min-width:641px){.battle-grid .bc-council:not(.bc-help)::before{-webkit-mask-image:linear-gradient(90deg,transparent 45%,#000 80%)!important;mask-image:linear-gradient(90deg,transparent 45%,#000 80%)!important;-webkit-mask-composite:source-over!important;mask-composite:add!important;background-size:auto 100%!important;background-position:right center!important}}.htp-tut{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:4px 0 18px;padding:14px 16px;background:#f3e9d5;border:1px solid #cdb894;border-radius:12px;box-shadow:0 2px 6px rgba(90,72,52,.12)}.htp-tut img{width:52px;height:52px;border-radius:50%;border:2px solid #9b3324;background:#e9dcc2;object-fit:cover;flex:none}.htp-tut-t{flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:2px;color:#5a4834}.htp-tut-t b{color:#2a2017;font-family:Cinzel,Georgia,serif;letter-spacing:.05em}.htp-tut-go{all:unset;cursor:pointer;background:#9b3324;color:#f3e9d5;font-weight:700;letter-spacing:.08em;padding:9px 18px;border-radius:6px;border:1px solid #7a2418}.htp-tut-go:hover{background:#b23d2b}.bc-help-row{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:640px){.bc-help-row{grid-template-columns:1fr}}.battle-grid .bc-council.bc-help{grid-column:auto;min-height:112px;padding:18px 20px!important;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;text-align:left}.bc-council.bc-htp{--art:url(menu/ink_htp.webp)!important}.bc-council.bc-syn{--art:url(menu/ink_syn.webp)!important}.bc-council.bc-help .bc-desc{max-width:13em}.battle-grid .bc-council.bc-help::before{height:auto!important;bottom:0!important;aspect-ratio:auto!important;background-size:cover!important;background-position:right center!important;-webkit-mask-image:linear-gradient(90deg,transparent 45%,#000 85%)!important;mask-image:linear-gradient(90deg,transparent 45%,#000 85%)!important}.paywall-overlay{background:rgba(42,32,23,.55)!important}.paywall-card{background:#f3e9d5!important;border:1px solid #b4935a!important;border-radius:12px!important;box-shadow:0 24px 64px rgba(42,32,23,.35)!important}.paywall-top{background:linear-gradient(180deg,#efe3cc,#e9dcc2)!important;border-bottom:1px solid #cdb894!important}.paywall-icon{background:#f3e9d5!important;border-color:#b4935a!important}.pw-lock{display:block;width:30px;height:30px;background:url(menu/ink_lock.webp) center/contain no-repeat}.paywall-heading{color:#9b3324!important}.paywall-sub{color:#5a4834!important}.paywall-feature{color:#2a2017!important}.paywall-feature-icon{background:#2a2017!important;border-color:#2a2017!important;color:#f3e9d5!important}.paywall-amount{color:#9b3324!important}.paywall-amount-sub,.paywall-fine,.paywall-dismiss{color:#5a4834!important}.paywall-dismiss:hover{color:#2a2017!important}.paywall-dismiss{box-sizing:border-box!important}.paywall-cta{box-sizing:border-box!important;background:#9b3324!important;border:1px solid #7a2418!important;border-radius:6px!important;color:#f3e9d5!important;box-shadow:0 2px 6px rgba(90,40,20,.25)}.paywall-cta:hover{background:#b23d2b!important;border-color:#7a2418!important}.battle-card:not(.bc-council)::before{bottom:auto!important;height:auto!important;aspect-ratio:3/2;-webkit-mask-image:linear-gradient(180deg,#000 68%,transparent 100%)!important;mask-image:linear-gradient(180deg,#000 68%,transparent 100%)!important}.battle-grid .battle-card:not(.bc-council){padding-top:calc(66.67% - 56px)!important}.battle-grid .battle-card:not(.bc-council) .bc-name{display:block;margin-bottom:4px;text-shadow:0 0 3px #f3e9d5,0 0 8px #f3e9d5,0 0 14px #f3e9d5!important}.ilock{display:inline-block;width:12px;height:12px;background:url(menu/ink_lock.webp) center/contain no-repeat;margin-right:2px}
+.battle-grid{margin-top:4px}.syn-title{font-size:1.45rem!important}.menu-hero .syn-title{font-size:1.45rem!important}.syn-sub{font-size:1rem!important}.menu-hero .syn-sub{font-size:1rem!important}.battle-card .bc-name{font-size:1.15rem!important}.battle-card .bc-kind{font-size:.76rem!important}.battle-card .bc-desc{font-size:1.04rem!important}.settings-row-sub,.section-title{font-size:.86rem!important}.settings-row-label{font-size:1rem!important}.nav-tab{font-size:.78rem!important}.hm-tsz{flex-wrap:wrap}.nav-burger{display:none}@media (max-width:640px){.nav-burger{all:unset;display:flex;flex-direction:column;justify-content:center;gap:4px;margin-left:auto;width:36px;height:36px;cursor:pointer;align-items:center;border:1px solid #b4935a;border-radius:8px}.nav-burger i{display:block;width:18px;height:2px;background:#2a2017;border-radius:2px;transition:transform .2s,opacity .2s}.app-header.open .nav-burger i:nth-child(1){transform:translateY(6px) rotate(45deg)}.app-header.open .nav-burger i:nth-child(2){opacity:0}.app-header.open .nav-burger i:nth-child(3){transform:translateY(-6px) rotate(-45deg)}.app-header .nav-tabs{display:none!important;position:absolute;top:100%;right:0;left:0;flex-direction:column;height:auto!important;gap:0!important;margin:0!important;background:#efe3cc;border-bottom:1px solid #b4935a;box-shadow:0 10px 20px rgba(42,32,23,.2);padding:6px 0}.app-header.open .nav-tabs{display:flex!important}.app-header .nav-tab{padding:13px max(20px,env(safe-area-inset-left,0px))!important;gap:12px!important;font-size:.92rem!important;border-bottom:0!important;border-left:3px solid transparent}.app-header .nav-tab.active{border-left-color:#9b3324}.app-header .nav-tab span{display:inline!important}.app-header .nav-tab svg{width:17px;height:17px}}@media (max-width:640px){.battle-grid .bc-council:not(.bc-help)::before{background-size:cover!important;background-position:right 40%!important}}@media (min-width:641px){.battle-grid .bc-council:not(.bc-help)::before{-webkit-mask-image:linear-gradient(90deg,transparent 45%,#000 80%)!important;mask-image:linear-gradient(90deg,transparent 45%,#000 80%)!important;-webkit-mask-composite:source-over!important;mask-composite:add!important;background-size:auto 100%!important;background-position:right center!important}}.htp-tut{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:4px 0 18px;padding:14px 16px;background:#f3e9d5;border:1px solid #cdb894;border-radius:12px;box-shadow:0 2px 6px rgba(90,72,52,.12)}.htp-tut img{width:52px;height:52px;border-radius:50%;border:2px solid #9b3324;background:#e9dcc2;object-fit:cover;flex:none}.htp-tut-t{flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:2px;color:#5a4834}.htp-tut-t b{color:#2a2017;font-family:Cinzel,Georgia,serif;letter-spacing:.05em}.htp-tut-go{all:unset;cursor:pointer;background:#9b3324;color:#f3e9d5;font-weight:700;letter-spacing:.08em;padding:9px 18px;border-radius:6px;border:1px solid #7a2418}.htp-tut-go:hover{background:#b23d2b}.bc-help-row{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:640px){.bc-help-row{grid-template-columns:1fr}}.battle-grid .bc-council.bc-help{grid-column:auto;min-height:112px;padding:18px 20px!important;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;text-align:left}.bc-council.bc-htp{--art:url(menu/ink_htp.webp)!important}.bc-council.bc-syn{--art:url(menu/ink_syn.webp)!important}.bc-council.bc-help .bc-desc{max-width:13em}.battle-grid .bc-council.bc-help::before{height:auto!important;bottom:0!important;aspect-ratio:auto!important;background-size:cover!important;background-position:right center!important;-webkit-mask-image:linear-gradient(90deg,transparent 45%,#000 85%)!important;mask-image:linear-gradient(90deg,transparent 45%,#000 85%)!important}.paywall-overlay{background:rgba(42,32,23,.55)!important}.paywall-card{background:#f3e9d5!important;border:1px solid #b4935a!important;border-radius:12px!important;box-shadow:0 24px 64px rgba(42,32,23,.35)!important}.paywall-top{background:linear-gradient(180deg,#efe3cc,#e9dcc2)!important;border-bottom:1px solid #cdb894!important}.paywall-icon{background:#f3e9d5!important;border-color:#b4935a!important}.pw-lock{display:block;width:30px;height:30px;background:url(menu/ink_lock.webp) center/contain no-repeat}.paywall-heading{color:#9b3324!important}.paywall-sub{color:#5a4834!important}.paywall-feature{color:#2a2017!important}.paywall-feature-icon{background:#2a2017!important;border-color:#2a2017!important;color:#f3e9d5!important}.paywall-amount{color:#9b3324!important}.paywall-amount-sub,.paywall-fine,.paywall-dismiss{color:#5a4834!important}.paywall-dismiss:hover{color:#2a2017!important}.paywall-dismiss{box-sizing:border-box!important}.paywall-cta{box-sizing:border-box!important;background:#9b3324!important;border:1px solid #7a2418!important;border-radius:6px!important;color:#f3e9d5!important;box-shadow:0 2px 6px rgba(90,40,20,.25)}.paywall-cta:hover{background:#b23d2b!important;border-color:#7a2418!important}.battle-card:not(.bc-council)::before{bottom:auto!important;height:auto!important;aspect-ratio:3/2;-webkit-mask-image:linear-gradient(180deg,#000 68%,transparent 100%)!important;mask-image:linear-gradient(180deg,#000 68%,transparent 100%)!important}.battle-grid .battle-card:not(.bc-council){padding-top:calc(66.67% - 56px)!important}.battle-grid .battle-card:not(.bc-council) .bc-name{display:block;margin-bottom:4px;text-shadow:0 0 3px #f3e9d5,0 0 8px #f3e9d5,0 0 14px #f3e9d5!important}.ilock{display:inline-block;width:12px;height:12px;background:url(menu/ink_lock.webp) center/contain no-repeat;margin-right:2px}
 /* ── 10.7 menus ── */
 @media (min-width:641px){.battle-card:not(.bc-council){padding-top:150px!important}
  .battle-card:not(.bc-council)::before{-webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 50%)!important;mask-image:linear-gradient(180deg,#000 30%,transparent 50%)!important}}
@@ -4953,7 +4953,8 @@ html, .hm-body {
 <!-- ── HEADER ── -->
 <header class="app-header">
   <div class="wordmark">天命 <span>Heaven's Mandate</span></div>
-  <nav class="nav-tabs">
+  <button class="nav-burger" type="button" aria-label="Menu" onclick="this.closest('.app-header').classList.toggle('open')"><i></i><i></i><i></i></button>
+  <nav class="nav-tabs" onclick="if(event.target.closest('.nav-tab'))this.closest('.app-header').classList.remove('open')">
     <button class="nav-tab active" data-screen="menu" onclick="showScreen('menu',this)">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M2 4h12M2 8h12M2 12h12"/>
@@ -5852,7 +5853,7 @@ html, .hm-body {
               <div class="settings-row-label">Text Size</div>
               <div class="settings-row-sub">Makes the text on every menu screen bigger or smaller</div>
             </div>
-            <div class="hm-tsz" role="radiogroup" aria-label="Text size"><button type="button" role="radio" data-z="s" onclick="hmTextSize('s')">Small</button><button type="button" role="radio" data-z="m" onclick="hmTextSize('m')">Medium</button><button type="button" role="radio" data-z="l" onclick="hmTextSize('l')">Large</button></div>
+            <div class="hm-tsz" role="radiogroup" aria-label="Text size"><button type="button" role="radio" data-z="s" onclick="hmTextSize('s')">Small</button><button type="button" role="radio" data-z="m" onclick="hmTextSize('m')">Medium</button><button type="button" role="radio" data-z="l" onclick="hmTextSize('l')">Large</button><button type="button" role="radio" data-z="xl" onclick="hmTextSize('xl')">Extra Large</button></div>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -5879,7 +5880,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#11.3 · Prototype</span>
+            <span class="settings-row-value">#11.4 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6504,7 +6505,7 @@ HM.name=(function(){try{let n=localStorage.getItem('hm_guest');if(!n){n='Guest'+
 HM.mode='practice';HM.opp='CPU';HM.pfTab='unranked';HM.pfDiff='blind';HM.replay=false;
 function hmApplyName(){$('pName').textContent=HM.name;$('hmLoadMe').textContent=HM.name;const R=hmSR();if(R&&R.getElementById('pfName'))R.getElementById('pfName').textContent=HM.name;hmAvApply();}
 /* 7.9 avatars: all free; saved in this browser */
-const AV_LIST=['tianming','foot_soldier','zhang_fei','dian_wei','ma_chao','cao_cao','guan_yu','lu_bu','liu_bei','zhuge_liang','sun_shangxiang','zhurong','lu_lingqi','guan_yinping','war_qilin','barded_warhorse','white_cloud_tiger','jade_spirit_stag','extra_lubu_horse','extra_white_lion','extra_zhuge_horse','extra_soldier_horse','huanglong','robot','bradley'];
+const AV_LIST=['tianming','foot_soldier','zhang_fei','dian_wei','ma_chao','cao_cao','guan_yu','lu_bu','liu_bei','zhuge_liang','sun_shangxiang','zhurong','lu_lingqi','guan_yinping','war_qilin','barded_warhorse','white_cloud_tiger','jade_spirit_stag','extra_lubu_horse','extra_white_lion','extra_zhuge_horse','extra_soldier_horse','robot','huanglong','bradley'];
 const BRADLEY_V=['bradley_general','bradley_jade','bradley_emperor'];  // 9.9: Bradley's 3 looks
 function avBase(a){return BRADLEY_V.indexOf(a)>=0?'bradley':a;}
 function avOk(a){return BRADLEY_V.indexOf(a)>=0?a:a==='bradley'?'bradley_general':AV_LIST.indexOf(a)>=0?a:'tianming';}
@@ -6516,7 +6517,7 @@ function expertWins(){try{return +localStorage.getItem('hm_expert_wins')||0;}cat
 const AV_LOCK={foot_soldier:()=>{try{return localStorage.getItem('hm_tut_done')==='1';}catch(e){return false;}},sun_shangxiang:u=>(u.o_pair||0)>=100,zhurong:u=>(u.o_three||0)>=100,lu_lingqi:u=>(u.o_twopair||0)>=100,guan_yinping:u=>(u.o_four||0)>=100,
   war_qilin:u=>(u.o_fullhouse||0)>=100,barded_warhorse:u=>(u.o_flush||0)>=100,white_cloud_tiger:u=>(u.o_fiveoak||0)>=100,jade_spirit_stag:u=>(u.o_straight||0)>=100,
   extra_lubu_horse:u=>(u.o_royal||0)>=1,extra_white_lion:u=>(u.o_mandate||0)>=1,extra_zhuge_horse:u=>(u.o_sflush||0)>=1,
-  extra_soldier_horse:()=>hardWins()>=EXPERT_WINS_NEEDED,huanglong:u=>(u.o_mandate||0)+(u.o_royal||0)+(u.o_sflush||0)>=10,robot:()=>expertWins()>=10,
+  extra_soldier_horse:()=>hardWins()>=EXPERT_WINS_NEEDED,huanglong:u=>(u.o_mandate||0)+(u.o_royal||0)+(u.o_sflush||0)>=88,robot:()=>expertWins()>=10,
   zhang_fei:u=>(u.u_c0||0)>=10,dian_wei:u=>(u.u_c1||0)>=10,ma_chao:u=>(u.u_s0||0)>=10,cao_cao:u=>(u.u_s1||0)>=10,
   guan_yu:u=>(u.u_d0||0)>=10,lu_bu:u=>(u.u_d1||0)>=10,liu_bei:u=>(u.u_h0||0)>=10,zhuge_liang:u=>(u.u_h1||0)>=10};
 /* hints for locked avatars: [text, progress -> [have, need]] */
@@ -6532,7 +6533,7 @@ const AV_HINT={foot_soldier:['Finish the Tutorial (Training Grounds)',()=>[(func
   extra_lubu_horse:['“Seventeen is where the Emperor’s road begins, and the summit is where it ends. Walk it in one color.”',_one('o_royal')],
   extra_zhuge_horse:['“Five steps in a row, all under one banner, and the nine dragons answer.”',_one('o_sflush')],
   extra_white_lion:['“When all five stand at the summit together, Heaven speaks.”',_one('o_mandate')],
-  huanglong:['“Call down the sky’s three great wonders, and the golden dragon will stay.”',u=>[(u.o_mandate||0)+(u.o_royal||0)+(u.o_sflush||0),10]],
+  huanglong:['“Call down the sky’s three great wonders, and the golden dragon will stay.”',u=>[(u.o_mandate||0)+(u.o_royal||0)+(u.o_sflush||0),88]],
   extra_soldier_horse:['“Walk the hard road to victory, and a wiser teacher waits at its end.”',()=>[hardWins(),EXPERT_WINS_NEEDED]],
   robot:['“The student who beats the master may wear the master’s face.”',()=>[expertWins(),10]],
   bradley:['“Woof woof, woof woof woof, woof!” — Confucius’s Dog',()=>[unrankedOnline(),888]]};
@@ -6849,8 +6850,8 @@ window.revealSummit=function(card){if(!card||!card.classList.contains('tier-mand
 hmSyncSecrets();
 
 /* Settings → Text Size (menu screens + pop-ups) */
-const HM_ZOOM={s:0.9,m:1,l:1.2};
-function hmTextSizeUI(){let z='m';try{z=localStorage.getItem('hm_textsize')||'m';}catch(e){}if(!HM_ZOOM[z])z='m';
+const HM_ZOOM={s:0.9,m:1,l:1.12,xl:1.25};
+function hmTextSizeUI(){let z='l';try{z=localStorage.getItem('hm_textsize')||'l';}catch(e){}if(!HM_ZOOM[z])z='l';
   document.documentElement.style.setProperty('--hm-zoom',HM_ZOOM[z]);
   const R=hmSR();if(R)R.querySelectorAll('.hm-tsz button').forEach(b=>{const on=b.dataset.z===z;b.classList.toggle('on',on);b.setAttribute('aria-checked',on);});}
 function hmTextSize(z){try{localStorage.setItem('hm_textsize',z);}catch(e){}hmTextSizeUI();}

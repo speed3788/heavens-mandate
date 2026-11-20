@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 11.3**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 11.4**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -65,6 +65,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **11.1:** fixed a wave showing up twice in the march-order bar (its first soldier was counted with the wave before), and free soldiers no longer show there. The Unlock pop-up now uses the rice-paper look.
 - **11.2:** you now start on the left and march right (the enemy is on the right); the Play banner is flipped to match. New How to Play and Synergies cards sit under War Council. Victory / Defeat banners show just one word (SURRENDER when you give up), in the same font as BATTLE START.
 - **11.3:** a Tutorial (Training Grounds, above Easy, or the Tactics page): Zhuge Liang walks you through one battle step by step, with set cards, no timer, one weak enemy wave and a Full House finish. Finishing it unlocks the Foot Soldier avatar; until then everyone starts with a blank 天命 avatar. New players are offered the Tutorial once. How to Play is now called Tactics, and the Play page's War Council card art fills the card.
+- **11.4:** bigger menu text; Text Size now starts on Large and adds Extra Large. On phones the top tabs fold into a ☰ menu. The Golden Dragon avatar now needs 88 top-tier Synergy waves (was 10) and swaps places with the Robot. Fixed the march-order bar showing "No Synergy" once a wave's Synergy soldiers fell.
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.
