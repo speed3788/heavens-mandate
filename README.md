@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 11.1**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 11.2**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -15,7 +15,7 @@ Open the GitHub Pages link for this repo (Settings → Pages). It's mouse or tou
 ## How online works
 
 Players connect straight to each other through the browser (WebRTC via [PeerJS](https://peerjs.com)). The free PeerJS lobby server is only used to find each other.
-The host's browser runs the battle; the other player's taps are sent to the host and their screen is mirrored so their own army is on the right.
+The host's browser runs the battle; the other player's taps are sent to the host and their screen is mirrored so each player sees their own army on the left, marching right.
 
 Local testing: add `?net=local` to the URL and open two tabs of the same browser.
 
@@ -38,7 +38,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **Hero entrance:** a golden ink lightning bolt and shockwave ring (`fx/`) strike when a Celestial hero steps onto the bridge. The hero then lights up with the Celestial glow.
 - **Barracks:** the card stack is now called the Barracks.
 - **Match Time** on the Battle Report and in Match History.
-- **Interface:** units stack by rank (Celestial on top). The soldier counts sit beside the clock: the enemy's on the left, yours on the right. Profile fixes and Settings → Text Size.
+- **Interface:** units stack by rank (Celestial on top). The soldier counts sit beside the clock: yours on the left, the enemy's on the right. Profile fixes and Settings → Text Size.
 - **How to Play:** unit cards show only the base stats; tap "Skills & Details" to open the rest.
 - **Avatars:** 23 chibi avatars (`av/`). The Foot Soldier is open from the start, and the rest unlock by playing (hover a locked face for a hint; Synergy faces unlock only in online battles vs another player). Yours shows next to your base in battle, and your opponent sees it online. The computer is the Robot.
 - **Expert computer (8.0):** a fourth, toughest level. Win 10 matches on Hard to unlock it.
@@ -63,6 +63,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **10.9:** Heaven's Mandate, Nine Dragons Convergence and Emperor's Sovereign Army now list every bonus in their boxes, and any Synergy stacked with Monolith Vanguard shows Monolith's +20% HP/ATK. Only the labels changed: the game already gave these bonuses.
 - **11.0:** the soldier counts moved beside the clock (enemy left, yours right), and game pop-ups now show at the top right next to the gear so they don't cover the enemy. Your march-order bar sits evenly between the bridge and your slots. The Battle Report wave columns line up (Synergy left, hand centered, DPS right). The Play card titles sit on the bottom of the picture, with no hard line under the art.
 - **11.1:** fixed a wave showing up twice in the march-order bar (its first soldier was counted with the wave before), and free soldiers no longer show there. The Unlock pop-up now uses the rice-paper look.
+- **11.2:** you now start on the left and march right (the enemy is on the right); the Play banner is flipped to match. New How to Play and Synergies cards sit under War Council. Victory / Defeat banners show just one word (SURRENDER when you give up), in the same font as BATTLE START.
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.

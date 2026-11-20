@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 11.1</title>
+<title>Heaven's Mandate · Build 11.2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -883,7 +883,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #11.1</div>
+    <div class="sub">Build #11.2</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -935,7 +935,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
   <!-- phase timer -->
   <div id="phaseBar">
     <div id="phaseLabel">THE MARCH</div>
-    <div class="mt-row"><b id="wvE" class="uc-e" title="Enemy soldiers on the bridge">0</b><div id="matchTime">0:00</div><b id="wvP" class="uc-p" title="Your soldiers on the bridge">0</b></div>
+    <div class="mt-row"><b id="wvP" class="uc-p" title="Your soldiers on the bridge">0</b><div id="matchTime">0:00</div><b id="wvE" class="uc-e" title="Enemy soldiers on the bridge">0</b></div>
   </div>
   <!-- v6.1 tower art -->
   <div class="tower" id="towerE"></div>
@@ -1329,7 +1329,7 @@ function cardEl(c,extra){
   return d;
 }
 let toastT;
-function say(msg,kind){const t=$('toast');const _m=/^(VICTORY|DEFEAT) — (.*)$/.exec(msg||'');if(_m){t.innerHTML='<span>'+_m[1]+'</span><small>'+_m[2].replace(/!$/,'')+'</small>';t.className='show end '+(_m[1]==='VICTORY'?'win':'loss');clearTimeout(toastT);toastT=setTimeout(()=>t.className='',4000);return;}t.textContent=msg;t.className='show '+(kind||'');clearTimeout(toastT);toastT=setTimeout(()=>t.className='',2400);}
+function say(msg,kind){const t=$('toast');const _m=/^(VICTORY|DEFEAT) — (.*)$/.exec(msg||'');if(_m){t.innerHTML='<span>'+(_m[1]==='DEFEAT'&&/^you surrendered/i.test(_m[2])?'SURRENDER':_m[1])+'</span>';t.className='show end '+(_m[1]==='VICTORY'?'win':'loss');clearTimeout(toastT);toastT=setTimeout(()=>t.className='',4000);return;}t.textContent=msg;t.className='show '+(kind||'');clearTimeout(toastT);toastT=setTimeout(()=>t.className='',2400);}
 
 /* ════ RENDER ════ */
 const TIER_INFO={
@@ -2747,7 +2747,7 @@ function fodderTick(dt){
 let last=null,raf=null;
 // 10.6: restart a CSS animation without forcing layout: drop the class now, add it back on the next frame
 var _RA=[];function blSetRes(el,v){v=String(v||'');if(!v.includes('|')){const t=v.toUpperCase();v=(t.includes('VICTORY')?'VICTORY':'DEFEAT')+'|'+(v.split('—')[1]||'').trim();}
-  const [w,s]=v.split('|');el.dataset.r=v;el.className='bl-result'+(w==='VICTORY'?' win':' loss');el.style.color='';el.innerHTML='<span class="blw">'+w+'</span>'+(s?'<small>'+s+'</small>':'');}
+  const [w,s]=v.split('|');el.dataset.r=v;el.className='bl-result'+(w==='VICTORY'?' win':' loss');el.style.color='';el.innerHTML='<span class="blw">'+(w==='DEFEAT'&&/surrender/i.test(s||'')?'SURRENDER':w)+'</span>';}
 
 // 10.8: bonus line -> one box per bonus (same names and colors as the Synergies page)
 var HM_STAT={HP:['hp','Max HP'],Armor:['def','Armor'],ATK:['atk','ATK'],Spd:['spd','Move Speed'],AS:['aspd','ATK Speed'],Status:['fx','Status Chance']};
@@ -3011,7 +3011,7 @@ S=newState();barrInit();S.aiWave=0;aiReset();fit();renderAll();raf=requestAnimat
 #toast.end{background:none!important;border:0!important;box-shadow:none!important;padding:14px 60px 12px!important;top:150px!important;isolation:isolate;
  display:flex;flex-direction:column;align-items:center;font-size:34px!important;font-weight:900;letter-spacing:8px;line-height:1;color:#140d07!important;text-shadow:0 1px 0 rgba(255,235,200,.35)!important}
 #toast.end::before{content:"";position:absolute;inset:-18px -40px;z-index:-1;background:url(menu/banner_red.webp) center/100% 100% no-repeat}
-#toast.end.win::before{background-image:url(menu/banner_gold.webp)}
+#toast.end.win::before{background-image:url(menu/banner_gold.webp)}#toast.end,#toast.end span,.bl-result .blw{font-family:"Noto Serif SC","Songti SC",Georgia,serif!important;font-weight:900!important}
 #toast.end small{display:block;margin-top:7px;font-size:12px;letter-spacing:2px;font-weight:900;color:#0e0805}
 #battleLog.show~#toast.end,body:has(#battleLog.show) #toast.end{opacity:0!important}
 
@@ -3040,6 +3040,24 @@ S=newState();barrInit();S.aiWave=0;aiReset();fit();renderAll();raf=requestAnimat
 #battleLog .bl-wave-row>span:nth-child(3){text-align:center}
 #battleLog .bl-wave-row>span:nth-child(4){text-align:right}
 #battleLog .bl-wave-row>span:not(:nth-child(2)){white-space:nowrap}
+
+/* ── 11.2: you on the left, marching right ── */
+#stage #bridge{scale:-1 1}
+#bridge .fdmg,#bridge .herofx,#bridge .killgold{scale:-1 1}
+#stage #towerP{left:-4px!important;right:auto!important;scale:-1 1}
+#stage #towerE{right:2px!important;left:auto!important;scale:-1 1}
+#stage #baseP{left:122px!important;right:auto!important}
+#stage #baseE{right:122px!important;left:auto!important}
+#stage #baseP .bname{text-align:left!important}#stage #baseE .bname{text-align:right!important}
+#stage #baseP .bav{left:-54px!important;right:auto!important}#stage #baseE .bav{right:-54px!important;left:auto!important}
+#stage #baseP .bav img{transform:none!important}#stage #baseE .bav img{transform:scaleX(-1)!important}
+#wvP{text-align:right!important}#wvE{text-align:left!important}
+#stage #playerForm{flex-direction:row-reverse!important;-webkit-mask-image:linear-gradient(90deg,transparent,#000 22px)!important;mask-image:linear-gradient(90deg,transparent,#000 22px)!important}
+#stage #playerForm .mq{flex-direction:row-reverse!important}
+#stage #playerForm .mq::before{content:"\25B6"!important}
+#stage #oppForm{flex-direction:row!important}
+#stage #oppForm .mq{flex-direction:row!important}
+#stage #oppForm .mq::before{content:"\25C0"!important}
 /* ── rice-paper theme (pop-ups over the battle) ── */
 :root{--hm-ob:#e9dcc2;--hm-ob2:#f3e9d5;--hm-line:#cdb894;--hm-gold:#9b3324;--hm-gold-d:#b4935a;--hm-jade:#3f6b4a;--hm-jade-l:#3f6b4a;--hm-fg:#2a2017;--hm-dim:#5a4834;--hm-red:#9b3324}
 .hm-full,.hm-page{background:#e9dcc2!important}
@@ -4804,7 +4822,7 @@ html, .hm-body {
 /* ── ink-wash banners ── */
 .menu-hero,.bn-prof,.bn-syn,.bn-htp,.rank-banner{--ink:#2a2017;--ink2:#5a4834;position:relative;isolation:isolate;background-color:#e6d6b6!important;background-repeat:no-repeat!important;border-bottom:0!important}
 .menu-hero::after,.bn-prof::after,.bn-syn::after,.bn-htp::after,.rank-banner::after{content:"";position:absolute;left:0;right:0;bottom:0;height:110px;background:linear-gradient(180deg,rgba(11,20,16,0) 0%,rgba(11,20,16,.06) 22%,rgba(11,20,16,.2) 42%,rgba(11,20,16,.45) 62%,rgba(11,20,16,.75) 82%,#0b1410 100%);pointer-events:none;z-index:-1}
-.menu-hero{background-image:url(menu/ink_play.webp)!important;background-size:cover!important;background-position:center 88%!important;padding:46px 16px 96px}
+.menu-hero{background-image:url(menu/ink_play_l.webp)!important;background-size:cover!important;background-position:center 88%!important;padding:46px 16px 96px}
 .bn-prof{background-image:url(menu/ink_profile.webp)!important;background-size:cover!important;background-position:right 42%!important;min-height:190px}
 .bn-syn{background-image:url(menu/ink_syn.webp)!important;background-size:cover!important;background-position:right center!important}
 .bn-htp{background-image:url(menu/ink_htp.webp)!important;background-size:cover!important;background-position:right 55%!important}
@@ -4821,7 +4839,7 @@ html, .hm-body {
 .battle-head{display:table;margin:4px auto 16px!important;padding:10px 32px!important}
 .battle-head .battle-title,.section-head .section-title{color:#2a2017!important;text-shadow:none!important}
 .battle-head .battle-sub,.section-head .section-sub{color:#5a4834!important}
-.battle-grid{margin-top:4px}.paywall-overlay{background:rgba(42,32,23,.55)!important}.paywall-card{background:#f3e9d5!important;border:1px solid #b4935a!important;border-radius:12px!important;box-shadow:0 24px 64px rgba(42,32,23,.35)!important}.paywall-top{background:linear-gradient(180deg,#efe3cc,#e9dcc2)!important;border-bottom:1px solid #cdb894!important}.paywall-icon{background:#f3e9d5!important;border-color:#b4935a!important}.pw-lock{display:block;width:30px;height:30px;background:url(menu/ink_lock.webp) center/contain no-repeat}.paywall-heading{color:#9b3324!important}.paywall-sub{color:#5a4834!important}.paywall-feature{color:#2a2017!important}.paywall-feature-icon{background:#2a2017!important;border-color:#2a2017!important;color:#f3e9d5!important}.paywall-amount{color:#9b3324!important}.paywall-amount-sub,.paywall-fine,.paywall-dismiss{color:#5a4834!important}.paywall-dismiss:hover{color:#2a2017!important}.paywall-dismiss{box-sizing:border-box!important}.paywall-cta{box-sizing:border-box!important;background:#9b3324!important;border:1px solid #7a2418!important;border-radius:6px!important;color:#f3e9d5!important;box-shadow:0 2px 6px rgba(90,40,20,.25)}.paywall-cta:hover{background:#b23d2b!important;border-color:#7a2418!important}.battle-card:not(.bc-council)::before{bottom:auto!important;height:auto!important;aspect-ratio:3/2;-webkit-mask-image:linear-gradient(180deg,#000 68%,transparent 100%)!important;mask-image:linear-gradient(180deg,#000 68%,transparent 100%)!important}.battle-grid .battle-card:not(.bc-council){padding-top:calc(66.67% - 56px)!important}.battle-grid .battle-card:not(.bc-council) .bc-name{display:block;margin-bottom:4px;text-shadow:0 0 3px #f3e9d5,0 0 8px #f3e9d5,0 0 14px #f3e9d5!important}.ilock{display:inline-block;width:12px;height:12px;background:url(menu/ink_lock.webp) center/contain no-repeat;margin-right:2px}
+.battle-grid{margin-top:4px}.bc-help-row{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:640px){.bc-help-row{grid-template-columns:1fr}}.battle-grid .bc-council.bc-help{grid-column:auto;min-height:112px;padding:18px 20px!important;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;text-align:left}.bc-council.bc-htp{--art:url(menu/ink_htp.webp)!important}.bc-council.bc-syn{--art:url(menu/ink_syn.webp)!important}.bc-council.bc-help .bc-desc{max-width:13em}.battle-grid .bc-council.bc-help::before{height:auto!important;bottom:0!important;aspect-ratio:auto!important;background-size:cover!important;background-position:right center!important;-webkit-mask-image:linear-gradient(90deg,transparent 45%,#000 85%)!important;mask-image:linear-gradient(90deg,transparent 45%,#000 85%)!important}.paywall-overlay{background:rgba(42,32,23,.55)!important}.paywall-card{background:#f3e9d5!important;border:1px solid #b4935a!important;border-radius:12px!important;box-shadow:0 24px 64px rgba(42,32,23,.35)!important}.paywall-top{background:linear-gradient(180deg,#efe3cc,#e9dcc2)!important;border-bottom:1px solid #cdb894!important}.paywall-icon{background:#f3e9d5!important;border-color:#b4935a!important}.pw-lock{display:block;width:30px;height:30px;background:url(menu/ink_lock.webp) center/contain no-repeat}.paywall-heading{color:#9b3324!important}.paywall-sub{color:#5a4834!important}.paywall-feature{color:#2a2017!important}.paywall-feature-icon{background:#2a2017!important;border-color:#2a2017!important;color:#f3e9d5!important}.paywall-amount{color:#9b3324!important}.paywall-amount-sub,.paywall-fine,.paywall-dismiss{color:#5a4834!important}.paywall-dismiss:hover{color:#2a2017!important}.paywall-dismiss{box-sizing:border-box!important}.paywall-cta{box-sizing:border-box!important;background:#9b3324!important;border:1px solid #7a2418!important;border-radius:6px!important;color:#f3e9d5!important;box-shadow:0 2px 6px rgba(90,40,20,.25)}.paywall-cta:hover{background:#b23d2b!important;border-color:#7a2418!important}.battle-card:not(.bc-council)::before{bottom:auto!important;height:auto!important;aspect-ratio:3/2;-webkit-mask-image:linear-gradient(180deg,#000 68%,transparent 100%)!important;mask-image:linear-gradient(180deg,#000 68%,transparent 100%)!important}.battle-grid .battle-card:not(.bc-council){padding-top:calc(66.67% - 56px)!important}.battle-grid .battle-card:not(.bc-council) .bc-name{display:block;margin-bottom:4px;text-shadow:0 0 3px #f3e9d5,0 0 8px #f3e9d5,0 0 14px #f3e9d5!important}.ilock{display:inline-block;width:12px;height:12px;background:url(menu/ink_lock.webp) center/contain no-repeat;margin-right:2px}
 /* ── 10.7 menus ── */
 @media (min-width:641px){.battle-card:not(.bc-council){padding-top:150px!important}
  .battle-card:not(.bc-council)::before{-webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 50%)!important;mask-image:linear-gradient(180deg,#000 30%,transparent 50%)!important}}
@@ -4993,6 +5011,10 @@ html, .hm-body {
             <span class="bc-name">War Council</span><span class="bc-kind">Custom Game · Rooms</span>
             <span class="bc-desc">Host your own room or join a friend with a room code.</span>
           </button>
+          <div class="bc-help-row">
+            <button class="battle-card bc-council bc-help bc-htp" type="button" onclick="showScreen('howto')"><span class="bc-name">How to Play</span><span class="bc-kind">Rules · Guide</span><span class="bc-desc">Learn how a match works, step by step.</span></button>
+            <button class="battle-card bc-council bc-help bc-syn" type="button" onclick="showScreen('synergies')"><span class="bc-name">Synergies</span><span class="bc-kind">Hands · Bonuses</span><span class="bc-desc">Every Synergy and what it gives your wave.</span></button>
+          </div>
         </div>
 
       </div>
@@ -5825,7 +5847,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#11.1 · Prototype</span>
+            <span class="settings-row-value">#11.2 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
