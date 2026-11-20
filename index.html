@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 11.4</title>
+<title>Heaven's Mandate · Build 11.5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -883,7 +883,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #11.4</div>
+    <div class="sub">Build #11.5</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -1378,15 +1378,21 @@ function renderSynergy(){
     el.classList.remove('active');
     el.innerHTML='<span class="sh-sub">Stack 2+ slots to see your formation</span>';
   }
-  else{el.classList.add('active');if(r.cls)el.classList.add(r.cls);el.dataset.lv=(r.flushSuit&&r.hand!=='flush'&&/ \+ /.test(r.name))?(HM_LV[r.hand]||1):Math.max(HM_LV[r.hand]||1,r.flushSuit?4:0);
-    el.innerHTML=(/ \+ /.test(r.name)?r.name.split(' + ').map((n,i,a)=>'<span class="sh-name'+(i?' sh-2':'')+'"'+(i?' data-lv="4"':'')+'>'+n+(i===a.length-1&&r.flushSuit?' '+r.flushSuit:'')+'</span>').join(''):'<span class="sh-name">'+r.name+(r.flushSuit?' '+r.flushSuit:'')+'</span>')
+  else{el.classList.add('active');if(r.cls)el.classList.add(r.cls);el.dataset.lv=(r.flushSuit&&r.hand!=='flush'&&/ \+ /.test(r.name))?(HM_LV[r.hand]||1):Math.max(HM_LV[r.hand]||1,r.flushSuit?3:0);
+    el.innerHTML=(/ \+ /.test(r.name)?r.name.split(' + ').map((n,i,a)=>'<span class="sh-name'+(i?' sh-2':'')+'"'+(i?' data-lv="3"':'')+'>'+n+(i===a.length-1&&r.flushSuit?' '+r.flushSuit:'')+'</span>').join(''):'<span class="sh-name">'+r.name+(r.flushSuit?' '+r.flushSuit:'')+'</span>')
       +'<span class="sh-sub">'+r.poker+' · DPS '+hmWaveDps().toFixed(1)+'</span>'
       +'<span class="sh-chips">'+hmChips(r.buffLine)+'</span>';}
+  // 11.5: level sound when a new Synergy first shows up (Monolith stacked on top plays Level 3 at the same time)
+  {const stack=!!(r.flushSuit&&r.hand!=='flush'&&/ \+ /.test(r.name)),key=r.hand==='none'?'':r.hand+(stack?'+fl':'');
+   if(key&&key!==S._synKey){const lv=r.hand==='flush'?3:Math.max(HM_LV[r.hand]||1,(r.flushSuit&&!stack)?3:0);
+     const was=S._synKey||'',wasStack=/\+fl$/.test(was),wasHand=was.replace(/\+fl$/,'');
+     if(r.hand!==wasHand)snd('syn_lv'+lv);if(stack&&!wasStack)snd('syn_lv3');}
+   S._synKey=key;}
 }
 
 /* ════ OPPONENT ROW RENDER ════ */
 let _oppPrev=[0,0,0,0,0],_oppSig=['','','','',''];
-var HM_LV={pair:1,three:1,twopair:2,four:2,fullhouse:3,straight:3,flush:4,fiveoak:4,mandate:4,sflush:4,royal:4};
+var HM_LV={pair:1,three:1,twopair:2,four:2,fullhouse:3,straight:3,flush:3,fiveoak:4,mandate:4,sflush:4,royal:4};
 function renderOppRow(){
   for(let i=0;i<5;i++){
     const slot=document.querySelector('.oslot[data-o="'+i+'"]');
@@ -1436,7 +1442,7 @@ function hmMarch(side){
   if(!rows.length)return '';
   return '<div class="mq">'+rows.map(r=>{
     if(!r.hand||r.hand==='none'||!FORMATIONS[r.hand]?.name)return '<div class="'+cls+' nosyn" data-lv="1">No Synergy</div>';
-    const parts=[[r.hand==='flush'?4:(HM_LV[r.hand]||1),FORMATIONS[r.hand].name]];if(r.stack&&r.hand!=='flush')parts.push([4,FORMATIONS.flush.name]);
+    const parts=[[r.hand==='flush'?3:(HM_LV[r.hand]||1),FORMATIONS[r.hand].name]];if(r.stack&&r.hand!=='flush')parts.push([3,FORMATIONS.flush.name]);
     return '<div class="mw">'+parts.map(([lv,t])=>'<div class="'+cls+'" data-lv="'+lv+'">'+t+'</div>').join('')+'</div>';}).join('')+'</div>';
 }
 function renderPlayerFormations(){
@@ -1463,7 +1469,7 @@ function renderPlayerFormations_old(){
     const units=waveMap[w];
     // Use stored formHand from spawn — avoids reconstructing sums from hp/dps (unreliable)
     const _u0=units.find(x=>x.formHand&&x.formHand!=='none')||units[0];const hand=_u0?.formHand||'none';
-    if(hand&&hand!=='none'&&FORMATIONS[hand]?.name)lines.push((hand==='flush'?4:(HM_LV[hand]||1))+'|'+FORMATIONS[hand].name+(_u0?.flushStack?' + '+FORMATIONS.flush.name:''));
+    if(hand&&hand!=='none'&&FORMATIONS[hand]?.name)lines.push((hand==='flush'?3:(HM_LV[hand]||1))+'|'+FORMATIONS[hand].name+(_u0?.flushStack?' + '+FORMATIONS.flush.name:''));
   });
 
   const unique=[...new Set(lines)];
@@ -1474,7 +1480,7 @@ function renderPlayerFormations_old(){
 // ── Sound files (Nov 16) ──
 const SFX_LOCKED=false; // 7.5: sound effects on again, CC0 sounds only
 const SND_FILES=['stage','minute','hero_awaken','hero_enter']; // CC0 only (the older Pixabay sounds are not shipped)
-const SND_GAIN={stage:.55,minute:.45,hero_awaken:.6,hero_enter:.6,card_land:.55,card_shuffle:.5,bust:.6,gong:.55,coin:.3,send:.6,atk_clubs:.2,atk_spades:.2,atk_diamonds:.2,atk_hearts:.22,
+const SND_GAIN={syn_lv1:.45,syn_lv2:.5,syn_lv3:.55,syn_lv4:.6,stage:.55,minute:.45,hero_awaken:.6,hero_enter:.6,card_land:.55,card_shuffle:.5,bust:.6,gong:.55,coin:.3,send:.6,atk_clubs:.2,atk_spades:.2,atk_diamonds:.2,atk_hearts:.22,
   die_clubs:.32,die_spades:.32,die_diamonds:.32,die_hearts:.32,stun:.28,knock:.3,burn:.28,heal:.3,base_hit:.4,horn:.55,roar:.75};
 const SND_GAP={stage:1500,minute:1500,hero_awaken:700,hero_enter:500,atk_clubs:110,atk_spades:110,atk_diamonds:110,atk_hearts:160,die_clubs:140,die_spades:140,die_diamonds:140,die_hearts:140,
   stun:180,knock:180,burn:220,heal:220,base_hit:900,coin:50,card_land:40,gong:400,bust:150};
@@ -1493,6 +1499,7 @@ function snd(n,vol,rate){
     const g=ctx.createGain();g.gain.value=(SND_GAIN[n]||.5)*(vol==null?1:vol)*(SND.svol/0.8);src.connect(g);g.connect(ctx.destination);
     SND.active++;src.onended=()=>{SND.active--;};src.start();}catch(e){}
 }
+Object.assign(SND_GAIN,{card_shuffle: 0.78, coin: 0.37, bust: 0.59, horn: 0.8, send: 0.44, base_hit: 0.21, atk_clubs: 0.3, atk_spades: 0.21, atk_diamonds: 0.77, atk_hearts: 0.49, die_clubs: 0.17, die_spades: 0.13, die_diamonds: 0.49, die_hearts: 0.28, stun: 0.55, knock: 0.12, burn: 0.44, heal: 0.24, roar: 1, gong: 1, syn_lv1: 0.37, syn_lv2: 0.35, syn_lv3: 0.56, syn_lv4: 0.4});
 const SND_SUIT={'\u2663':'clubs','\u2660':'spades','\u2666':'diamonds','\u2665':'hearts'};
 function sndAtk(u){if(u._fodder){snd('atk_spades',.5,1.25);return;}const k=SND_SUIT[u.suit];if(k)snd('atk_'+k,u.side==='p'?1:.8,.94+Math.random()*.12);}
 function sndDie(u){if(u._fodder){snd('die_clubs',.55,1.2);return;}const k=SND_SUIT[u.suit];if(k)snd('die_'+k,1,.95+Math.random()*.1);}
@@ -1513,7 +1520,7 @@ function musicTick(){
   if(want==='battle'&&_musWant!=='battle'&&SND.mus.battle){try{SND.mus.battle.currentTime=0;}catch(e){}}
   _musWant=want;
   ['menu','battle'].forEach(k=>{const a=SND.mus[k];if(!a||!a._g)return;const g=a._g.gain;
-    const tgt=(k===want&&SND.music&&!(k==='menu'&&SND.menuOff))?0.32*(SND.mvol/0.7):0;
+    const tgt=(k===want&&SND.music&&!(k==='menu'&&SND.menuOff))?(k==='battle'?0.31:0.32)*(SND.mvol/0.7):0;
     const st=Math.max(0.03,Math.abs(tgt-g.value)/8);
     g.value=Math.max(0,Math.min(1,g.value+(tgt>g.value?Math.min(st,tgt-g.value):-Math.min(st,g.value-tgt))));});
 }
@@ -1606,7 +1613,7 @@ function renderOppFormations(){
     const units=waveMap[w];
     const _u0=units.find(x=>x.formHand&&x.formHand!=='none')||units[0];const hand=_u0?.formHand||'none';
     if(hand&&hand!=='none'&&FORMATIONS[hand]?.name){
-      lines.push((hand==='flush'?4:(HM_LV[hand]||1))+'|'+FORMATIONS[hand].name+(_u0?.flushStack?' + '+FORMATIONS.flush.name:''));
+      lines.push((hand==='flush'?3:(HM_LV[hand]||1))+'|'+FORMATIONS[hand].name+(_u0?.flushStack?' + '+FORMATIONS.flush.name:''));
     }
   });
 
@@ -3088,6 +3095,8 @@ body.tut-on #newHand{opacity:.35}body.tut-on #sendSmall{visibility:hidden}
 .tut-gift{display:flex;align-items:center;gap:12px;margin:12px auto 4px;padding:10px 14px;border:1px solid #cdb894;border-radius:10px;background:#efe3cc;text-align:left;max-width:320px}
 .tut-gift img{width:52px;height:52px;border-radius:50%;border:2px solid #b4935a;background:#f3e9d5;object-fit:cover}
 .tut-gift b{display:block;color:#2a2017}.tut-gift small{color:#5a4834}
+/* 11.5: Monolith stacked on another Synergy uses the Level 3 red brush */
+#stage #synergy.active .sh-name.sh-2{--sc:#9a2a1c!important;color:#fffaf0!important;text-shadow:0 0 1px #000,1px 1px 0 rgba(0,0,0,.85),-1px -1px 0 rgba(0,0,0,.85),1px -1px 0 rgba(0,0,0,.85),-1px 1px 0 rgba(0,0,0,.85),0 2px 4px rgba(0,0,0,.6)!important}#synergy.active .sh-name.sh-2::before{background:#9a2a1c!important}
 /* ── rice-paper theme (pop-ups over the battle) ── */
 :root{--hm-ob:#e9dcc2;--hm-ob2:#f3e9d5;--hm-line:#cdb894;--hm-gold:#9b3324;--hm-gold-d:#b4935a;--hm-jade:#3f6b4a;--hm-jade-l:#3f6b4a;--hm-fg:#2a2017;--hm-dim:#5a4834;--hm-red:#9b3324}
 .hm-full,.hm-page{background:#e9dcc2!important}
@@ -5880,7 +5889,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#11.4 · Prototype</span>
+            <span class="settings-row-value">#11.5 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
