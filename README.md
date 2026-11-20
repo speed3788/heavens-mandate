@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 11.0**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 11.1**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -62,6 +62,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **10.8:** while you build a hand, the Synergy under SEND shows its name, then the poker hand and the wave's DPS, then each bonus in its own colored box (same colors as the Synergies page). The emoji are gone: buttons use plain words, and the gear and locks are ink drawings. The gear is back in the top right.
 - **10.9:** Heaven's Mandate, Nine Dragons Convergence and Emperor's Sovereign Army now list every bonus in their boxes, and any Synergy stacked with Monolith Vanguard shows Monolith's +20% HP/ATK. Only the labels changed: the game already gave these bonuses.
 - **11.0:** the soldier counts moved beside the clock (enemy left, yours right), and game pop-ups now show at the top right next to the gear so they don't cover the enemy. Your march-order bar sits evenly between the bridge and your slots. The Battle Report wave columns line up (Synergy left, hand centered, DPS right). The Play card titles sit on the bottom of the picture, with no hard line under the art.
+- **11.1:** fixed a wave showing up twice in the march-order bar (its first soldier was counted with the wave before), and free soldiers no longer show there. The Unlock pop-up now uses the rice-paper look.
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.
