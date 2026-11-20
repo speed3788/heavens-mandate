@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 11.2</title>
+<title>Heaven's Mandate · Build 11.3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -883,7 +883,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #11.2</div>
+    <div class="sub">Build #11.3</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -942,7 +942,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
   <div class="tower" id="towerP"></div>
   <!-- bases -->
   <div class="base" id="baseP">
-    <div class="bname" id="pName">Guest</div><div class="bav"><img id="pAv" src="av/foot_soldier.webp" alt=""></div>
+    <div class="bname" id="pName">Guest</div><div class="bav"><img id="pAv" src="av/tianming.webp" alt=""></div>
     <div class="bhpbar"><div class="bhpfill" id="pHpFill" style="width:100%"></div><div class="bhp" id="pHpNum">3500</div></div>
     <div class="twrs">
     </div>
@@ -1700,7 +1700,7 @@ function renderHUD(){
   if(S.reckon){$('phaseLabel').textContent='LAST SIEGE. REALLY.';$('phaseLabel').style.color='#e8c35a';}
   else if(S.openShoe){$('phaseLabel').textContent='FINAL SIEGE';$('phaseLabel').style.color='#e05030';}
   $('pHpNum').textContent=Math.max(0,0|S.pBaseHP);$('eHpNum').textContent=Math.max(0,0|S.eBaseHP);
-  {const en=((typeof NET!=='undefined')&&NET.online)?(NET.oppName||'Opponent'):'CPU ('+({blind:'Easy',reactive:'Normal',hard:'Hard',expert:'Expert'}[AI_MODE]||'Easy')+')';if($('eName').textContent!==en)$('eName').textContent=en;const _A=window.AVS||{},ea=((typeof NET!=='undefined')&&NET.online)?(_A.opp||'foot_soldier'):(_A.cpu||'foot_soldier'),ei=$('eAv');if(ei&&ei.dataset.av!==ea){ei.dataset.av=ea;ei.src='av/'+ea+'.webp';}}
+  {const en=((typeof NET!=='undefined')&&NET.online)?(NET.oppName||'Opponent'):S.tut?'Training Dummy':'CPU ('+({blind:'Easy',reactive:'Normal',hard:'Hard',expert:'Expert'}[AI_MODE]||'Easy')+')';if($('eName').textContent!==en)$('eName').textContent=en;const _A=window.AVS||{},ea=((typeof NET!=='undefined')&&NET.online)?(_A.opp||'foot_soldier'):(_A.cpu||'foot_soldier'),ei=$('eAv');if(ei&&ei.dataset.av!==ea){ei.dataset.av=ea;ei.src='av/'+ea+'.webp';}}
   $('pHpFill').style.width=(Math.max(0,S.pBaseHP)/BASE_HP*100)+'%';
   $('eHpFill').style.width=(Math.max(0,S.eBaseHP)/BASE_HP*100)+'%';
   for(const [id,hp] of [['cbP',S.pBaseHP],['cbE',S.eBaseHP]]){const el=$(id);if(!el)continue;const f=Math.max(0,hp)/BASE_HP,st=f>2/3?'0':f>1/3?'1':'2';if(el.dataset.st!==st)el.dataset.st=st;}  // 8.9 fortress looks
@@ -2780,7 +2780,7 @@ function loop(now){
     renderHUD();raf=requestAnimationFrame(loop);return;
   }
   if(!S.running){renderHUD();raf=requestAnimationFrame(loop);return;}
-  S.matchTime+=dt/1000;if(S.log)S.log.duration=S.matchTime;updateDrawCost();
+  if(!S.tut)S.matchTime+=dt/1000;if(S.log)S.log.duration=S.matchTime;updateDrawCost();
   if(S.phase===1&&S.matchTime>=PHASE2_AT){S.phase=2;snd('stage');S.energyProgress=0;S.energyReady=false;if((typeof NET!=='undefined')&&NET.online){AI.energyProgress=0;AI.energyReady=false;}say('ASSAULT — SEND now recharges in 10 seconds, soldier limit 20!','phase');}
   if(S.running&&!S.openShoe&&S.matchTime>=OPEN_AT)heavensEye();
   if(S.running&&!S.reckon&&S.matchTime>=RECKON_AT)twinDragonReckoning();
@@ -2788,16 +2788,16 @@ function loop(now){
   const eMS=sendMs();
   
   if(!S.energyReady&&S.phase>=3){S.energyProgress=1;S.energyReady=true;}
-  if(!S.energyReady){S.energyProgress+=dt/eMS;if(S.energyProgress>=1){S.energyProgress=1;S.energyReady=true;}}
+  if(!S.energyReady&&!S.tut){S.energyProgress+=dt/eMS;if(S.energyProgress>=1){S.energyProgress=1;S.energyReady=true;}}
   // v6.1 income: 10g/s minus 1 per own unit on the bridge (min 1g/s)
-    const inc=incomeFor('p');S.gold+=inc*(dt/1000);if(S.log)S.log.pInc+=inc*(dt/1000);
+    const inc=S.tut?0:incomeFor('p');S.gold+=inc*(dt/1000);if(S.log)S.log.pInc+=inc*(dt/1000);
   const gi=$('goldInc');if(gi){gi.textContent='+'+inc+'/s';gi.classList.toggle('low',inc<=3);}
   S.goldClock=(S.goldClock||0)+dt;
   if(S.goldClock>=1000){S.goldClock-=1000;flyText('+'+inc,true);}
   // v6.1: +100 gold every full minute (both sides)
   const mins=Math.floor(S.matchTime/60);
   if(mins>(S.minutesPaid||0)){S.minutesPaid=mins;if([7,9,12,15].indexOf(mins)<0)snd('minute');S.gold+=100;AI.gold+=100;if(S.log){S.log.pInc+=100;S.log.eInc+=100;}flyText('+100',true);say('+100 gold — the treasury pays out','good');}
-  unitTick(dt);towerTick(dt);siegeTick(dt);aiTick(dt);fodderTick(dt);
+  unitTick(dt);towerTick(dt);siegeTick(dt);if(!S.tut){aiTick(dt);fodderTick(dt);}
   // FIX: stop loop on match end instead of continuing
   if(S.pBaseHP<=0||S.eBaseHP<=0){
     S.running=false;
@@ -3058,6 +3058,36 @@ S=newState();barrInit();S.aiWave=0;aiReset();fit();renderAll();raf=requestAnimat
 #stage #oppForm{flex-direction:row!important}
 #stage #oppForm .mq{flex-direction:row!important}
 #stage #oppForm .mq::before{content:"\25C0"!important}
+
+/* ── 11.3 tutorial ── */
+.hm-diff-tut{flex-direction:column!important;gap:2px;border-color:#9b3324!important}
+.hm-diff-tut .dn{color:#9b3324}.hm-diff-tut .dd{font-size:.8rem!important}
+body.tut-on #matchTime,body.tut-on .mt-row b{visibility:hidden}
+body.tut-on #phaseLabel{font-size:0!important}body.tut-on #phaseLabel::after{content:"TUTORIAL";font-size:10px;letter-spacing:2px}
+body.tut-on #newHand{opacity:.35}body.tut-on #sendSmall{visibility:hidden}
+#tutDim{position:absolute;inset:0;z-index:70;background:rgba(30,20,10,.38);pointer-events:none}
+#stage .tut-up{z-index:75!important}
+.tut-ring{position:absolute;z-index:76;border:3px solid #e8b830;border-radius:12px;box-shadow:0 0 14px rgba(232,184,48,.75);pointer-events:none}
+.tut-ring.tap{animation:tutPulse 1.2s ease-in-out infinite}
+@keyframes tutPulse{50%{box-shadow:0 0 24px rgba(232,184,48,1);border-color:#ffd56a}}
+#tutBox{position:absolute;z-index:90;width:440px;display:flex;gap:10px;align-items:flex-start;background:#f3e9d5;border:1px solid #b4935a;border-radius:12px;padding:10px 12px;box-shadow:0 6px 18px rgba(42,32,23,.35);color:#2a2017;font-size:11px;line-height:1.45;text-align:left}
+#tutBox.tut-top{left:280px;top:44px}#tutBox.tut-low{left:212px;top:206px;width:345px}
+#tutBox .tut-av{width:46px;height:46px;border-radius:50%;border:2px solid #9b3324;background:#e9dcc2;object-fit:cover;flex:none}
+#tutBox .tut-main{flex:1;min-width:0}
+#tutBox .tut-who{font-weight:800;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#9b3324;margin-bottom:2px}
+#tutBox .tut-foot{display:flex;align-items:center;gap:10px;margin-top:7px}
+#tutBox .tut-dots{display:flex;gap:3px;flex:1;flex-wrap:wrap}
+#tutBox .tut-dots i{width:5px;height:5px;border-radius:50%;background:rgba(90,72,52,.22)}
+#tutBox .tut-dots i.done{background:#b4935a}#tutBox .tut-dots i.on{background:#9b3324}
+#tutBox .tut-prev{all:unset;cursor:pointer;font-size:10px;font-weight:800;letter-spacing:1px;color:#5a4834;padding:3px 12px;border:1px solid #b4935a;border-radius:6px}#tutBox .tut-prev[disabled]{opacity:.35;cursor:default}#tutBox.tut-back{box-shadow:0 6px 18px rgba(42,32,23,.35),inset 0 0 0 2px rgba(180,147,90,.5)}#tutSkip{all:unset;position:absolute;right:112px;bottom:5px;z-index:91;cursor:pointer;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#5a4834;background:rgba(243,233,213,.92);border:1px solid #b4935a;border-radius:6px;padding:4px 9px}#tutSkip:hover{color:#9b3324;border-color:#9b3324}
+#tutBox .tut-next{all:unset;cursor:pointer;background:#9b3324;color:#f3e9d5;font-weight:800;font-size:10px;letter-spacing:1px;padding:4px 16px;border-radius:6px}#tutBox .tut-next[disabled]{cursor:default;background:#cdb894;color:#f3e9d5}
+.tut-card{text-align:center}
+.tut-card-av{width:72px;height:72px;border-radius:50%;border:2px solid #9b3324;background:#e9dcc2;object-fit:cover;display:block;margin:0 auto 8px}
+.tut-row{justify-content:center;gap:10px}
+.hm-btn.tut-go{background:#9b3324!important;color:#f3e9d5!important;border-color:#7a2418!important}
+.tut-gift{display:flex;align-items:center;gap:12px;margin:12px auto 4px;padding:10px 14px;border:1px solid #cdb894;border-radius:10px;background:#efe3cc;text-align:left;max-width:320px}
+.tut-gift img{width:52px;height:52px;border-radius:50%;border:2px solid #b4935a;background:#f3e9d5;object-fit:cover}
+.tut-gift b{display:block;color:#2a2017}.tut-gift small{color:#5a4834}
 /* ── rice-paper theme (pop-ups over the battle) ── */
 :root{--hm-ob:#e9dcc2;--hm-ob2:#f3e9d5;--hm-line:#cdb894;--hm-gold:#9b3324;--hm-gold-d:#b4935a;--hm-jade:#3f6b4a;--hm-jade-l:#3f6b4a;--hm-fg:#2a2017;--hm-dim:#5a4834;--hm-red:#9b3324}
 .hm-full,.hm-page{background:#e9dcc2!important}
@@ -4839,7 +4869,7 @@ html, .hm-body {
 .battle-head{display:table;margin:4px auto 16px!important;padding:10px 32px!important}
 .battle-head .battle-title,.section-head .section-title{color:#2a2017!important;text-shadow:none!important}
 .battle-head .battle-sub,.section-head .section-sub{color:#5a4834!important}
-.battle-grid{margin-top:4px}.bc-help-row{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:640px){.bc-help-row{grid-template-columns:1fr}}.battle-grid .bc-council.bc-help{grid-column:auto;min-height:112px;padding:18px 20px!important;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;text-align:left}.bc-council.bc-htp{--art:url(menu/ink_htp.webp)!important}.bc-council.bc-syn{--art:url(menu/ink_syn.webp)!important}.bc-council.bc-help .bc-desc{max-width:13em}.battle-grid .bc-council.bc-help::before{height:auto!important;bottom:0!important;aspect-ratio:auto!important;background-size:cover!important;background-position:right center!important;-webkit-mask-image:linear-gradient(90deg,transparent 45%,#000 85%)!important;mask-image:linear-gradient(90deg,transparent 45%,#000 85%)!important}.paywall-overlay{background:rgba(42,32,23,.55)!important}.paywall-card{background:#f3e9d5!important;border:1px solid #b4935a!important;border-radius:12px!important;box-shadow:0 24px 64px rgba(42,32,23,.35)!important}.paywall-top{background:linear-gradient(180deg,#efe3cc,#e9dcc2)!important;border-bottom:1px solid #cdb894!important}.paywall-icon{background:#f3e9d5!important;border-color:#b4935a!important}.pw-lock{display:block;width:30px;height:30px;background:url(menu/ink_lock.webp) center/contain no-repeat}.paywall-heading{color:#9b3324!important}.paywall-sub{color:#5a4834!important}.paywall-feature{color:#2a2017!important}.paywall-feature-icon{background:#2a2017!important;border-color:#2a2017!important;color:#f3e9d5!important}.paywall-amount{color:#9b3324!important}.paywall-amount-sub,.paywall-fine,.paywall-dismiss{color:#5a4834!important}.paywall-dismiss:hover{color:#2a2017!important}.paywall-dismiss{box-sizing:border-box!important}.paywall-cta{box-sizing:border-box!important;background:#9b3324!important;border:1px solid #7a2418!important;border-radius:6px!important;color:#f3e9d5!important;box-shadow:0 2px 6px rgba(90,40,20,.25)}.paywall-cta:hover{background:#b23d2b!important;border-color:#7a2418!important}.battle-card:not(.bc-council)::before{bottom:auto!important;height:auto!important;aspect-ratio:3/2;-webkit-mask-image:linear-gradient(180deg,#000 68%,transparent 100%)!important;mask-image:linear-gradient(180deg,#000 68%,transparent 100%)!important}.battle-grid .battle-card:not(.bc-council){padding-top:calc(66.67% - 56px)!important}.battle-grid .battle-card:not(.bc-council) .bc-name{display:block;margin-bottom:4px;text-shadow:0 0 3px #f3e9d5,0 0 8px #f3e9d5,0 0 14px #f3e9d5!important}.ilock{display:inline-block;width:12px;height:12px;background:url(menu/ink_lock.webp) center/contain no-repeat;margin-right:2px}
+.battle-grid{margin-top:4px}@media (max-width:640px){.battle-grid .bc-council:not(.bc-help)::before{background-size:cover!important;background-position:right 40%!important}}@media (min-width:641px){.battle-grid .bc-council:not(.bc-help)::before{-webkit-mask-image:linear-gradient(90deg,transparent 45%,#000 80%)!important;mask-image:linear-gradient(90deg,transparent 45%,#000 80%)!important;-webkit-mask-composite:source-over!important;mask-composite:add!important;background-size:auto 100%!important;background-position:right center!important}}.htp-tut{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:4px 0 18px;padding:14px 16px;background:#f3e9d5;border:1px solid #cdb894;border-radius:12px;box-shadow:0 2px 6px rgba(90,72,52,.12)}.htp-tut img{width:52px;height:52px;border-radius:50%;border:2px solid #9b3324;background:#e9dcc2;object-fit:cover;flex:none}.htp-tut-t{flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:2px;color:#5a4834}.htp-tut-t b{color:#2a2017;font-family:Cinzel,Georgia,serif;letter-spacing:.05em}.htp-tut-go{all:unset;cursor:pointer;background:#9b3324;color:#f3e9d5;font-weight:700;letter-spacing:.08em;padding:9px 18px;border-radius:6px;border:1px solid #7a2418}.htp-tut-go:hover{background:#b23d2b}.bc-help-row{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px}@media (max-width:640px){.bc-help-row{grid-template-columns:1fr}}.battle-grid .bc-council.bc-help{grid-column:auto;min-height:112px;padding:18px 20px!important;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;text-align:left}.bc-council.bc-htp{--art:url(menu/ink_htp.webp)!important}.bc-council.bc-syn{--art:url(menu/ink_syn.webp)!important}.bc-council.bc-help .bc-desc{max-width:13em}.battle-grid .bc-council.bc-help::before{height:auto!important;bottom:0!important;aspect-ratio:auto!important;background-size:cover!important;background-position:right center!important;-webkit-mask-image:linear-gradient(90deg,transparent 45%,#000 85%)!important;mask-image:linear-gradient(90deg,transparent 45%,#000 85%)!important}.paywall-overlay{background:rgba(42,32,23,.55)!important}.paywall-card{background:#f3e9d5!important;border:1px solid #b4935a!important;border-radius:12px!important;box-shadow:0 24px 64px rgba(42,32,23,.35)!important}.paywall-top{background:linear-gradient(180deg,#efe3cc,#e9dcc2)!important;border-bottom:1px solid #cdb894!important}.paywall-icon{background:#f3e9d5!important;border-color:#b4935a!important}.pw-lock{display:block;width:30px;height:30px;background:url(menu/ink_lock.webp) center/contain no-repeat}.paywall-heading{color:#9b3324!important}.paywall-sub{color:#5a4834!important}.paywall-feature{color:#2a2017!important}.paywall-feature-icon{background:#2a2017!important;border-color:#2a2017!important;color:#f3e9d5!important}.paywall-amount{color:#9b3324!important}.paywall-amount-sub,.paywall-fine,.paywall-dismiss{color:#5a4834!important}.paywall-dismiss:hover{color:#2a2017!important}.paywall-dismiss{box-sizing:border-box!important}.paywall-cta{box-sizing:border-box!important;background:#9b3324!important;border:1px solid #7a2418!important;border-radius:6px!important;color:#f3e9d5!important;box-shadow:0 2px 6px rgba(90,40,20,.25)}.paywall-cta:hover{background:#b23d2b!important;border-color:#7a2418!important}.battle-card:not(.bc-council)::before{bottom:auto!important;height:auto!important;aspect-ratio:3/2;-webkit-mask-image:linear-gradient(180deg,#000 68%,transparent 100%)!important;mask-image:linear-gradient(180deg,#000 68%,transparent 100%)!important}.battle-grid .battle-card:not(.bc-council){padding-top:calc(66.67% - 56px)!important}.battle-grid .battle-card:not(.bc-council) .bc-name{display:block;margin-bottom:4px;text-shadow:0 0 3px #f3e9d5,0 0 8px #f3e9d5,0 0 14px #f3e9d5!important}.ilock{display:inline-block;width:12px;height:12px;background:url(menu/ink_lock.webp) center/contain no-repeat;margin-right:2px}
 /* ── 10.7 menus ── */
 @media (min-width:641px){.battle-card:not(.bc-council){padding-top:150px!important}
  .battle-card:not(.bc-council)::before{-webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 50%)!important;mask-image:linear-gradient(180deg,#000 30%,transparent 50%)!important}}
@@ -4952,7 +4982,7 @@ html, .hm-body {
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M2 3.5c2-1 4-1 6 .5v9c-2-1.5-4-1.5-6-.5zM14 3.5c-2-1-4-1-6 .5v9c2-1.5 4-1.5 6-.5z"/>
       </svg>
-      <span>How to Play</span>
+      <span>Tactics</span>
     </button>
     <button class="nav-tab" data-screen="settings" onclick="showScreen('settings',this)">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -5012,7 +5042,7 @@ html, .hm-body {
             <span class="bc-desc">Host your own room or join a friend with a room code.</span>
           </button>
           <div class="bc-help-row">
-            <button class="battle-card bc-council bc-help bc-htp" type="button" onclick="showScreen('howto')"><span class="bc-name">How to Play</span><span class="bc-kind">Rules · Guide</span><span class="bc-desc">Learn how a match works, step by step.</span></button>
+            <button class="battle-card bc-council bc-help bc-htp" type="button" onclick="showScreen('howto')"><span class="bc-name">Tactics</span><span class="bc-kind">Rules · Guide</span><span class="bc-desc">Learn how a match works, step by step.</span></button>
             <button class="battle-card bc-council bc-help bc-syn" type="button" onclick="showScreen('synergies')"><span class="bc-name">Synergies</span><span class="bc-kind">Hands · Bonuses</span><span class="bc-desc">Every Synergy and what it gives your wave.</span></button>
           </div>
         </div>
@@ -5442,7 +5472,7 @@ html, .hm-body {
   <section class="screen" id="screen-howto">
     <div class="syn-header bn-htp">
       <div class="inner">
-        <div class="syn-title">How to Play</div>
+        <div class="syn-title">Tactics</div>
         <div class="syn-sub">Hit 21, build Synergies, march your army across the bridge</div>
       </div>
     </div>
@@ -5450,6 +5480,8 @@ html, .hm-body {
       <div class="inner">
 
         <p class="htp-lede">Every card you draw becomes a soldier. Stack cards in a slot and aim for <b>21</b>: the higher the total without going over, the stronger the soldier. The <b>suit of the first card</b> decides what kind of soldier it is. Your five slot totals also create <b>Synergies</b> that buff the soldiers who make them. First to take down the enemy base wins.</p>
+
+        <div class="htp-tut"><img src="av/zhuge_liang.webp" alt=""><div class="htp-tut-t"><b>New to the battlefield?</b><span>Zhuge Liang will walk you through your first battle, step by step.</span></div><button type="button" class="htp-tut-go" onclick="hmStartTutorial()">Start Tutorial</button></div>
 
         <!-- card values graphic -->
         <figure class="htp-values" aria-label="Card values: Ace counts 1 or 11, 2 through 10 count their number, Jack, Queen and King count 10">
@@ -5847,7 +5879,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#11.2 · Prototype</span>
+            <span class="settings-row-value">#11.3 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -5946,6 +5978,7 @@ html, .hm-body {
     <h2 class="hm-h" id="hmDiffH">Choose Your Opponent</h2>
     <p class="hm-sub">Battle the computer. Win on Hard to unlock Expert.</p>
     <div class="hm-diffs">
+      <button class="hm-diff hm-diff-tut" type="button" onclick="hmStartTutorial()"><span class="dn">Tutorial</span></button>
       <button class="hm-diff" data-d="blind" type="button" onclick="hmStartVsCpu('blind')"><span class="dn">Easy</span></button>
       <button class="hm-diff" data-d="reactive" type="button" onclick="hmStartVsCpu('reactive')"><span class="dn">Normal</span></button>
       <button class="hm-diff" data-d="hard" type="button" onclick="hmStartVsCpu('hard')"><span class="dn">Hard</span></button>
@@ -5955,9 +5988,30 @@ html, .hm-body {
   </div>
 </div>
 
+<!-- 11.3 tutorial: first-visit offer -->
+<div class="hm-ov hm-modal-bg" id="hmTutAsk" hidden onclick="if(event.target===this)hmShow('hmTutAsk',false)">
+  <div class="hm-card tut-card" role="dialog" aria-modal="true" aria-labelledby="hmTutAskH">
+    <img class="tut-card-av" src="av/zhuge_liang.webp" alt="">
+    <h2 class="hm-h" id="hmTutAskH">New Here?</h2>
+    <p class="hm-sub">Zhuge Liang will walk you through your first battle, step by step. It takes about 5 minutes, and you'll earn the Foot Soldier avatar.</p>
+    <div class="hm-row tut-row"><button class="hm-btn hm-ghost" type="button" onclick="hmShow('hmTutAsk',false)">Maybe Later</button><button class="hm-btn tut-go" type="button" onclick="hmStartTutorial()">Start Tutorial</button></div>
+  </div>
+</div>
+
+<!-- 11.3 tutorial: finished -->
+<div class="hm-ov hm-modal-bg" id="hmTutDone" hidden>
+  <div class="hm-card tut-card" role="dialog" aria-modal="true" aria-labelledby="hmTutDoneH">
+    <img class="tut-card-av" src="av/zhuge_liang.webp" alt="">
+    <h2 class="hm-h" id="hmTutDoneH">Well Fought, Commander</h2>
+    <p class="hm-sub">You have learned to build slots, form Synergies and send waves. Study and practice, and the battlefield will teach you the rest.</p>
+    <div class="tut-gift" id="hmTutGift"><img src="av/foot_soldier.webp" alt=""><div><b>Avatar unlocked: Foot Soldier</b><small>Change it any time on your Profile.</small></div></div>
+    <div class="hm-row tut-row"><button class="hm-btn tut-go" type="button" onclick="hmTutAfter('menu')">Main Menu</button></div>
+  </div>
+</div>
+
 <!-- match loading screen -->
 <div class="hm-ov hm-full" id="hmLoad" hidden>
-  <div class="hm-vs"><span class="side p"><img class="nav" id="hmLoadMeAv" src="av/foot_soldier.webp" alt=""><span id="hmLoadMe">Guest</span></span><span class="x">VS</span><span class="side e"><span id="hmLoadCpu">CPU</span><img class="nav" id="hmLoadOppAv" src="av/robot.webp" alt=""></span></div>
+  <div class="hm-vs"><span class="side p"><img class="nav" id="hmLoadMeAv" src="av/tianming.webp" alt=""><span id="hmLoadMe">Guest</span></span><span class="x">VS</span><span class="side e"><span id="hmLoadCpu">CPU</span><img class="nav" id="hmLoadOppAv" src="av/robot.webp" alt=""></span></div>
   <div class="hm-bar"><i id="hmLoadBar"></i></div>
   <div class="hm-stat" id="hmLoadStat">Preparing the battlefield…</div>
   <div class="hm-lbl">Tactician's Tip</div>
@@ -6246,7 +6300,7 @@ function hmCloseAudio(){hmShow('hmAudio',false);}
     if((n>=tot||el>6500)&&el>1400){clearInterval(iv);$('hmBootBar').style.width='100%';$('hmBootStat').hidden=true;$('hmBootBtns').hidden=false;}
   },120);
   const go=()=>{if($('hmBootBtns').hidden)return;sndUnlock();const b=$('hmBoot');b.classList.add('out');setTimeout(()=>{b.hidden=true;b.classList.remove('out');},460);};
-  $('hmGuestBtn').addEventListener('click',go);
+  $('hmGuestBtn').addEventListener('click',go);$('hmGuestBtn').addEventListener('click',()=>setTimeout(()=>{try{hmTutAsk();}catch(e){}},1300));
   $('hmSignBtn').addEventListener('click',()=>{const t=$('hmSignSub');t.textContent='Accounts arrive in a later build';clearTimeout(t._t);t._t=setTimeout(()=>t.textContent='Coming soon',1800);});
   document.addEventListener('keydown',e=>{if(!$('hmBoot').hidden&&(e.key==='Enter'||e.key===' '))go();});
 })();
@@ -6450,16 +6504,16 @@ HM.name=(function(){try{let n=localStorage.getItem('hm_guest');if(!n){n='Guest'+
 HM.mode='practice';HM.opp='CPU';HM.pfTab='unranked';HM.pfDiff='blind';HM.replay=false;
 function hmApplyName(){$('pName').textContent=HM.name;$('hmLoadMe').textContent=HM.name;const R=hmSR();if(R&&R.getElementById('pfName'))R.getElementById('pfName').textContent=HM.name;hmAvApply();}
 /* 7.9 avatars: all free; saved in this browser */
-const AV_LIST=['foot_soldier','zhang_fei','dian_wei','ma_chao','cao_cao','guan_yu','lu_bu','liu_bei','zhuge_liang','sun_shangxiang','zhurong','lu_lingqi','guan_yinping','war_qilin','barded_warhorse','white_cloud_tiger','jade_spirit_stag','extra_lubu_horse','extra_white_lion','extra_zhuge_horse','extra_soldier_horse','huanglong','robot','bradley'];
+const AV_LIST=['tianming','foot_soldier','zhang_fei','dian_wei','ma_chao','cao_cao','guan_yu','lu_bu','liu_bei','zhuge_liang','sun_shangxiang','zhurong','lu_lingqi','guan_yinping','war_qilin','barded_warhorse','white_cloud_tiger','jade_spirit_stag','extra_lubu_horse','extra_white_lion','extra_zhuge_horse','extra_soldier_horse','huanglong','robot','bradley'];
 const BRADLEY_V=['bradley_general','bradley_jade','bradley_emperor'];  // 9.9: Bradley's 3 looks
 function avBase(a){return BRADLEY_V.indexOf(a)>=0?'bradley':a;}
-function avOk(a){return BRADLEY_V.indexOf(a)>=0?a:a==='bradley'?'bradley_general':AV_LIST.indexOf(a)>=0?a:'foot_soldier';}
+function avOk(a){return BRADLEY_V.indexOf(a)>=0?a:a==='bradley'?'bradley_general':AV_LIST.indexOf(a)>=0?a:'tianming';}
 function unrankedOnline(){try{return pfLoad().matches.filter(m=>m.mode!=='practice'&&!m.ranked).length;}catch(e){return 0;}}
 function bradleyCode(){try{return localStorage.getItem('hm_code_bradley')==='1';}catch(e){return false;}}
 /* 8.1 locked avatars: lifetime goals (all modes). Synergy uses are counted when a match is saved. */
 function avUses(){try{return JSON.parse(localStorage.getItem('hm_syn_uses')||'{}')||{};}catch(e){return{};}}
 function expertWins(){try{return +localStorage.getItem('hm_expert_wins')||0;}catch(e){return 0;}}
-const AV_LOCK={sun_shangxiang:u=>(u.o_pair||0)>=100,zhurong:u=>(u.o_three||0)>=100,lu_lingqi:u=>(u.o_twopair||0)>=100,guan_yinping:u=>(u.o_four||0)>=100,
+const AV_LOCK={foot_soldier:()=>{try{return localStorage.getItem('hm_tut_done')==='1';}catch(e){return false;}},sun_shangxiang:u=>(u.o_pair||0)>=100,zhurong:u=>(u.o_three||0)>=100,lu_lingqi:u=>(u.o_twopair||0)>=100,guan_yinping:u=>(u.o_four||0)>=100,
   war_qilin:u=>(u.o_fullhouse||0)>=100,barded_warhorse:u=>(u.o_flush||0)>=100,white_cloud_tiger:u=>(u.o_fiveoak||0)>=100,jade_spirit_stag:u=>(u.o_straight||0)>=100,
   extra_lubu_horse:u=>(u.o_royal||0)>=1,extra_white_lion:u=>(u.o_mandate||0)>=1,extra_zhuge_horse:u=>(u.o_sflush||0)>=1,
   extra_soldier_horse:()=>hardWins()>=EXPERT_WINS_NEEDED,huanglong:u=>(u.o_mandate||0)+(u.o_royal||0)+(u.o_sflush||0)>=10,robot:()=>expertWins()>=10,
@@ -6467,7 +6521,7 @@ const AV_LOCK={sun_shangxiang:u=>(u.o_pair||0)>=100,zhurong:u=>(u.o_three||0)>=1
   guan_yu:u=>(u.u_d0||0)>=10,lu_bu:u=>(u.u_d1||0)>=10,liu_bei:u=>(u.u_h0||0)>=10,zhuge_liang:u=>(u.u_h1||0)>=10};
 /* hints for locked avatars: [text, progress -> [have, need]] */
 const _c=k=>u=>[u[k]||0,10],_c30=k=>u=>[u[k]||0,100],_one=k=>u=>[u[k]||0,1];
-const AV_HINT={zhang_fei:['Summon Zhang Fei (♣ Standard or Fortified) 10 times in any mode',_c('u_c0')],dian_wei:['Summon Dian Wei (♣ Apex or Celestial) 10 times in any mode',_c('u_c1')],
+const AV_HINT={foot_soldier:['Finish the Tutorial (Training Grounds)',()=>[(function(){try{return localStorage.getItem('hm_tut_done')==='1'?1:0;}catch(e){return 0;}})(),1]],zhang_fei:['Summon Zhang Fei (♣ Standard or Fortified) 10 times in any mode',_c('u_c0')],dian_wei:['Summon Dian Wei (♣ Apex or Celestial) 10 times in any mode',_c('u_c1')],
   ma_chao:['Summon Ma Chao (♠ Standard or Fortified) 10 times in any mode',_c('u_s0')],cao_cao:['Summon Cao Cao (♠ Apex or Celestial) 10 times in any mode',_c('u_s1')],
   guan_yu:['Summon Guan Yu (♦ Standard or Fortified) 10 times in any mode',_c('u_d0')],lu_bu:['Summon Lü Bu (♦ Apex or Celestial) 10 times in any mode',_c('u_d1')],
   liu_bei:['Summon Liu Bei (♥ Standard or Fortified) 10 times in any mode',_c('u_h0')],zhuge_liang:['Summon Zhuge Liang (♥ Apex or Celestial) 10 times in any mode',_c('u_h1')],
@@ -6488,7 +6542,7 @@ function avHintText(a){const h=AV_HINT[a];if(!h)return'';const pr=h[1](avUses())
 function avHint(a){const R=hmSR(),el=R&&R.getElementById('avHint');if(!el)return;const t=(a&&!avUnlocked(a))?avHintText(a):'';el.textContent=t;el.hidden=!t;}
 function avUnlocked(a,u){a=avBase(a);const f=AV_LOCK[a];return !f||!!f(u||avUses());}
 window.AVS={me:avOk((function(){try{return localStorage.getItem('hm_avatar');}catch(e){return null;}})()),cpu:'robot',opp:'foot_soldier'};
-if(!avUnlocked(AVS.me))AVS.me='foot_soldier';
+if(!avUnlocked(AVS.me))AVS.me='tianming';
 var AVQ=[],AVPOP=null;
 if(!avSeen())avCheckNew();  // first visit: nothing to announce yet
 function hmAvApply(){const s='av/'+AVS.me+'.webp',p=$('pAv');if(p&&p.getAttribute('src')!==s)p.src=s;const R=hmSR(),f=R&&R.getElementById('pfAv');if(f&&f.getAttribute('src')!==s)f.src=s;
@@ -6821,5 +6875,151 @@ function hmPhaseReached(ph){try{localStorage.setItem('hm_phase2_'+ph,'1');}catch
 #unitLayer .ghostbody,#unitLayer .ccspirit{z-index:6}
 #unitLayer .fdmg,#unitLayer .killgold,#unitLayer .herofx{z-index:8}
 </style>
+<script>
+/* ═══ 11.3 Tutorial: Zhuge Liang walks a new player through one scripted battle ═══ */
+function tutDone(){try{return localStorage.getItem('hm_tut_done')==='1';}catch(e){return false;}}
+var TUT=null;
+// draw order (first card drawn first)
+const TUT_DECK=[['10','♥'],['9','♥'],['5','♣'],
+  ['K','♠'],['10','♦'],['7','♣'],['9','♥'],['9','♠'],
+  ['9','♣'],['9','♦'],['5','♣'],
+  ['K','♣'],['Q','♠'],['J','♥'],
+  ['10','♠'],['K','♦'],['Q','♥'],['J','♣'],['10','♥']];
+const slotSel=i=>()=>[slotEls[i]];
+const readyN=()=>S.slots.filter(s=>s.length>=2).length;
+const eAlive=()=>S.units.filter(u=>u.alive&&u.side==='e'&&!u._fodder).length;
+const tapSlot=(i,n)=>({at:slotSel(i),allow:()=>S.slots[i].length<n?[slotEls[i]]:[],wait:()=>S.slots[i].length>=n});
+const TUT_STEPS=[
+ {pos:'top',next:true,at:()=>[$('baseE'),$('towerE')],
+  say:'Welcome, commander. A general who knows his goal never loses his way, and ours is simple: break the enemy base on the right before they break yours on the left.'},
+ {pos:'top',...tapSlot(0,1),
+  say:'Every army begins with a single soldier. Soldiers come from the Barracks, one card at a time. Tap slot 1 to draw your first card.'},
+ {pos:'top',next:true,at:slotSel(0),
+  say:'A 10. To know the worth of a thing is the beginning of wisdom. Number cards count as their number, J, Q and K count as 10, and an Ace counts as 1 or 11, whichever serves you better.'},
+ {pos:'top',...tapSlot(0,2),
+  say:'One step, then the next. Tap slot 1 again to add a second card.'},
+ {pos:'top',next:true,at:slotSel(0),
+  say:'19. The nearer a slot comes to 21, the stronger the soldier it makes. 17 to 20 makes a Fortified soldier, and exactly 21 awakens a hero.'},
+ {pos:'top',at:slotSel(0),allow:()=>S.log&&S.log.pBusts<1?[slotEls[0]]:[],wait:()=>S.log&&S.log.pBusts>=1,
+  say:'Some lessons are learned by falling. Tap slot 1 once more.'},
+ {pos:'top',next:true,at:slotSel(0),
+  say:'Bust. To go too far is as wrong as to fall short: over 21, the cards burn and the slot starts over. Yet the wise sometimes break what they have built, clearing a slot to rebuild it toward a total that makes a better Synergy.'},
+ {pos:'top',next:true,at:()=>[$('gold'),$('costBox')],
+  say:'An army marches on its treasury. Every card costs gold. In battle, gold comes in over time and from defeating enemies, and cards cost more as the battle goes on. Today the treasury holds just enough for this lesson. Spend it wisely.'},
+ {pos:'top',at:()=>[$('fillAll')],allow:()=>S.slots.some(s=>!s.length)?[$('fillAll')]:[],wait:()=>S.slots.every(s=>s.length>=1),
+  say:'Why gather rice one grain at a time? Tap FILL to put one card in every empty slot.'},
+ {pos:'top',...tapSlot(0,2),say:'Now we raise an army. Tap slot 1.'},
+ {pos:'top',...tapSlot(1,2),say:'Good. Now tap slot 2.'},
+ {pos:'top',next:true,at:()=>[$('synergy')],
+  say:'Two slots with the same total make a Pair, and a Pair is a Synergy: Twin Battalions. Those who stand together stand stronger. Synergies are poker hands made from your slot totals, and they give those soldiers extra power.'},
+ {pos:'top',next:true,at:()=>[$('synBtn')],allow:()=>[$('synBtn'),$('synSheet')],
+  say:'The greater the hand, the greater the Synergy. One who studies is never lost: tap SYNERGIES any time in battle to see them all.'},
+ {pos:'top',...tapSlot(2,2),
+  say:'A wave needs at least 3 ready slots, and a slot is ready once it holds 2 or more cards. Tap slot 3.'},
+ {pos:'top',at:()=>[$('send')],allow:()=>S.waves<1?[$('send')]:[],wait:()=>S.waves>=1,on:()=>{S.energyReady=true;S.energyProgress=1;},
+  say:'Three slots stand ready. When the moment comes, do not hesitate. Tap the sword to send your wave.'},
+ {pos:'low',wait:()=>S.barr&&S.barr.e[0]&&S.barr.e[0].hp<S.barr.e[0].max,
+  say:'Watch them march. The cards left in slots 4 and 5 wait patiently for your next wave.'},
+ {pos:'low',next:true,at:()=>S.barr.e.map(b=>b.el),
+  say:'Each base is guarded by two barricades. A wall does not fall in one blow: soldiers must stop and break each barricade before they reach the base behind it.'},
+ {pos:'low',wait:()=>(TUT.t>2.5&&eAlive()===0)||TUT.t>16,on:()=>tutEnemyWave(),
+  say:'The enemy answers. Your soldiers fight whoever stands in their path, so keep sending waves to hold the bridge.'},
+ {pos:'top',at:()=>[$('fillAll')],allow:()=>S.slots.some(s=>!s.length)?[$('fillAll')]:[],wait:()=>S.slots.every(s=>s.length>=1),
+  say:'Well held. Now we build something greater. Tap FILL.'},
+ {pos:'top',...tapSlot(0,2),say:'A great house is built one stone at a time. Tap slot 1.'},
+ {pos:'top',...tapSlot(1,2),say:'Now slot 2.'},
+ {pos:'top',...tapSlot(2,2),say:'Now slot 3.'},
+ {pos:'top',...tapSlot(3,2),say:'Now slot 4.'},
+ {pos:'top',...tapSlot(4,2),say:'And slot 5.'},
+ {pos:'top',next:true,at:()=>[$('synergy')],
+  say:'Three slots at 20 and two at 19 make a Full House: Dragon & Tiger Citadel. When all five stand as one, every soldier in the wave shares the bonus.'},
+ {pos:'top',at:()=>[$('send')],allow:()=>S.waves<2?[$('send')]:[],wait:()=>S.waves>=2,on:()=>{S.energyReady=true;S.energyProgress=1;S.eBaseHP=Math.min(S.eBaseHP,150);},
+  say:'Send it, and let their fort fall.'},
+ {pos:'low',wait:()=>false,
+  say:'Watch your Full House break through. In a real battle, the SEND sword needs a few seconds to recharge between waves. Patience, too, is a weapon.'}
+];
+function tutEnemyWave(){for(let i=0;i<3;i++)setTimeout(()=>{if(TUT&&S.running)spawnUnit(['♣','♠','♥'][i],12,'recruit','e',0.35,0.35,1,'none',1,null,0,1,null);},i*500);}
+function hmStartTutorial(){
+  AI_MODE='blind';AI.targetSuit=null;HM.mode='tutorial';AVS.cpu='robot';S.paused=false;document.body.classList.remove('hm-paused');hmShow('hmPaused',false);HM.opp='Training Dummy';
+  hmShow('hmDiff',false);hmShow('hmTutAsk',false);try{localStorage.setItem('hm_tut_asked','1');}catch(e){}
+  hmTip();$('hmLoadMeAv').src='av/'+AVS.me+'.webp';$('hmLoadOppAv').src='av/robot.webp';$('hmLoadCpu').textContent='Tutorial';
+  const L=$('hmLoad');L.classList.remove('out');L.hidden=false;const bar=$('hmLoadBar');bar.style.transition='none';bar.style.width='0';void bar.offsetWidth;
+  bar.style.transition='width 1.6s cubic-bezier(.3,.1,.2,1)';bar.style.width='100%';$('hmLoadStat').textContent='Zhuge Liang prepares the training ground…';
+  setTimeout(()=>{
+    $('reset').click();
+    S.tut=true;S.waiting=false;S.preMatch=false;S.running=true;S.gold=TUT_DECK.length*DRAW_COST;S.slots=[[],[],[],[],[]];
+    S.shoe=TUT_DECK.map(([r,s])=>({rank:r,suit:s})).reverse();
+    {const extra=buildShoe().slice(TUT_DECK.length);S.shoe=extra.concat(S.shoe);TUT_EXTRA=extra.length;}       // spare cards underneath, never reached by the script
+    S.energyReady=false;S.energyProgress=0;S.eBaseHP=150;
+    if(S.barr){S.barr.e[0].hp=S.barr.e[0].max=100;S.barr.e[1].hp=S.barr.e[1].max=100;}
+    document.body.classList.add('tut-on');renderAll();{const ts=$('toast');ts.className='';}
+    HM.inGame=true;$('hmMenu').hidden=true;hmShow('hmPlay',false);
+    L.classList.add('out');setTimeout(()=>{L.hidden=true;L.classList.remove('out');},460);
+    TUT={i:-1,t:0};tutGo(0);
+  },1900);
+}
+function tutEls(f){try{return (f?f():[]).filter(Boolean);}catch(e){return [];}}
+function tutStageKid(el){const st=$('stage');while(el&&el.parentNode&&el.parentNode!==st)el=el.parentNode;return el&&el.parentNode===st?el:null;}
+function tutGo(i){
+  if(!TUT)return;TUT.i=i;TUT.t=0;const s=TUT_STEPS[i];if(!s)return;
+  TUT.snap=TUT.snap||[];TUT.snap[i]=tutSnap();
+  if(s.on)try{s.on();}catch(e){console.error(e);}
+  {const sh=$('synSheet');if(sh&&!sh.hidden&&!(s.allow&&tutEls(s.allow).includes(sh))){const x=sh.querySelector('.ssX');if(x){TUT.free=true;try{x.click();}finally{TUT.free=false;}}}}
+  if(!$('tutSkip')){const k=document.createElement('button');k.type='button';k.id='tutSkip';k.textContent='Skip Tutorial';k.onclick=tutSkip;$('stage').appendChild(k);}
+  tutDraw();tutMark();
+}
+var TUT_EXTRA=0;
+function tutSnap(){return {slots:S.slots.map(s=>s.slice()),shoe:S.shoe.slice(),discard:(S.discard||[]).slice(),gold:S.gold,busts:S.log?S.log.pBusts:0,cards:S.log?S.log.pCards:0,waves:S.waves,er:S.energyReady,ep:S.energyProgress};}
+// Prev: the last step where the player read or did something (skips the "watch" steps); never back across a SEND
+function tutPrevIdx(){if(!TUT||!TUT.snap)return -1;for(let j=TUT.i-1;j>=0;j--){const s=TUT_STEPS[j],sn=TUT.snap[j];if(!sn)continue;if(sn.waves!==S.waves)return -1;if(s.next||s.allow)return j;}return -1;}
+function tutBack(){const j=tutPrevIdx();if(j<0)return;const sn=TUT.snap[j];
+  S.slots=sn.slots.map(s=>s.slice());S.shoe=sn.shoe.slice();S.discard=sn.discard.slice();S.gold=sn.gold;if(S.log){S.log.pBusts=sn.busts;S.log.pCards=sn.cards;}
+  S.energyReady=sn.er;S.energyProgress=sn.ep;S.primed=false;renderAll();tutGo(j);TUT.hold=1.2;}
+function tutDraw(){
+  let box=$('tutBox');if(!box){box=document.createElement('div');box.id='tutBox';$('stage').appendChild(box);}
+  const i=TUT.i,cur=TUT_STEPS[i],s=cur;
+  box.className='tut-'+cur.pos;
+  box.innerHTML='<img class="tut-av" src="av/zhuge_liang.webp" alt=""><div class="tut-main"><div class="tut-who">Zhuge Liang</div><div class="tut-say"></div>'
+    +'<div class="tut-foot"><span class="tut-dots">'+TUT_STEPS.map((_,k)=>'<i'+(k===i?' class="on"':k<i?' class="done"':'')+'></i>').join('')+'</span>'
+    +'<button type="button" class="tut-prev" onclick="tutBack()"'+(tutPrevIdx()>=0?'':' disabled')+'>Prev</button>'
+    +'<button type="button" class="tut-next" onclick="tutGo(TUT.i+1)"'+(cur.next?'':' disabled title="Follow Zhuge Liang\'s instruction first"')+'>Next</button>'+'</div></div>';
+  box.querySelector('.tut-say').textContent=s.say;
+}
+function tutMark(){
+  document.querySelectorAll('.tut-ring').forEach(e=>e.remove());document.querySelectorAll('.tut-up').forEach(e=>e.classList.remove('tut-up'));
+  if(!TUT)return;const s=TUT_STEPS[TUT.i];if(!s)return;const st=$('stage'),sr=st.getBoundingClientRect(),k=sr.width/1000;
+  const els=tutEls(s.at);let dm=$('tutDim');if(els.length&&!dm){dm=document.createElement('div');dm.id='tutDim';st.appendChild(dm);}if(!els.length&&dm)dm.remove();
+  els.forEach(el=>{let r=el.getBoundingClientRect();if(el.id==='synergy'){let L=1e9,T=1e9,R=-1e9,B=-1e9;el.querySelectorAll('.sh-name,.sh-sub,.sh-chips').forEach(c=>{const q=c.getBoundingClientRect();if(!q.width)return;L=Math.min(L,q.left);T=Math.min(T,q.top);R=Math.max(R,q.right);B=Math.max(B,q.bottom);});if(R>L)r={left:L,top:T,width:R-L,height:B-T};}if(!r.width)return;const kid=tutStageKid(el);if(kid)kid.classList.add('tut-up');
+    const d=document.createElement('div');d.className='tut-ring'+(s.allow?' tap':'');
+    Object.assign(d.style,{left:((r.left-sr.left)/k-5)+'px',top:((r.top-sr.top)/k-5)+'px',width:(r.width/k+10)+'px',height:(r.height/k+10)+'px'});st.appendChild(d);});
+}
+setInterval(()=>{if(!TUT||!S.tut)return;TUT.t+=0.2;const s=TUT_STEPS[TUT.i];if(!s)return;
+  if(TUT.i<TUT_STEPS.length-2&&S.eBaseHP<150)S.eBaseHP=150;if(!S.running){['tutBox','tutSkip'].forEach(id=>{const b=$(id);if(b)b.style.display='none';});}               // the fort can't fall before the Full House
+  {const left=Math.max(0,S.shoe.length-TUT_EXTRA);S.gold=left*DRAW_COST;}   // exactly enough for the cards still to come
+  if(TUT.hold>0){TUT.hold-=0.2;return;}
+  if(s.wait&&s.wait())tutGo(TUT.i+1);else if(TUT.t%1<0.2)tutMark();},200);
+// only what Zhuge Liang points at can be tapped (plus the bubble and the gear / options)
+['pointerdown','mousedown','touchstart','click'].forEach(ev=>document.addEventListener(ev,e=>{
+  if(!TUT||!S.tut||TUT.free)return;const tg=e.target;
+  if(tg.closest&&(tg.closest('#tutBox')||tg.closest('#tutSkip')||tg.closest('#topRight')||tg.closest('#hmAudio')||tg.closest('#hmSurr')||tg.closest('#hmPaused')||tg.closest('#hmTutDone')))return;
+  const s=TUT_STEPS[TUT.i],ok=tutEls(s&&s.allow);
+  if(ok.some(el=>el===tg||el.contains(tg)))return;
+  e.stopPropagation();e.preventDefault();},true));
+function tutStop(){TUT=null;if(S)S.tut=false;document.body.classList.remove('tut-on');['tutBox','tutDim','tutSkip'].forEach(id=>{const b=$(id);if(b)b.remove();});document.querySelectorAll('.tut-ring').forEach(e=>e.remove());document.querySelectorAll('.tut-up').forEach(e=>e.classList.remove('tut-up'));}
+function tutSkip(){tutStop();S.running=false;hmToMenu();}
+// finish: no Battle Report and nothing saved to Match History; Zhuge Liang hands over the Foot Soldier avatar
+{const _tSBL=showBattleLog;showBattleLog=function(){if(HM.mode==='tutorial'){tutFinale();return;}return _tSBL.apply(this,arguments);};}
+function tutFinale(){const won=S.eBaseHP<=0;tutStop();
+  if(won){const first=!tutDone();try{localStorage.setItem('hm_tut_done','1');}catch(e){}
+    try{const seen=avSeen()||[];if(seen.indexOf('foot_soldier')<0){seen.push('foot_soldier');localStorage.setItem('hm_av_seen',JSON.stringify(seen));}}catch(e){}
+    if(AVS.me==='tianming'){AVS.me='foot_soldier';try{localStorage.setItem('hm_avatar','foot_soldier');}catch(e){}hmAvApply();}
+    $('hmTutGift').hidden=!first;}
+  else $('hmTutGift').hidden=true;
+  hmShow('hmTutDone',true);}
+function hmTutAfter(next){hmShow('hmTutDone',false);if(next==='easy'){HM.mode='practice';hmStartVsCpu('blind');}else hmToMenu();}
+// first visit: offer the tutorial once
+function hmTutAsk(){try{if(tutDone()||localStorage.getItem('hm_tut_asked')==='1')return;localStorage.setItem('hm_tut_asked','1');}catch(e){return;}hmShow('hmTutAsk',true);}
+
+</script>
 </body>
 </html>
