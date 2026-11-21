@@ -2,6 +2,7 @@
 snd/*.mp3
 !snd/music_menu.mp3
 !snd/music_battle.mp3
+!snd/music_b[1-6].mp3
 !snd/stage.mp3
 !snd/minute.mp3
 !snd/hero_awaken.mp3

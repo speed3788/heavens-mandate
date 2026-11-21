@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 11.5**: live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 11.7**: seven battlefields with their own songs, live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -23,7 +23,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 
 - Guest profiles and match history are saved in your browser (playtest only).
 - Sound effects: only CC0 (public domain) sounds are included: `stage.mp3` (7:00, 9:00, 12:00, 15:00), `minute.mp3` (each minute mark) and `hero_awaken.mp3` (you draw a Celestial 21) and `hero_enter.mp3` (a Celestial hero steps onto the bridge). Older Pixabay sound effects are kept out of this repo because their license doesn't allow sharing the files on their own.
-- Music was made with Suno.
+- Music: original soundtrack by patokeem, composed with Suno. Each battlefield has its own song (`snd/music_battle.mp3`, `snd/music_b1.mp3` to `music_b6.mp3`).
 
 ## Changes since 7.0
 
@@ -67,6 +67,8 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **11.3:** a Tutorial (Training Grounds, above Easy, or the Tactics page): Zhuge Liang walks you through one battle step by step, with set cards, no timer, one weak enemy wave and a Full House finish. Finishing it unlocks the Foot Soldier avatar; until then everyone starts with a blank 天命 avatar. New players are offered the Tutorial once. How to Play is now called Tactics, and the Play page's War Council card art fills the card.
 - **11.4:** bigger menu text; Text Size now starts on Large and adds Extra Large. On phones the top tabs fold into a ☰ menu. The Golden Dragon avatar now needs 88 top-tier Synergy waves (was 10) and swaps places with the Robot. Fixed the march-order bar showing "No Synergy" once a wave's Synergy soldiers fell.
 - **11.5:** Monolith Vanguard is now a Level 3 Synergy (red brush and red march-bar tag). The game can play a sound for each Synergy level when a Synergy first appears under SEND (those sound files aren't in this public version). Battle music is a touch quieter.
+- **11.6:** on narrow screens the Settings sliders and Text Size buttons stack under their labels. Some battle sounds were rebalanced.
+- **11.7:** seven battlefields, each with its own painting and song: Misty Valley, Red Cliffs, Bamboo Valley, Snowy Pass, Plum Blossom Spring, Autumn Gorge and Thunderstorm Peaks. Each computer level has its own (Easy Bamboo Valley, Normal Red Cliffs, Hard Autumn Gorge, Expert Snowy Pass; the Tutorial uses Misty Valley). Online, the host picks one (or Random) at the bottom of the room page. Settings → About credits the music to patokeem. On phones, the Synergies page rules sit under each name and the avatar picker scrolls and opens above the top bar. Waves with no Synergy no longer get a tag on the march-order bar, and the computer's wave numbers no longer skip. The loading screen shows only the quote, plus a reminder to turn your screen sideways when a phone or tablet is held upright.
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.
