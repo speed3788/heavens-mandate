@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 11.9</title>
+<title>Heaven's Mandate · Build 12.2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -875,6 +875,71 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 @keyframes hfxBolt{0%{clip-path:inset(0 0 100% 0);opacity:1}16%{clip-path:inset(0 0 0 0);opacity:1}28%{opacity:.5}38%{opacity:1}55%{opacity:.85}100%{opacity:0;clip-path:inset(0 0 0 0)}}
 @keyframes hfxRing{0%{opacity:1;transform:scale(.25)}55%{opacity:.95}100%{opacity:0;transform:scale(1.4)}}
 </style>
+<style>
+/* ── 12.0 Graphics levels ── */
+@keyframes ghsprRun_9474{from{background-position-x:0.0000%}to{background-position-x:94.7368%}}
+@keyframes ghsprRun_9524{from{background-position-x:0.0000%}to{background-position-x:95.2381%}}
+@keyframes ghsprRun_10000{from{background-position-x:0.0000%}to{background-position-x:100.0000%}}
+@keyframes ghccRun_7500{from{background-position-x:0.0000%}to{background-position-x:75.0000%}}
+@keyframes ghccStop_9583{from{background-position-x:79.1667%}to{background-position-x:95.8333%}}
+@keyframes ghsprRun_9333{from{background-position-x:0.0000%}to{background-position-x:93.3333%}}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-std .sp{animation:ghsprRun_9474 1.4s steps(10,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-std.atking .sp{animation:ghsprRun_9524 0.75s steps(11,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-std.dead .sp{animation:ghsprRun_10000 1.05s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-apx .sp{animation:ghsprRun_10000 1.4s steps(13,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-apx.atking .sp{animation:ghsprRun_10000 0.75s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-apx.dead .sp{animation:ghsprRun_10000 1.05s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-dw .sp{animation:ghsprRun_10000 1.4s steps(13,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-dw.atking .sp{animation:ghsprRun_10000 0.95s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-dw.dead .sp{animation:ghsprRun_10000 1.05s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-mc .sp{animation:ghsprRun_10000 1.4s steps(13,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-mc.atking .sp{animation:ghsprRun_9524 0.7s steps(11,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-mc.dead .sp{animation:ghsprRun_10000 1.05s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-mca .sp{animation:ghsprRun_10000 1.4s steps(13,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-mca.atking .sp{animation:ghsprRun_10000 0.75s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-mca.dead .sp{animation:ghsprRun_10000 1.05s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-lb .sp{animation:ghsprRun_10000 1.4s steps(13,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-lb.atking .sp{animation:ghsprRun_10000 0.95s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-lb.dead .sp{animation:ghsprRun_10000 1.05s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-gy .sp{animation:ghsprRun_10000 1.4s steps(13,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-gy.atking .sp{animation:ghsprRun_10000 0.95s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-gy.dead .sp{animation:ghsprRun_10000 1.05s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-gya .sp{animation:ghsprRun_10000 1.4s steps(13,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-gya.atking .sp{animation:ghsprRun_10000 1.1s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-gya.dead .sp{animation:ghsprRun_10000 1.05s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-cc .sp{animation:ghsprRun_10000 1.4s steps(13,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-cc.atking .sp{animation:ghsprRun_10000 1.0s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-cc.dead .sp{animation:ghsprRun_10000 1.05s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-lbe .sp{animation:ghsprRun_10000 1.4s steps(13,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-lbe.atking .sp{animation:ghsprRun_10000 1.0s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-lbe.dead .sp{animation:ghsprRun_10000 1.05s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-lbea .sp{animation:ghsprRun_10000 1.4s steps(13,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-lbea.atking .sp{animation:ghsprRun_10000 1.0s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-lbea.dead .sp{animation:ghsprRun_10000 1.05s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-zl .sp{animation:ghsprRun_10000 1.4s steps(13,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-zl.atking .sp{animation:ghsprRun_10000 1.0s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-zl.dead .sp{animation:ghsprRun_10000 1.05s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-cc.chg.mv:not(.dead) .sp{animation:ghccRun_7500 .8s steps(10,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-cc.ccstop:not(.dead) .sp{animation:ghccStop_9583 .36s steps(3,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-cc.cchg:not(.dead) .sp{animation:ghsprRun_10000 1s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-lbe.atkstance:not(.mv) .sp,:is(.gfx-bal,.gfx-perf) .unit.spr.art-lbe.atkstance.atking:not(.mv) .sp{animation:ghsprRun_10000 2s steps(13,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-lbe.pulsing:not(.mv) .sp{animation:ghsprRun_10000 1s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-lbea.atkstance:not(.mv) .sp,:is(.gfx-bal,.gfx-perf) .unit.spr.art-lbea.atkstance.atking:not(.mv) .sp{animation:ghsprRun_10000 2s steps(13,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-lbea.pulsing:not(.mv) .sp{animation:ghsprRun_10000 1s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-zl.atkstance:not(.mv) .sp,:is(.gfx-bal,.gfx-perf) .unit.spr.art-zl.atkstance.atking:not(.mv) .sp{animation:ghsprRun_10000 2s steps(13,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-zl.pulsing:not(.mv) .sp{animation:ghsprRun_10000 1s steps(13,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-ss .sp{animation:ghsprRun_9333 1.3s steps(8,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-ss.atking .sp{animation:ghsprRun_9333 .7s steps(8,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-ss.dead .sp{animation:ghsprRun_9333 1.05s steps(8,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-fs .sp{animation:ghsprRun_9333 1.3s steps(8,jump-none) infinite!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-fs.atking .sp{animation:ghsprRun_9333 .7s steps(8,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) .unit.spr.art-fs.dead .sp{animation:ghsprRun_9333 1.05s steps(8,jump-none) forwards!important}
+:is(.gfx-bal,.gfx-perf) #unitLayer .unit,:is(.gfx-bal,.gfx-perf) #unitLayer .unit *{filter:none!important}
+:is(.gfx-bal,.gfx-perf) #unitLayer .unit .sp.gl{display:none!important}
+.gfx-perf #stage *{box-shadow:none!important;text-shadow:none!important}
+.gfx-perf .unit.spr.mv:not(.atking):not(.dead):not(.chg) .sp{animation:none!important}
+.gfx-perf #unitLayer .fdmg{display:none!important}
+</style>
 </head>
 <body>
 
@@ -883,7 +948,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #11.9</div>
+    <div class="sub">Build #12.2</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -1017,10 +1082,10 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
       ['Five Tiger Phalanx','Five of a Kind','All 5 slots, same total',['+24% Max HP','+24% ATK','+24% Armor','+24% Move Speed','+24% Status Chance']],
       ["Heaven's Mandate",'All 5 = 21','5 slots each totalling 21 (any mix)',['+40% Max HP','+40% Armor','+30% ATK','+30% Move Speed','+30% ATK Speed','Huanglong dragon sweep: burns (10 / 0.5s for 4s) and stuns each enemy for 3s','Dragon reaches enemy base: 500 dmg'],'mandate'],
       ['Dragon & Tiger Citadel','Full House','3 same total + 2 same total',['+30% Max HP','+30% Armor','+20% ATK','+20% Move Speed','+20% ATK Speed','+20% Status Chance']],
-      ['Monolith Vanguard','Flush','5 slots, same suit',['+20% Max HP','+20% ATK','♣ +10% base armor','♠ +20% ATK Speed','♦ +20% attack range','♥ heals 6% of Max HP every 3s','Stacks with any same-total Synergy']],
+      ['Monolith Vanguard','Flush','5 slots, same suit',['Alone: +10% Max HP / Armor / ATK, half suit bonus','With Pair / Three: +20%, suit bonus ×1','With Two Pair / Four: +25%, ×1.25','With Full House: +30%, ×1.5','With Five of a Kind / Mandate: +35%, ×1.75','The other Synergy reaches the whole wave','Suit bonus ×1: ♣ +10% armor · ♠ +20% ATK Speed · ♦ +20% range · ♥ heals 6% / 3s']],
       ['Flowing Serpent','Straight','5 consecutive totals',['+24% Max HP','+24% Armor','+24% ATK','+30% Move Speed','+24% ATK Speed','+24% Status Chance']],
-      ['Nine Dragons Convergence','Straight Flush','5 consecutive totals, same suit',['Monolith Vanguard + Flowing Serpent','Huanglong dragon sweep: burns and stuns each enemy it passes'],'sflush'],
-      ["Emperor's Sovereign Army",'Royal Flush','Totals 17-18-19-20-21, same suit',['Monolith Vanguard + Flowing Serpent, all ×1.25','+30% Armor','Huanglong dragon sweep: burns and stuns each enemy it passes','Dragon reaches enemy base: 500 dmg'],'royal']
+      ['Nine Dragons Convergence','Straight Flush','5 consecutive totals, same suit',['Monolith Vanguard + Flowing Serpent, all ×1.25','Huanglong dragon sweep: burns and stuns each enemy it passes'],'sflush'],
+      ["Emperor's Sovereign Army",'Royal Flush','Totals 17-18-19-20-21, same suit',['Monolith Vanguard + Flowing Serpent, all ×1.5','+36% Armor','Huanglong dragon sweep: burns and stuns each enemy it passes','Dragon reaches enemy base: 500 dmg'],'royal']
     ];
     const KEY='hm_syn_unlocked';
     function got(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}}
@@ -1124,8 +1189,17 @@ const FORMATIONS={
   mandate:{name:'Heaven\'s Mandate \u5929\u547d',poker:'All 5 = 21',cls:'h-royal'},
 };
 function mk(hand,flushSuit,buffLine,subLine){return{hand,flushSuit,buffLine,subLine,...FORMATIONS[hand]};}
+
+/* 12.0 Rising Banner: Monolith's own bonus climbs with the Synergy it's combined with */
+const MONO_LV=[{b:.10,k:.5},{b:.20,k:1},{b:.25,k:1.25},{b:.30,k:1.5},{b:.35,k:1.75}];
+function monoOf(formHand,flushStack){if(formHand==='royal')return{b:.30,k:1.5};if(formHand==='sflush')return{b:.25,k:1.25};
+  if(formHand==='flush')return MONO_LV[0];if(flushStack)return MONO_LV[Math.min(4,HM_LV[formHand]||1)]||MONO_LV[1];return null;}
+function _pc(v){return (Math.round(v*1000)/10).toString().replace(/\.0$/,'')+'%';}
+function monoEl(suit,k){return{'♥':'+'+_pc(.06*k)+' HP/3s','♦':'+'+_pc(.20*k)+' range','♣':'+'+_pc(.10*k)+' armor','♠':'+'+_pc(.20*k)+' AS'}[suit];}
 // v6.1: a totals Synergy that is also a Flush keeps its own buffs AND gains the Flush on-hit effect
-function withFlush(w,suit,el){return{...w,flushStack:suit,flushSuit:suit,name:w.name+' + '+FORMATIONS.flush.name,poker:w.poker+' + Flush',buffLine:w.buffLine+' · Monolith +20% HP/ATK · '+el,subLine:w.subLine+' · 5-suit '+suit};}
+// 12.0: with Monolith the other Synergy reaches the WHOLE wave (no 'members only'), and Monolith's bonus climbs with that Synergy's level
+function withFlush(w,suit,el){const M=MONO_LV[Math.min(4,HM_LV[w.hand]||1)];el=monoEl(suit,M.k);w={...w,buffLine:String(w.buffLine).replace(/\s*\((?:the \d|the pair|both pairs)[^)]*\)/,' (whole wave)')};return{...w,flushStack:suit,flushSuit:suit,name:w.name+' + '+FORMATIONS.flush.name,poker:w.poker+' + Flush',buffLine:w.buffLine+' · Monolith +'+_pc(M.b)+' HP/Armor/ATK · '+el,subLine:w.subLine+' · 5-suit '+suit};}
+function withFlush_old(w,suit,el){return{...w,flushStack:suit,flushSuit:suit,name:w.name+' + '+FORMATIONS.flush.name,poker:w.poker+' + Flush',buffLine:w.buffLine+' · Monolith +20% HP/ATK · '+el,subLine:w.subLine+' · 5-suit '+suit};}
 // ── Sum-based straight detection ──
 // A straight = all 5 slots filled with 5 consecutive blackjack totals (any range)
 function isStrictStraight(slots){
@@ -1159,9 +1233,9 @@ function evalPoker(slots){
   const flushSuit=n===5&&top[1]===5?top[0]:null;
   const flushSize=flushSuit?top[1]:0;
   // Royal Flush
-  if(n===5&&isRoyalFlush(slots))return mk('royal',flushSuit,'+30% HP/Armor/ATK/AS/Status · +37.5% Spd · Monolith +25% HP/ATK · '+{'♥':'+7.5% HP/3s','♦':'+25% range','♣':'+12.5% armor','♠':'+25% AS'}[flushSuit]+' · Huanglong Dragon Sweep · 500 Base DMG','17-18-19-20-21 same suit');
+  if(n===5&&isRoyalFlush(slots))return mk('royal',flushSuit,'+36% HP/Armor/ATK/AS/Status · +45% Spd · Monolith +30% HP/Armor/ATK · '+monoEl(flushSuit,1.5)+' · Huanglong Dragon Sweep · 500 Base DMG','17-18-19-20-21 same suit');
   // Straight Flush (strict 5-card)
-  if(n===5&&flushSuit&&isStrictStraight(slots))return mk('sflush',flushSuit,'+24% HP/Armor/ATK/AS/Status · +30% Spd · Monolith +20% HP/ATK · '+{'♥':'+6% HP/3s','♦':'+20% range','♣':'+10% armor','♠':'+20% AS'}[flushSuit]+' · Huanglong Dragon Sweep','5 consec. sums same suit');
+  if(n===5&&flushSuit&&isStrictStraight(slots))return mk('sflush',flushSuit,'+30% HP/Armor/ATK/AS/Status · +37.5% Spd · Monolith +25% HP/Armor/ATK · '+monoEl(flushSuit,1.25)+' · Huanglong Dragon Sweep','5 consec. sums same suit');
   // v6.1: two families — TOTALS (Pair…Five of a Kind, biggest one only) and SUIT (Flush).
   // A wave that earns one of each gets BOTH bonuses.
   let tot=null;
@@ -1174,7 +1248,7 @@ function evalPoker(slots){
   if(flushSuit){
     const el={'♥':'+6% HP/3s','♦':'+20% range','♣':'+10% armor','♠':'+20% AS'}[flushSuit];
     if(tot)return withFlush(tot,flushSuit,el);
-    return mk('flush',flushSuit,'+20% HP/ATK · '+el,'5-suit '+flushSuit);
+    return mk('flush',flushSuit,'+10% HP/Armor/ATK · '+monoEl(flushSuit,.5),'5-suit '+flushSuit);
   }
   // Straight (strict 5-card) — can't share slots with a totals Synergy (all 5 totals differ)
   if(n===5&&isStrictStraight(slots))return mk('straight',null,'+24% HP/Armor/ATK/AS/Status · +30% Spd','5 consec. sums');
@@ -1795,20 +1869,20 @@ function spawnUnit(suit,sumVal,tier,side,bHP,bATK,bSPD,formHand,bASPD,domSuit,bD
   const st=SUIT_STATS[suit];
   const multHP=tierMultHP(tier,sumVal);
   const multATK=tierMultATK(tier,sumVal);
-  const _isFl=formHand==='flush'||formHand==='sflush'||formHand==='royal'||!!flushStack,_flm=_isFl?1+0.20*(formHand==='royal'?1.25:1):1;
+  const _isFl=formHand==='flush'||formHand==='sflush'||formHand==='royal'||!!flushStack,_mo=_isFl?monoOf(formHand,flushStack):null,_flm=_mo?1+_mo.b:1;
   const hp=Math.floor(st.baseHP*multHP*(bHP||1)*_flm);
   // v6.1 Flush: flat bonus to the suit's BASE stat (Synergy multipliers then apply on top). Royal = x1.5.
   const isFlush=formHand==='flush'||formHand==='sflush'||formHand==='royal'||!!flushStack;
-  const fm=formHand==='royal'?1.25:1;
+  const fm=_mo?_mo.k:1;
   const FB=isFlush?{'\u2663':{defP:0.10},'\u2660':{aspdP:0.20},'\u2666':{rngP:0.20},'\u2665':{regenP:0.06}}[suit]||{}:{};  // Nov 14: Monolith % bonuses
   const baseDef=(st.def||0)*(1+(FB.defP||0)*fm)*tierMultDEF(tier,sumVal);
   const flatDefBonus=bDEFflat||0;
   const defPctBonus=bDEFpct||1;
   const u={id:unitId++,suit,tier,side,hp,maxHp:hp,dps:st.baseDPS*multATK*(bATK||1)*_flm,
-    def:Math.round((baseDef+flatDefBonus)*defPctBonus),maxDef:Math.round((baseDef+flatDefBonus)*defPctBonus),stance:'support',shieldActive:false,pulseClock:0,
+    def:Math.round((baseDef+flatDefBonus)*defPctBonus*_flm),maxDef:Math.round((baseDef+flatDefBonus)*defPctBonus*_flm),stance:'support',shieldActive:false,pulseClock:0,
     range:st.range*(1+(FB.rngP||0)*fm),combatRange:(st.combatRange||st.range)*(1+(FB.rngP||0)*fm),flushRegen:Math.round(hp*(FB.regenP||0)*fm),speed:Math.round(st.speed*(bSPD||1)),
     atkSpd:(bASPD||1)*(1+(FB.aspdP||0)*fm)*tierMultASPD(tier,sumVal),baseAtkMs:st.atkMs||1000,skillIdx:0,dominantWaveSuit:domSuit||null,debuffs:{},  // atkSpd multiplier; debuffs:{frost,burn,expose,sunder}
-    formHand:formHand||'none',flushStack:flushStack||null,_defMult:tierMultDEF(tier,sumVal)*(bDEFpct||1),
+    formHand:formHand||'none',flushStack:flushStack||null,_defMult:tierMultDEF(tier,sumVal)*(bDEFpct||1)*_flm,
     wave:side==='p'?S.waves:S.aiWave||0,
     x:side==='p'?BRIDGE_W-25-(unitId%5)*3:25+(unitId%5)*3,alive:true,aClock:0,el:null};
   const el=document.createElement('div');
@@ -1834,8 +1908,8 @@ function getFormBuff(hand,slotCount){
     three:   {hp:1.06, atk:1.06, spd:1,    aspd:1,    def:0,   defPct:1.06},
     straight:{hp:1.12, atk:1.12, spd:1.15, aspd:1.12, def:0,   defPct:1.12, fx:0.12},  // 8.1: +24% Armor replaces Armor Shred
     flush:   {hp:1,    atk:1,    spd:1,    aspd:1,    def:0,   defPct:1},
-    sflush:  {hp:1.12, atk:1.12, spd:1.15, aspd:1.12, def:0,   defPct:1.12, fx:0.12},   // = Flowing Serpent (+ Monolith suit bonus)
-    royal:   {hp:1.15, atk:1.15, spd:1.1875,aspd:1.15,def:0, defPct:1.15, fx:0.15},  // Nine Dragons x1.25
+    sflush:  {hp:1.15, atk:1.15, spd:1.1875,aspd:1.15,def:0, defPct:1.15, fx:0.15},  // 12.0: Flowing Serpent x1.25 (+ Monolith x1.25)
+    royal:   {hp:1.18, atk:1.18, spd:1.225, aspd:1.18, def:0, defPct:1.18, fx:0.18},  // 12.0: Flowing Serpent x1.5 (+ Monolith x1.5)
     fullhouse:{hp:1.15,atk:1.10, spd:1.10, aspd:1.10, def:0,   defPct:1.15, fx:0.10},  // 8.1: +30% Armor replaces Armor Shred
     four:    {hp:1.10, atk:1.10, spd:1,    aspd:1,    def:0,   defPct:1.10, fx:0.10},
     fiveoak: {hp:1.12, atk:1.12, spd:1.12, aspd:1,    def:0,   defPct:1.12, fx:0.12},  // v6.1 nerf: HP +20% -> +15%
@@ -1949,7 +2023,7 @@ function barrDamage(b,amt){
     for(let i=0;i<FODDER_N;i++)setTimeout(()=>{if(S===m&&S.running)spawnUnit(fodderSuit(i),0,'fodder',side,1,1,1,'none',1,null,0,1,null);},i*400);
     {const m='Barricade under attack — 3 Foot Soldiers and 2 Spear Soldiers rally to defend!';netSay(side==='p'?m:null,'warn',side==='e'?m:null,'warn');}}
   const f=b.el.querySelector('.bhpf');if(f)f.style.width=Math.max(0,b.hp/b.max*100)+'%';
-  b.el.classList.remove('hit');void b.el.offsetWidth;b.el.classList.add('hit');
+  b.el.classList.remove('hit');{const be=b.el;requestAnimationFrame(()=>be.classList.add('hit'));}
   {const r=b.hp/b.max,st=r<=0?'broken':r<=0.25?'worn':r<=0.5?'dmg':'';['dmg','worn'].forEach(c=>b.el.classList.toggle(c,c===st));}
   if(b.hp<=0){b.alive=false;b.el.classList.add('broken');
     {const a='Your barricade has fallen!',c='Enemy barricade broken!';netSay(b.side==='p'?a:c,b.side==='p'?'bad':'good',b.side==='p'?c:a,b.side==='p'?'good':'bad');}}
@@ -2165,7 +2239,7 @@ function heartsStance(u){
   return ahead?'support':'attack';
 }
 function heartsPulse(u){
-  if(u.spr&&u.el){u.el.classList.remove('pulsing');void u.el.offsetWidth;u.el.classList.add('pulsing');clearTimeout(u._pt);u._pt=setTimeout(()=>u.el&&u.el.classList.remove('pulsing'),1000);} // SPRITE TEST: pulse plays the attack anim
+  if(u.spr&&u.el){u.el.classList.remove('pulsing');{const ue=u.el;requestAnimationFrame(()=>ue.classList.add('pulsing'));}clearTimeout(u._pt);u._pt=setTimeout(()=>u.el&&u.el.classList.remove('pulsing'),1000);} // SPRITE TEST: pulse plays the attack anim
   const ring=document.createElement('div');
   ring.className='hpulse';
   const r=u.range*2;
@@ -2335,7 +2409,7 @@ function unitTick(dt){
     }
     if(u.spr){if(u.charged)u.el.classList.remove('chg');const mv=Math.abs(u.x-(u._px??u.x))>0.001;u._px=u.x;u.el.classList.toggle('mv',mv);if(mv)u.el.classList.remove('atking');}
     u.el.style.left=Math.max(0,Math.min(BRIDGE_W-32,u.x))+'px';
-    const hf=u.el.querySelector('.uhpf');if(hf)hf.style.width=Math.max(0,u.hp/u.maxHp*100)+'%';
+    const hf=u._hpf||(u._hpf=u.el.querySelector('.uhpf'));if(hf)hf.style.width=Math.max(0,u.hp/u.maxHp*100)+'%';
     const db=u.el.querySelector('.udef');
     if(db){
       if(u.maxDef>0&&u.def>0){
@@ -2636,7 +2710,7 @@ function aiSendWave(){
     return {sum:info.sum,suit:sl[0].suit,rank:sl[0].rank,natural:info.tier==='natural'};
   });
   const wp=evalPoker(rSlots);
-  const buff=getFormBuff(wp.hand,rSlots.length);const _mem=synMembers(rSlots.map(r=>r.sum),wp.hand),_NOB=getFormBuff('none');let _rj=0;
+  const buff=getFormBuff(wp.hand,rSlots.length);const _mem=wp.flushStack?new Set(rSlots.map((_,i)=>i)):synMembers(rSlots.map(r=>r.sum),wp.hand),_NOB=getFormBuff('none');let _rj=0;
   const _eWaveDPS=Math.round(rSlots.reduce((sum,sl)=>{
     const st=SUIT_STATS[sl.suit];
     return sum+st.baseDPS*tierMultATK(sl.natural?'natural':evalHand(AI.slots.find(s2=>s2.length&&s2[0].suit===sl.suit&&evalHand(s2).sum===sl.sum)||[]).tier||'recruit',sl.sum)*(buff.atk||1);
@@ -2693,7 +2767,7 @@ function sendWave(){
   if(countReady(S.slots)<MIN_READY){say('Stack at least 3 slots to reinforce the ranks!','warn');netNope(sb);return;}
   {const _on=soldiersOn(_sd),_r=countReady(S.slots);if(bridgeFull(_on,_r)){say('Bridge full — '+_on+' / '+capNow()+' soldiers. Your '+_r+' slots won\'t fit.','warn');netNope(sb);return;}}
   const rSlots=S.slots.filter(c=>c.length>=2).map(c=>({sum:evalHand(c).sum,suit:c[0].suit,natural:evalHand(c).tier==='natural'}));snd('send');
-  const wp=evalPoker(rSlots);const buff=getFormBuff(wp.hand,rSlots.length);const _mem=synMembers(rSlots.map(r=>r.sum),wp.hand),_NOB=getFormBuff('none');let _rj=0;
+  const wp=evalPoker(rSlots);const buff=getFormBuff(wp.hand,rSlots.length);const _mem=wp.flushStack?new Set(rSlots.map((_,i)=>i)):synMembers(rSlots.map(r=>r.sum),wp.hand),_NOB=getFormBuff('none');let _rj=0;
   // dominantWaveSuit: suit with ≥3 slots (independent of poker hand)
   const _pSC2={};rSlots.forEach(r=>{_pSC2[r.suit]=(_pSC2[r.suit]||0)+1;});
   let _pBS2=null,_pMC2=0;
@@ -2760,6 +2834,7 @@ var _RA=[];function blSetRes(el,v){v=String(v||'');if(!v.includes('|')){const t=
 // 10.8: bonus line -> one box per bonus (same names and colors as the Synergies page)
 var HM_STAT={HP:['hp','Max HP'],Armor:['def','Armor'],ATK:['atk','ATK'],Spd:['spd','Move Speed'],AS:['aspd','ATK Speed'],Status:['fx','Status Chance']};
 var HM_FLUSH={'+7.5% HP/3s':['hearts','♥ heals 7.5% HP/3s'],'+25% range':['diamonds','♦ +25% attack range'],'+12.5% armor':['clubs','♣ +12.5% base armor'],'+25% AS':['spades','♠ +25% ATK Speed'],'+6% HP/3s':['hearts','♥ heals 6% HP/3s'],'+20% range':['diamonds','♦ +20% attack range'],'+10% armor':['clubs','♣ +10% base armor'],'+20% AS':['spades','♠ +20% ATK Speed']};
+(function(){[.5,1,1.25,1.5,1.75].forEach(k=>{['\u2665','\u2666','\u2663','\u2660'].forEach(s=>{const key=monoEl(s,k),v=key.split(' ')[0];HM_FLUSH[key]={'\u2665':['hearts','\u2665 heals '+v.slice(1)+' HP/3s'],'\u2666':['diamonds','\u2666 '+v+' attack range'],'\u2663':['clubs','\u2663 '+v+' base armor'],'\u2660':['spades','\u2660 '+v+' ATK Speed']}[s];});});})();
 function hmChips(line){
   const out=[];String(line||'').split(' · ').forEach(p=>{p=p.replace(/\s*\([^)]*\)/g,'').trim();if(!p)return;
     if(HM_FLUSH[p]){out.push(HM_FLUSH[p]);return;}
@@ -2770,7 +2845,7 @@ function hmChips(line){
 // total DPS of the wave you'd send right now (same math as the Battle Report)
 function hmWaveDps(){
   const rs=S.slots.filter(c=>c.length>=2).map(c=>({sum:evalHand(c).sum,suit:c[0].suit,natural:evalHand(c).tier==='natural'}));if(!rs.length)return 0;
-  const wp=evalPoker(rs),buff=getFormBuff(wp.hand,rs.length),mem=synMembers(rs.map(r=>r.sum),wp.hand),nob=getFormBuff('none');let j=0,t=0;
+  const wp=evalPoker(rs),buff=getFormBuff(wp.hand,rs.length),mem=wp.flushStack?new Set(rs.map((_,i)=>i)):synMembers(rs.map(r=>r.sum),wp.hand),nob=getFormBuff('none');let j=0,t=0;
   S.slots.forEach(c=>{if(c.length<2)return;const info=evalHand(c),b=mem.has(j++)?buff:nob;t+=SUIT_STATS[c[0].suit].baseDPS*tierMultATK(info.tier,info.sum)*(b.atk||1);});
   return Math.round(t*10)/10;}
 function reAnim(el,c){if(!el)return;el.classList.remove(c);if(!_RA.length)requestAnimationFrame(()=>{const q=_RA;_RA=[];for(const [e,k] of q)if(e.isConnected&&!e.classList.contains('dead'))e.classList.add(k);});_RA.push([el,c]);}
@@ -4741,6 +4816,27 @@ html, .hm-body {
 .htp-table td.rwalk .hw-stage{margin:0 auto}
 .hw-stage.cel .hw-spr{filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 6px rgba(227,204,255,.9))}
 .htp-tip-body{margin-top:9px}
+.mono-ladder{line-height:1.45}.mono-tbl{width:100%;border-collapse:collapse;margin:8px 0 6px;font-size:.82rem}.mono-tbl th,.mono-tbl td{padding:4px 6px;border-bottom:1px solid var(--border,#cdb894);text-align:left}.mono-tbl th{font-weight:700;color:var(--fg-dim,#5a4834)}.mono-tbl td+td,.mono-tbl th+th{text-align:right;white-space:nowrap}.mono-x{display:block;font-size:.78rem;opacity:.85}
+/* ── 12.0 Tactics sections ── */
+.tac-grid{scroll-margin-top:84px;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin:6px 0 10px}
+.tac-btn{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;background:#f3e9d5;border:1px solid #cdb894;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(90,72,52,.12);transition:transform .12s,border-color .12s,box-shadow .12s}
+.tac-btn:hover{border-color:#9b3324;box-shadow:0 4px 14px rgba(90,72,52,.2);transform:translateY(-2px)}
+.tac-btn:active{transform:translateY(0)}
+.tac-btn:focus-visible{outline:2px solid #9b3324;outline-offset:2px}
+.tac-art{display:block;aspect-ratio:16/9;background:#e2d3b5 center/cover no-repeat;border-bottom:1px solid #cdb894}
+.tac-art.av{background-size:auto 120%;background-position:center 30%;background-color:#e9dcc2}
+.tac-txt{display:flex;flex-direction:column;gap:4px;padding:12px 14px 14px}
+.tac-n{font-family:Cinzel,Georgia,serif;font-weight:700;font-size:1.02rem;letter-spacing:.05em;color:#2a2017}
+.tac-d{font-size:.86rem;line-height:1.4;color:#5a4834}
+.tac-k{font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9b3324}
+.tac-top{scroll-margin-top:84px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 14px}
+.tac-back{all:unset;cursor:pointer;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#5a4834;border:1px solid #cdb894;border-radius:6px;padding:7px 12px;background:#f3e9d5}
+.tac-back:hover{color:#9b3324;border-color:#9b3324}
+.tac-h{font-family:Cinzel,Georgia,serif;font-size:1.25rem;font-weight:700;letter-spacing:.05em;color:#2a2017}
+.tac-sec[hidden],.tac-grid[hidden],.tac-top[hidden]{display:none!important}
+.tac-sec>.syn-tier-label:first-child{margin-top:0;border-top:none;padding-top:0}
+@media (max-width:520px){.tac-grid{grid-template-columns:1fr 1fr;gap:10px}.tac-txt{padding:9px 10px 11px}.tac-d{display:none}.tac-n{font-size:.9rem}}
+
 .htp-quote{margin:0;padding:0 0 0 10px;border-left:2px solid var(--gold-dim);font-style:italic;color:var(--ink);opacity:.85;font-size:.84rem;line-height:1.45}
 .htp-quote cite{display:block;font-style:normal;font-size:.72rem;color:var(--fg-faint);margin-top:3px;letter-spacing:.02em}
 .fig-title{margin-bottom:10px;align-self:flex-start;width:100%}
@@ -5348,13 +5444,21 @@ html, .hm-body {
             <div class="syn-req">5 same suit</div>
           </div>
           <div class="syn-buff-list">
-            <span class="syn-buff hp">+20% Max HP</span>
-            <span class="syn-buff atk">+20% ATK</span>
-            <span class="syn-buff clubs">♣ +10% base armor</span>
-            <span class="syn-buff spades">♠ +20% ATK Speed</span>
-            <span class="syn-buff diamonds">♦ +20% attack range</span>
-            <span class="syn-buff hearts">♥ heals 6% of Max HP every 3s</span>
+            <span class="syn-buff hp">+10% Max HP</span>
+            <span class="syn-buff def">+10% Armor</span>
+            <span class="syn-buff atk">+10% ATK</span>
+            <span class="syn-buff clubs">♣ +5% base armor</span>
+            <span class="syn-buff spades">♠ +10% ATK Speed</span>
+            <span class="syn-buff diamonds">♦ +10% attack range</span>
+            <span class="syn-buff hearts">♥ heals 3% of Max HP every 3s</span>
           </div>
+          <div class="syn-note-line mono-ladder"><b>Rising Banner:</b> combined with a same-total Synergy, that Synergy reaches your <b>whole wave</b>, and Monolith grows with its level.
+            <table class="mono-tbl"><tr><th>Combined with</th><th>HP, Armor &amp; ATK</th></tr>
+            <tr><td>Pair, Three of a Kind</td><td>+20%</td></tr>
+            <tr><td>Two Pair, Four of a Kind</td><td>+25%</td></tr>
+            <tr><td>Full House</td><td>+30%</td></tr>
+            <tr><td>Five of a Kind, Heaven's Mandate</td><td>+35%</td></tr></table>
+            <span class="mono-x">The suit bonus grows the same way: with a Pair or Three of a Kind it's ♣ +10% armor · ♠ +20% ATK Speed · ♦ +20% range · ♥ heals 6% Max HP / 3s, then ×1.25 / ×1.5 / ×1.75 down the table.</span></div>
           <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_10" style="left:0px"></i><i class="ci ci-diamonds_7" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>17</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_9" style="left:0px"></i><i class="ci ci-diamonds_4" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>13</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_K" style="left:0px"></i><i class="ci ci-diamonds_5" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>15</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_8" style="left:0px"></i><i class="ci ci-diamonds_3" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>11</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-diamonds_Q" style="left:0px"></i><i class="ci ci-diamonds_9" style="left:16px"></i></div><div class="sx-tot red"><span>♦</span>19</div></div></div>
           <div class="syn-note-line">Stacks with any same-total Synergy — both bonuses apply</div>
         </div>
@@ -5421,17 +5525,17 @@ html, .hm-body {
               <div class="syn-req">5 consecutive totals, same suit</div>
             </div>
             <div class="syn-buff-list">
-              <span class="syn-buff mandate-buff">Monolith Vanguard + Flowing Serpent</span>
-              <span class="syn-buff hp">+24% Max HP</span>
-              <span class="syn-buff atk">+24% ATK</span>
-              <span class="syn-buff spd">+30% Move Speed</span>
-              <span class="syn-buff aspd">+24% ATK Speed</span><span class="syn-buff fx">+24% Status Chance</span>
-              <span class="syn-buff def">+24% Armor</span>
-              <span class="syn-buff clubs">Your suit's Flush bonus</span>
+              <span class="syn-buff mandate-buff">Monolith Vanguard + Flowing Serpent, ×1.25</span>
+              <span class="syn-buff hp">+30% Max HP</span>
+              <span class="syn-buff atk">+30% ATK</span>
+              <span class="syn-buff spd">+37.5% Move Speed</span>
+              <span class="syn-buff aspd">+30% ATK Speed</span><span class="syn-buff fx">+30% Status Chance</span>
+              <span class="syn-buff def">+30% Armor</span>
+              <span class="syn-buff clubs">Your suit's Flush bonus ×1.25</span>
               <span class="syn-buff mandate-buff">Huanglong dragon sweep · burns + stuns each enemy it passes · Celestial Burn 10/0.5s × 4s (80 total) · 3s stun</span>
             </div>
           <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_7" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>12</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_8" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>13</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_9" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>14</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_10" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>15</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_K" style="left:0px"></i><i class="ci ci-spades_6" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>16</div></div></div>
-            <div class="syn-note-line">Flush: +20% HP &amp; ATK · ♣ +10% armor · ♠ +20% ATK Speed · ♦ +20% range · ♥ heals 6% Max HP / 3s</div>
+            <div class="syn-note-line">Flush ×1.25: +25% HP, Armor &amp; ATK · ♣ +12.5% armor · ♠ +25% ATK Speed · ♦ +25% range · ♥ heals 7.5% Max HP / 3s</div>
             <div class="syn-unlock-stamp mandate">Achievement Unlocked — Nine Dragons Convergence</div>
           </div>
         </div>
@@ -5477,18 +5581,18 @@ html, .hm-body {
               <div class="syn-req">totals 17-18-19-20-21, same suit</div>
             </div>
             <div class="syn-buff-list">
-              <span class="syn-buff mandate-buff">Monolith Vanguard + Flowing Serpent, ×1.25</span>
-              <span class="syn-buff hp">+30% Max HP</span>
-              <span class="syn-buff atk">+30% ATK</span>
-              <span class="syn-buff spd">+37.5% Move Speed</span>
-              <span class="syn-buff aspd">+30% ATK Speed</span><span class="syn-buff fx">+30% Status Chance</span>
-              <span class="syn-buff def">+30% Armor</span>
-              <span class="syn-buff clubs">Your suit's Flush bonus ×1.25</span>
+              <span class="syn-buff mandate-buff">Monolith Vanguard + Flowing Serpent, ×1.5</span>
+              <span class="syn-buff hp">+36% Max HP</span>
+              <span class="syn-buff atk">+36% ATK</span>
+              <span class="syn-buff spd">+45% Move Speed</span>
+              <span class="syn-buff aspd">+36% ATK Speed</span><span class="syn-buff fx">+36% Status Chance</span>
+              <span class="syn-buff def">+36% Armor</span>
+              <span class="syn-buff clubs">Your suit's Flush bonus ×1.5</span>
               <span class="syn-buff mandate-buff">Huanglong dragon sweep · burns + stuns each enemy it passes · Celestial Burn 10/0.5s × 4s (80 total) · 3s stun</span>
               <span class="syn-buff mandate-buff">Dragon reaches enemy Base: 500 dmg</span>
             </div>
           <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_10" style="left:0px"></i><i class="ci ci-hearts_7" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>17</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_K" style="left:0px"></i><i class="ci ci-hearts_8" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>18</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_Q" style="left:0px"></i><i class="ci ci-hearts_9" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>19</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_K" style="left:0px"></i><i class="ci ci-hearts_Q" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>20</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-hearts_A" style="left:0px"></i><i class="ci ci-hearts_K" style="left:16px"></i></div><div class="sx-tot red"><span>♥</span>21</div></div></div>
-            <div class="syn-note-line">Flush ×1.25: +25% HP &amp; ATK · ♣ +12.5% armor · ♠ +25% ATK Speed · ♦ +25% range · ♥ heals 7.5% Max HP / 3s</div>
+            <div class="syn-note-line">Flush ×1.5: +30% HP, Armor &amp; ATK · ♣ +15% armor · ♠ +30% ATK Speed · ♦ +30% range · ♥ heals 9% Max HP / 3s</div>
             <div class="syn-unlock-stamp mandate">Achievement Unlocked — Emperor's Sovereign Army</div>
           </div>
         </div>
@@ -5515,7 +5619,7 @@ html, .hm-body {
 
         <div class="htp-tut"><img src="av/zhuge_liang.webp" alt=""><div class="htp-tut-t"><b>New to the battlefield?</b><span>Zhuge Liang will walk you through your first battle, step by step.</span></div><button type="button" class="htp-tut-go" onclick="hmStartTutorial()">Start Tutorial</button></div>
 
-        <!-- card values graphic -->
+        <!-- card values graphic  tsec:cards -->
         <figure class="htp-values" aria-label="Card values: Ace counts 1 or 11, 2 through 10 count their number, Jack, Queen and King count 10">
           <div class="cv-title">Card values</div>
           <div class="cv-row"><div class="cv ace"><img src="data:image/webp;base64,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" alt="Ace"><span>1 / 11</span></div><div class="cv"><img src="data:image/webp;base64,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" alt="2"><span>2</span></div><div class="cv"><img src="data:image/webp;base64,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" alt="3"><span>3</span></div><div class="cv"><img src="data:image/webp;base64,UklGRsQPAABXRUJQVlA4WAoAAAAQAAAAdwAAsgAAQUxQSJwAAAABcFrbtpzcDAUg46giC4ulgHhkKGGehxb4aEqIogEcBeBnsDP/v1vBWzh+REwAIqQFhYoKixQRIuRfqvvNEaFOZ7WxwgZKR3FUV4SVJh0VtmJWYjUS3u78sUW08v73/vf+9/7/892ppbbbUnTiwn01ctzUaDWyrGLGj2gjb66DCHNSrKpC7spBEKNzoLL7YYIQiJBkxizVNCZLgBBWUDggAg8AAHA6AJ0BKngAswA+bSyTRyQiIaMots0AgA2JQBnUl++i5uIx/ovnHnN+YB+mfTX8wH7XdUb+5+oZ/Yv871iHoAfsV6b3si/uz6Tt5F/s/EPys+xMaXypdb+Zf1jfcf3T0x7/flNqBez/9V2qvhmgC/Lv7Z+tfkZ6mWQB+sHo74BP2r/ffsB8AH86/wPokf9/mb+rP2o+Av+d/23rI+iJ+4AwHk3payeFPELuG+ST4X5WIS4OjSEfaNn0Ly/IaMpJxQHp6/STJoeTTN8sT82BOpI4Bhh1DPcIeq0Pp8+pVirrGNB8NEJiDj35TT6+WjcWqKrB7mbXU4Esgcb7lutj6jmuOcXOzBgbcxJ1nOtEwtWu7eqvVXafcSN89HhM+hNlZnqnu5atmpSsZLkYOsPUhWrb8UcuLPxjMwmxEMtaze42aC3h/JbAKI2kVOcRmtg0he4fcsUmA6bLiGD7Dc4mtUVRVQoEYMVZqgZyNaSyWV4tKngz1KqhXyJEZzJBnrrHo5O0tX0QLmImdOolaXTG/i8exb0dEuGYE9BXmYxrjACSBQqO90KQ9XgltJ7ltz5xvQCHCs96fS2zIfCZQXIzH8OErJ1fXzXru/amlB6jXTVPXVjcYY/FrTZIKbIAAP74qDP80fhcfz+nDdI8knZ7qzluaSbDcD00M93PovwrDD/xElSOwobemfD1HpMSNh+WjG29jBekmdWbrJWT08UjDhedWy7m5vFRHxk4L7wIbWJGltH8AOt+Z/Uu9uohTtDt/CcYowIe0ZGcUn3nGtqgQnmz9SEPUQCcdf8H2MVr/kyfEV0DoHyQgmm4ogBCEyMbQ9syV/PgMyrwcGeDclLiMZyX9VsWS885inyP8Ed/GIZ04sTHwOy6iy0IbU1+SnIWWqeaLbwQ5VX+yoRcC3ZtoNSC6XuKp/b/XCpFiYWS7kJgO2hRBbePukOFsM6sBdNlRnjwDQV1Qs/lznXI0CnMLpg8vAuMzOw4MENdKekW66rkPPMaWDgFdkIPdAxcFQu1nRWHY35s2fKJmVRX3FBNdzQRIJHTAfnvV1+NV8B2sXCdEAlFOtwuTX83NV6eeB9SFWR0scvl9bVCGuCW4ymRre99Fyd8v318g2e19zX9n7ZCq9lRdFGa0FsWkrL11nOnGPzTLw9p7imRCFje+jBRGPlZuiJt+isyCzv11S8hW/+q3UOOlj3aveW//IWLPsuspsCVRubPS2pGWzGsI60cRWmowaR5VAviVMx8fwfw3NZUMMSv5iT+a/2QB2nFlM4LHRu4iO2yRpDnEOyaQfjRwhgs26v7/yuJmz3/Hh3c04rwIZ8DIh87Sw8omjFrmcKRLQ0K5U6vvjqLOn6I/+JaO0Rml1NdSfzhNyh48krJLHNaTW6aITPhZoxxXe3eTmZU9lbvnh1nMp+ROFVCqkPv54JgphdIj5t1HD5b63qHrMFTzcSjJ8H//Lc2iZQWvpfCHDjDSEESxT4KvPg9ZhKD0vdLWiZR8NBjQIyIYyU0WOSQjyh8ssnNDtzCbbTv1HdnL464lB+/EYgB7y4gUGL3jV7A4drEmtDg8hy6PbCh5Dv/CEelARae0w0NJVHEcdrQlfiG6fwIgTAmBQh8Kd/IifTVHGyNiyHRbF13NJjkYvyeJnncP+7EKlmlS2hIVfwzqveHuPL5YYQ9PY3LZIA9OR8gqZJd41CoHKViunfpfT1J4rc67LBrbLmPsiIUCZoWbnOmk/eLUGV+kyYVbUKKGTBYiCsOB0DKKVy4T8ErcZ4Em+8f4fo/Pll0roB7Yo6XHswxg1tGL1X5EK8OzC3YYlf/AJmxb9WCMGAGbpETdImP7XGyeitbD4h7rEKfSNSJE4Ks1z9ib7CIP2dNqeTUVOSY8nvj/QCnxONI7Ey79Y167WueakKnm3QAIg/duH1RTtCc16OcX2UyDe4dp5VjMhiXFCRrmxzMJuZEgaV5HHYFAqXME1sxcVI2UjgoT9gIQoc5Eq1a5o5uWBahJYf8nJPTIXrkUvPLdodLVfQqnKVAt1+iO58lkAUnNjA1GAY11fnoClj8Qxcg7y6lvpEbczLoMnGMrCo/xauFEpSLBbHOjptj8iQXx83s811CBDvfUxwhfVOvrVWNF8+0lhcvM1m14JNfJI7n00e4jOyAK6ruxDP09hdRjLdMTG3RM/3SWUT/7FwFazanxWZzoeqj1ghz8WEm3f04ylC4zwbf8FT+0P/E7vPMy5UKoAdQEiVjoCkidNaPthjTUqBDiZP0bvBKNMZCigW6jL5wIMf8EhZm8FYLuCfkJiNeMGz6VU0/HNI3s53txV4tw7uy108U3VdHHRGbJLDKWHJyXdvHTyCL0PZDVdIzRJCrWAtFkgzlb9o87V1R8yxCFdBPZGurhEI1rIsqYaU7LQjTbOtNjW3VsF1gEVjEIXdKnfzJ8SHnUa/Ty4JOu8haI6qYzdCKz/5TPXxnbDmjkLR1sdtv+jZqHcVduWn1TWLmoSE/qr007UzcCF8l+dVw7EXuZkXaNwhjUNX7Zs8TbXCTCXbO2UBuNSZM9LX2ieP9WJPueNSa97kmyhyyU1pJzuJ5WozZsTRPbx4IbRJnqwuWkELitxTHs8rU/APb3tNPkUaQ49VVSgqa0qZgZSqc90GGMumHdsutKKOUFFd0c95XGJnV0d1oNVmhNyZyuB7WzrTqmtfaxtDWnNkqKD58zgCXoA3E0McyYMrpRMJvABpJ/Qn3BaUI15ZVTRAF3Nd37qiJFT1CTYtaDU/KxUTP7oO/cqG57lhASnfTbF6GwKLWLBXkDcnkOQQ/nriwhMP/e1ikPQGmKUYYaF6IlOptp8zI0OpjKz6Wx5qyktsHxDa7pjhdtTpDrB7QLIRCSXeYs7yJvMCzUAPI/D23K3wzQbFxiEqseMMpikuNR9KSRFE/MRN7I79A7Tv9QVWyUyxdRuh4OQByIuvawbCnYoUXEBImvX9AJrq0MN9QXYKGOfSHEFfAg5K835Qpy/DjAyt/GXC73XEVxvQo4wCenAw38KywHpdihHQnmDEUp6rPo7YdQkgaaDyvSS3z6/1kIb+7KXKRvTsu2u/KI0/8V4ftG1gLOk25IZG4+X1lJfruO3shRmlV6xSFmf/wgO8+IRr9fGEGSvV1AVeFTfSpt9RK4qAoD/chDjYUKraXqhsQ5QuCznQNdGaO9MO1W4MphP21dBq7wTs10BtosHigIhVR6BOc4jwZCq0ClXm7fotkzQ2Q10gTTU0RuVs3mGaiKzzHKhgleGNDzh6x9mfilcM7+F6E8nqd63srwyQdnkBzJX/Igi3WcACh5ML9YsYo/IRiy/SOo9tz8v97REHoqKrtDLT4w+Rt5hOxlHPFCqWk6N4XuH01bKioihk6KIzoPqgrtaZ+hBKJ4CgdLZcrX0GhnYJDGK6Nc3G74vYuZHFMb+JD5VYb0SQJvnUy6oNS26vXr6ZhPIWgXnpLTopsFHjdzqart3yAWZZVuE3U73KTPV0t9xovguTCa984Kk7s/R66a4pS+NtZ/7CKdPnVhTkPcUAyNxPjxM9O9wAw8zpNNtL+yQCwVCqV6JCdf3JzUV1PGinAt2itO+mJfkb7egE/AHZLH+m22V4sktoJoS6ehjS8ny3AFqTKGGnhUZRyuL/d3rOxbFEJNu+7HffYc3dUkfBHFN1h8WdzXzGUBeRcyE7DkGyB8VuPUvQ9TNS/4c9o9NwPRy7zeUpCiKYC3CAy6X85O1BhtoS1d28XYXaxuKz+hysPOzwH2jXDuZVUkvKIwwuXHXOQg4gFPtsXMo2jnrfy/LIfzaJDU781b+YGWWPnOx3OQP63mlNuDiMd7QgLgUdTSdLCsivzeZac+Us9aaHjWHZLAYgHSUEk0bAk5ncO5ZhYMTlHrT4SqYPsF8icJvqBxZw40uUt3IUYobO4SXgfrkWqBXQR2aMBGRG4KrA1wcsR0NvIIHjVEql2p0juPqhaN97+sYbYMraUyBTIH+Z5Xa3LxAXYlEG7eShT5vtRnHNUs8P7ltYIDiUbizkkhdLleyraobBoZAdhNVgZSYNXJHlnyQU9+LiElvfUo8NQZiu9Oe7y5xhe6ul3KsEv05LZBTht8SaAyLijYxgGaJrQNMgofgNKKhYVxuc9hWnSpORGThMAeF+CBVEryiX4uhcF8Eq2SnKIqjZ0UMDZGvwfiu4RADbxb3EdbffO/8jqswBSNNj/MwD+tMPGjpR0H7VsYJv8wdjeMb5GivbxAO7sGEcad7A6qdd6Vh4X03NeaSyF+ZqAlb9AIODWdVxbM+4S75kKRTTiJccQJAriBcluT+YExDhg+W3W0Z2jR77F5l/KgXInDBiOHy77zrd7OSkFZL54wsfphpArzHU3gY36Pshk861X236oj0wr+zdUHw09rzM9UKCDq8kqxaPdm8men0zA41MrZvtI6VoGvl75a84B/sakkUaN5bU5KNKQCzeop/GrulhlNw3HVHNodkJwkFXmQySOnRCx30el503gClSqbf8PqT4bRxcc+ysDHi7pVjQ8pLWMLjlKuhMiJjb/Ahsc1F+Up09mK54rqGjiwID58aQ/NqjExgjI2QuN9KbvkhLcCx6OSb6J/otwesJ4TCzIFizA7B7qcLcShNGoUcDdj3gK+aqf/NAxpT70IRTCEYtgbwm56HlCmDtzBv4iBoMA+gnABbR9sriE5npGU7zA8xJsPeA2lIxygTG5fOt/mrxTihyNoz91Eik/WGescWiDWHT+8xyHiO4NP8WIe9Pkj3VuU25Q4PuXyf+Ru4Hda59tsLH1Ow7/IYHfpexGnQlZZ1a0jhvYkt16F33/Pez7JK/XC/NQdd0dNowfiOsMJqqFj9A86cgJgXM8ydx7L98UQGifRQfQNBf8IahvCg1g29ff3M4mOuQkUe7wYHg6l2li+EkNrD7S/BfnKzT4tOiIlFehnYSBZGJkt78amqEmDrxO9BJxt1QLq29ypt4A4VzpBnLaExEv7jwGEU3domhcMROAn87tmpXXKX/Yw5ZPrYKhdpBBobRG8QWajrd4ysmM8/LHlfyyX/MgeRdRNiCVvv91ZbhCgTC2456PObruxUfAFSx+5Frho+7v5Hcz/2P9h1y6frf20B0yPpyr9VgAAAAA" alt="4"><span>4</span></div><div class="cv"><img src="data:image/webp;base64,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" alt="5"><span>5</span></div><div class="cv"><img src="data:image/webp;base64,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" alt="6"><span>6</span></div><div class="cv"><img src="data:image/webp;base64,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" alt="7"><span>7</span></div></div>
@@ -5575,7 +5679,7 @@ html, .hm-body {
           <figcaption class="hs-cap">Bigger Synergies — Straights, Full Houses and more — are on the <button class="htp-link" onclick="showScreen('synergies')">Synergies tab</button>.</figcaption>
         </figure>
 
-        <!-- ── HOW A MATCH WORKS ── -->
+        <!-- ── HOW A MATCH WORKS ──  tsec:match -->
         <div class="syn-tier-label">How a match works</div>
         <ol class="htp-steps">
           <li class="htp-step"><div class="htp-step-body">
@@ -5624,7 +5728,7 @@ html, .hm-body {
 
         <p class="htp-av-note"><b>Your avatar:</b> tap the face on your Profile to choose your avatar. More avatars unlock as you play. It shows next to your base in battle, and online your opponent sees it too.</p>
 
-        <!-- ── TIMELINE ── -->
+        <!-- ── TIMELINE ──  tsec:match -->
         <div class="syn-tier-label">Match timeline</div>
         <div class="htp-timeline">
           <div class="htp-phase"><div class="t">0:00</div><div class="n">The March</div><div class="d"><div class="kv"><span>Card Cost</span><b>10g</b></div><div class="kv"><span>Send Recharge</span><b>15s</b></div><div class="kv"><span>Max Soldiers</span><b>19</b></div></div></div>
@@ -5640,7 +5744,7 @@ html, .hm-body {
           </div>
         </div>
 
-        <!-- ── UNIT TYPES ── -->
+        <!-- ── UNIT TYPES ──  tsec:units -->
         <div class="syn-tier-label">Unit Types</div>
         <p class="htp-note" style="margin-top:0">Each suit's hero (Dian Wei, Cao Cao, Lü Bu, Zhuge Liang) appears at <b>Apex</b> and <b>Celestial</b>, but its special <b>Hero awakens</b> skill only switches on at <b>Celestial</b> — a natural 21 (Ace + 10, J, Q or K).</p>
         <div class="htp-suits">
@@ -5776,7 +5880,7 @@ html, .hm-body {
           </div>
         </div>
 
-        <!-- ── RANKS ── -->
+        <!-- ── RANKS ──  tsec:units -->
         <div class="syn-tier-label">Ranks — how strong each soldier is</div>
         <div class="htp-table-wrap">
           <table class="htp-table">
@@ -5792,7 +5896,7 @@ html, .hm-body {
         </div>
         <p class="htp-note">Fortified grows by +2% to every stat for each number above 17, so a 20 beats a 17. Celestial is the hero version of Apex — the hero's special skill awakens.</p>
 
-        <!-- ── TIPS ── -->
+        <!-- ── TIPS ──  tsec:tips -->
         <div class="syn-tier-label">Tactician's tips</div>
         <div class="htp-tips">
           <div class="htp-tip"><blockquote class="htp-quote">“If you know Heaven and know Earth, you may make your victory complete.”<cite>— Sun Tzu, The Art of War</cite></blockquote><div class="htp-tip-body"><b>Know the Ground.</b> The barracks hold 4 decks (208 cards) shared by both players. Track what's been played to know what's coming.</div></div>
@@ -5888,17 +5992,17 @@ html, .hm-body {
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
-              <div class="settings-row-label">Reduce Animations</div>
-              <div class="settings-row-sub">Fewer particle effects and transitions</div>
+              <div class="settings-row-label">Graphics</div>
+              <div class="settings-row-sub" id="gfxSub">Lower settings run smoother when the bridge is crowded</div>
             </div>
-            <div class="toggle" onclick="this.classList.toggle('on')" role="switch" aria-label="Reduce animations"></div>
+            <div class="hm-tsz hm-gfx" role="radiogroup" aria-label="Graphics"><button type="button" role="radio" data-g="full" onclick="hmGfx('full')">Full</button><button type="button" role="radio" data-g="bal" onclick="hmGfx('bal')">Balanced</button><button type="button" role="radio" data-g="perf" onclick="hmGfx('perf')">Performance</button><button type="button" role="radio" data-g="auto" onclick="hmGfx('auto')">Auto</button></div>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
               <div class="settings-row-label">Show DPS Numbers</div>
               <div class="settings-row-sub">Display floating damage text in battle</div>
             </div>
-            <div class="toggle on" onclick="this.classList.toggle('on')" role="switch" aria-label="Show DPS numbers"></div>
+            <div class="toggle on" id="dmgTgl" onclick="hmDmgNums(!this.classList.contains('on'))" role="switch" aria-checked="true" aria-label="Show DPS numbers"></div>
           </div>
         </div>
 
@@ -5911,7 +6015,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#11.9 · Prototype</span>
+            <span class="settings-row-value">#12.2 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -7135,6 +7239,69 @@ function hmArenaUI(){const box=$('hmArenas');if(!box)return;const host=NET.role=
   const A=ARENAS.find(a=>a.id===pick);
   $('hmArenaNote').textContent=host?(pick==='random'?'A battlefield and its song are picked when the battle begins.':'Both players fight on '+A.n+'.'):('The host picks the battlefield'+(A?': '+A.n:': Random')+'.');}
 {const _ru=hmRoomUI;hmRoomUI=function(){const r=_ru.apply(this,arguments);try{hmArenaUI();}catch(e){}return r;};}
+
+</script>
+<script>
+
+/* ═══ 12.0 Tactics page: section buttons ═══ */
+(function(){const R=hmSR&&hmSR();if(!R)return;const scr=R.getElementById('screen-howto');if(!scr)return;
+  const inner=scr.querySelector('.htp-body .inner');if(!inner)return;
+  const SECS=[
+    {k:'tut',n:'Tutorial',kk:'Start here',d:'Zhuge Liang walks you through your first battle, step by step.',art:'menu/tac_tut.webp'},
+    {k:'match',n:'How a Match Works',kk:'The basics',d:'Gold, cards, sending waves, breaking the base, and the match timeline.',art:'menu/tac_match.webp'},
+    {k:'cards',n:'Cards',kk:'Your hand',d:'What each card is worth and how slots and Synergies form.',art:'menu/tac_cards.webp'},
+    {k:'units',n:'Units, Heroes and Rank',kk:'Your army',d:'Tank, Lancer, Vanguard and Support, each suit’s hero, and how strong each rank is.',art:'menu/tac_units.webp'},
+    {k:'tips',n:'Tactician’s Tips',kk:'Strategy',d:'Six lessons from Sun Tzu and the Thirty-Six Stratagems.',art:'menu/tac_tips.webp'}];
+  const box={};SECS.forEach(s=>{const d=document.createElement('div');d.className='tac-sec';d.dataset.k=s.k;d.hidden=true;box[s.k]=d;});
+  // gather the page's parts into their sections (the Tutorial banner, then everything after each marked comment)
+  let cur=null;[...inner.childNodes].forEach(nd=>{
+    if(nd.nodeType===8){const m=/tsec:(\w+)/.exec(nd.data);if(m){cur=m[1];}}
+    if(nd.nodeType===1&&nd.classList.contains('htp-tut')){box.tut.appendChild(nd);return;}
+    if(cur&&box[cur])box[cur].appendChild(nd);});
+  // the Tutorial page also gets a short "what you'll learn"
+  {const p=document.createElement('p');p.className='htp-note';p.innerHTML='One short battle with set cards and no timer: build your slots, form a <b>Full House</b>, send your waves and break the enemy base. Finishing it unlocks the <b>Foot Soldier</b> avatar.';box.tut.appendChild(p);}
+  const grid=document.createElement('div');grid.className='tac-grid';grid.setAttribute('role','list');
+  grid.innerHTML=SECS.map(s=>'<button type="button" class="tac-btn" role="listitem" data-k="'+s.k+'"><span class="tac-art'+(s.av?' av':'')+'" style="background-image:url('+s.art+')"></span><span class="tac-txt"><span class="tac-k">'+s.kk+'</span><span class="tac-n">'+s.n+'</span><span class="tac-d">'+s.d+'</span></span></button>').join('');
+  const top=document.createElement('div');top.className='tac-top';top.hidden=true;top.innerHTML='<button type="button" class="tac-back">← All Tactics</button><span class="tac-h"></span>';
+  inner.appendChild(grid);inner.appendChild(top);SECS.forEach(s=>inner.appendChild(box[s.k]));
+  const lede=inner.querySelector('.htp-lede');
+  function show(k){const s=SECS.find(x=>x.k===k);grid.hidden=!!s;top.hidden=!s;if(lede)lede.hidden=!!s;SECS.forEach(x=>box[x.k].hidden=x.k!==k);
+    if(s){top.querySelector('.tac-h').textContent=s.n;try{top.scrollIntoView({block:'start'});}catch(e){}}else{try{grid.scrollIntoView({block:'start'});}catch(e){}}}
+  grid.addEventListener('click',e=>{const b=e.target.closest('.tac-btn');if(!b)return;try{snd('card_land');}catch(_){}if(b.dataset.k==='tut'){try{hmStartTutorial();}catch(_){}return;}show(b.dataset.k);});
+  top.querySelector('.tac-back').addEventListener('click',()=>show(null));
+  window.hmTactics=show;
+  const _ss=window.showScreen;if(typeof _ss==='function')window.showScreen=function(id){if(id==='howto')show(null);return _ss.apply(this,arguments);};
+})();
+
+</script>
+<script>
+
+/* ═══ 12.0 Graphics: Full / Balanced / Performance / Auto (phones & tablets start on Balanced) ═══ */
+const GFX={lv:'full',eff:'full',fps:[],acc:0,n:0,t:0,good:0,dmg:true};
+const GFX_NAME={full:'Full',bal:'Balanced',perf:'Performance'};
+function gfxDefault(){try{return matchMedia('(pointer:coarse)').matches?'bal':'full';}catch(e){return 'full';}}
+function gfxSet(eff){GFX.eff=eff;const c=document.body.classList;c.remove('gfx-full','gfx-bal','gfx-perf');c.add('gfx-'+eff);gfxUI();}
+function gfxUI(){const R=hmSR&&hmSR();if(!R)return;R.querySelectorAll('.hm-gfx button').forEach(b=>{const on=b.dataset.g===GFX.lv;b.classList.toggle('on',on);b.setAttribute('aria-checked',on);});
+  const s=R.getElementById('gfxSub');if(s)s.textContent=GFX.lv==='auto'?('Auto: lowers the graphics by itself when the game slows down (now: '+GFX_NAME[GFX.eff]+')'):'Lower settings run smoother when the bridge is crowded';
+  const t=R.getElementById('dmgTgl');if(t){t.classList.toggle('on',GFX.dmg);t.setAttribute('aria-checked',GFX.dmg);}}
+function hmGfx(v){if(!['full','bal','perf','auto'].includes(v))v=gfxDefault();GFX.lv=v;try{localStorage.setItem('hm_gfx',v);}catch(e){}
+  gfxSet(v==='auto'?gfxDefault():v);}
+function hmDmgNums(on){GFX.dmg=!!on;try{localStorage.setItem('hm_dmgnum',on?'1':'0');}catch(e){}gfxUI();}
+{const _tz=hmTextSizeUI;hmTextSizeUI=function(){const r=_tz.apply(this,arguments);gfxUI();return r;};}  // Text Size shares the button style; keep the Graphics choice lit
+{let v=null,d=null;try{v=localStorage.getItem('hm_gfx');d=localStorage.getItem('hm_dmgnum');}catch(e){}GFX.dmg=d!=='0';hmGfx(v||gfxDefault());}
+// floating damage numbers: off in Performance (or when switched off); Balanced shows at most one per soldier every 0.4s
+{const _fd=floatDmg;floatDmg=function(u,dmg){if(!GFX.dmg||GFX.eff==='perf')return;
+  if(GFX.eff==='bal'&&u){const t=performance.now();if(u._fdT&&t-u._fdT<400)return;u._fdT=t;}return _fd.apply(this,arguments);};}
+// Performance: draw at most ~30 frames a second (the battle itself runs at the same speed). Auto: watch the frame rate and step down / up.
+{const _lp=loop;loop=function(now){
+  if(GFX.eff==='perf'&&last&&now-last<30){raf=requestAnimationFrame(loop);return;}
+  if(GFX.lv==='auto'&&S&&S.running&&!S.paused&&last){const d=now-last;GFX.acc+=d;GFX.n++;
+    if(GFX.acc>=2000){const fps=GFX.n*1000/GFX.acc;GFX.acc=0;GFX.n=0;
+      if(GFX.eff==='full'&&fps<40){gfxSet('bal');GFX.good=0;}
+      else if(GFX.eff==='bal'&&fps<28){gfxSet('perf');GFX.good=0;}
+      else if(fps>(GFX.eff==='perf'?29:56)){if(++GFX.good>=4){GFX.good=0;if(GFX.eff==='perf')gfxSet('bal');else if(GFX.eff==='bal'&&!matchMedia('(pointer:coarse)').matches)gfxSet('full');}}
+      else GFX.good=0;}}
+  return _lp(now);};}
 
 </script>
 </body>
