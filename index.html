@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 11.8</title>
+<title>Heaven's Mandate · Build 11.9</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -883,7 +883,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #11.8</div>
+    <div class="sub">Build #11.9</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -5911,7 +5911,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#11.8 · Prototype</span>
+            <span class="settings-row-value">#11.9 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6134,7 +6134,7 @@ html, .hm-body {
 <div class="hm-ov hm-modal-bg" id="hmSearch" hidden>
   <div class="hm-card" role="dialog" aria-modal="true" aria-labelledby="hmSearchH" style="width:min(400px,100%)">
     <h2 class="hm-h" id="hmSearchH">Skirmish</h2>
-    <div id="hmSearching"><div class="hm-spin"></div><p class="hm-sub" id="hmSearchTxt">Looking for an open room…</p>
+    <div id="hmSearching"><div class="hm-spin"></div><p class="hm-sub" id="hmSearchTxt">Looking for an opponent…</p>
       <div class="hm-row"><button class="hm-btn hm-ghost" type="button" onclick="hmStopSearch()">Cancel</button></div></div>
     <div id="hmSearchNone" hidden><p class="hm-sub" id="hmNoneTxt">No open rooms right now.<br>Host a public room instead?</p>
       <div class="hm-row"><button class="hm-btn hm-ghost" type="button" onclick="hmStopSearch()">Cancel</button><button class="hm-btn hm-ghost" type="button" onclick="hmQuickJoin()">Keep Searching</button><button class="hm-btn" type="button" onclick="hmStopSearch();hmHostRoom(true)">Host Public Room</button></div></div>
@@ -6437,7 +6437,7 @@ function netWhy(e){const t=e&&e.type;if(t==='lib')return'Couldn\'t load the onli
   return'Online error: '+(t||'unknown');}
 function hmNetStat(txt,cls){const e=$('hmNetStat');e.textContent=txt;e.className='hm-netstat'+(cls?' '+cls:'');}
 function netReset(){NET.meReady=NET.themReady=false;try{NET.conn&&NET.conn.close();}catch(e){}NET.conn=null;}
-function netDrop(){netReset();try{NET.peer&&NET.peer.destroy();}catch(e){}NET.peer=null;NET.role=null;}
+function netDrop(){netReset();try{NET.peer&&NET.peer.destroy();}catch(e){}NET.peer=null;NET.role=null;NET.quick=false;}
 function hmRoomUI(){
   const host=NET.role==='host',has=!!(NET.conn&&NET.conn.open);
   $('hmRoomH').textContent=host?'Your Room':'Joined Room';
@@ -6465,7 +6465,7 @@ function netWire(c){NET.conn=c;
     else if(m.t==='end'){netGuestEnd(m);}
     else if(m.t==='bye'){if(NET.online){netOppLeft();return;}netGone(NET.role==='host'?'The other player left the room.':'The host closed the room.');}});
   c.on('close',()=>{if(NET.conn===c){if(NET.online){netOppLeft();return;}}if(NET.conn===c)netGone(NET.role==='host'?'The other player left the room.':'The host closed the room.');});}
-function netGone(msg){if(NET.role==='host'){NET.conn=null;NET.meReady=NET.themReady=false;hmRoomUI();hmNetStat(msg+' The room is open again.','bad');}
+function netGone(msg){if(NET.quick&&!NET.online){hmLeaveRoom();hmNotice('Your opponent left before the battle began. Searching again…');hmQuickJoin();return;}if(NET.role==='host'){NET.conn=null;NET.meReady=NET.themReady=false;hmRoomUI();hmNetStat(msg+' The room is open again.','bad');}
   else{netDrop();hmShow('hmRoom',false);hmNotice(msg);}}
 function hmToastMenu(msg){hmShow('hmPvp',true);const s=document.querySelector('#hmPvp .hm-sub');s.textContent=msg;setTimeout(()=>s.textContent='Find an opponent online.',4000);}
 /* host */
@@ -6513,20 +6513,61 @@ async function hmJoinByCode(){const code=$('hmCodeIn').value.trim().toUpperCase(
   catch(e){$('hmJoinErr').textContent=netWhy(e);}
   b.disabled=false;b.textContent='Join';}
 /* Join a Game: random public room; after ~15s offer to host */
-async function hmQuickJoin(){hmShow('hmPvp',false);hmShow('hmSearch',true);$('hmSearching').hidden=false;$('hmSearchNone').hidden=true;$('hmSearchTxt').textContent='Looking for an open room…';
-  const run={stop:false};NET.search&& (NET.search.stop=true);NET.search=run;const t0=performance.now();
+const NET_Q_SLOTS=8;  // 11.9: Skirmish queue slots
+/* Skirmish: knock on hosted public rooms; meanwhile wait in a queue slot. A searcher only knocks queue slots LOWER than its own,
+   and a match is only made from the "idle" state with a two-step hello → welcome → take, so nobody is ever matched twice. */
+async function hmQuickJoin(){hmShow('hmPvp',false);hmShow('hmSearch',true);$('hmSearching').hidden=false;$('hmSearchNone').hidden=true;$('hmSearchTxt').textContent='Looking for an opponent…';
+  if(NET.search)hmQEnd(NET.search);const run={stop:false,state:'idle',hp:null,slot:-1,lockC:null};NET.search=run;const t0=performance.now();
+  const live=()=>!run.stop&&NET.search===run;
   try{netDrop();const p=await netGuestPeer();
-    while(!run.stop&&performance.now()-t0<15000){
-      // knock on every public room at once; the first open one wins, any extra "yes" gets a polite goodbye
-      let won=null;const tries=[...Array(NET_PUB_SLOTS).keys()].map(n=>netTry(p,NET_PREFIX+'pub-'+n).then(r=>{
-        if(r&&r.c){if(won||run.stop){try{r.c.send({t:'bye'});r.c.close();}catch(e){}}else won=r;}}));
-      await Promise.all(tries);if(run.stop){if(won){try{won.c.send({t:'bye'});won.c.close();}catch(e){}}return;}
-      if(won){NET.oppName=won.n||'Host';AVS.opp=avOk(won.a);NET.pub=true;netWire(won.c);hmShow('hmSearch',false);NET.search=null;hmEnterAsGuest();return;}
-      $('hmSearchTxt').textContent='Looking for an open room… '+Math.floor((performance.now()-t0)/1000)+'s';
-      await new Promise(r=>setTimeout(r,1500));}
-    if(!run.stop){$('hmSearching').hidden=true;$('hmSearchNone').hidden=false;$('hmNoneTxt').innerHTML='No open rooms right now.<br>Host a public room instead?';}}
-  catch(e){if(!run.stop){$('hmSearching').hidden=true;$('hmSearchNone').hidden=false;$('hmNoneTxt').textContent=netWhy(e);}}}
-function hmStopSearch(){if(NET.search)NET.search.stop=true;NET.search=null;hmShow('hmSearch',false);if(NET.role!=='host')netDrop();}
+    await hmQClaim(run);
+    while(live()&&run.state!=='done'&&performance.now()-t0<90000){
+      // 1. any hosted public room (War Council → Public): knock on all at once, first "yes" wins
+      if(run.state==='idle'){let won=null;
+        await Promise.all([...Array(NET_PUB_SLOTS).keys()].map(n=>netTry(p,NET_PREFIX+'pub-'+n).then(r=>{if(r&&r.c){if(won||!live()||run.state!=='idle'){try{r.c.send({t:'bye'});r.c.close();}catch(e){}}else won=r;}})));
+        if(won){if(!live()||run.state!=='idle'){try{won.c.send({t:'bye'});won.c.close();}catch(e){}}
+          else{run.state='done';hmQEnd(run);NET.oppName=won.n||'Host';AVS.opp=avOk(won.a);NET.pub=true;netWire(won.c);hmShow('hmSearch',false);NET.search=null;hmEnterAsGuest();return;}}}
+      // 2. another Skirmish player waiting in a lower queue slot, one at a time
+      const lim=run.slot<0?NET_Q_SLOTS:run.slot;
+      for(let n=0;n<lim;n++){if(!live()||run.state!=='idle')break;run.state='busy';
+        const r=await netTry(p,NET_PREFIX+'q-'+n);
+        if(r&&r.c){if(!live()){try{r.c.send({t:'bye'});r.c.close();}catch(e){}return;}
+          try{r.c.send({t:'take'});}catch(e){}run.state='done';hmQEnd(run);NET.oppName=r.n||'Player 2';AVS.opp=avOk(r.a);NET.pub=true;netWire(r.c);hmShow('hmSearch',false);NET.search=null;hmQuickMatched('guest');return;}
+        if(run.state==='busy')run.state='idle';}
+      if(!live()||run.state==='done')return;
+      $('hmSearchTxt').textContent='Looking for an opponent… '+Math.floor((performance.now()-t0)/1000)+'s';
+      await new Promise(r=>setTimeout(r,700+Math.random()*1100));}
+    if(live()&&run.state!=='done'){hmQEnd(run);$('hmSearching').hidden=true;$('hmSearchNone').hidden=false;$('hmNoneTxt').innerHTML='No one else is looking for a battle right now.<br>Keep searching, or host a public room?';}}
+  catch(e){if(live()&&run.state!=='done'){hmQEnd(run);$('hmSearching').hidden=true;$('hmSearchNone').hidden=false;$('hmNoneTxt').textContent=netWhy(e);}}}
+/* hold one queue slot while searching; a Skirmish player in a higher slot knocks, we say welcome, they say take → we host */
+async function hmQClaim(run){const order=[...Array(NET_Q_SLOTS).keys()].sort(()=>Math.random()-.5);
+  for(const n of order){if(run.stop||run.state==='done')return;let hp;
+    try{hp=await netPeer(NET_PREFIX+'q-'+n);}catch(e){if(e&&e.type==='unavailable-id')continue;return;}
+    if(run.stop||run.state==='done'){try{hp.destroy();}catch(e){}return;}
+    hp._ok=true;run.hp=hp;run.slot=n;
+    hp.on('connection',c=>{const free=()=>{if(run.lockC===c){run.lockC=null;if(run.state==='busy')run.state='idle';}};
+      c.on('close',free);
+      c.on('data',function(m){if(!m)return;
+        if(m.t==='hello'&&!c._hm){c._hm=1;
+          if(run.state!=='idle'||run.stop||NET.search!==run||(NET.peer&&c.peer===NET.peer.id)){try{c.send({t:'full'});}catch(e){}setTimeout(()=>{try{c.close();}catch(e){}},300);return;}
+          run.state='busy';run.lockC=c;c._m=m;c._lk=setTimeout(()=>{if(run.lockC===c&&!c._took){free();try{c.close();}catch(e){}}},3500);
+          c.send({t:'welcome',pub:true,n:HM.name,a:AVS.me});return;}
+        if(m.t==='take'&&run.lockC===c&&!c._took){c._took=1;clearTimeout(c._lk);run.state='done';run.lockC=null;
+          NET.oppName=c._m.n||'Player 2';AVS.opp=avOk(c._m.a);
+          const gp=NET.peer;NET.peer=hp;NET.role='host';NET.pub=true;NET.code=null;run.hp=null;
+          setTimeout(()=>{try{gp&&gp!==hp&&gp.destroy();}catch(e){}},200);
+          netWire(c);hmShow('hmSearch',false);NET.search=null;hmQuickMatched('host');return;}
+        if(m.t==='bye'&&!c._took){clearTimeout(c._lk);free();}});});
+    hp.on('error',e=>{});hp.on('disconnected',()=>{try{hp.reconnect();}catch(e){}});return;}}
+function hmQEnd(run){if(!run)return;if(run.state!=='done')run.stop=true;const hp=run.hp;run.hp=null;if(hp&&hp!==NET.peer)try{hp.destroy();}catch(e){}}
+/* both players land in the room for a moment, then the host starts the battle on a random battlefield */
+function hmQuickMatched(role){NET.role=role;NET.quick=true;NET.arenaPick='random';NET.meReady=NET.themReady=false;
+  hmShow('hmPlay',false);hmShow('hmRoom',true);hmRoomUI();hmNetStat('Opponent found! The battle starts in a moment…','ok');snd('card_shuffle');
+  if(role==='host')setTimeout(()=>{if(NET.quick&&NET.role==='host'&&NET.conn&&NET.conn.open){NET.meReady=NET.themReady=true;netMaybeGo();}},1800);}
+{const _ru=hmRoomUI;hmRoomUI=function(){const r=_ru.apply(this,arguments);const q=!!NET.quick;
+  $('hmStartBtn').hidden=q;const ap=$('hmArenaPanel');if(ap)ap.hidden=q;if(q){$('hmPrivPanel').hidden=true;$('hmCodePanel').hidden=true;$('hmRoomH').textContent='Skirmish';
+    $('hmP1s').textContent='Ready';$('hmP2s').textContent=(NET.conn&&NET.conn.open)?'Ready':'';}return r;};}
+function hmStopSearch(){const r=NET.search;if(r){r.stop=true;hmQEnd(r);}NET.search=null;hmShow('hmSearch',false);if(NET.role!=='host')netDrop();}
 /* ready check → 3-second countdown */
 function hmPressStart(){if(!(NET.conn&&NET.conn.open))return;NET.meReady=!NET.meReady;NET.conn.send({t:'ready',v:NET.meReady,n:HM.name,a:AVS.me});hmRoomUI();snd('card_land');if(NET.role==='host')netMaybeGo();}
 function netMaybeGo(){if(NET.meReady&&NET.themReady&&NET.conn&&NET.conn.open){{const ar=hmArena(NET.arenaPick&&NET.arenaPick!=='random'?NET.arenaPick:null);NET.conn.send({t:'go',ar});}hmCountdown();}}
@@ -6535,7 +6576,7 @@ function hmCountdown(){const o=$('hmCount');o.hidden=false;let n=3;$('hmCountL')
   show();const iv=setInterval(()=>{n--;if(n>0)show();else{clearInterval(iv);$('hmCountN').textContent='戰';$('hmCountL').textContent='Both armies are ready';snd('horn');
     setTimeout(()=>{o.hidden=true;hmOnlineStepTwo();},1400);}},1000);}
 function hmOnlineStepTwo(){netStartMatch();}
-function hmLeaveRoom(){const c=NET.conn,p=NET.peer;try{c&&c.open&&c.send({t:'bye'});}catch(e){}NET.conn=null;NET.peer=null;NET.role=null;NET.meReady=NET.themReady=false;
+function hmLeaveRoom(){NET.quick=false;const c=NET.conn,p=NET.peer;try{c&&c.open&&c.send({t:'bye'});}catch(e){}NET.conn=null;NET.peer=null;NET.role=null;NET.meReady=NET.themReady=false;
   setTimeout(()=>{try{c&&c.close();}catch(e){}try{p&&p.destroy();}catch(e){}},120);hmShow('hmRoom',false);}
 
 /* ═══ PROFILE — every finished match is saved in this browser (PLAYTEST ONLY: at device launch, guests go back to per-visit stats that wipe) ═══ */

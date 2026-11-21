@@ -2,14 +2,14 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 11.8**: seven battlefields with their own songs, live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 11.9**: Skirmish pairs up players who are searching, seven battlefields with their own songs, live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
 Open the GitHub Pages link for this repo (Settings → Pages). It's mouse or touch only.
 
 - **Training Grounds**: play against the computer (Easy / Normal / Hard / Expert).
-- **Skirmish**: join a random public room.
+- **Skirmish**: find a random opponent. Joins an open public room, or pairs you with another player who is searching (random battlefield, the battle starts by itself).
 - **War Council**: host a room (private with a 4-letter code, or public), or join one by code.
 
 ## How online works
@@ -70,6 +70,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **11.6:** on narrow screens the Settings sliders and Text Size buttons stack under their labels. Some battle sounds were rebalanced.
 - **11.7:** seven battlefields, each with its own painting and song: Misty Valley, Red Cliffs, Bamboo Valley, Snowy Pass, Plum Blossom Spring, Autumn Gorge and Thunderstorm Peaks. Each computer level has its own (Easy Bamboo Valley, Normal Red Cliffs, Hard Autumn Gorge, Expert Snowy Pass; the Tutorial uses Misty Valley). Online, the host picks one (or Random) at the bottom of the room page. Settings → About credits the music to patokeem. On phones, the Synergies page rules sit under each name and the avatar picker scrolls and opens above the top bar. Waves with no Synergy no longer get a tag on the march-order bar, and the computer's wave numbers no longer skip. The loading screen shows only the quote, plus a reminder to turn your screen sideways when a phone or tablet is held upright.
 - **11.8:** new battlefield songs: Misty Valley keeps the original battle theme; Red Cliffs, Bamboo Valley, Snowy Pass, Plum Blossom Spring, Autumn Gorge and Thunderstorm Peaks each get a new pairing.
+- **11.9:** if two players tap Skirmish and nobody is hosting, they are put in a game together on a random battlefield, with no Start button needed. Each searcher quietly waits in a hidden queue slot while checking for others. If the opponent leaves before the battle, you go back to searching. Both players need 11.9.
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.
