@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 11.7</title>
+<title>Heaven's Mandate · Build 11.8</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -883,7 +883,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #11.7</div>
+    <div class="sub">Build #11.8</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -5911,7 +5911,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#11.7 · Prototype</span>
+            <span class="settings-row-value">#11.8 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -7070,12 +7070,12 @@ function hmTutAsk(){try{if(tutDone()||localStorage.getItem('hm_tut_asked')==='1'
 /* ═══ 11.7 battlefields: each painting has its own battle song ═══ */
 const ARENAS=[
  {id:'valley',n:'Misty Valley',bg:'menu/game_bg.webp',t:'menu/bgt_valley.webp',m:'music_battle'},
- {id:'redcliffs',n:'Red Cliffs',bg:'menu/bg_redcliffs.webp',t:'menu/bgt_redcliffs.webp',m:'music_b1'},
- {id:'bamboo',n:'Bamboo Valley',bg:'menu/bg_bamboo.webp',t:'menu/bgt_bamboo.webp',m:'music_b2'},
- {id:'snow',n:'Snowy Pass',bg:'menu/bg_snow.webp',t:'menu/bgt_snow.webp',m:'music_b3'},
- {id:'plum',n:'Plum Blossom Spring',bg:'menu/bg_plum.webp',t:'menu/bgt_plum.webp',m:'music_b4'},
- {id:'autumn',n:'Autumn Gorge',bg:'menu/bg_autumn.webp',t:'menu/bgt_autumn.webp',m:'music_b5'},
- {id:'storm',n:'Thunderstorm Peaks',bg:'menu/bg_storm.webp',t:'menu/bgt_storm.webp',m:'music_b6'}];
+ {id:'redcliffs',n:'Red Cliffs',bg:'menu/bg_redcliffs.webp',t:'menu/bgt_redcliffs.webp',m:'music_b2'},
+ {id:'bamboo',n:'Bamboo Valley',bg:'menu/bg_bamboo.webp',t:'menu/bgt_bamboo.webp',m:'music_b4'},
+ {id:'snow',n:'Snowy Pass',bg:'menu/bg_snow.webp',t:'menu/bgt_snow.webp',m:'music_b6'},
+ {id:'plum',n:'Plum Blossom Spring',bg:'menu/bg_plum.webp',t:'menu/bgt_plum.webp',m:'music_b1'},
+ {id:'autumn',n:'Autumn Gorge',bg:'menu/bg_autumn.webp',t:'menu/bgt_autumn.webp',m:'music_b3'},
+ {id:'storm',n:'Thunderstorm Peaks',bg:'menu/bg_storm.webp',t:'menu/bgt_storm.webp',m:'music_b5'}];
 function hmArena(id){const a=ARENAS.find(x=>x.id===id)||ARENAS[Math.floor(Math.random()*ARENAS.length)];HM.arena=a.id;
   $('stage').style.backgroundImage='url('+a.bg+')';
   try{sndLoad();}catch(e){}
