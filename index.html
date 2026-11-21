@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 12.2</title>
+<title>Heaven's Mandate · Build 12.3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -940,6 +940,14 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 .gfx-perf .unit.spr.mv:not(.atking):not(.dead):not(.chg) .sp{animation:none!important}
 .gfx-perf #unitLayer .fdmg{display:none!important}
 </style>
+<style>
+/* ── 12.3 Graphics: No Animations ── soldiers slide along still; no flipbooks, effects, glows, shadows or damage numbers */
+.gfx-none #unitLayer .unit,.gfx-none #unitLayer .unit *{animation:none!important;transition:none!important;filter:none!important}
+.gfx-none #unitLayer .unit.dead{display:none!important}
+.gfx-none #unitLayer .fdmg,.gfx-none .hfx,.gfx-none .herofx,.gfx-none .unit .bolt,.gfx-none .unit .cburn,.gfx-none .bstrike,.gfx-none .mstrike,.gfx-none .vwave,.gfx-none .trange{display:none!important}
+.gfx-none #stage *{box-shadow:none!important;text-shadow:none!important}
+.gfx-none #stage .hit,.gfx-none #stage .struck,.gfx-none #stage .mandateHit{animation:none!important}
+</style>
 </head>
 <body>
 
@@ -948,7 +956,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #12.2</div>
+    <div class="sub">Build #12.3</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -4835,6 +4843,8 @@ html, .hm-body {
 .tac-h{font-family:Cinzel,Georgia,serif;font-size:1.25rem;font-weight:700;letter-spacing:.05em;color:#2a2017}
 .tac-sec[hidden],.tac-grid[hidden],.tac-top[hidden]{display:none!important}
 .tac-sec>.syn-tier-label:first-child{margin-top:0;border-top:none;padding-top:0}
+.nav-tab[data-screen=synergies]{display:none!important}
+@media (max-width:900px){.settings-row:has(.hm-tsz) .hm-tsz.hm-gfx{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:14px}.hm-gfx button{white-space:nowrap}}
 @media (max-width:520px){.tac-grid{grid-template-columns:1fr 1fr;gap:10px}.tac-txt{padding:9px 10px 11px}.tac-d{display:none}.tac-n{font-size:.9rem}}
 
 .htp-quote{margin:0;padding:0 0 0 10px;border-left:2px solid var(--gold-dim);font-style:italic;color:var(--ink);opacity:.85;font-size:.84rem;line-height:1.45}
@@ -5100,7 +5110,7 @@ html, .hm-body {
       </svg>
       <span>Rank</span>
     </button>
-    <button class="nav-tab" data-screen="synergies" onclick="showScreen('synergies',this)">
+    <button class="nav-tab" data-screen="synergies" hidden onclick="showScreen('synergies',this)">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M2 13l3-9 3 5 2-3 4 7"/>
       </svg>
@@ -5676,7 +5686,7 @@ html, .hm-body {
             <div class="hs-name">Twin Battalions <small>· Pair</small></div>
             <div class="hs-buffs"><span class="syn-buff hp">+6% HP</span><span class="syn-buff def">+6% Armor</span><span class="hs-to">→ only the 2 slots that make the Pair</span></div>
           </div>
-          <figcaption class="hs-cap">Bigger Synergies — Straights, Full Houses and more — are on the <button class="htp-link" onclick="showScreen('synergies')">Synergies tab</button>.</figcaption>
+          <figcaption class="hs-cap">Bigger Synergies — Straights, Full Houses and more — are in <button class="htp-link" onclick="showScreen('synergies')">Synergies</button>.</figcaption>
         </figure>
 
         <!-- ── HOW A MATCH WORKS ──  tsec:match -->
@@ -5708,7 +5718,7 @@ html, .hm-body {
           </li>
           <li class="htp-step"><div class="htp-step-body">
             <div class="htp-step-title">Build Synergies</div>
-            <div class="htp-step-text">Your slot <b>totals</b> create <b>Synergies</b> — two slots at 19 make a Pair, five totals in a row make a Straight, and so on. The best Synergy buffs <b>only the slots that make it</b>: a Pair boosts its 2 slots, Three of a Kind its 3. Five-slot Synergies boost the whole wave. Under SEND you'll see your Synergy's name, its poker hand with the wave's DPS, and each bonus in its own colored box. See the <button class="htp-link" onclick="showScreen('synergies')">Synergies tab</button> for every Synergy. During a match, tap <b>SYNERGIES</b> in the bottom-right corner for a quick cheat sheet — tap any Synergy to see its bonuses.</div>
+            <div class="htp-step-text">Your slot <b>totals</b> create <b>Synergies</b> — two slots at 19 make a Pair, five totals in a row make a Straight, and so on. The best Synergy buffs <b>only the slots that make it</b>: a Pair boosts its 2 slots, Three of a Kind its 3. Five-slot Synergies boost the whole wave. Under SEND you'll see your Synergy's name, its poker hand with the wave's DPS, and each bonus in its own colored box. See <button class="htp-link" onclick="showScreen('synergies')">Synergies</button> under Tactics for every Synergy. During a match, tap <b>SYNERGIES</b> in the bottom-right corner for a quick cheat sheet — tap any Synergy to see its bonuses.</div>
           </div>
             <figure class="htp-step-fig"><img src="menu/htp_4.webp" alt="Game screen: the Synergy box and SYNERGIES cheat-sheet button highlighted" loading="lazy"></figure>
           </li>
@@ -5995,7 +6005,7 @@ html, .hm-body {
               <div class="settings-row-label">Graphics</div>
               <div class="settings-row-sub" id="gfxSub">Lower settings run smoother when the bridge is crowded</div>
             </div>
-            <div class="hm-tsz hm-gfx" role="radiogroup" aria-label="Graphics"><button type="button" role="radio" data-g="full" onclick="hmGfx('full')">Full</button><button type="button" role="radio" data-g="bal" onclick="hmGfx('bal')">Balanced</button><button type="button" role="radio" data-g="perf" onclick="hmGfx('perf')">Performance</button><button type="button" role="radio" data-g="auto" onclick="hmGfx('auto')">Auto</button></div>
+            <div class="hm-tsz hm-gfx" role="radiogroup" aria-label="Graphics"><button type="button" role="radio" data-g="full" onclick="hmGfx('full')">Full</button><button type="button" role="radio" data-g="bal" onclick="hmGfx('bal')">Balanced</button><button type="button" role="radio" data-g="perf" onclick="hmGfx('perf')">Performance</button><button type="button" role="radio" data-g="none" onclick="hmGfx('none')">No Animations</button><button type="button" role="radio" data-g="auto" onclick="hmGfx('auto')">Auto</button></div>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6015,7 +6025,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#12.2 · Prototype</span>
+            <span class="settings-row-value">#12.3 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -7249,8 +7259,9 @@ function hmArenaUI(){const box=$('hmArenas');if(!box)return;const host=NET.role=
   const SECS=[
     {k:'tut',n:'Tutorial',kk:'Start here',d:'Zhuge Liang walks you through your first battle, step by step.',art:'menu/tac_tut.webp'},
     {k:'match',n:'How a Match Works',kk:'The basics',d:'Gold, cards, sending waves, breaking the base, and the match timeline.',art:'menu/tac_match.webp'},
-    {k:'cards',n:'Cards',kk:'Your hand',d:'What each card is worth and how slots and Synergies form.',art:'menu/tac_cards.webp'},
     {k:'units',n:'Units, Heroes and Rank',kk:'Your army',d:'Tank, Lancer, Vanguard and Support, each suit’s hero, and how strong each rank is.',art:'menu/tac_units.webp'},
+    {k:'cards',n:'Cards',kk:'Your hand',d:'What each card is worth and how slots and Synergies form.',art:'menu/tac_cards.webp'},
+    {k:'syn',n:'Synergies',kk:'Hands · Bonuses',d:'Every Synergy, what it gives your wave, and the secret ones still to earn.',art:'menu/tac_syn.webp'},
     {k:'tips',n:'Tactician’s Tips',kk:'Strategy',d:'Six lessons from Sun Tzu and the Thirty-Six Stratagems.',art:'menu/tac_tips.webp'}];
   const box={};SECS.forEach(s=>{const d=document.createElement('div');d.className='tac-sec';d.dataset.k=s.k;d.hidden=true;box[s.k]=d;});
   // gather the page's parts into their sections (the Tutorial banner, then everything after each marked comment)
@@ -7258,6 +7269,7 @@ function hmArenaUI(){const box=$('hmArenas');if(!box)return;const host=NET.role=
     if(nd.nodeType===8){const m=/tsec:(\w+)/.exec(nd.data);if(m){cur=m[1];}}
     if(nd.nodeType===1&&nd.classList.contains('htp-tut')){box.tut.appendChild(nd);return;}
     if(cur&&box[cur])box[cur].appendChild(nd);});
+  {const sb=R.querySelector('#screen-synergies .syn-body .inner');if(sb){const sub=R.querySelector('#screen-synergies .syn-sub');if(sub){const p=document.createElement('p');p.className='htp-note';p.textContent=sub.textContent;box.syn.appendChild(p);}[...sb.childNodes].forEach(nd=>box.syn.appendChild(nd));}}
   // the Tutorial page also gets a short "what you'll learn"
   {const p=document.createElement('p');p.className='htp-note';p.innerHTML='One short battle with set cards and no timer: build your slots, form a <b>Full House</b>, send your waves and break the enemy base. Finishing it unlocks the <b>Foot Soldier</b> avatar.';box.tut.appendChild(p);}
   const grid=document.createElement('div');grid.className='tac-grid';grid.setAttribute('role','list');
@@ -7270,7 +7282,9 @@ function hmArenaUI(){const box=$('hmArenas');if(!box)return;const host=NET.role=
   grid.addEventListener('click',e=>{const b=e.target.closest('.tac-btn');if(!b)return;try{snd('card_land');}catch(_){}if(b.dataset.k==='tut'){try{hmStartTutorial();}catch(_){}return;}show(b.dataset.k);});
   top.querySelector('.tac-back').addEventListener('click',()=>show(null));
   window.hmTactics=show;
-  const _ss=window.showScreen;if(typeof _ss==='function')window.showScreen=function(id){if(id==='howto')show(null);return _ss.apply(this,arguments);};
+  const _ss=window.showScreen;if(typeof _ss==='function')window.showScreen=function(id,btn){
+    if(id==='synergies'){const r=_ss.call(this,'howto',null);show('syn');try{hmSyncSecrets();}catch(e){}return r;}  // 12.3: Synergies lives under Tactics
+    if(id==='howto')show(null);return _ss.apply(this,arguments);};
 })();
 
 </script>
@@ -7278,23 +7292,23 @@ function hmArenaUI(){const box=$('hmArenas');if(!box)return;const host=NET.role=
 
 /* ═══ 12.0 Graphics: Full / Balanced / Performance / Auto (phones & tablets start on Balanced) ═══ */
 const GFX={lv:'full',eff:'full',fps:[],acc:0,n:0,t:0,good:0,dmg:true};
-const GFX_NAME={full:'Full',bal:'Balanced',perf:'Performance'};
+const GFX_NAME={full:'Full',bal:'Balanced',perf:'Performance',none:'No Animations'};
 function gfxDefault(){try{return matchMedia('(pointer:coarse)').matches?'bal':'full';}catch(e){return 'full';}}
-function gfxSet(eff){GFX.eff=eff;const c=document.body.classList;c.remove('gfx-full','gfx-bal','gfx-perf');c.add('gfx-'+eff);gfxUI();}
+function gfxSet(eff){GFX.eff=eff;const c=document.body.classList;c.remove('gfx-full','gfx-bal','gfx-perf','gfx-none');c.add('gfx-'+eff);if(eff==='none')c.add('gfx-perf');gfxUI();}  // No Animations also gets every Performance saving
 function gfxUI(){const R=hmSR&&hmSR();if(!R)return;R.querySelectorAll('.hm-gfx button').forEach(b=>{const on=b.dataset.g===GFX.lv;b.classList.toggle('on',on);b.setAttribute('aria-checked',on);});
   const s=R.getElementById('gfxSub');if(s)s.textContent=GFX.lv==='auto'?('Auto: lowers the graphics by itself when the game slows down (now: '+GFX_NAME[GFX.eff]+')'):'Lower settings run smoother when the bridge is crowded';
   const t=R.getElementById('dmgTgl');if(t){t.classList.toggle('on',GFX.dmg);t.setAttribute('aria-checked',GFX.dmg);}}
-function hmGfx(v){if(!['full','bal','perf','auto'].includes(v))v=gfxDefault();GFX.lv=v;try{localStorage.setItem('hm_gfx',v);}catch(e){}
+function hmGfx(v){if(!['full','bal','perf','none','auto'].includes(v))v='auto';GFX.lv=v;try{localStorage.setItem('hm_gfx',v);}catch(e){}
   gfxSet(v==='auto'?gfxDefault():v);}
 function hmDmgNums(on){GFX.dmg=!!on;try{localStorage.setItem('hm_dmgnum',on?'1':'0');}catch(e){}gfxUI();}
 {const _tz=hmTextSizeUI;hmTextSizeUI=function(){const r=_tz.apply(this,arguments);gfxUI();return r;};}  // Text Size shares the button style; keep the Graphics choice lit
-{let v=null,d=null;try{v=localStorage.getItem('hm_gfx');d=localStorage.getItem('hm_dmgnum');}catch(e){}GFX.dmg=d!=='0';hmGfx(v||gfxDefault());}
+{let v=null,d=null;try{v=localStorage.getItem('hm_gfx');d=localStorage.getItem('hm_dmgnum');}catch(e){}GFX.dmg=d!=='0';hmGfx(v||'auto');}  // 12.3: Auto is the default on every device
 // floating damage numbers: off in Performance (or when switched off); Balanced shows at most one per soldier every 0.4s
-{const _fd=floatDmg;floatDmg=function(u,dmg){if(!GFX.dmg||GFX.eff==='perf')return;
+{const _fd=floatDmg;floatDmg=function(u,dmg){if(!GFX.dmg||GFX.eff==='perf'||GFX.eff==='none')return;
   if(GFX.eff==='bal'&&u){const t=performance.now();if(u._fdT&&t-u._fdT<400)return;u._fdT=t;}return _fd.apply(this,arguments);};}
 // Performance: draw at most ~30 frames a second (the battle itself runs at the same speed). Auto: watch the frame rate and step down / up.
 {const _lp=loop;loop=function(now){
-  if(GFX.eff==='perf'&&last&&now-last<30){raf=requestAnimationFrame(loop);return;}
+  if((GFX.eff==='perf'||GFX.eff==='none')&&last&&now-last<30){raf=requestAnimationFrame(loop);return;}
   if(GFX.lv==='auto'&&S&&S.running&&!S.paused&&last){const d=now-last;GFX.acc+=d;GFX.n++;
     if(GFX.acc>=2000){const fps=GFX.n*1000/GFX.acc;GFX.acc=0;GFX.n=0;
       if(GFX.eff==='full'&&fps<40){gfxSet('bal');GFX.good=0;}

@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 12.2**: a Graphics setting for smoother phones, a new Monolith Vanguard, Skirmish pairs up players who are searching, seven battlefields with their own songs, live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
+**Build 12.3**: Synergies now live under Tactics, a Graphics setting for smoother phones, a new Monolith Vanguard, Skirmish pairs up players who are searching, seven battlefields with their own songs, live online battles, members-only Synergies, a soldier cap, and more (see Changes below).
 
 ## Play
 
@@ -72,6 +72,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **11.8:** new battlefield songs: Misty Valley keeps the original battle theme; Red Cliffs, Bamboo Valley, Snowy Pass, Plum Blossom Spring, Autumn Gorge and Thunderstorm Peaks each get a new pairing.
 - **11.9:** if two players tap Skirmish and nobody is hosting, they are put in a game together on a random battlefield, with no Start button needed. Each searcher quietly waits in a hidden queue slot while checking for others. If the opponent leaves before the battle, you go back to searching. Both players need 11.9.
 - **12.0–12.2:** the Tactics page is now 5 picture buttons (Tutorial starts the tutorial; How a Match Works; Cards; Units, Heroes and Rank; Tactician's Tips). New **Graphics** setting in Settings (Full / Balanced / Performance / Auto; phones and tablets start on Balanced) for less lag with a crowded bridge, and the Show DPS Numbers switch now works. **Monolith Vanguard** now scales with the Synergy it's combined with: +10% HP/Armor/ATK alone, +20% with a Pair or Three of a Kind, +25% with Two Pair or Four of a Kind, +30% with a Full House, +35% with Five of a Kind or Heaven's Mandate (its suit bonus grows the same way), and that other Synergy now boosts the whole wave. **Nine Dragons Convergence** is now ×1.25 and **Emperor's Sovereign Army** ×1.5.
+- **12.3:** Graphics now starts on **Auto** on every device, and there's a new lowest option, **No Animations** (soldiers slide along without animating; no effects, glows, shadows or damage numbers). Auto never drops below Performance by itself. The **Synergies** tab moved under **Tactics** as its own button; the Tactics order is now Tutorial, How a Match Works, Units, Heroes and Rank, Cards, Synergies, Tactician's Tips.
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.
