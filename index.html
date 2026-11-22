@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 12.5</title>
+<title>Heaven's Mandate · Build 12.6</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 function hmPt(x,y){return HMROT?{x:y,y:innerWidth-x}:{x:x,y:y};}
@@ -961,7 +961,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #12.5</div>
+    <div class="sub">Build #12.6</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -2823,7 +2823,7 @@ function sendWave(){
   let msg='Wave '+S.waves+' — '+deployed+' units marching';
   if(staged)msg+=' · '+staged+' card'+(staged>1?'s':'')+' staged';
   if(wp.hand!=='none')msg=wp.name;
-  if(wp.hand!=='none')say(msg,wp.hand==='mandate'||wp.hand==='royal'?'nat':'good');
+  /* 12.6: Synergy names are shouted in a speech bubble from the avatar (see hmShout) */
   if(wp.hand==='mandate'||wp.hand==='sflush'||wp.hand==='royal'){if((typeof NET!=='undefined')&&NET.online)setTimeout(()=>mandateSweep(_sd,wp.hand),0);else mandateSweep('p',wp.hand);} // after the wave toast so the Mandate call-out shows
 }
 
@@ -5731,7 +5731,7 @@ html, .hm-body {
           </li>
           <li class="htp-step"><div class="htp-step-body">
             <div class="htp-step-title">Send the wave</div>
-            <div class="htp-step-text">When <b>SEND</b> is lit up (it recharges after each wave) and at least <b>3 slots have 2+ cards</b>, hit <b>SEND</b>. Every ready slot marches out as a soldier; slots with a single card stay behind for next time. As each soldier appears at your base, it <b>shoves nearby enemies back</b> once. The suit counter under your gold shows how many of your soldiers of each suit are on the bridge, with how many of your slots are that suit in brackets — e.g. <b>♠ 3 (1)</b>. The bar under the bridge shows each of your waves' Synergies in marching order, front first, and drops each one as that wave is beaten (a wave with no Synergy has no tag); the enemy's waves show the same way above their slots.</div>
+            <div class="htp-step-text">When <b>SEND</b> is lit up (it recharges after each wave) and at least <b>3 slots have 2+ cards</b>, hit <b>SEND</b>. Every ready slot marches out as a soldier; slots with a single card stay behind for next time. As each soldier appears at your base, it <b>shoves nearby enemies back</b> once. The suit counter under your gold shows how many of your soldiers of each suit are on the bridge, with how many of your slots are that suit in brackets — e.g. <b>♠ 3 (1)</b>. The bar under the bridge shows each of your waves' Synergies in marching order, front first, and drops each one as that wave is beaten (a wave with no Synergy has no tag); the enemy's waves show the same way (fainter) above their slots. When a wave with a Synergy marches out, your avatar <b>shouts its name</b> in a speech bubble — and so does the enemy's.</div>
           </div>
             <figure class="htp-step-fig"><img src="menu/htp_5.webp" alt="Game screen: the SEND sword and the march-order bar under the bridge highlighted" loading="lazy"></figure>
           </li>
@@ -6025,7 +6025,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#12.5 · Prototype</span>
+            <span class="settings-row-value">#12.6 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -7427,6 +7427,54 @@ try{fit();}catch(e){}
   const mo=new MutationObserver(run);
   function watch(){try{const R=hmSR();if(R)mo.observe(R,{childList:true,subtree:true});document.querySelectorAll('body > .hm-ov:not(#hmCount)').forEach(o=>mo.observe(o,{childList:true,subtree:true}));}catch(e){}run();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watch);else watch();
+})();
+</script>
+
+<style>
+/* ═══ Build 12.6 ═══ */
+#oppForm{opacity:.5}
+.sbub{position:absolute;z-index:62;width:160px;height:55px;background:center/100% 100% no-repeat;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.3));opacity:0;visibility:hidden}
+.sbub.p{background-image:url(menu/bubble_p.webp);transform-origin:5% 95%}
+.sbub.e{background-image:url(menu/bubble_e.webp);transform-origin:95% 95%}
+.sbub.on{visibility:visible;opacity:1;animation:sbubIn .35s cubic-bezier(.3,1.6,.5,1)}
+.sbub.off{visibility:visible;opacity:0;transition:opacity .3s}
+@keyframes sbubIn{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+body.gfx-none .sbub.on{animation:none}body.gfx-none .sbub.off{transition:none}
+@media (prefers-reduced-motion:reduce){.sbub.on{animation:none}}
+.sbub b{position:absolute;left:9%;right:9%;top:13%;bottom:25%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font:700 10px/1.12 Cinzel,Georgia,serif;letter-spacing:.03em;color:#17110b}
+.sbub b span{display:block;white-space:nowrap}
+</style>
+<script>
+/* ═══ Build 12.6: each side's avatar shouts its wave's Synergy in a speech bubble ═══ */
+(function(){
+  const TWO={'Nine Dragons Convergence':['Nine Dragons','Convergence'],"Emperor's Sovereign Army":["Emperor's",'Sovereign Army']};
+  const els={},tm={};let seen={p:{},e:{}},lastT=-1;
+  function bub(side){let d=els[side];const st=document.getElementById('stage');if(!st)return null;
+    if(!d||!d.isConnected){d=document.createElement('div');d.className='sbub '+side;d.setAttribute('aria-live','polite');d.innerHTML='<b></b>';st.appendChild(d);els[side]=d;}return d;}
+  window.hmShout=function(side,hand,stack){
+    const F=FORMATIONS[hand];if(!F||hand==='none')return;
+    const d=bub(side);if(!d)return;const st=document.getElementById('stage');
+    const lines=stack&&hand!=='flush'?[F.name,'+ '+FORMATIONS.flush.name]:(TWO[F.name]||[F.name]);
+    const b=d.querySelector('b');b.textContent='';lines.forEach((t,i)=>{const s=document.createElement('span');s.textContent=t+(i===lines.length-1?'!':'');b.appendChild(s);});
+    const av=document.getElementById(side==='p'?'pAv':'eAv');if(!av)return;
+    const sr=hmLR(st.getBoundingClientRect()),k=sr.width/1000,r=hmLR(av.getBoundingClientRect());
+    const ax=(r.left-sr.left)/k,ay=(r.top-sr.top)/k,aw=r.width/k,ah=r.height/k;
+    d.style.left=(side==='p'?ax+aw*0.9-160*0.051:ax+aw*0.1-160*0.949)+'px';d.style.top=(ay+ah*0.5-55*0.95)+'px';
+    d.classList.remove('on','off');void d.offsetWidth;d.classList.add('on');
+    clearTimeout(tm[side]);tm[side]=setTimeout(()=>{d.classList.remove('on');d.classList.add('off');},2200);
+  };
+  // watch for each new wave (works the same vs the computer, online and in the Tutorial)
+  setInterval(()=>{try{
+    if(typeof S==='undefined'||!S||!S.units)return;
+    if(S.matchTime<lastT||(!S.running&&!S.units.length)){seen={p:{},e:{}};}lastT=S.matchTime;
+    if(!S.running)return;const now=performance.now();
+    ['p','e'].forEach(side=>{const W={};S.units.forEach(u=>{if(u.alive&&u.side===side&&!u._fodder&&u.wave)(W[u.wave]||(W[u.wave]=[])).push(u);});
+      Object.keys(W).forEach(w=>{const sv=seen[side][w];if(sv&&(sv.done||now-sv.t>3000))return;const rec=sv||(seen[side][w]={t:now,done:false});
+        const units=W[w];const u0=units.find(x=>x.formHand&&x.formHand!=='none');
+        const lw=(S.log&&(side==='p'?S.log.pWaves:S.log.eWaves)||[]).find(x=>x.wave===+w);
+        const hand=lw?(lw.hand||'none'):(u0?u0.formHand:'none');const stack=lw?!!lw.fl:!!(u0&&u0.flushStack);
+        if(hand&&hand!=='none'&&FORMATIONS[hand]){rec.done=true;if(now-rec.t<2500)hmShout(side,hand,stack);}});});
+  }catch(e){}},150);
 })();
 </script>
 </body>
