@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 13.6</title>
+<title>Heaven's Mandate · Build 13.7</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 var SONG_TITLE={
@@ -969,7 +969,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #13.6</div>
+    <div class="sub">Build #13.7</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -5119,6 +5119,10 @@ html, .hm-body {
 
 /* 13.2: dark ink for the clubs count */
 .pf-units .sc-c{color:#2a1d10!important;opacity:1!important}
+
+/* 13.7: Leaderboard page — no border, text sits close under the banner */
+#screen-leaderboard .soon-wrap{min-height:0!important;align-items:flex-start!important;padding:22px 16px 32px!important}
+#screen-leaderboard .soon-card{border:0!important;background:none!important;box-shadow:none!important;padding:8px 16px!important}
 </style><div class="hm-body">
 
 <!-- ── SAFE AREA TOP BAND ── -->
@@ -5144,7 +5148,7 @@ html, .hm-body {
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M4 12V8M8 12V4M12 12V6"/>
       </svg>
-      <span>Rank</span>
+      <span>Leaderboard</span>
     </button>
     <button class="nav-tab" data-screen="synergies" hidden onclick="showScreen('synergies',this)">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -5203,7 +5207,7 @@ html, .hm-body {
             <span class="bc-desc">Jump into a match against a random player online.</span>
           </button>
           <button class="battle-card bc-ranked" type="button" aria-disabled="true" tabindex="-1">
-            <span class="bc-lock" aria-hidden="true"><i class="ilock"></i>Coming Soon</span>
+            
             <span class="bc-name">Ranked</span><span class="bc-kind">Ranked · Online</span>
             <span class="bc-desc">Climb the ranks against other players.</span>
           </button>
@@ -5233,7 +5237,7 @@ html, .hm-body {
         <button type="button" class="profile-avatar" id="pfAvBtn" onclick="hmAvOpen()" aria-label="Change avatar"><img id="pfAv" src="av/foot_soldier.webp" alt=""><span class="pa-edit" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></span></button>
         <div class="profile-info">
           <div class="profile-name" id="pfName">Guest</div>
-          <span class="profile-badge guest">Guest</span>
+          
           <div class="profile-meta">Playtest: progress is saved in this browser</div>
         </div>
       </div>
@@ -5241,7 +5245,7 @@ html, .hm-body {
     <div class="stats-area">
       <div class="inner">
         <div class="pf-tabs" role="tablist" aria-label="Stats type">
-          <button type="button" role="tab" class="pf-tab on" data-pf="unranked" onclick="hmPfTab('unranked')">Unranked</button>
+          <button type="button" role="tab" class="pf-tab on" data-pf="unranked" onclick="hmPfTab('unranked')">Skirmish</button>
           <button type="button" role="tab" class="pf-tab" data-pf="ranked" onclick="hmPfTab('ranked')">Ranked</button>
           <button type="button" role="tab" class="pf-tab" data-pf="cpu" onclick="hmPfTab('cpu')">Computer</button>
         </div>
@@ -5268,8 +5272,7 @@ html, .hm-body {
     <div class="soon-wrap">
       <div class="soon-card">
         <svg class="soon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="1.6"/><path d="M8 10.5V7.5a4 4 0 018 0v3"/><circle cx="12" cy="15.5" r="1.3" fill="currentColor"/></svg>
-        <h2 class="soon-title">Rank</h2>
-        <div class="soon-badge">Coming Soon</div>
+        <h2 class="soon-title">Coming Soon</h2>
         <p class="soon-text">Ranked battles and the leaderboard will open in a future update.</p>
       </div>
     </div>
@@ -6077,7 +6080,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.6 · Prototype</span>
+            <span class="settings-row-value">#13.7 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6877,7 +6880,7 @@ function hmRenderProfile(){const R=hmSR();if(!R||!R.getElementById('pfMain'))ret
     g('pfMain').innerHTML=cell(dm.length?dw:'—','Wins')+cell(dm.length?dm.length-dw:'—','Losses')+cell(dm.length?Math.round(dw/dm.length*100)+'%':'—','Win Rate')+cell(dm.length||'—','Games Played');}
   else g('pfMain').innerHTML=cell(ms.length?W:'—','Wins')+cell(ms.length?Lo:'—','Losses')+cell(ms.length?Math.round(W/ms.length*100)+'%':'—','Win Rate')
     +cell('—','Highest Elo',eloSub)+cell('—','Current Elo',eloSub)+cell(ms.length||'—','Matches');
-  g('pfCareerSub').textContent=cpu?(DN?'Totals across your '+DN+' battles vs the computer':'Totals across all your battles vs the computer'):ranked?'Totals across all your ranked battles':'Totals across all your unranked online battles';
+  g('pfCareerSub').textContent=cpu?(DN?'Totals across your '+DN+' battles vs the computer':'Totals across all your battles vs the computer'):ranked?'Totals across all your ranked battles':'Totals across all your Skirmish and War Council battles';
   if(!ms.length){g('pfCareer').innerHTML='<div class="pf-empty">'+(ranked?'No ranked battles yet. Ranked play opens in a future update.':cpu?(DN?'No '+DN+' battles vs the computer yet.':'No battles vs the computer yet. Your totals will appear here after your first match.'):'No online battles yet. Your totals will appear here after your first online match.')+'</div>';}
   else{const sum=f=>ms.reduce((a,m)=>a+(f(m)||0),0);const U={c:sum(m=>m.units.c),s:sum(m=>m.units.s),d:sum(m=>m.units.d),h:sum(m=>m.units.h)};
     const ut=U.c+U.s+U.d+U.h,fav=Object.keys(U).sort((a,b)=>U[b]-U[a])[0];const cards=sum(m=>m.cards),busts=sum(m=>m.busts);
