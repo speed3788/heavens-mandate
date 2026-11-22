@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 12.9</title>
+<title>Heaven's Mandate · Build 13.0</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 var SONG_TITLE={
@@ -969,7 +969,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #12.9</div>
+    <div class="sub">Build #13.0</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -6072,7 +6072,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#12.9 · Prototype</span>
+            <span class="settings-row-value">#13.0 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6242,6 +6242,8 @@ html, .hm-body {
     </div><div class="hm-atogs">
     <div class="hm-arow"><div class="al"><b>Show DPS Numbers</b><small>Damage numbers over units in battle</small></div><span class="hm-asp"></span>
       <button class="hm-tog" id="hmDpsOn" type="button" role="switch" aria-label="Show DPS numbers" onclick="hmDmgNums(!GFX.dmg)"></button></div>
+    <div class="hm-arow"><div class="al"><b>Zhuge Liang&#39;s Counsel</b><small>Battle messages from the Sleeping Dragon</small></div><span class="hm-asp"></span>
+      <button class="hm-tog" id="hmCounselOn" type="button" role="switch" aria-label="Zhuge Liang's Counsel" onclick="hmCounsel(!hmCounselOn())"></button></div>
     <div class="hm-arow"><div class="al"><b>Unit Health &amp; Glow</b><small>Bars above soldiers, glow under them</small></div><span class="hm-asp"></span>
       <button class="hm-tog" id="hmHpOn" type="button" role="switch" aria-label="Unit health and glow" onclick="hmHpGlow(!hmOpt('hm_hpglow'))"></button></div>
     <div class="hm-arow"><div class="al"><b>Synergy Bars</b><small>Yours and the enemy&rsquo;s</small></div><span class="hm-asp"></span>
@@ -7554,7 +7556,7 @@ body.gfx-none #zgCounsel.on{animation:none}body.gfx-none #zgCounsel.off{transiti
 <script>
 /* ═══ Build 12.8 ═══ */
 function hmCounselOn(){try{return localStorage.getItem('hm_counsel')!=='0';}catch(e){return true;}}
-function hmCounselUI(){try{const R=hmSR&&hmSR();const t=R&&R.getElementById('counselTgl');if(t){const on=hmCounselOn();t.classList.toggle('on',on);t.setAttribute('aria-checked',on);}}catch(e){}}
+function hmCounselUI(){const on=hmCounselOn();try{const R=hmSR&&hmSR();const t=R&&R.getElementById('counselTgl');if(t){t.classList.toggle('on',on);t.setAttribute('aria-checked',on);}}catch(e){}const g=document.getElementById('hmCounselOn');if(g){g.classList.toggle('on',on);g.setAttribute('aria-checked',on);}}
 function hmCounsel(on){try{localStorage.setItem('hm_counsel',on?'1':'0');}catch(e){}hmCounselUI();if(!on){const z=document.getElementById('zgCounsel');if(z)z.className='';}}
 hmCounselUI();
 /* drop-downs follow the saved Text Size / Graphics */
@@ -7601,5 +7603,14 @@ function hmHpGlow(on){try{localStorage.setItem('hm_hpglow',on?'1':'0');}catch(e)
 function hmSynBars(on){try{localStorage.setItem('hm_synbars',on?'1':'0');}catch(e){}hmOptUI();}
 hmOptUI();
 </script>
+<style>
+/* 13.0: on wider screens the ⚙ pop-up uses two columns too, so the buttons are never pushed off the bottom */
+@media (min-width:700px) and (min-height:501px){
+#hmAudio .hm-card{width:min(860px,94%)!important;max-height:94vh;overflow:auto}
+#hmAudio .hm-acols{display:grid;grid-template-columns:1fr 1fr;gap:0 28px;align-items:start;grid-template-areas:"a b" "c b"}
+#hmAudio .hm-acols>.hm-acol:first-child{grid-area:a}#hmAudio .hm-acols>.hm-acol:nth-child(2){grid-area:b}#hmAudio .hm-acols>.hm-atogs{grid-area:c}
+#hmAudio .hm-acols>*{min-width:0}
+}
+</style>
 </body>
 </html>
