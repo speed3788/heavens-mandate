@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 12.8**: Zhuge Liang advises you during battle, avatars shout their Synergy in an ink speech bubble, the battle turns sideways by itself on an upright phone, the loading screen shows the battlefield, a tutorial arrow, Graphics in the in-game ⚙ menu, bigger menu text, seven battlefields with their own songs, live online battles, and more (see Changes below).
+**Build 12.9**: Zhuge Liang advises you during battle, avatars shout their Synergy in an ink speech bubble, the battle turns sideways by itself on an upright phone, the loading screen shows the battlefield, a tutorial arrow, Graphics in the in-game ⚙ menu, bigger menu text, seven battlefields with their own songs, live online battles, and more (see Changes below).
 
 ## Play
 
@@ -78,6 +78,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **12.6:** when a wave with a Synergy marches out, that side's avatar shouts the Synergy's name in a small ink-brush speech bubble over their name (yours and the enemy's, also online; long names and Flush combos use two lines). It replaces the Synergy pop-up in the top right. The enemy's march-order bar under the timer is now half see-through so it doesn't pull your eye.
 - **12.7:** Profile → Computer has an **All** button (picked first) that adds up every game vs the computer; the stat boxes, Career Stats and Match History now all follow the level you pick. The Tutorial button in the Training Grounds pop-up is gold. On phones and tablets, Settings → Text Size and Graphics are lists with one choice per row (✓ marks yours).
 - **12.8:** Zhuge Liang now gives every battle message ("BUST!", "APEX RANK!", reminders) in an ink speech bubble beside the timer; it stays about 2 seconds and fades. VICTORY / DEFEAT keep their banner. New Settings switch **Zhuge Liang's Counsel** turns these messages on or off. Settings → Text Size and Graphics are now drop-down menus on every screen.
+- **12.9:** two new switches in Settings and the in-game ⚙ pop-up: **Unit Health & Glow** (soldiers' health bars and the glow under their feet) and **Synergy Bars** (the Synergy bars under the bridge and under the timer); both start on. The loading screen now shows the battlefield's song under its name, using patokeem's new song titles.
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.

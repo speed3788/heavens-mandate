@@ -3,9 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 12.8</title>
+<title>Heaven's Mandate · Build 12.9</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
+var SONG_TITLE={
+  music_battle:'When the Sky Withdraws Its Hand', // was "Original Battle Theme"
+  music_b1:'Mourning at the Broken Citadel',      // was "Heavens Mandate 1"
+  music_b2:"The Last Emperor\u2019s Vow",        // was "Heavens Mandate 2"
+  music_b3:'March of the Crimson Banners',        // was "Heavens Mandate 3"
+  music_b4:'Gates of the Fallen Dynasty',         // was "Heavens Mandate 4"
+  music_b5:'Sovereign of the Storm Gate',         // was "Heavens Mandate 003"
+  music_b6:'Thunder Decree'};                     // was "Heavens Mandate 006"
 function hmPt(x,y){return HMROT?{x:y,y:innerWidth-x}:{x:x,y:y};}
 function hmLR(r){if(!HMROT)return r;const L=r.top,T=innerWidth-r.right,W=r.height,H=r.width;return{left:L,top:T,width:W,height:H,right:L+W,bottom:T+H,x:L,y:T};}
 </script>
@@ -961,7 +969,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #12.8</div>
+    <div class="sub">Build #12.9</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -6039,6 +6047,20 @@ html, .hm-body {
             </div>
             <div class="toggle on" id="counselTgl" onclick="hmCounsel(!this.classList.contains('on'))" role="switch" aria-checked="true" aria-label="Zhuge Liang's Counsel"></div>
           </div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-label">Unit Health &amp; Glow</div>
+              <div class="settings-row-sub">Health bars above soldiers and the glow under their feet</div>
+            </div>
+            <div class="toggle on" id="hpTgl" onclick="hmHpGlow(!this.classList.contains('on'))" role="switch" aria-checked="true" aria-label="Unit health and glow"></div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-label">Synergy Bars</div>
+              <div class="settings-row-sub">The Synergy bars under the bridge and under the timer (yours and the enemy&rsquo;s)</div>
+            </div>
+            <div class="toggle on" id="synTgl" onclick="hmSynBars(!this.classList.contains('on'))" role="switch" aria-checked="true" aria-label="Synergy bars"></div>
+          </div>
         </div>
 
         <!-- ABOUT -->
@@ -6050,7 +6072,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#12.8 · Prototype</span>
+            <span class="settings-row-value">#12.9 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6190,6 +6212,7 @@ html, .hm-body {
   </div>
   <div class="hm-rotate" role="note"><span class="hm-rot-ic" aria-hidden="true"></span>Turn your screen sideways, Commander — the battlefield awaits.</div>
   <div class="ld-name" id="hmLoadName"></div>
+  <div class="ld-song" id="hmLoadSong"></div>
 </div>
 
 <!-- surrender confirm -->
@@ -6216,8 +6239,13 @@ html, .hm-body {
     </div><div class="hm-acol">
     <div class="hm-arow hm-agfx"><div class="al"><b>Graphics</b><small id="hmGfxSub">Lower settings run smoother when the bridge is crowded</small></div>
       <div class="hm-gbtns" role="radiogroup" aria-label="Graphics"><button type="button" role="radio" data-g="auto" onclick="hmGfx('auto')">Auto</button><button type="button" role="radio" data-g="full" onclick="hmGfx('full')">Full</button><button type="button" role="radio" data-g="bal" onclick="hmGfx('bal')">Balanced</button><button type="button" role="radio" data-g="perf" onclick="hmGfx('perf')">Performance</button><button type="button" role="radio" data-g="none" onclick="hmGfx('none')">No Animations</button></div></div>
+    </div><div class="hm-atogs">
     <div class="hm-arow"><div class="al"><b>Show DPS Numbers</b><small>Damage numbers over units in battle</small></div><span class="hm-asp"></span>
       <button class="hm-tog" id="hmDpsOn" type="button" role="switch" aria-label="Show DPS numbers" onclick="hmDmgNums(!GFX.dmg)"></button></div>
+    <div class="hm-arow"><div class="al"><b>Unit Health &amp; Glow</b><small>Bars above soldiers, glow under them</small></div><span class="hm-asp"></span>
+      <button class="hm-tog" id="hmHpOn" type="button" role="switch" aria-label="Unit health and glow" onclick="hmHpGlow(!hmOpt('hm_hpglow'))"></button></div>
+    <div class="hm-arow"><div class="al"><b>Synergy Bars</b><small>Yours and the enemy&rsquo;s</small></div><span class="hm-asp"></span>
+      <button class="hm-tog" id="hmSynOn" type="button" role="switch" aria-label="Synergy bars" onclick="hmSynBars(!hmOpt('hm_synbars'))"></button></div>
     </div></div>
     <div class="hm-row"><button class="hm-btn hm-danger" id="hmSurrBtn" type="button" onclick="hmCloseAudio();hmAskSurrender()" hidden>Surrender</button><button class="hm-btn" id="hmPauseBtn" type="button" onclick="hmPause()" hidden>Pause</button><button class="hm-btn" type="button" onclick="hmCloseAudio()">Done</button></div>
   </div>
@@ -7266,7 +7294,7 @@ const ARENAS=[
  {id:'autumn',n:'Autumn Gorge',bg:'menu/bg_autumn.webp',t:'menu/bgt_autumn.webp',m:'music_b3'},
  {id:'storm',n:'Thunderstorm Peaks',bg:'menu/bg_storm.webp',t:'menu/bgt_storm.webp',m:'music_b5'}];
 function hmArena(id){const a=ARENAS.find(x=>x.id===id)||ARENAS[Math.floor(Math.random()*ARENAS.length)];HM.arena=a.id;
-  $('stage').style.backgroundImage='url('+a.bg+')';   {const L=$('hmLoad');if(L)L.style.setProperty('--ldbg','url('+a.bg+')');const n=$('hmLoadName');if(n)n.textContent=a.n;}
+  $('stage').style.backgroundImage='url('+a.bg+')';   {const L=$('hmLoad');if(L)L.style.setProperty('--ldbg','url('+a.bg+')');const n=$('hmLoadName');if(n)n.textContent=a.n;const sg=$('hmLoadSong');if(sg)sg.textContent=SONG_TITLE[a.m]?'\u266A  '+SONG_TITLE[a.m]:'';}
   try{sndLoad();}catch(e){}
   const au=SND.mus&&SND.mus.battle;
   if(au&&au._song!==a.m){au._song=a.m;au.src='snd/'+a.m+'.mp3';try{au.load();const pr=au.play();if(pr&&pr.catch)pr.catch(()=>{});}catch(e){}}
@@ -7547,6 +7575,31 @@ try{hmTextSizeUI();gfxUI();}catch(e){}
   z.classList.remove('on','off');void z.offsetWidth;z.classList.add('on');
   clearTimeout(zt);zt=setTimeout(()=>{z.classList.remove('on');z.classList.add('off');},2000);
  };}
+</script>
+
+<style>
+/* ═══ Build 12.9 ═══ */
+body.hm-nohp .unit .uhp,body.hm-nohp .unit .udef{display:none!important}
+body.hm-nohp .unit.spr .spw::before{display:none!important}
+body.hm-nosyn #playerForm,body.hm-nosyn #oppForm{visibility:hidden!important}
+@media (max-height:500px){#hmAudio .hm-acols{grid-template-areas:"a b" "c b"}#hmAudio .hm-acols>.hm-acol:first-child{grid-area:a}#hmAudio .hm-acols>.hm-acol:nth-child(2){grid-area:b}#hmAudio .hm-acols>.hm-atogs{grid-area:c}#hmAudio .hm-atogs .al{max-width:9em}}
+html.hm-rot #hmAudio .hm-acols{grid-template-areas:"a b" "c b"}html.hm-rot #hmAudio .hm-acols>.hm-acol:first-child{grid-area:a}html.hm-rot #hmAudio .hm-acols>.hm-acol:nth-child(2){grid-area:b}html.hm-rot #hmAudio .hm-acols>.hm-atogs{grid-area:c}html.hm-rot #hmAudio .hm-atogs .al{max-width:9em}
+#hmLoad .ld-song{position:absolute;left:0;right:0;bottom:calc(6px + env(safe-area-inset-bottom,0px));text-align:center;font:italic 600 clamp(.8rem,1.6vw,1rem) Georgia,serif;letter-spacing:.06em;color:#f3e9d5;opacity:.92;text-shadow:0 1px 2px rgba(0,0,0,.7),0 0 14px rgba(0,0,0,.55);pointer-events:none}
+#hmLoad .ld-song:empty{display:none}
+#hmLoad .ld-name{bottom:calc(34px + env(safe-area-inset-bottom,0px))}
+@media (orientation:portrait) and (pointer:coarse){#hmLoad .ld-song{position:static;margin-top:4px}}
+</style>
+<script>
+/* ═══ Build 12.9: Unit Health & Glow / Synergy Bars switches (on by default) ═══ */
+function hmOpt(k){try{return localStorage.getItem(k)!=='0';}catch(e){return true;}}
+function hmOptUI(){const hp=hmOpt('hm_hpglow'),sy=hmOpt('hm_synbars');
+  document.body.classList.toggle('hm-nohp',!hp);document.body.classList.toggle('hm-nosyn',!sy);
+  const set=(el,on)=>{if(el){el.classList.toggle('on',on);el.setAttribute('aria-checked',on);}};
+  try{const R=hmSR();if(R){set(R.getElementById('hpTgl'),hp);set(R.getElementById('synTgl'),sy);}}catch(e){}
+  set(document.getElementById('hmHpOn'),hp);set(document.getElementById('hmSynOn'),sy);}
+function hmHpGlow(on){try{localStorage.setItem('hm_hpglow',on?'1':'0');}catch(e){}hmOptUI();}
+function hmSynBars(on){try{localStorage.setItem('hm_synbars',on?'1':'0');}catch(e){}hmOptUI();}
+hmOptUI();
 </script>
 </body>
 </html>
