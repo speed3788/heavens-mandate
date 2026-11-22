@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 13.1</title>
+<title>Heaven's Mandate · Build 13.2</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 var SONG_TITLE={
@@ -969,7 +969,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #13.1</div>
+    <div class="sub">Build #13.2</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -2978,7 +2978,7 @@ $('reset').addEventListener('click',e=>{
   newHandUses=3;const ct=$('newCt');if(ct)ct.textContent=' 3';
   if($('newHand'))$('newHand').disabled=false;
   renderAll();
-  say('Match starting in '+PREMATCH_SECS+' seconds...','warn');raf=requestAnimationFrame(loop);e.currentTarget.blur();
+  say('Match starting in '+PREMATCH_SECS+' seconds...','warn');setTimeout(()=>{try{if(HM.inGame&&!S.tut)say('Three redraws are yours \u2014 use them wisely.');}catch(e){}},2600);raf=requestAnimationFrame(loop);e.currentTarget.blur();
 });
 document.addEventListener('contextmenu',e=>e.preventDefault());
 function fit(){const _w=HMROT?window.innerHeight:window.innerWidth,_h=HMROT?window.innerWidth:window.innerHeight;scale=Math.min(_w/1000,_h/460);try{const ba=document.querySelector('#stage .bridge-art'),br=document.getElementById('bridge');if(ba&&br){ba.style.top=br.offsetTop+'px';ba.style.height=br.offsetHeight+'px';const z=getComputedStyle(br).zIndex;ba.style.zIndex=z==='auto'?0:z;}}catch(e){}stage.style.setProperty('--s',scale);}
@@ -5116,6 +5116,9 @@ html, .hm-body {
  background:#fbf5e8 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238a6a3a' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 14px center;
  font:600 15px/1.2 var(--f-ui);letter-spacing:.04em;color:#3a2a18;cursor:pointer}
 .hm-sel:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* 13.2: dark ink for the clubs count */
+.pf-units .sc-c{color:#2a1d10!important;opacity:1!important}
 </style><div class="hm-body">
 
 <!-- ── SAFE AREA TOP BAND ── -->
@@ -6074,7 +6077,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.1 · Prototype</span>
+            <span class="settings-row-value">#13.2 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -7575,7 +7578,7 @@ try{hmTextSizeUI();gfxUI();}catch(e){}
   if(!z){z=document.createElement('div');z.id='zgCounsel';z.setAttribute('role','status');z.setAttribute('aria-live','polite');z.innerHTML='<div class="za"></div><div class="zb"></div>';st.appendChild(z);}
   const b=z.querySelector('.zb');b.textContent=msg;b.classList.toggle('bad',kind==='bad');
   const sr=hmLR(st.getBoundingClientRect()),k=sr.width/1000,r=hmLR(mt.getBoundingClientRect());
-  z.style.left=((r.right-sr.left)/k+34)+'px';z.style.top=((r.bottom-sr.top)/k-18)+'px';
+  z.style.left=((r.right-sr.left)/k+34)+'px';{let tp=(r.bottom-sr.top)/k-18;const bt=tp+44-22-b.offsetHeight;if(bt<8)tp+=8-bt;z.style.top=tp+'px';}
   z.classList.remove('on','off');void z.offsetWidth;z.classList.add('on');
   clearTimeout(zt);zt=setTimeout(()=>{z.classList.remove('on');z.classList.add('off');},2000);
  };}
@@ -7626,7 +7629,9 @@ hmOptUI();
 #hmPauseTop[hidden]{display:none!important}
 #hmPauseTop:hover{background:rgba(243,233,213,1)!important}
 #hmPauseTop .ipause{display:block;width:12px;height:14px;margin:auto;background:linear-gradient(90deg,#2a1d10 0 4px,transparent 4px 8px,#2a1d10 8px 12px);border-radius:1px}
-#stage #fillAll:not(:disabled),#stage #newHand:not(:disabled){border-color:#c9952c!important;color:#a8761a!important}
+#stage #fillAll,#stage #newHand{border-color:transparent!important;background:transparent!important;box-shadow:none!important}
+#stage #fillAll:not(:disabled),#stage #newHand:not(:disabled){border-color:transparent!important;background:rgba(232,184,48,.32)!important;color:#4a2e0a!important;box-shadow:none!important}
+.sbub.e{z-index:160!important}
 #stage #newCt{display:none!important}
 #stage #shoeStat{top:345px!important;left:37px!important;width:96px!important;line-height:1.2}
 #stage #shoeStat b{display:block;font-weight:700}

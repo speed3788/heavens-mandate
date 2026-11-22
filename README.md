@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 13.1**: Zhuge Liang advises you during battle, avatars shout their Synergy in an ink speech bubble, the battle turns sideways by itself on an upright phone, the loading screen shows the battlefield, a tutorial arrow, Animation settings in the in-game ⚙ menu, bigger menu text, seven battlefields with their own songs, live online battles, and more (see Changes below).
+**Build 13.2**: Zhuge Liang advises you during battle, avatars shout their Synergy in an ink speech bubble, the battle turns sideways by itself on an upright phone, the loading screen shows the battlefield, a tutorial arrow, Animation settings in the in-game ⚙ menu, bigger menu text, seven battlefields with their own songs, live online battles, and more (see Changes below).
 
 ## Play
 
@@ -81,6 +81,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **12.9:** two new switches in Settings and the in-game ⚙ pop-up: **Unit Health & Glow** (soldiers' health bars and the glow under their feet) and **Synergy Bars** (the Synergy bars under the bridge and under the timer); both start on. The loading screen now shows the battlefield's song under its name, using patokeem's new song titles.
 - **13.0:** the in-game ⚙ pop-up now has the **Zhuge Liang's Counsel** switch too (it's the same setting as in Settings). On computer screens the ⚙ pop-up uses two columns so Surrender, Pause and Done are always visible.
 - **13.1:** "Graphics" is now called **Animation**. Against the computer, a **Pause** button sits next to the ⚙ gear (same look, ❚❚ symbol); the ⚙ pop-up is tidier (only Animation keeps its help line). FILL and NEW turn gold when you can tap them; NEW no longer shows a number — Zhuge Liang tells you how many redraws are left. Barracks shows on two rows under the deck, and Cost shows just the number.
+- **13.2:** at the start of each battle Zhuge Liang reminds you: "Three redraws are yours — use them wisely." His bubble no longer touches the top of the screen, and the enemy's Synergy shout now shows on top of his message. FILL and NEW have no border: when you can tap them they sit on a soft yellow box with dark letters; otherwise they're plain grey words. In Profile → Career Stats, the ♣ count is now dark ink so it's easy to read.
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.
