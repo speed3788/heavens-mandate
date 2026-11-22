@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 13.3</title>
+<title>Heaven's Mandate · Build 13.4</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 var SONG_TITLE={
@@ -969,7 +969,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #13.3</div>
+    <div class="sub">Build #13.4</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -6077,7 +6077,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.3 · Prototype</span>
+            <span class="settings-row-value">#13.4 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -7208,7 +7208,7 @@ const TUT_STEPS=[
 ];
 function tutEnemyWave(){for(let i=0;i<3;i++)setTimeout(()=>{if(TUT&&S.running)spawnUnit(['♣','♠','♥'][i],12,'recruit','e',0.35,0.35,1,'none',1,null,0,1,null);},i*500);}
 function hmStartTutorial(){
-  AI_MODE='blind';AI.targetSuit=null;HM.mode='tutorial';AVS.cpu='robot';S.paused=false;document.body.classList.remove('hm-paused');hmShow('hmPaused',false);HM.opp='Training Dummy';
+  AI_MODE='blind';AI.targetSuit=null;HM.mode='tutorial';HM.inTut=true;try{hmCounselUI();const z=document.getElementById('zgCounsel');if(z)z.className='';}catch(e){}AVS.cpu='robot';S.paused=false;document.body.classList.remove('hm-paused');hmShow('hmPaused',false);HM.opp='Training Dummy';
   hmShow('hmDiff',false);hmShow('hmTutAsk',false);try{localStorage.setItem('hm_tut_asked','1');}catch(e){}
   hmTip();$('hmLoadMeAv').src='av/'+AVS.me+'.webp';$('hmLoadOppAv').src='av/robot.webp';$('hmLoadCpu').textContent='Tutorial';
   const L=$('hmLoad');L.classList.remove('out');L.hidden=false;const bar=$('hmLoadBar');bar.style.transition='none';bar.style.width='0';void bar.offsetWidth;
@@ -7561,8 +7561,9 @@ body.gfx-none #zgCounsel.on{animation:none}body.gfx-none #zgCounsel.off{transiti
 <script>
 /* ═══ Build 12.8 ═══ */
 function hmCounselOn(){try{return localStorage.getItem('hm_counsel')!=='0';}catch(e){return true;}}
-function hmCounselUI(){const on=hmCounselOn();try{const R=hmSR&&hmSR();const t=R&&R.getElementById('counselTgl');if(t){t.classList.toggle('on',on);t.setAttribute('aria-checked',on);}}catch(e){}const g=document.getElementById('hmCounselOn');if(g){g.classList.toggle('on',on);g.setAttribute('aria-checked',on);}}
-function hmCounsel(on){try{localStorage.setItem('hm_counsel',on?'1':'0');}catch(e){}hmCounselUI();if(!on){const z=document.getElementById('zgCounsel');if(z)z.className='';}}
+function hmCounselUI(){const lock=(typeof hmInTut==='function')&&hmInTut(),on=hmCounselOn()&&!lock;try{const R=hmSR&&hmSR();const t=R&&R.getElementById('counselTgl');if(t){t.classList.toggle('hm-locked',lock);t.setAttribute('aria-disabled',lock);t.title=lock?'Off during the Tutorial':'';}}catch(e){}{const g=document.getElementById('hmCounselOn');if(g){g.disabled=lock;g.classList.toggle('hm-locked',lock);g.title=lock?'Off during the Tutorial':'';}}try{const R=hmSR&&hmSR();const t=R&&R.getElementById('counselTgl');if(t){t.classList.toggle('on',on);t.setAttribute('aria-checked',on);}}catch(e){}const g=document.getElementById('hmCounselOn');if(g){g.classList.toggle('on',on);g.setAttribute('aria-checked',on);}}
+function hmInTut(){return !!((typeof HM!=='undefined'&&HM&&HM.inTut)||(typeof S!=='undefined'&&S&&S.tut));}
+function hmCounsel(on){if(hmInTut()){hmCounselUI();return;}try{localStorage.setItem('hm_counsel',on?'1':'0');}catch(e){}hmCounselUI();if(!on){const z=document.getElementById('zgCounsel');if(z)z.className='';}}
 hmCounselUI();
 /* drop-downs follow the saved Text Size / Graphics */
 {const _t=hmTextSizeUI;hmTextSizeUI=function(){const r=_t.apply(this,arguments);try{const s=hmSR().getElementById('tszSel');let z='l';try{z=localStorage.getItem('hm_textsize')||'l';}catch(e){}if(s)s.value=z;}catch(e){}return r;};}
@@ -7573,7 +7574,7 @@ try{hmTextSizeUI();gfxUI();}catch(e){}
  say=function(msg,kind){
   if(/^(VICTORY|DEFEAT) — /.test(msg||''))return _say(msg,kind);
   if(!hmCounselOn())return;
-  if(typeof S!=='undefined'&&S&&S.tut)return;   // 13.3: in the Tutorial he already speaks in the tutorial box
+  if(hmInTut())return;   // 13.4: in the Tutorial he already speaks in the tutorial box
   const st=document.getElementById('stage'),mt=document.getElementById('matchTime');if(!st||!mt)return _say(msg,kind);
   let z=document.getElementById('zgCounsel');
   if(!z){z=document.createElement('div');z.id='zgCounsel';z.setAttribute('role','status');z.setAttribute('aria-live','polite');z.innerHTML='<div class="za"></div><div class="zb"></div>';st.appendChild(z);}
@@ -7642,6 +7643,15 @@ hmOptUI();
 <script>
 /* 13.1: the Pause button by the gear shows only in a battle vs the computer */
 setInterval(()=>{const p=document.getElementById('hmPauseTop');if(!p)return;const on=!!(typeof HM!=='undefined'&&HM&&HM.inGame)&&!((typeof NET!=='undefined')&&NET.online);if(p.hidden===on)p.hidden=!on;},300);
+</script>
+<style>
+/* 13.4: Counsel switch locked off during the Tutorial */
+.hm-locked{opacity:.45!important;cursor:not-allowed!important;filter:grayscale(.6)}
+</style>
+<script>
+/* 13.4: the Tutorial flag clears when the player leaves that battle; the switch shows the player's own choice again */
+(function(){let was=false;setInterval(()=>{try{const g=!!HM.inGame;if(was&&!g&&HM.inTut){HM.inTut=false;}was=g;hmCounselUI();}catch(e){}},300);})();
+{const _sv=window.hmStartVsCpu;if(typeof _sv==='function')window.hmStartVsCpu=function(){HM.inTut=false;return _sv.apply(this,arguments);};}
 </script>
 </body>
 </html>
