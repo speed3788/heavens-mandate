@@ -3,7 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 12.3</title>
+<title>Heaven's Mandate · Build 12.5</title>
+<script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
+var HMROT=false;
+function hmPt(x,y){return HMROT?{x:y,y:innerWidth-x}:{x:x,y:y};}
+function hmLR(r){if(!HMROT)return r;const L=r.top,T=innerWidth-r.right,W=r.height,H=r.width;return{left:L,top:T,width:W,height:H,right:L+W,bottom:T+H,x:L,y:T};}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap">
 <style>
 :root{
@@ -956,7 +961,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #12.3</div>
+    <div class="sub">Build #12.5</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -1026,6 +1031,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
     <div class="twrs">
     </div>
   </div>
+  <div class="bridge-art" aria-hidden="true"></div>
   <div id="bridge">
     <div class="cbase" id="cbE" data-st="0"><i class="cseal"></i></div><div class="cbase" id="cbP" data-st="0"><i class="cseal"></i></div><div id="unitLayer"></div></div>
 
@@ -1104,7 +1110,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
       const open=[...L.querySelectorAll('.ssItem.open')].map(e=>e.dataset.i);
       L.innerHTML=SYN.map((s,i)=>{const lk=s[4]&&!g.includes(s[4]);const isO=open.includes(String(i));
         return '<div class="ssItem'+(lk?' locked':'')+(isO?' open':'')+'" data-i="'+i+'"><button class="ssRow" type="button" aria-expanded="'+isO+'">'
-          +(s[4]?'<span class="ssS">S</span>':'')+'<span><div class="ssName">'+(lk?'?????? ??????':esc(s[0]))+'</div><div class="ssSub">'+(lk?'Locked':esc(s[1]))+'</div></span><span class="ssCar">▶</span></button>'
+          +(s[4]?'<span class="ssS">S</span>':'')+'<span><div class="ssName">'+(lk?'?????? ??????':esc(s[0]))+'</div><div class="ssSub">'+(lk?'Locked':esc(s[1]))+'</div></span><span class="ssCar">▶︎</span></button>'
           +'<div class="ssBody"'+(isO?'':' hidden')+'>'+(lk?'<div class="ssReq">Earn it in a match to reveal its bonuses</div>':'<div class="ssReq">'+esc(s[2])+'</div>'+s[3].map(b=>'<div>'+esc(b)+'</div>').join(''))+'</div></div>';}).join('');
     }
     const btn=document.getElementById('synBtn'),sh=document.getElementById('synSheet');
@@ -1803,7 +1809,7 @@ function renderHUD(){
 function renderAll(){renderSlots();renderHUD();}
 function flyText(txt,gain){
   const f=document.createElement('div');f.className='fly'+(gain?' gain':'');f.textContent=txt;
-  {const g=$('gold'),sr=stage.getBoundingClientRect(),k=sr.width/(stage.offsetWidth||sr.width)||1;if(g){const r=g.getBoundingClientRect();f.style.left=((r.left-sr.left)/k+r.width/k/2)+'px';f.style.top=((r.top-sr.top)/k-6)+'px';f.style.transform='translateX(-50%)';}}
+  {const g=$('gold'),sr=hmLR(stage.getBoundingClientRect()),k=sr.width/(stage.offsetWidth||sr.width)||1;if(g){const r=hmLR(g.getBoundingClientRect());f.style.left=((r.left-sr.left)/k+r.width/k/2)+'px';f.style.top=((r.top-sr.top)/k-6)+'px';f.style.transform='translateX(-50%)';}}
   stage.appendChild(f);setTimeout(()=>f.remove(),950);
   if(gain){const g=$('gold');g.classList.remove('gain');void g.offsetWidth;g.classList.add('gain');}
 }
@@ -2899,8 +2905,9 @@ function loop(now){
       netSay(S.pBaseHP<=0?(S.surrendered?'DEFEAT — You surrendered':'DEFEAT — Your base has fallen!'):'VICTORY — The Mandate is yours!',S.pBaseHP<=0?'bad':'nat');
       if(S.eBaseHP<=0&&AI_MODE==='hard'&&!S.winCounted&&!((typeof NET!=='undefined')&&NET.online)){S.winCounted=true;addHardWin();refreshExpertLock();
         if(hardWins()===EXPERT_WINS_NEEDED)setTimeout(()=>say('EXPERT UNLOCKED','nat'),1400);}
-      if(S.eBaseHP<=0&&AI_MODE==='expert'&&!S.xwCounted&&!((typeof NET!=='undefined')&&NET.online)){S.xwCounted=true;try{localStorage.setItem('hm_expert_wins',expertWins()+1);}catch(e){}
+      if(S.eBaseHP<=0&&AI_MODE==='expert'&&!S.xwCounted&&!((typeof NET!=='undefined')&&NET.online)){S.xwCounted=true;try{localStorage.setItem('hm_expert_wins',expertWins()+1);const k=expertStreak()+1;localStorage.setItem('hm_expert_streak',k);if(k>=10)localStorage.setItem('hm_robot_kept','1');}catch(e){}
 }
+      if(S.pBaseHP<=0&&AI_MODE==='expert'&&!S.xwCounted&&!((typeof NET!=='undefined')&&NET.online)){S.xwCounted=true;try{localStorage.setItem('hm_expert_streak','0');}catch(e){}}  // an Expert loss or surrender ends the streak
       setTimeout(()=>hmWipe(showBattleLog),S.surrendered?1400:2400);
     },100);
     raf=requestAnimationFrame(loop);return;
@@ -2910,14 +2917,14 @@ function loop(now){
 
 /* ════ INPUT ════ */
 const shoeEl=$('shoe');let drag=null,scale=1;
-function slotAt(x,y){for(let i=0;i<5;i++){const r=slotEls[i].getBoundingClientRect();const p=10*scale;if(x>=r.left-p&&x<=r.right+p&&y>=r.top-p&&y<=r.bottom+62*scale)return i;}return -1;}
+function slotAt(x,y){{const P=hmPt(x,y);x=P.x;y=P.y;}for(let i=0;i<5;i++){const r=hmLR(slotEls[i].getBoundingClientRect());const p=10*scale;if(x>=r.left-p&&x<=r.right+p&&y>=r.top-p&&y<=r.bottom+62*scale)return i;}return -1;}
 function highlight(i){slotEls.forEach((el,k)=>el.classList.toggle('over',k===i));}
-function moveGhost(e){drag.ghost.style.left=(e.clientX-drag.ox)+'px';drag.ghost.style.top=(e.clientY-drag.oy)+'px';}
+function moveGhost(e){const P=hmPt(e.clientX,e.clientY);drag.ghost.style.left=(P.x-drag.ox)+'px';drag.ghost.style.top=(P.y-drag.oy)+'px';}
 shoeEl.addEventListener('pointerdown',e=>{
   if(!S.running&&!S.preMatch)return;
   if(e.button!==undefined&&e.button!==0)return;e.preventDefault();
-  const r=shoeEl.getBoundingClientRect();
-  drag={id:e.pointerId,sx:e.clientX,sy:e.clientY,ox:e.clientX-r.left,oy:e.clientY-r.top,moved:false,ghost:null,blocked:false};
+  const r=hmLR(shoeEl.getBoundingClientRect()),P0=hmPt(e.clientX,e.clientY);
+  drag={id:e.pointerId,sx:e.clientX,sy:e.clientY,ox:P0.x-r.left,oy:P0.y-r.top,moved:false,ghost:null,blocked:false};
   try{shoeEl.setPointerCapture(e.pointerId);}catch(_){}
 });
 shoeEl.addEventListener('pointermove',e=>{
@@ -2965,7 +2972,7 @@ $('reset').addEventListener('click',e=>{
   say('Match starting in '+PREMATCH_SECS+' seconds...','warn');raf=requestAnimationFrame(loop);e.currentTarget.blur();
 });
 document.addEventListener('contextmenu',e=>e.preventDefault());
-function fit(){scale=Math.min(window.innerWidth/1000,window.innerHeight/460);stage.style.setProperty('--s',scale);}
+function fit(){const _w=HMROT?window.innerHeight:window.innerWidth,_h=HMROT?window.innerWidth:window.innerHeight;scale=Math.min(_w/1000,_h/460);try{const ba=document.querySelector('#stage .bridge-art'),br=document.getElementById('bridge');if(ba&&br){ba.style.top=br.offsetTop+'px';ba.style.height=br.offsetHeight+'px';const z=getComputedStyle(br).zIndex;ba.style.zIndex=z==='auto'?0:z;}}catch(e){}stage.style.setProperty('--s',scale);}
 window.addEventListener('resize',fit);
 // TEMP: tower range overlay toggle
 let activeRangeEl=null,activeRangeSrc=null;
@@ -3068,7 +3075,7 @@ S=newState();barrInit();S.aiWave=0;aiReset();fit();renderAll();raf=requestAnimat
 #playerForm{left:220px!important;right:220px!important;width:auto!important;top:177px!important;justify-content:flex-start!important}
 .mq{display:flex;align-items:center;gap:6px;margin:0 auto;flex:none}#oppForm .mq{flex-direction:row-reverse}
 #playerForm .mq::before{content:"◀";color:#2a2017;font-size:12px;flex:none;text-shadow:0 0 6px rgba(236,224,198,.95)}
-#oppForm .mq::before{content:"▶";color:#2a2017;font-size:12px;flex:none;text-shadow:0 0 6px rgba(236,224,198,.95)}
+#oppForm .mq::before{content:"\25B6\FE0E";color:#2a2017;font-size:12px;flex:none;text-shadow:0 0 6px rgba(236,224,198,.95)}
 #oppForm{-webkit-mask-image:linear-gradient(90deg,transparent,#000 22px,#000 calc(100% - 22px),transparent);mask-image:linear-gradient(90deg,transparent,#000 22px,#000 calc(100% - 22px),transparent)}
 #playerForm{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 22px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 22px),transparent)}
 .mw{display:flex;gap:2px;flex:none}
@@ -3192,7 +3199,7 @@ body.tut-on #newHand{opacity:.35}body.tut-on #sendSmall{visibility:hidden}
 .hm-arena.on{border-color:#9b3324;background:rgba(155,51,36,.08)}.hm-arena.on span:last-child{color:#9b3324}
 .hm-arena:disabled,.hm-arena[aria-disabled=true]{cursor:default}
 .hm-arena:focus-visible{outline:2px solid #9b3324;outline-offset:2px}
-.hm-arena-note{margin-top:6px;font-size:.78rem;color:var(--hm-mute,#5a4834);text-align:center}
+.hm-arena-note{display:none!important;margin-top:6px;font-size:.78rem;color:var(--hm-mute,#5a4834);text-align:center}
 /* ── rice-paper theme (pop-ups over the battle) ── */
 :root{--hm-ob:#e9dcc2;--hm-ob2:#f3e9d5;--hm-line:#cdb894;--hm-gold:#9b3324;--hm-gold-d:#b4935a;--hm-jade:#3f6b4a;--hm-jade-l:#3f6b4a;--hm-fg:#2a2017;--hm-dim:#5a4834;--hm-red:#9b3324}
 .hm-full,.hm-page{background:#e9dcc2!important}
@@ -5979,13 +5986,6 @@ html, .hm-body {
             </div>
             <div class="toggle" id="menuMusOff" onclick="this.classList.toggle('on');bgmApply()" role="switch" aria-label="Turn off menu music"></div>
           </div>
-          <div class="settings-row">
-            <div class="settings-row-left">
-              <div class="settings-row-label">Voice Lines</div>
-              <div class="settings-row-sub">Unit and narrator voice acting</div>
-            </div>
-            <span class="settings-row-value soon-chip">Coming soon</span>
-          </div>
         </div>
 
         <!-- DISPLAY -->
@@ -6025,7 +6025,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#12.3 · Prototype</span>
+            <span class="settings-row-value">#12.5 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6070,7 +6070,7 @@ html, .hm-body {
         <i class="pw-lock"></i>
       </div>
       <div class="paywall-heading">Unlock Heaven's Mandate</div>
-      <div class="paywall-sub">One purchase. All features. No subscriptions, no pay-to-win.</div>
+      
     </div>
     <div class="paywall-body">
       <div class="paywall-features">
@@ -6092,12 +6092,6 @@ html, .hm-body {
           </div>
           Profile with full match history and hand stats
         </div>
-        <div class="paywall-feature">
-          <div class="paywall-feature-icon">
-            <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 6l3 3 5-5"/></svg>
-          </div>
-          All future content included at no extra charge
-        </div>
       </div>
       <div class="paywall-price">
         <div class="paywall-amount">$2.99</div>
@@ -6105,7 +6099,7 @@ html, .hm-body {
       </div>
       <button class="paywall-cta">Unlock Full Access — $2.99</button>
       <button class="paywall-dismiss" onclick="closePaywall()">Continue as Guest</button>
-      <div class="paywall-fine">All gameplay is free. Unlock is for persistence and rankings only.</div>
+      
     </div>
   </div>
 </div>
@@ -6163,11 +6157,14 @@ html, .hm-body {
 
 <!-- match loading screen -->
 <div class="hm-ov hm-full" id="hmLoad" hidden>
+  <div class="ld-box">
   <div class="hm-vs"><span class="side p"><img class="nav" id="hmLoadMeAv" src="av/tianming.webp" alt=""><span id="hmLoadMe">Guest</span></span><span class="x">VS</span><span class="side e"><span id="hmLoadCpu">CPU</span><img class="nav" id="hmLoadOppAv" src="av/robot.webp" alt=""></span></div>
   <div class="hm-bar"><i id="hmLoadBar"></i></div>
   <div class="hm-stat" id="hmLoadStat">Preparing the battlefield…</div>
   <div class="hm-tip" id="hmTip"></div>
+  </div>
   <div class="hm-rotate" role="note"><span class="hm-rot-ic" aria-hidden="true"></span>Turn your screen sideways, Commander — the battlefield awaits.</div>
+  <div class="ld-name" id="hmLoadName"></div>
 </div>
 
 <!-- surrender confirm -->
@@ -6184,12 +6181,19 @@ html, .hm-body {
   <div class="hm-card" role="dialog" aria-modal="true" aria-labelledby="hmAudioH" style="width:min(420px,100%)">
     <h2 class="hm-h" id="hmAudioH">Options</h2>
     <p class="hm-sub" style="margin-bottom:8px">The battle keeps going while this is open.</p>
+    <div class="hm-acols"><div class="hm-acol">
     <div class="hm-arow"><div class="al"><b>Music</b><small>Menu &amp; battle themes</small></div>
       <input class="hm-vol" id="hmMusVol" type="range" min="0" max="100" aria-label="Music volume"><span class="hm-vv" id="hmMusVv"></span>
       <button class="hm-tog" id="hmMusOn" type="button" role="switch" aria-label="Music on/off"></button></div>
     <div class="hm-arow"><div class="al"><b>Sound Effects</b><small>Cards, attacks, status effects</small></div>
       <input class="hm-vol" id="hmSfxVol" type="range" min="0" max="100" aria-label="Sound effects volume"><span class="hm-vv" id="hmSfxVv"></span>
       <button class="hm-tog" id="hmSfxOn" type="button" role="switch" aria-label="Sound effects on/off"></button></div>
+    </div><div class="hm-acol">
+    <div class="hm-arow hm-agfx"><div class="al"><b>Graphics</b><small id="hmGfxSub">Lower settings run smoother when the bridge is crowded</small></div>
+      <div class="hm-gbtns" role="radiogroup" aria-label="Graphics"><button type="button" role="radio" data-g="auto" onclick="hmGfx('auto')">Auto</button><button type="button" role="radio" data-g="full" onclick="hmGfx('full')">Full</button><button type="button" role="radio" data-g="bal" onclick="hmGfx('bal')">Balanced</button><button type="button" role="radio" data-g="perf" onclick="hmGfx('perf')">Performance</button><button type="button" role="radio" data-g="none" onclick="hmGfx('none')">No Animations</button></div></div>
+    <div class="hm-arow"><div class="al"><b>Show DPS Numbers</b><small>Damage numbers over units in battle</small></div><span class="hm-asp"></span>
+      <button class="hm-tog" id="hmDpsOn" type="button" role="switch" aria-label="Show DPS numbers" onclick="hmDmgNums(!GFX.dmg)"></button></div>
+    </div></div>
     <div class="hm-row"><button class="hm-btn hm-danger" id="hmSurrBtn" type="button" onclick="hmCloseAudio();hmAskSurrender()" hidden>Surrender</button><button class="hm-btn" id="hmPauseBtn" type="button" onclick="hmPause()" hidden>Pause</button><button class="hm-btn" type="button" onclick="hmCloseAudio()">Done</button></div>
   </div>
 </div>
@@ -6199,7 +6203,7 @@ html, .hm-body {
   <div class="hm-card" role="dialog" aria-modal="true" aria-labelledby="hmPausedH" style="width:min(360px,100%);text-align:center">
     <h2 class="hm-h" id="hmPausedH">Paused</h2>
     <p class="hm-sub">The battle is stopped. Take your time.</p>
-    <div class="hm-row" style="justify-content:center"><button class="hm-btn" type="button" onclick="hmResume()">▶ Resume</button></div>
+    <div class="hm-row" style="justify-content:center"><button class="hm-btn" type="button" onclick="hmResume()">Resume</button></div>
   </div>
 </div>
 
@@ -6712,10 +6716,14 @@ function bradleyCode(){try{return localStorage.getItem('hm_code_bradley')==='1';
 /* 8.1 locked avatars: lifetime goals (all modes). Synergy uses are counted when a match is saved. */
 function avUses(){try{return JSON.parse(localStorage.getItem('hm_syn_uses')||'{}')||{};}catch(e){return{};}}
 function expertWins(){try{return +localStorage.getItem('hm_expert_wins')||0;}catch(e){return 0;}}
+function expertStreak(){try{return +localStorage.getItem('hm_expert_streak')||0;}catch(e){return 0;}}
+function robotKept(){try{return localStorage.getItem('hm_robot_kept')==='1';}catch(e){return false;}}
+// 12.4: the Robot now needs 10 Expert wins in a row; anyone who already earned it (10 Expert wins under the old rule) keeps it
+try{if(!localStorage.getItem('hm_robot_v124')){localStorage.setItem('hm_robot_v124','1');if(expertWins()>=10)localStorage.setItem('hm_robot_kept','1');}}catch(e){}
 const AV_LOCK={foot_soldier:()=>{try{return localStorage.getItem('hm_tut_done')==='1';}catch(e){return false;}},sun_shangxiang:u=>(u.o_pair||0)>=100,zhurong:u=>(u.o_three||0)>=100,lu_lingqi:u=>(u.o_twopair||0)>=100,guan_yinping:u=>(u.o_four||0)>=100,
   war_qilin:u=>(u.o_fullhouse||0)>=100,barded_warhorse:u=>(u.o_flush||0)>=100,white_cloud_tiger:u=>(u.o_fiveoak||0)>=100,jade_spirit_stag:u=>(u.o_straight||0)>=100,
   extra_lubu_horse:u=>(u.o_royal||0)>=1,extra_white_lion:u=>(u.o_mandate||0)>=1,extra_zhuge_horse:u=>(u.o_sflush||0)>=1,
-  extra_soldier_horse:()=>hardWins()>=EXPERT_WINS_NEEDED,huanglong:u=>(u.o_mandate||0)+(u.o_royal||0)+(u.o_sflush||0)>=88,robot:()=>expertWins()>=10,
+  extra_soldier_horse:()=>hardWins()>=EXPERT_WINS_NEEDED,huanglong:u=>(u.o_mandate||0)+(u.o_royal||0)+(u.o_sflush||0)>=88,robot:()=>robotKept()||expertStreak()>=10,
   zhang_fei:u=>(u.u_c0||0)>=10,dian_wei:u=>(u.u_c1||0)>=10,ma_chao:u=>(u.u_s0||0)>=10,cao_cao:u=>(u.u_s1||0)>=10,
   guan_yu:u=>(u.u_d0||0)>=10,lu_bu:u=>(u.u_d1||0)>=10,liu_bei:u=>(u.u_h0||0)>=10,zhuge_liang:u=>(u.u_h1||0)>=10};
 /* hints for locked avatars: [text, progress -> [have, need]] */
@@ -6733,7 +6741,7 @@ const AV_HINT={foot_soldier:['Finish the Tutorial (Training Grounds)',()=>[(func
   extra_white_lion:['“When all five stand at the summit together, Heaven speaks.”',_one('o_mandate')],
   huanglong:['“Call down the sky’s three great wonders, and the golden dragon will stay.”',u=>[(u.o_mandate||0)+(u.o_royal||0)+(u.o_sflush||0),88]],
   extra_soldier_horse:['“Walk the hard road to victory, and a wiser teacher waits at its end.”',()=>[hardWins(),EXPERT_WINS_NEEDED]],
-  robot:['“The student who beats the master may wear the master’s face.”',()=>[expertWins(),10]],
+  robot:['“The student who beats the master may wear the master’s face.” · Win 10 Expert battles in a row',()=>[expertStreak(),10]],
   bradley:['“Woof woof, woof woof woof, woof!” — Confucius’s Dog',()=>[unrankedOnline(),888]]};
 AV_LOCK.bradley=()=>bradleyCode()||unrankedOnline()>=888;
 const AV_ONLINE=['bradley','sun_shangxiang','lu_lingqi','zhurong','guan_yinping','war_qilin','barded_warhorse','white_cloud_tiger','jade_spirit_stag','extra_lubu_horse','extra_zhuge_horse','extra_white_lion','huanglong'];
@@ -7181,14 +7189,14 @@ function tutDraw(){
   box.innerHTML='<img class="tut-av" src="av/zhuge_liang.webp" alt=""><div class="tut-main"><div class="tut-who">Zhuge Liang</div><div class="tut-say"></div>'
     +'<div class="tut-foot"><span class="tut-dots">'+TUT_STEPS.map((_,k)=>'<i'+(k===i?' class="on"':k<i?' class="done"':'')+'></i>').join('')+'</span>'
     +'<button type="button" class="tut-prev" onclick="tutBack()"'+(tutPrevIdx()>=0?'':' disabled')+'>Prev</button>'
-    +'<button type="button" class="tut-next" onclick="tutGo(TUT.i+1)"'+(cur.next?'':' disabled title="Follow Zhuge Liang\'s instruction first"')+'>Next</button>'+'</div></div>';
+    +'<button type="button" class="tut-next'+(cur.next?' gold':'')+'" onclick="tutGo(TUT.i+1)"'+(cur.next?'':' disabled title="Follow Zhuge Liang\'s instruction first"')+'>Next</button>'+'</div></div>';
   box.querySelector('.tut-say').textContent=s.say;
 }
 function tutMark(){
   document.querySelectorAll('.tut-ring').forEach(e=>e.remove());document.querySelectorAll('.tut-up').forEach(e=>e.classList.remove('tut-up'));
-  if(!TUT)return;const s=TUT_STEPS[TUT.i];if(!s)return;const st=$('stage'),sr=st.getBoundingClientRect(),k=sr.width/1000;
-  const els=tutEls(s.at);let dm=$('tutDim');if(els.length&&!dm){dm=document.createElement('div');dm.id='tutDim';st.appendChild(dm);}if(!els.length&&dm)dm.remove();
-  els.forEach(el=>{let r=el.getBoundingClientRect();if(el.id==='synergy'){let L=1e9,T=1e9,R=-1e9,B=-1e9;el.querySelectorAll('.sh-name,.sh-sub,.sh-chips').forEach(c=>{const q=c.getBoundingClientRect();if(!q.width)return;L=Math.min(L,q.left);T=Math.min(T,q.top);R=Math.max(R,q.right);B=Math.max(B,q.bottom);});if(R>L)r={left:L,top:T,width:R-L,height:B-T};}if(!r.width)return;const kid=tutStageKid(el);if(kid)kid.classList.add('tut-up');
+  if(!TUT)return;const s=TUT_STEPS[TUT.i];if(!s)return;const st=$('stage'),sr=hmLR(st.getBoundingClientRect()),k=sr.width/1000;
+  const els=s.allow?tutEls(s.at):[];   // 12.5: glow boxes only when Zhuge Liang wants a taplet dm=$('tutDim');if(els.length&&!dm){dm=document.createElement('div');dm.id='tutDim';st.appendChild(dm);}if(!els.length&&dm)dm.remove();
+  els.forEach(el=>{let r=hmLR(el.getBoundingClientRect());if(el.id==='synergy'){let L=1e9,T=1e9,R=-1e9,B=-1e9;el.querySelectorAll('.sh-name,.sh-sub,.sh-chips').forEach(c=>{const q=hmLR(c.getBoundingClientRect());if(!q.width)return;L=Math.min(L,q.left);T=Math.min(T,q.top);R=Math.max(R,q.right);B=Math.max(B,q.bottom);});if(R>L)r={left:L,top:T,width:R-L,height:B-T};}if(!r.width)return;const kid=tutStageKid(el);if(kid)kid.classList.add('tut-up');
     const d=document.createElement('div');d.className='tut-ring'+(s.allow?' tap':'');
     Object.assign(d.style,{left:((r.left-sr.left)/k-5)+'px',top:((r.top-sr.top)/k-5)+'px',width:(r.width/k+10)+'px',height:(r.height/k+10)+'px'});st.appendChild(d);});
 }
@@ -7232,7 +7240,7 @@ const ARENAS=[
  {id:'autumn',n:'Autumn Gorge',bg:'menu/bg_autumn.webp',t:'menu/bgt_autumn.webp',m:'music_b3'},
  {id:'storm',n:'Thunderstorm Peaks',bg:'menu/bg_storm.webp',t:'menu/bgt_storm.webp',m:'music_b5'}];
 function hmArena(id){const a=ARENAS.find(x=>x.id===id)||ARENAS[Math.floor(Math.random()*ARENAS.length)];HM.arena=a.id;
-  $('stage').style.backgroundImage='url('+a.bg+')';
+  $('stage').style.backgroundImage='url('+a.bg+')';   {const L=$('hmLoad');if(L)L.style.setProperty('--ldbg','url('+a.bg+')');const n=$('hmLoadName');if(n)n.textContent=a.n;}
   try{sndLoad();}catch(e){}
   const au=SND.mus&&SND.mus.battle;
   if(au&&au._song!==a.m){au._song=a.m;au.src='snd/'+a.m+'.mp3';try{au.load();const pr=au.play();if(pr&&pr.catch)pr.catch(()=>{});}catch(e){}}
@@ -7317,6 +7325,109 @@ function hmDmgNums(on){GFX.dmg=!!on;try{localStorage.setItem('hm_dmgnum',on?'1':
       else GFX.good=0;}}
   return _lp(now);};}
 
+</script>
+
+<style>
+/* ═══ Build 12.5 ═══ */
+/* #1 slot colors follow the suit: ♦ orange, ♠ blue (yours and the enemy's) */
+#stage .slot.slot.suit-d{background:rgba(232,130,30,.22)!important}
+#stage .slot.slot.suit-s{background:rgba(30,63,154,.3)!important}
+#stage .oslot.os-d{background:rgba(232,130,30,.22)!important}
+#stage .oslot.os-s{background:rgba(30,63,154,.3)!important}
+/* #5 old tower art gone; the stone bridge picture runs edge to edge behind the lane (the lane itself doesn't move) */
+#stage #towerE,#stage #towerP{display:none!important}
+#stage #bridge{background:none!important}
+#stage .bridge-art{position:absolute;left:0;width:1000px;top:102px;height:72px;background:url(menu/bridge_stone.webp) center/100% 100% no-repeat;pointer-events:none}
+/* #6 text under SEND */
+#stage #sendSmall{font-size:11px!important;letter-spacing:.14em!important;margin-top:2px}
+/* #3 tutorial: gold arrow, gold Next */
+#tutArrow{position:absolute;z-index:95;width:30px;height:35px;pointer-events:none;display:none;filter:drop-shadow(0 0 5px rgba(242,194,48,.75)) drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+#tutArrow svg{display:block;width:100%;height:100%;animation:tutBob .9s ease-in-out infinite}
+@keyframes tutBob{50%{transform:translateY(7px)}}
+#tutBox .tut-next.gold:not(:disabled){background:linear-gradient(#f3d27a,#d9a93a)!important;color:#3a2410!important;border-color:#b8892a!important;opacity:1!important;box-shadow:0 0 0 2px #e8b830,0 0 18px rgba(232,184,48,.95)!important;animation:tutNextGlow 1.4s ease-in-out infinite}
+@keyframes tutNextGlow{50%{box-shadow:0 0 0 2px #ffd56a,0 0 26px rgba(232,184,48,1)}}
+body.gfx-none #tutArrow svg,body.gfx-none #tutBox .tut-next.gold{animation:none!important}
+@media (prefers-reduced-motion:reduce){#tutArrow svg,#tutBox .tut-next.gold{animation:none!important}}
+/* #4 gear pop-up */
+#hmAudio .hm-agfx{flex-wrap:wrap;align-items:flex-start}
+#hmAudio .hm-agfx .al{flex:1 1 100%}
+#hmAudio .hm-asp{flex:1}
+#hmAudio .hm-gbtns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;margin-top:6px}
+#hmAudio .hm-gbtns button{font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:8px 4px;border-radius:9px;border:1px solid rgba(90,72,52,.35);background:transparent;color:inherit;cursor:pointer;white-space:nowrap}
+#hmAudio .hm-gbtns button.on{border-color:#b4935a;background:rgba(180,147,90,.25)}
+@media (max-height:500px){#hmAudio .hm-card{zoom:1!important;width:min(800px,96%)!important;max-height:100%;overflow:auto;padding:14px 20px}#hmAudio .hm-acols{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;align-items:start}#hmAudio .al small{display:none}#hmAudio .hm-sub{margin:0 0 4px!important}#hmAudio .hm-h{margin:0}#hmAudio .hm-arow{padding-top:6px;padding-bottom:6px}#hmAudio .hm-gbtns button{padding:6px 2px;white-space:normal}#hmAudio .hm-acols>*{min-width:0}#hmAudio .hm-acol .al{flex:0 0 auto;max-width:6.5em}#hmAudio .hm-agfx .al{max-width:none}#hmAudio .hm-vol{flex:1 1 auto;min-width:0;width:auto}}
+html.hm-rot #hmAudio .hm-card{zoom:1!important;width:min(800px,96%)!important;max-height:100%;overflow:auto;padding:14px 20px}html.hm-rot #hmAudio .hm-acols{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;align-items:start}html.hm-rot #hmAudio .al small{display:none}html.hm-rot #hmAudio .hm-sub{margin:0 0 4px!important}html.hm-rot #hmAudio .hm-h{margin:0}html.hm-rot #hmAudio .hm-arow{padding-top:6px;padding-bottom:6px}html.hm-rot #hmAudio .hm-gbtns button{padding:6px 2px;white-space:normal}html.hm-rot #hmAudio .hm-acols>*{min-width:0}html.hm-rot #hmAudio .hm-acol .al{flex:0 0 auto;max-width:6.5em}html.hm-rot #hmAudio .hm-agfx .al{max-width:none}html.hm-rot #hmAudio .hm-vol{flex:1 1 auto;min-width:0;width:auto}
+/* #10 battle turned sideways on an upright phone (menus stay upright) */
+html.hm-rot,html.hm-rot body{overflow:hidden!important;overscroll-behavior:none}
+html.hm-rot body{position:fixed!important;left:0;top:0;width:var(--rw,100vh)!important;height:var(--rh,100vw)!important;margin:0;transform-origin:0 0;transform:translateX(var(--rh,100vw)) rotate(90deg)}
+html.hm-rot .hm-rotate{display:none!important}
+/* #12 loading screen: the battlefield painting fills the screen, the info sits on a cream box */
+#hmLoad{background:#2a2017 var(--ldbg,url(menu/game_bg.webp)) center/cover no-repeat!important}
+#hmLoad::before{display:none!important}
+#hmLoad .ld-box{min-width:min(560px,90%);box-sizing:border-box;background:rgba(243,233,213,.67);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-radius:18px;padding:clamp(16px,3vw,28px) clamp(18px,4vw,40px);max-width:min(620px,90vw);display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 10px 40px rgba(0,0,0,.28)}
+#hmLoad .ld-box .hm-tip{margin-top:14px}
+#hmLoad .hm-rotate{background:rgba(243,233,213,.67);color:#7a2a1e;border-color:rgba(122,42,30,.45)}
+#hmLoad .ld-box .hm-stat{font-size:clamp(1.15rem,2.4vw,1.35rem)!important;color:#4a3a28!important}
+#hmLoad .ld-name{position:absolute;left:0;right:0;bottom:calc(22px + env(safe-area-inset-bottom,0px));text-align:center;font-family:Cinzel,Georgia,serif;font-weight:700;font-size:clamp(.95rem,2.2vw,1.35rem);letter-spacing:.32em;text-transform:uppercase;color:#f3e9d5;text-shadow:0 1px 2px rgba(0,0,0,.7),0 0 18px rgba(0,0,0,.55);pointer-events:none}
+@media (orientation:portrait) and (pointer:coarse){#hmLoad .ld-name{position:static;margin-top:16px}}
+body.gfx-perf #hmLoad .ld-box{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(243,233,213,.8)}
+</style>
+<script>
+/* ═══ Build 12.5 ═══ */
+/* #4 gear pop-up mirrors Settings → Graphics / Show DPS */
+{const _g=gfxUI;gfxUI=function(){const r=_g.apply(this,arguments);try{
+  document.querySelectorAll('#hmAudio .hm-gbtns button').forEach(b=>{const on=b.dataset.g===GFX.lv;b.classList.toggle('on',on);b.setAttribute('aria-checked',on);});
+  const s=document.getElementById('hmGfxSub');if(s)s.textContent=GFX.lv==='auto'?('Auto: lowers the graphics by itself when the game slows down (now: '+GFX_NAME[GFX.eff]+')'):'Lower settings run smoother when the bridge is crowded';
+  const t=document.getElementById('hmDpsOn');if(t){t.classList.toggle('on',GFX.dmg);t.setAttribute('aria-checked',GFX.dmg);}}catch(e){}return r;};}
+try{gfxUI();}catch(e){}
+/* #3 tutorial arrow: bounces over the next thing to tap; when nothing needs a tap it hovers above your front soldier */
+(function(){
+  const SVG='<svg viewBox="0 0 40 46" aria-hidden="true"><path d="M12 2h16v20h10L20 44 2 22h10z" fill="#f2c230"/></svg>';
+  function tick(){
+    const st=document.getElementById('stage');if(!st)return;let a=document.getElementById('tutArrow');
+    const on=typeof TUT!=='undefined'&&TUT&&S&&S.tut&&S.running;
+    if(!on){if(a)a.style.display='none';return;}
+    if(!a){a=document.createElement('div');a.id='tutArrow';a.innerHTML=SVG;st.appendChild(a);}
+    const s=TUT_STEPS[TUT.i];let el=null,unit=false;
+    if(s&&s.allow){el=tutEls(s.allow).find(e=>e&&e.getBoundingClientRect().width>0)||null;}
+    if(!el&&s&&!s.next&&!s.allow){let best=null,bx=-1e9;(S.units||[]).forEach(u=>{if(!u||!u.alive||u.side!=='p'||!u.el||!u.el.isConnected)return;const r=hmLR(u.el.getBoundingClientRect());if(r.width&&r.left>bx){bx=r.left;best=u.el;}});el=best;unit=true;}
+    if(!el){a.style.display='none';return;}
+    const sr=hmLR(st.getBoundingClientRect()),k=sr.width/1000,r=hmLR(el.getBoundingClientRect());
+    a.style.left=((r.left-sr.left)/k+r.width/k/2-15)+'px';
+    a.style.top=((r.top-sr.top)/k-(unit?102:41))+'px';
+    a.style.display='block';
+  }
+  setInterval(tick,100);
+})();
+/* #10 battle turns sideways when a phone/tablet is held upright; Android also goes fullscreen + landscape */
+(function(){
+  const coarse=()=>matchMedia('(pointer:coarse)').matches;
+  const inGame=()=>typeof HM!=='undefined'&&HM&&HM.inGame;
+  const ANDROID=/Android/i.test(navigator.userAgent);let fsTried=false,fsOn=false;
+  function fsGo(){if(!ANDROID||fsTried||!coarse())return;fsTried=true;const el=document.documentElement;
+    try{const p=el.requestFullscreen&&el.requestFullscreen({navigationUI:'hide'});if(p&&p.then)p.then(()=>{fsOn=true;try{const q=screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape');if(q&&q.catch)q.catch(()=>{});}catch(e){}}).catch(()=>{});}catch(e){}}
+  function fsOff(){if(!fsOn)return;fsOn=false;try{screen.orientation&&screen.orientation.unlock&&screen.orientation.unlock();}catch(e){}try{if(document.fullscreenElement&&document.exitFullscreen){const p=document.exitFullscreen();if(p&&p.catch)p.catch(()=>{});}}catch(e){}}
+  ['hmStartVsCpu','hmStartTutorial'].forEach(n=>{const f=window[n];if(typeof f!=='function')return;window[n]=function(){fsGo();return f.apply(this,arguments);};});
+  document.addEventListener('pointerdown',()=>{if(inGame())fsGo();},true);
+  let lw=0,lh=0;
+  function check(){const g=inGame();if(!g){fsTried=false;fsOff();}
+    const want=!!(g&&coarse()&&innerHeight>innerWidth),d=document.documentElement;
+    if(innerWidth!==lw||innerHeight!==lh){lw=innerWidth;lh=innerHeight;d.style.setProperty('--rw',innerHeight+'px');d.style.setProperty('--rh',innerWidth+'px');if(HMROT)try{fit();}catch(e){}}
+    if(want!==HMROT){HMROT=want;d.classList.toggle('hm-rot',want);try{fit();}catch(e){}try{if(typeof TUT!=='undefined'&&TUT)tutMark();}catch(e){}}}
+  setInterval(check,300);addEventListener('resize',()=>setTimeout(check,60));addEventListener('orientationchange',()=>setTimeout(check,250));check();
+})();
+try{fit();}catch(e){}
+/* menus: no text smaller than 15px (menus, Tactics, Profile, Settings and pop-ups; the battle screen is left as it is) */
+(function(){
+  const F=15;
+  function fix(root){if(!root)return;root.querySelectorAll('*').forEach(el=>{if(el.closest('#stage,#hmWipe,#hmCount')||el.tagName==='STYLE'||el.tagName==='SCRIPT')return;
+    let own=false;for(const n of el.childNodes)if(n.nodeType===3&&n.textContent.trim()){own=true;break;}if(!own)return;
+    const fs=parseFloat(getComputedStyle(el).fontSize);if(fs&&fs<F)el.style.setProperty('font-size',F+'px','important');});}
+  let t=0;function run(){clearTimeout(t);t=setTimeout(()=>{try{fix(hmSR());document.querySelectorAll('body > .hm-ov:not(#hmCount)').forEach(fix);}catch(e){}},120);}
+  const mo=new MutationObserver(run);
+  function watch(){try{const R=hmSR();if(R)mo.observe(R,{childList:true,subtree:true});document.querySelectorAll('body > .hm-ov:not(#hmCount)').forEach(o=>mo.observe(o,{childList:true,subtree:true}));}catch(e){}run();}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watch);else watch();
+})();
 </script>
 </body>
 </html>
