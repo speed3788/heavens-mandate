@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 13.0</title>
+<title>Heaven's Mandate · Build 13.1</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 var SONG_TITLE={
@@ -969,11 +969,12 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #13.0</div>
+    <div class="sub">Build #13.1</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
     <button id="reset" type="button" hidden>New Match</button>
+    <button id="hmPauseTop" type="button" title="Pause" aria-label="Pause" onclick="hmPause()" hidden><i class="ipause"></i></button>
     <button id="hmGear" type="button" title="Options" aria-label="Options" onclick="hmOpenAudio()"><i class="igear"></i></button>
   </div>
   <div id="sndBox"><button id="sfxBtn" class="sndbtn" type="button" title="Sound effects on/off" onclick="toggleSfx()">SFX</button><button id="musBtn" class="sndbtn" type="button" title="Music on/off" onclick="toggleMusic()">Music</button></div>
@@ -1780,7 +1781,7 @@ function renderHUD(){
   const fb=$('fillAll');
   fb.disabled=!S.running||emptyCount===0||S.gold<DRAW_COST;
 
-  $('shoeStat').textContent='Barracks: '+S.shoe.length+' / '+(DECKS*52);
+  {const ss=$('shoeStat'),bt=S.shoe.length+' / '+(DECKS*52);if(ss.dataset.v!==bt){ss.dataset.v=bt;ss.innerHTML='Barracks<b>'+bt+'</b>';}}
   {let ne=0,np=0;S.units.forEach(u=>{if(u.alive&&!u._fodder){if(u.side==='e')ne++;else np++;}});const w=$('waves');if(w._s!==ne+'|'+np){w._s=ne+'|'+np;w.innerHTML='<b class="uc-e">'+ne+'</b><i class="uc-sep">|</i><b class="uc-p">'+np+'</b>';$('wvE').textContent=ne;$('wvP').textContent=np;}}
   const epct=Math.min(100,S.energyProgress*100);
   $('ebar').style.width=(locked?0:epct)+'%';
@@ -3033,7 +3034,8 @@ function doNewHand(){
   for(let i=0;i<5;i++){if(S.shoe.length)S.slots[i].push(S.shoe.pop());}
   newHandUses--;snd('card_shuffle');
   if(!((typeof NET!=='undefined')&&NET.flip)){const ct=$('newCt');if(ct)ct.textContent=' '+newHandUses;
-  if(newHandUses<=0){$('newHand').disabled=true;}}
+  if(newHandUses<=0){$('newHand').disabled=true;}
+  say(newHandUses>=2?'Two more redraws left.':newHandUses===1?'Last redraw \u2014 choose wisely!':'No redraws left.');}
   renderAll();
   
 }
@@ -6027,11 +6029,11 @@ html, .hm-body {
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
-              <div class="settings-row-label">Graphics</div>
-              <div class="settings-row-sub" id="gfxSub">Lower settings run smoother when the bridge is crowded</div>
-              <select class="hm-sel" id="gfxSel" aria-label="Graphics" onchange="hmGfx(this.value)"><option value="auto">Auto</option><option value="full">Full</option><option value="bal">Balanced</option><option value="perf">Performance</option><option value="none">No Animations</option></select>
+              <div class="settings-row-label">Animation</div>
+              <div class="settings-row-sub" id="gfxSub">Lower animation runs smoother when the bridge is crowded</div>
+              <select class="hm-sel" id="gfxSel" aria-label="Animation" onchange="hmGfx(this.value)"><option value="auto">Auto</option><option value="full">Full</option><option value="bal">Balanced</option><option value="perf">Performance</option><option value="none">No Animations</option></select>
             </div>
-            <div class="hm-tsz hm-gfx" role="radiogroup" aria-label="Graphics"><button type="button" role="radio" data-g="full" onclick="hmGfx('full')">Full</button><button type="button" role="radio" data-g="bal" onclick="hmGfx('bal')">Balanced</button><button type="button" role="radio" data-g="perf" onclick="hmGfx('perf')">Performance</button><button type="button" role="radio" data-g="none" onclick="hmGfx('none')">No Animations</button><button type="button" role="radio" data-g="auto" onclick="hmGfx('auto')">Auto</button></div>
+            <div class="hm-tsz hm-gfx" role="radiogroup" aria-label="Animation"><button type="button" role="radio" data-g="full" onclick="hmGfx('full')">Full</button><button type="button" role="radio" data-g="bal" onclick="hmGfx('bal')">Balanced</button><button type="button" role="radio" data-g="perf" onclick="hmGfx('perf')">Performance</button><button type="button" role="radio" data-g="none" onclick="hmGfx('none')">No Animations</button><button type="button" role="radio" data-g="auto" onclick="hmGfx('auto')">Auto</button></div>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6072,7 +6074,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.0 · Prototype</span>
+            <span class="settings-row-value">#13.1 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6237,8 +6239,8 @@ html, .hm-body {
       <input class="hm-vol" id="hmSfxVol" type="range" min="0" max="100" aria-label="Sound effects volume"><span class="hm-vv" id="hmSfxVv"></span>
       <button class="hm-tog" id="hmSfxOn" type="button" role="switch" aria-label="Sound effects on/off"></button></div>
     </div><div class="hm-acol">
-    <div class="hm-arow hm-agfx"><div class="al"><b>Graphics</b><small id="hmGfxSub">Lower settings run smoother when the bridge is crowded</small></div>
-      <div class="hm-gbtns" role="radiogroup" aria-label="Graphics"><button type="button" role="radio" data-g="auto" onclick="hmGfx('auto')">Auto</button><button type="button" role="radio" data-g="full" onclick="hmGfx('full')">Full</button><button type="button" role="radio" data-g="bal" onclick="hmGfx('bal')">Balanced</button><button type="button" role="radio" data-g="perf" onclick="hmGfx('perf')">Performance</button><button type="button" role="radio" data-g="none" onclick="hmGfx('none')">No Animations</button></div></div>
+    <div class="hm-arow hm-agfx"><div class="al"><b>Animation</b><small id="hmGfxSub">Lower animation runs smoother when the bridge is crowded</small></div>
+      <div class="hm-gbtns" role="radiogroup" aria-label="Animation"><button type="button" role="radio" data-g="auto" onclick="hmGfx('auto')">Auto</button><button type="button" role="radio" data-g="full" onclick="hmGfx('full')">Full</button><button type="button" role="radio" data-g="bal" onclick="hmGfx('bal')">Balanced</button><button type="button" role="radio" data-g="perf" onclick="hmGfx('perf')">Performance</button><button type="button" role="radio" data-g="none" onclick="hmGfx('none')">No Animations</button></div></div>
     </div><div class="hm-atogs">
     <div class="hm-arow"><div class="al"><b>Show DPS Numbers</b><small>Damage numbers over units in battle</small></div><span class="hm-asp"></span>
       <button class="hm-tog" id="hmDpsOn" type="button" role="switch" aria-label="Show DPS numbers" onclick="hmDmgNums(!GFX.dmg)"></button></div>
@@ -6499,7 +6501,7 @@ $('hmSfxVol').addEventListener('change',()=>snd('coin',1.4));
 $('hmMusOn').addEventListener('click',()=>{const a=hmAudioState();a.musicOn=!a.musicOn;hmAudioSet(a);});
 $('hmSfxOn').addEventListener('click',()=>{const a=hmAudioState();a.sfxOn=!a.sfxOn;hmAudioSet(a);});
 function hmOpenAudio(){hmAudioSync();const vsCpu=HM.inGame&&S&&(S.running||S.preMatch)&&!((typeof NET!=='undefined')&&NET.online);
-  $('hmPauseBtn').hidden=!vsCpu;const sub=document.querySelector('#hmAudio .hm-sub');if(sub)sub.textContent=vsCpu?'Tap Pause to stop the battle.':'The battle keeps going while this is open.';hmShow('hmAudio',true);}
+  $('hmPauseBtn').hidden=!vsCpu;const sub=document.querySelector('#hmAudio .hm-sub');if(sub)sub.textContent='';hmShow('hmAudio',true);}
 function hmPause(){if((typeof NET!=='undefined')&&NET.online)return;hmCloseAudio();S.paused=true;document.body.classList.add('hm-paused');hmShow('hmPaused',true);}
 function hmResume(){S.paused=false;document.body.classList.remove('hm-paused');hmShow('hmPaused',false);}
 function hmCloseAudio(){hmShow('hmAudio',false);}
@@ -7360,7 +7362,7 @@ const GFX_NAME={full:'Full',bal:'Balanced',perf:'Performance',none:'No Animation
 function gfxDefault(){try{return matchMedia('(pointer:coarse)').matches?'bal':'full';}catch(e){return 'full';}}
 function gfxSet(eff){GFX.eff=eff;const c=document.body.classList;c.remove('gfx-full','gfx-bal','gfx-perf','gfx-none');c.add('gfx-'+eff);if(eff==='none')c.add('gfx-perf');gfxUI();}  // No Animations also gets every Performance saving
 function gfxUI(){const R=hmSR&&hmSR();if(!R)return;R.querySelectorAll('.hm-gfx button').forEach(b=>{const on=b.dataset.g===GFX.lv;b.classList.toggle('on',on);b.setAttribute('aria-checked',on);});
-  const s=R.getElementById('gfxSub');if(s)s.textContent=GFX.lv==='auto'?('Auto: lowers the graphics by itself when the game slows down (now: '+GFX_NAME[GFX.eff]+')'):'Lower settings run smoother when the bridge is crowded';
+  const s=R.getElementById('gfxSub');if(s)s.textContent=GFX.lv==='auto'?('Auto: lowers the animation by itself when the game slows down (now: '+GFX_NAME[GFX.eff]+')'):'Lower animation runs smoother when the bridge is crowded';
   const t=R.getElementById('dmgTgl');if(t){t.classList.toggle('on',GFX.dmg);t.setAttribute('aria-checked',GFX.dmg);}}
 function hmGfx(v){if(!['full','bal','perf','none','auto'].includes(v))v='auto';GFX.lv=v;try{localStorage.setItem('hm_gfx',v);}catch(e){}
   gfxSet(v==='auto'?gfxDefault():v);}
@@ -7433,7 +7435,7 @@ body.gfx-perf #hmLoad .ld-box{-webkit-backdrop-filter:none;backdrop-filter:none;
 /* #4 gear pop-up mirrors Settings → Graphics / Show DPS */
 {const _g=gfxUI;gfxUI=function(){const r=_g.apply(this,arguments);try{
   document.querySelectorAll('#hmAudio .hm-gbtns button').forEach(b=>{const on=b.dataset.g===GFX.lv;b.classList.toggle('on',on);b.setAttribute('aria-checked',on);});
-  const s=document.getElementById('hmGfxSub');if(s)s.textContent=GFX.lv==='auto'?('Auto: lowers the graphics by itself when the game slows down (now: '+GFX_NAME[GFX.eff]+')'):'Lower settings run smoother when the bridge is crowded';
+  const s=document.getElementById('hmGfxSub');if(s)s.textContent=GFX.lv==='auto'?('Auto: lowers the animation by itself when the game slows down (now: '+GFX_NAME[GFX.eff]+')'):'Lower animation runs smoother when the bridge is crowded';
   const t=document.getElementById('hmDpsOn');if(t){t.classList.toggle('on',GFX.dmg);t.setAttribute('aria-checked',GFX.dmg);}}catch(e){}return r;};}
 try{gfxUI();}catch(e){}
 /* #3 tutorial arrow: bounces over the next thing to tap; when nothing needs a tap it hovers above your front soldier */
@@ -7612,5 +7614,28 @@ hmOptUI();
 #hmAudio .hm-acols>*{min-width:0}
 }
 </style>
+
+<style>
+/* ═══ Build 13.1 ═══ */
+#hmAudio .hm-sub:empty{display:none}
+#hmAudio .al small{display:none!important}
+#hmAudio .hm-agfx .al{flex:1 1 100%!important;min-width:0;max-width:100%!important}
+#hmAudio .hm-agfx .al small{display:block!important;white-space:normal!important}
+#hmPauseBtn{display:none!important}
+#hmPauseTop{position:static!important;width:28px;height:28px;border-radius:8px;border:1px solid #b4935a!important;background:rgba(243,233,213,.85)!important;padding:0;cursor:pointer;margin-right:6px;line-height:1}
+#hmPauseTop[hidden]{display:none!important}
+#hmPauseTop:hover{background:rgba(243,233,213,1)!important}
+#hmPauseTop .ipause{display:block;width:12px;height:14px;margin:auto;background:linear-gradient(90deg,#2a1d10 0 4px,transparent 4px 8px,#2a1d10 8px 12px);border-radius:1px}
+#stage #fillAll:not(:disabled),#stage #newHand:not(:disabled){border-color:#c9952c!important;color:#a8761a!important}
+#stage #newCt{display:none!important}
+#stage #shoeStat{top:345px!important;left:37px!important;width:96px!important;line-height:1.2}
+#stage #shoeStat b{display:block;font-weight:700}
+#stage #gold{top:373px!important}#stage #goldInc{top:385px!important}#stage #suitTrack{top:411px!important}
+#stage #costBox .coin{display:none!important}
+</style>
+<script>
+/* 13.1: the Pause button by the gear shows only in a battle vs the computer */
+setInterval(()=>{const p=document.getElementById('hmPauseTop');if(!p)return;const on=!!(typeof HM!=='undefined'&&HM&&HM.inGame)&&!((typeof NET!=='undefined')&&NET.online);if(p.hidden===on)p.hidden=!on;},300);
+</script>
 </body>
 </html>

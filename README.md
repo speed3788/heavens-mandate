@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 13.0**: Zhuge Liang advises you during battle, avatars shout their Synergy in an ink speech bubble, the battle turns sideways by itself on an upright phone, the loading screen shows the battlefield, a tutorial arrow, Graphics in the in-game ⚙ menu, bigger menu text, seven battlefields with their own songs, live online battles, and more (see Changes below).
+**Build 13.1**: Zhuge Liang advises you during battle, avatars shout their Synergy in an ink speech bubble, the battle turns sideways by itself on an upright phone, the loading screen shows the battlefield, a tutorial arrow, Animation settings in the in-game ⚙ menu, bigger menu text, seven battlefields with their own songs, live online battles, and more (see Changes below).
 
 ## Play
 
@@ -80,6 +80,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **12.8:** Zhuge Liang now gives every battle message ("BUST!", "APEX RANK!", reminders) in an ink speech bubble beside the timer; it stays about 2 seconds and fades. VICTORY / DEFEAT keep their banner. New Settings switch **Zhuge Liang's Counsel** turns these messages on or off. Settings → Text Size and Graphics are now drop-down menus on every screen.
 - **12.9:** two new switches in Settings and the in-game ⚙ pop-up: **Unit Health & Glow** (soldiers' health bars and the glow under their feet) and **Synergy Bars** (the Synergy bars under the bridge and under the timer); both start on. The loading screen now shows the battlefield's song under its name, using patokeem's new song titles.
 - **13.0:** the in-game ⚙ pop-up now has the **Zhuge Liang's Counsel** switch too (it's the same setting as in Settings). On computer screens the ⚙ pop-up uses two columns so Surrender, Pause and Done are always visible.
+- **13.1:** "Graphics" is now called **Animation**. Against the computer, a **Pause** button sits next to the ⚙ gear (same look, ❚❚ symbol); the ⚙ pop-up is tidier (only Animation keeps its help line). FILL and NEW turn gold when you can tap them; NEW no longer shows a number — Zhuge Liang tells you how many redraws are left. Barracks shows on two rows under the deck, and Cost shows just the number.
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.
