@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 12.7</title>
+<title>Heaven's Mandate · Build 12.8</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 function hmPt(x,y){return HMROT?{x:y,y:innerWidth-x}:{x:x,y:y};}
@@ -961,7 +961,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #12.7</div>
+    <div class="sub">Build #12.8</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -5098,6 +5098,14 @@ html, .hm-body {
 .settings-row:has(.hm-tsz) .hm-tsz button+button{border-top:1px solid var(--gold-dim)}
 .settings-row:has(.hm-tsz) .hm-tsz button.on::after{content:"\2713";font-size:1.1em;letter-spacing:0;margin-left:12px}
 }
+
+/* 12.8: Text Size / Graphics are drop-downs on every screen size */
+.settings-row:has(.hm-tsz) .hm-tsz.hm-tsz.hm-tsz,.settings-row:has(.hm-tsz) .hm-tsz.hm-gfx.hm-gfx{display:none!important}
+.settings-row:has(.hm-tsz){align-items:flex-start}
+.hm-sel{appearance:none;-webkit-appearance:none;display:block;margin-top:10px;width:min(340px,100%);box-sizing:border-box;padding:11px 42px 11px 14px;border:1px solid var(--gold-dim);border-radius:10px;
+ background:#fbf5e8 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238a6a3a' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 14px center;
+ font:600 15px/1.2 var(--f-ui);letter-spacing:.04em;color:#3a2a18;cursor:pointer}
+.hm-sel:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 </style><div class="hm-body">
 
 <!-- ── SAFE AREA TOP BAND ── -->
@@ -6005,6 +6013,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Text Size</div>
               <div class="settings-row-sub">Makes the text on every menu screen bigger or smaller</div>
+              <select class="hm-sel" id="tszSel" aria-label="Text size" onchange="hmTextSize(this.value)"><option value="s">Small</option><option value="m">Medium</option><option value="l">Large</option><option value="xl">Extra Large</option></select>
             </div>
             <div class="hm-tsz" role="radiogroup" aria-label="Text size"><button type="button" role="radio" data-z="s" onclick="hmTextSize('s')">Small</button><button type="button" role="radio" data-z="m" onclick="hmTextSize('m')">Medium</button><button type="button" role="radio" data-z="l" onclick="hmTextSize('l')">Large</button><button type="button" role="radio" data-z="xl" onclick="hmTextSize('xl')">Extra Large</button></div>
           </div>
@@ -6012,6 +6021,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Graphics</div>
               <div class="settings-row-sub" id="gfxSub">Lower settings run smoother when the bridge is crowded</div>
+              <select class="hm-sel" id="gfxSel" aria-label="Graphics" onchange="hmGfx(this.value)"><option value="auto">Auto</option><option value="full">Full</option><option value="bal">Balanced</option><option value="perf">Performance</option><option value="none">No Animations</option></select>
             </div>
             <div class="hm-tsz hm-gfx" role="radiogroup" aria-label="Graphics"><button type="button" role="radio" data-g="full" onclick="hmGfx('full')">Full</button><button type="button" role="radio" data-g="bal" onclick="hmGfx('bal')">Balanced</button><button type="button" role="radio" data-g="perf" onclick="hmGfx('perf')">Performance</button><button type="button" role="radio" data-g="none" onclick="hmGfx('none')">No Animations</button><button type="button" role="radio" data-g="auto" onclick="hmGfx('auto')">Auto</button></div>
           </div>
@@ -6021,6 +6031,13 @@ html, .hm-body {
               <div class="settings-row-sub">Display floating damage text in battle</div>
             </div>
             <div class="toggle on" id="dmgTgl" onclick="hmDmgNums(!this.classList.contains('on'))" role="switch" aria-checked="true" aria-label="Show DPS numbers"></div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-left">
+              <div class="settings-row-label">Zhuge Liang&#39;s Counsel</div>
+              <div class="settings-row-sub">The Sleeping Dragon advises you during battle</div>
+            </div>
+            <div class="toggle on" id="counselTgl" onclick="hmCounsel(!this.classList.contains('on'))" role="switch" aria-checked="true" aria-label="Zhuge Liang's Counsel"></div>
           </div>
         </div>
 
@@ -6033,7 +6050,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#12.7 · Prototype</span>
+            <span class="settings-row-value">#12.8 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -7492,5 +7509,44 @@ body.gfx-none .sbub.on{animation:none}body.gfx-none .sbub.off{transition:none}
 #hmDiff .hm-diff-tut .dn{color:#3a2410!important}
 #hmDiff .hm-diff-tut:hover{filter:brightness(1.04)}
 </style>
+
+<style>
+/* ═══ Build 12.8: Zhuge Liang gives the battle messages ═══ */
+#zgCounsel{position:absolute;z-index:150;width:44px;height:44px;pointer-events:none;opacity:0;visibility:hidden}
+#zgCounsel.on{visibility:visible;opacity:1;animation:zgIn .35s cubic-bezier(.3,1.6,.5,1)}
+#zgCounsel.off{visibility:visible;opacity:0;transition:opacity .3s}
+@keyframes zgIn{from{transform:scale(.5);opacity:0}to{transform:none;opacity:1}}
+body.gfx-none #zgCounsel.on{animation:none}body.gfx-none #zgCounsel.off{transition:none}
+@media (prefers-reduced-motion:reduce){#zgCounsel.on{animation:none}}
+#zgCounsel .za{position:absolute;left:0;bottom:0;width:44px;height:44px;border-radius:50%;box-sizing:border-box;background:#f3e9d5 url(av/zhuge_liang.webp) center/cover;border:2px solid #b8892a;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+#zgCounsel .zb{position:absolute;left:32px;bottom:22px;width:max-content;max-width:330px;border-style:solid;border-width:12px 12px 20px 22px;border-image:url(menu/bubble_p.webp) 40 40 50 60 fill stretch;
+ padding:0 4px 1px;font:700 12px/1.25 Cinzel,Georgia,serif;letter-spacing:.04em;color:#17110b;text-wrap:balance;filter:drop-shadow(0 3px 4px rgba(0,0,0,.3))}
+#zgCounsel .zb.bad{color:#8f2418}
+</style>
+<script>
+/* ═══ Build 12.8 ═══ */
+function hmCounselOn(){try{return localStorage.getItem('hm_counsel')!=='0';}catch(e){return true;}}
+function hmCounselUI(){try{const R=hmSR&&hmSR();const t=R&&R.getElementById('counselTgl');if(t){const on=hmCounselOn();t.classList.toggle('on',on);t.setAttribute('aria-checked',on);}}catch(e){}}
+function hmCounsel(on){try{localStorage.setItem('hm_counsel',on?'1':'0');}catch(e){}hmCounselUI();if(!on){const z=document.getElementById('zgCounsel');if(z)z.className='';}}
+hmCounselUI();
+/* drop-downs follow the saved Text Size / Graphics */
+{const _t=hmTextSizeUI;hmTextSizeUI=function(){const r=_t.apply(this,arguments);try{const s=hmSR().getElementById('tszSel');let z='l';try{z=localStorage.getItem('hm_textsize')||'l';}catch(e){}if(s)s.value=z;}catch(e){}return r;};}
+{const _g=gfxUI;gfxUI=function(){const r=_g.apply(this,arguments);try{const s=hmSR().getElementById('gfxSel');if(s)s.value=GFX.lv;}catch(e){}return r;};}
+try{hmTextSizeUI();gfxUI();}catch(e){}
+/* every battle message is spoken by Zhuge Liang (VICTORY / DEFEAT keep their banner); off = no messages */
+{const _say=say;let zt=0;
+ say=function(msg,kind){
+  if(/^(VICTORY|DEFEAT) — /.test(msg||''))return _say(msg,kind);
+  if(!hmCounselOn())return;
+  const st=document.getElementById('stage'),mt=document.getElementById('matchTime');if(!st||!mt)return _say(msg,kind);
+  let z=document.getElementById('zgCounsel');
+  if(!z){z=document.createElement('div');z.id='zgCounsel';z.setAttribute('role','status');z.setAttribute('aria-live','polite');z.innerHTML='<div class="za"></div><div class="zb"></div>';st.appendChild(z);}
+  const b=z.querySelector('.zb');b.textContent=msg;b.classList.toggle('bad',kind==='bad');
+  const sr=hmLR(st.getBoundingClientRect()),k=sr.width/1000,r=hmLR(mt.getBoundingClientRect());
+  z.style.left=((r.right-sr.left)/k+34)+'px';z.style.top=((r.bottom-sr.top)/k-18)+'px';
+  z.classList.remove('on','off');void z.offsetWidth;z.classList.add('on');
+  clearTimeout(zt);zt=setTimeout(()=>{z.classList.remove('on');z.classList.add('off');},2000);
+ };}
+</script>
 </body>
 </html>
