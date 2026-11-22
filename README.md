@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 13.5**: Zhuge Liang advises you during battle, avatars shout their Synergy in an ink speech bubble, the battle turns sideways by itself on an upright phone, the loading screen shows the battlefield, a tutorial arrow, Animation settings in the in-game ⚙ menu, bigger menu text, seven battlefields with their own songs, live online battles, and more (see Changes below).
+**Build 13.6**: Zhuge Liang advises you during battle, avatars shout their Synergy in an ink speech bubble, the battle turns sideways by itself on an upright phone, the loading screen shows the battlefield, a tutorial arrow, Animation settings in the in-game ⚙ menu, bigger menu text, seven battlefields with their own songs, live online battles, and more (see Changes below).
 
 ## Play
 
@@ -85,6 +85,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **13.3:** in the Tutorial, Zhuge Liang's small message bubble by the timer stays hidden, since he already talks to you in the tutorial's speech box.
 - **13.4:** fixed: Zhuge Liang's bubble could still pop up at the start of the Tutorial. Now it never shows in the Tutorial, and the Zhuge Liang's Counsel switch is locked off (greyed out) while you're in it; your own setting comes back when you leave.
 - **13.5:** once you've finished the Tutorial, its button leaves the Training Grounds pop-up (you can still replay it anytime from **Tactics**). The Foot Soldier avatar's unlock hint now says "Finish the Tutorial (Tactics)".
+- **13.6:** Settings is split into tabs — **Account, Audio, Display, Gameplay, About, Code** — with the open tab underlined in red. The first time you open Settings it shows Audio; after that it reopens on the last tab you used. Gameplay holds Animation, Show DPS Numbers, Zhuge Liang's Counsel, Unit Health & Glow and Synergy Bars; the secret code box has its own Code tab. Profile's Unranked / Ranked / Computer tabs use the same underline style, and All / Easy / Normal / Hard / Expert show a red dot under the one you picked.
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.

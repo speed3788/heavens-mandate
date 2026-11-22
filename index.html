@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 13.5</title>
+<title>Heaven's Mandate · Build 13.6</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 var SONG_TITLE={
@@ -969,7 +969,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #13.5</div>
+    <div class="sub">Build #13.6</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -6077,7 +6077,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.5 · Prototype</span>
+            <span class="settings-row-value">#13.6 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -7655,5 +7655,52 @@ setInterval(()=>{const p=document.getElementById('hmPauseTop');if(!p)return;cons
 {const _sv=window.hmStartVsCpu;if(typeof _sv==='function')window.hmStartVsCpu=function(){HM.inTut=false;return _sv.apply(this,arguments);};}
 </script>
 <style>#hmDiff .hm-diff-tut[hidden]{display:none!important}</style>
+<script>
+/* ═══ Build 13.6: Settings tabs + Profile tab style ═══ */
+(function(){
+  const CSS=`.set-tabbed .settings-section .section-head{display:none!important}
+.set-tabs{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin:14px 0 18px;border-bottom:1px solid rgba(180,147,90,.45)}
+.set-tab{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px 4px 9px;border-bottom:3px solid transparent;margin-bottom:-1px;font-family:var(--f-ui);font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-dim)}
+.set-tab.on{color:#9b3324;border-bottom-color:#9b3324}
+.set-tab:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media (max-width:640px){.set-tabs{grid-template-columns:repeat(3,1fr)}}
+.set-tabbed .settings-section.set-hide{display:none!important}
+.pf-tabs,.pf-tabs *{box-shadow:none!important}
+.pf-tabs{display:grid!important;grid-template-columns:repeat(3,1fr);gap:0!important;border:0!important;border-bottom:1px solid rgba(180,147,90,.45)!important;border-radius:0!important;background:none!important;padding:0!important;margin:6px 0 14px!important;width:100%!important}
+.pf-tab{all:unset;cursor:pointer;display:flex!important;align-items:center;justify-content:center;text-align:center;padding:10px 4px 9px!important;border:0!important;border-bottom:3px solid transparent!important;margin-bottom:-1px;border-radius:0!important;background:none!important;font-family:var(--f-ui);font-size:15px!important;font-weight:700;letter-spacing:.06em!important;text-transform:uppercase;color:var(--fg-dim)!important}
+.pf-tab.on{color:#9b3324!important;border-bottom-color:#9b3324!important}
+.pf-dtabs:not([hidden]){display:grid!important;grid-template-columns:repeat(5,1fr);gap:0!important;max-width:560px;margin:0 auto 6px!important}
+.pf-dtab{all:unset;cursor:pointer;position:relative;display:flex!important;align-items:center;justify-content:center;padding:8px 4px 14px!important;border:0!important;background:none!important;border-radius:0!important;font-family:var(--f-ui);font-size:15px!important;font-weight:700;letter-spacing:.06em!important;text-transform:uppercase;color:var(--fg-dim)!important}
+.pf-dtab.on{color:#9b3324!important}
+.pf-dtab.on::after{content:"";position:absolute;bottom:2px;left:50%;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:#9b3324}`;
+  const ORDER=['Account','Audio','Display','Gameplay','About','Code'];
+  function setup(){
+    const R=(typeof hmSR==='function')&&hmSR();if(!R)return false;
+    if(R.querySelector('.set-tabs'))return true;
+    const secs=[...R.querySelectorAll('.settings-section')];if(!secs.length)return false;
+    const st=document.createElement('style');st.textContent=CSS;R.appendChild(st);
+    const title=s=>((s.querySelector('.section-title')||{}).textContent||'').trim();
+    const byT=t=>[...R.querySelectorAll('.settings-section')].find(s=>title(s)===t);
+    const disp=byT('Display'),about=byT('About');if(!disp||!about)return false;
+    const mk=t=>{const s=document.createElement('div');s.className='settings-section';s.innerHTML='<div class="section-head"><div class="section-title">'+t+'</div></div>';return s;};
+    const game=mk('Gameplay'),code=mk('Code');
+    [...disp.querySelectorAll(':scope > .settings-row')].forEach(r=>{if(!r.querySelector('#tszSel'))game.appendChild(r);});
+    [...about.querySelectorAll(':scope > .settings-row')].forEach(r=>{if(r.querySelector('.code-row'))code.appendChild(r);});
+    disp.after(game);about.after(code);
+    const inner=disp.parentElement;inner.classList.add('set-tabbed');
+    const all=ORDER.map(byT);
+    const bar=document.createElement('div');bar.className='set-tabs';bar.setAttribute('role','tablist');bar.setAttribute('aria-label','Settings sections');
+    function open(i,save){bar.querySelectorAll('.set-tab').forEach((b,j)=>{b.classList.toggle('on',j===i);b.setAttribute('aria-selected',j===i);});
+      all.forEach((s,j)=>{if(s)s.classList.toggle('set-hide',j!==i);});if(save)try{localStorage.setItem('hm_settab',ORDER[i]);}catch(e){}}
+    ORDER.forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.className='set-tab';b.setAttribute('role','tab');b.textContent=t;b.onclick=()=>open(i,true);bar.appendChild(b);});
+    inner.insertBefore(bar,all[0]);
+    let last='Audio';try{last=localStorage.getItem('hm_settab')||'Audio';}catch(e){}   // first visit: Audio
+    open(Math.max(0,ORDER.indexOf(last)),false);
+    try{hmCounselUI();hmOptUI();hmTextSizeUI();gfxUI();}catch(e){}
+    return true;
+  }
+  if(!setup()){const t=setInterval(()=>{if(setup())clearInterval(t);},200);}
+})();
+</script>
 </body>
 </html>
