@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 13.7</title>
+<title>Heaven's Mandate · Build 13.8</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 var SONG_TITLE={
@@ -969,7 +969,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #13.7</div>
+    <div class="sub">Build #13.8</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -5231,7 +5231,7 @@ html, .hm-body {
 
   <!-- PROFILE / STATS -->
   <section class="screen" id="screen-profile">
-    <div class="av-ov" id="avOv" hidden onclick="if(event.target===this)hmAvClose()"><div class="av-card" role="dialog" aria-label="Choose Avatar"><div class="av-h">Choose Avatar<button type="button" class="av-x" onclick="hmAvClose()" aria-label="Close">×</button></div><div class="av-grid" id="avGrid" onmouseleave="avHint(null)"></div><div class="av-brad" id="avBrad" hidden><div class="av-brad-t">Choose Bradley</div><div class="av-brad-row"></div><button type="button" class="av-brad-x" onclick="this.parentNode.hidden=true">Back</button></div><div class="av-hint" id="avHint" role="status" hidden></div></div></div>
+    <div class="av-ov" id="avOv" hidden onclick="if(event.target===this)hmAvClose()"><div class="av-card" role="dialog" aria-label="Choose Avatar"><div class="av-h">Choose Avatar<button type="button" class="av-x" onclick="hmAvClose()" aria-label="Close">×</button></div><div class="av-grid" id="avGrid" onmouseleave="avHint(null)"></div><div class="av-brad" id="avDangmang" hidden><div class="av-brad-t">Choose Dangmang</div><div class="av-brad-row"></div><button type="button" class="av-brad-x" onclick="this.parentNode.hidden=true">Back</button></div><div class="av-brad" id="avPatokeem" hidden><div class="av-brad-t">Choose Patokeem</div><div class="av-brad-row"></div><button type="button" class="av-brad-x" onclick="this.parentNode.hidden=true">Back</button></div><div class="av-brad" id="avBrad" hidden><div class="av-brad-t">Choose Bradley</div><div class="av-brad-row"></div><button type="button" class="av-brad-x" onclick="this.parentNode.hidden=true">Back</button></div><div class="av-hint" id="avHint" role="status" hidden></div></div></div>
     <div class="profile-header bn-prof">
       <div class="inner">
         <button type="button" class="profile-avatar" id="pfAvBtn" onclick="hmAvOpen()" aria-label="Change avatar"><img id="pfAv" src="av/foot_soldier.webp" alt=""><span class="pa-edit" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></span></button>
@@ -6080,7 +6080,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.7 · Prototype</span>
+            <span class="settings-row-value">#13.8 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6771,12 +6771,28 @@ HM.name=(function(){try{let n=localStorage.getItem('hm_guest');if(!n){n='Guest'+
 HM.mode='practice';HM.opp='CPU';HM.pfTab='unranked';HM.pfDiff='all';HM.replay=false;
 function hmApplyName(){$('pName').textContent=HM.name;$('hmLoadMe').textContent=HM.name;const R=hmSR();if(R&&R.getElementById('pfName'))R.getElementById('pfName').textContent=HM.name;hmAvApply();}
 /* 7.9 avatars: all free; saved in this browser */
-const AV_LIST=['tianming','foot_soldier','zhang_fei','dian_wei','ma_chao','cao_cao','guan_yu','lu_bu','liu_bei','zhuge_liang','sun_shangxiang','zhurong','lu_lingqi','guan_yinping','war_qilin','barded_warhorse','white_cloud_tiger','jade_spirit_stag','extra_lubu_horse','extra_white_lion','extra_zhuge_horse','extra_soldier_horse','robot','huanglong','bradley'];
+const AV_LIST=['tianming','foot_soldier','zhang_fei','dian_wei','ma_chao','cao_cao','guan_yu','lu_bu','liu_bei','zhuge_liang','sun_shangxiang','zhurong','lu_lingqi','guan_yinping','war_qilin','barded_warhorse','white_cloud_tiger','jade_spirit_stag','extra_lubu_horse','extra_white_lion','extra_zhuge_horse','extra_soldier_horse','robot','huanglong','bradley','dangmang','patokeem','vibecoder'];
 const BRADLEY_V=['bradley_general','bradley_jade','bradley_emperor'];  // 9.9: Bradley's 3 looks
-function avBase(a){return BRADLEY_V.indexOf(a)>=0?'bradley':a;}
-function avOk(a){return BRADLEY_V.indexOf(a)>=0?a:a==='bradley'?'bradley_general':AV_LIST.indexOf(a)>=0?a:'tianming';}
+const DANGMANG_V=['dangmang_empress','dangmang_princess','dangmang_chef'];  // 13.8
+const PATOKEEM_V=['patokeem_general','patokeem_pipa'];  // 13.8
+function avBase(a){
+  if(BRADLEY_V.indexOf(a)>=0)return'bradley';
+  if(DANGMANG_V.indexOf(a)>=0)return'dangmang';
+  if(PATOKEEM_V.indexOf(a)>=0)return'patokeem';
+  return a;}
+function avOk(a){
+  if(BRADLEY_V.indexOf(a)>=0)return a;
+  if(a==='bradley')return'bradley_general';
+  if(DANGMANG_V.indexOf(a)>=0)return a;
+  if(a==='dangmang')return'dangmang_empress';
+  if(PATOKEEM_V.indexOf(a)>=0)return a;
+  if(a==='patokeem')return'patokeem_general';
+  return AV_LIST.indexOf(a)>=0?a:'tianming';}
 function unrankedOnline(){try{return pfLoad().matches.filter(m=>m.mode!=='practice'&&!m.ranked).length;}catch(e){return 0;}}
 function bradleyCode(){try{return localStorage.getItem('hm_code_bradley')==='1';}catch(e){return false;}}
+function dangmangCode(){try{return localStorage.getItem('hm_code_dangmang')==='1';}catch(e){return false;}}
+function patekoemeCode(){try{return localStorage.getItem('hm_code_patokeem')==='1';}catch(e){return false;}}
+function vibecoderCode(){try{return localStorage.getItem('hm_code_vibecoder')==='1';}catch(e){return false;}}
 /* 8.1 locked avatars: lifetime goals (all modes). Synergy uses are counted when a match is saved. */
 function avUses(){try{return JSON.parse(localStorage.getItem('hm_syn_uses')||'{}')||{};}catch(e){return{};}}
 function expertWins(){try{return +localStorage.getItem('hm_expert_wins')||0;}catch(e){return 0;}}
@@ -6808,6 +6824,9 @@ const AV_HINT={foot_soldier:['Finish the Tutorial (Tactics)',()=>[(function(){tr
   robot:['“The student who beats the master may wear the master’s face.” · Win 10 Expert battles in a row',()=>[expertStreak(),10]],
   bradley:['“Woof woof, woof woof woof, woof!” — Confucius’s Dog',()=>[unrankedOnline(),888]]};
 AV_LOCK.bradley=()=>bradleyCode()||unrankedOnline()>=888;
+AV_LOCK.dangmang=()=>dangmangCode();
+AV_LOCK.patokeem=()=>patekoemeCode();
+AV_LOCK.vibecoder=()=>vibecoderCode();
 const AV_ONLINE=['bradley','sun_shangxiang','lu_lingqi','zhurong','guan_yinping','war_qilin','barded_warhorse','white_cloud_tiger','jade_spirit_stag','extra_lubu_horse','extra_zhuge_horse','extra_white_lion','huanglong'];
 function avHintText(a){const h=AV_HINT[a];if(!h)return'';const pr=h[1](avUses());return h[0]+' · '+Math.min(pr[0],pr[1])+'/'+pr[1]+(AV_ONLINE.indexOf(a)>=0?' · online battles only':'');}
 function avHint(a){const R=hmSR(),el=R&&R.getElementById('avHint');if(!el)return;const t=(a&&!avUnlocked(a))?avHintText(a):'';el.textContent=t;el.hidden=!t;}
@@ -6819,18 +6838,43 @@ if(!avSeen())avCheckNew();  // first visit: nothing to announce yet
 function hmAvApply(){const s='av/'+AVS.me+'.webp',p=$('pAv');if(p&&p.getAttribute('src')!==s)p.src=s;const R=hmSR(),f=R&&R.getElementById('pfAv');if(f&&f.getAttribute('src')!==s)f.src=s;
   const g=R&&R.getElementById('avGrid');if(g)g.querySelectorAll('.av-opt').forEach(b=>b.classList.toggle('on',b.dataset.av===avBase(AVS.me)));}
 function hmAvOpen(){const R=hmSR();if(!R)return;const g=R.getElementById('avGrid');
-  const U=avUses();g.innerHTML=AV_LIST.map(a=>{const ok=avUnlocked(a,U);const img=a==='bradley'?(avBase(AVS.me)==='bradley'?AVS.me:'bradley_general'):a;return '<button type="button" class="av-opt'+(ok?'':' locked'+(AV_HINT[a]?' hinted':'')+(a==='bradley'?' sil':''))+'" data-av="'+a+'"'+(ok?' onclick="hmAvPick(this.dataset.av)" onmouseenter="avHint(null)" aria-label="Avatar"':(AV_HINT[a]?' onclick="avHint(this.dataset.av)" onmouseenter="avHint(this.dataset.av)" title="'+avHintText(a)+'" aria-label="Locked avatar: '+avHintText(a)+'"':' disabled aria-label="Locked avatar"'))+'><img src="av/'+img+'.webp" alt="" loading="lazy">'+(ok?'':'<span class="av-lock" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>')+'</button>';}).join('');
+  const U=avUses();
+  const SECRET_AV=['dangmang','patokeem','vibecoder'];
+  const visibleList=AV_LIST.filter(a=>SECRET_AV.indexOf(a)<0||avUnlocked(a,U));
+  g.innerHTML=visibleList.map(a=>{
+    const ok=avUnlocked(a,U);
+    let img=a;
+    if(a==='bradley')img=avBase(AVS.me)==='bradley'?AVS.me:'bradley_general';
+    else if(a==='dangmang')img=avBase(AVS.me)==='dangmang'?AVS.me:'dangmang_empress';
+    else if(a==='patokeem')img=avBase(AVS.me)==='patokeem'?AVS.me:'patokeem_general';
+    return '<button type="button" class="av-opt'+(ok?'':' locked'+(AV_HINT[a]?' hinted':'')+(a==='bradley'?' sil':''))+'" data-av="'+a+'"'+(ok?' onclick="hmAvPick(this.dataset.av)" onmouseenter="avHint(null)" aria-label="Avatar"':(AV_HINT[a]?' onclick="avHint(this.dataset.av)" onmouseenter="avHint(this.dataset.av)" title="'+avHintText(a)+'" aria-label="Locked avatar: '+avHintText(a)+'"':' disabled aria-label="Locked avatar"'))+'><img src="av/'+img+'.webp" alt="" loading="lazy">'+(ok?'':'<span class="av-lock" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>')+'</button>';
+  }).join('');
   hmAvApply();{const _h=R.getElementById('avHint');if(_h)_h.hidden=true;}R.getElementById('avOv').hidden=false;try{snd('card_land');}catch(e){}}
-function hmAvClose(){const R=hmSR();if(R){R.getElementById('avOv').hidden=true;const b=R.getElementById('avBrad');if(b)b.hidden=true;}}
+function hmAvClose(){const R=hmSR();if(R){R.getElementById('avOv').hidden=true;
+  ['avBrad','avDangmang','avPatokeem'].forEach(id=>{const b=R.getElementById(id);if(b)b.hidden=true;});  // 13.8
+}}
 function avBradOpen(){const R=hmSR(),b=R&&R.getElementById('avBrad');if(!b)return;
   b.querySelector('.av-brad-row').innerHTML=BRADLEY_V.map(v=>'<button type="button" class="av-opt'+(AVS.me===v?' on':'')+'" onclick="avBradPick(\''+v+'\')" aria-label="Bradley"><img src="av/'+v+'.webp" alt=""></button>').join('');b.hidden=false;}
 function avBradPick(v){AVS.me=avOk(v);try{localStorage.setItem('hm_avatar',AVS.me);}catch(e){}hmAvApply();const R=hmSR();R.getElementById('avBrad').hidden=true;
   const g=R.getElementById('avGrid'),im=g&&g.querySelector('.av-opt[data-av="bradley"] img');if(im)im.src='av/'+AVS.me+'.webp';setTimeout(hmAvClose,160);}
 /* 9.9 codes (Settings > About) */
 function hmRedeem(){const R=hmSR(),inp=R.getElementById('codeIn'),msg=R.getElementById('codeMsg');const v=(inp.value||'').trim().toLowerCase().replace(/\s+/g,'');
-  if(v==='ilovebradley'){if(bradleyCode()||avUnlocked('bradley')){msg.textContent='Bradley is already yours.';}else{try{localStorage.setItem('hm_code_bradley','1');}catch(e){}msg.textContent='Bradley unlocked!';avCheckNew();}}
+  if(v==='empress'){if(dangmangCode()){msg.textContent='Dangmang is already yours.';}else{try{localStorage.setItem('hm_code_dangmang','1');}catch(e){}msg.textContent='Dangmang unlocked!';avCheckNew();}}
+    else if(v==='lookingfortwgf'){if(patekoemeCode()){msg.textContent='patokeem is already yours.';}else{try{localStorage.setItem('hm_code_patokeem','1');}catch(e){}msg.textContent='patokeem unlocked!';avCheckNew();}}
+    else if(v==='swed'){if(vibecoderCode()){msg.textContent='Vibecoder is already yours.';}else{try{localStorage.setItem('hm_code_vibecoder','1');}catch(e){}msg.textContent='Vibecoder unlocked!';avCheckNew();}}
+    else if(v==='ilovebradley'){if(bradleyCode()||avUnlocked('bradley')){msg.textContent='Bradley is already yours.';}else{try{localStorage.setItem('hm_code_bradley','1');}catch(e){}msg.textContent='Bradley unlocked!';avCheckNew();}}
   else msg.textContent=v?'Unknown code.':'';msg.hidden=!msg.textContent;inp.value='';}
-function hmAvPick(a){if(!avUnlocked(a))return;if(a==='bradley'){avBradOpen();return;}AVS.me=avOk(a);try{localStorage.setItem('hm_avatar',AVS.me);}catch(e){}hmAvApply();setTimeout(hmAvClose,160);}
+function avDangmangOpen(){const R=hmSR(),b=R&&R.getElementById('avDangmang');if(!b)return;
+  b.querySelector('.av-brad-row').innerHTML=DANGMANG_V.map(v=>'<button type="button" class="av-opt'+(AVS.me===v?' on':'')+'" onclick="avDangmangPick(\''+v+'\')" aria-label="Dangmang"><img src="av/'+v+'.webp" alt=""></button>').join('');b.hidden=false;}
+function avDangmangPick(v){AVS.me=avOk(v);try{localStorage.setItem('hm_avatar',AVS.me);}catch(e){}hmAvApply();const R=hmSR();R.getElementById('avDangmang').hidden=true;setTimeout(hmAvClose,160);}
+function avPatekoemeOpen(){const R=hmSR(),b=R&&R.getElementById('avPatokeem');if(!b)return;
+  b.querySelector('.av-brad-row').innerHTML=PATOKEEM_V.map(v=>'<button type="button" class="av-opt'+(AVS.me===v?' on':'')+'" onclick="avPatekoeme(\''+v+'\')" aria-label="Patokeem"><img src="av/'+v+'.webp" alt=""></button>').join('');b.hidden=false;}
+function avPatekoeme(v){AVS.me=avOk(v);try{localStorage.setItem('hm_avatar',AVS.me);}catch(e){}hmAvApply();const R=hmSR();R.getElementById('avPatokeem').hidden=true;setTimeout(hmAvClose,160);}
+function hmAvPick(a){if(!avUnlocked(a))return;
+  if(a==='bradley'){avBradOpen();return;}
+  if(a==='dangmang'){avDangmangOpen();return;}
+  if(a==='patokeem'){avPatekoemeOpen();return;}
+  AVS.me=avOk(a);try{localStorage.setItem('hm_avatar',AVS.me);}catch(e){}hmAvApply();setTimeout(hmAvClose,160);}
 function pfRecord(){
   const L=S.log;if(!L)return;const win=S.eBaseHP<=0;
   const n={c:0,s:0,d:0,h:0};L.pWaves.forEach(w=>(w.slotLabels||w.suits||[]).forEach(l=>{const k=BL_SC[String(l)[0]];if(k)n[k]++;}));
