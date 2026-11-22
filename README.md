@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 12.6**: avatars shout their Synergy in an ink speech bubble, the battle turns sideways by itself on an upright phone, the loading screen shows the battlefield, a tutorial arrow, Graphics in the in-game ⚙ menu, bigger menu text, seven battlefields with their own songs, live online battles, and more (see Changes below).
+**Build 12.7**: avatars shout their Synergy in an ink speech bubble, the battle turns sideways by itself on an upright phone, the loading screen shows the battlefield, a tutorial arrow, Graphics in the in-game ⚙ menu, bigger menu text, seven battlefields with their own songs, live online battles, and more (see Changes below).
 
 ## Play
 
@@ -76,6 +76,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **12.4:** the Pause pop-up says "Resume" (no emoji). The Robot avatar now needs 10 Expert wins in a row (a loss or surrender starts the count over; anyone who already has it keeps it). Removed three lines from the Unlock pop-up, the Voice Lines row in Settings, and the small note under the host room's Battlefield picker.
 - **12.5:** ♦ slots are now orange and ♠ slots blue (yours and the enemy's). The stone bridge runs edge to edge and the old ink towers are gone. "REINFORCE THE RANKS" under SEND is bigger. In the Tutorial, a bouncing gold arrow points at what to tap (or hovers over your marching soldiers), the Next button glows gold when it's time to tap it, and glow boxes only show when you need to tap. The in-game ⚙ pop-up adds Graphics and Show DPS Numbers (tap outside it to go back to the battle). On a phone or tablet held upright, the battle turns sideways by itself (menus stay upright); on Android it also goes fullscreen and locks to landscape. The loading screen fills with the battlefield painting, with the info on a cream box and the battlefield's name at the bottom. Menu, Tactics, Profile, Settings and pop-up text is never smaller than 15px.
 - **12.6:** when a wave with a Synergy marches out, that side's avatar shouts the Synergy's name in a small ink-brush speech bubble over their name (yours and the enemy's, also online; long names and Flush combos use two lines). It replaces the Synergy pop-up in the top right. The enemy's march-order bar under the timer is now half see-through so it doesn't pull your eye.
+- **12.7:** Profile → Computer has an **All** button (picked first) that adds up every game vs the computer; the stat boxes, Career Stats and Match History now all follow the level you pick. The Tutorial button in the Training Grounds pop-up is gold. On phones and tablets, Settings → Text Size and Graphics are lists with one choice per row (✓ marks yours).
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.

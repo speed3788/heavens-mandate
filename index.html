@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 12.6</title>
+<title>Heaven's Mandate · Build 12.7</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 function hmPt(x,y){return HMROT?{x:y,y:innerWidth-x}:{x:x,y:y};}
@@ -961,7 +961,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #12.6</div>
+    <div class="sub">Build #12.7</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -5090,6 +5090,14 @@ html, .hm-body {
 .hm-tsz button.on{background:rgba(201,168,76,.18);color:var(--gold)}
 .syn-card.tier-mandate-locked{cursor:not-allowed}
 .pf-mt b{color:var(--gold);font-weight:700}
+
+/* 12.7: Text Size and Graphics as a list (one choice per row) on phones / tablets */
+@media (max-width:900px){
+.settings-row:has(.hm-tsz) .hm-tsz,.settings-row:has(.hm-tsz) .hm-tsz.hm-gfx{display:flex!important;flex-direction:column!important;flex-wrap:nowrap!important;width:100%;border-radius:12px!important}
+.settings-row:has(.hm-tsz) .hm-tsz button{flex:none!important;display:flex!important;align-items:center;justify-content:space-between;text-align:left!important;padding:11px 16px!important;letter-spacing:.1em!important;white-space:normal!important}
+.settings-row:has(.hm-tsz) .hm-tsz button+button{border-top:1px solid var(--gold-dim)}
+.settings-row:has(.hm-tsz) .hm-tsz button.on::after{content:"\2713";font-size:1.1em;letter-spacing:0;margin-left:12px}
+}
 </style><div class="hm-body">
 
 <!-- ── SAFE AREA TOP BAND ── -->
@@ -5216,7 +5224,7 @@ html, .hm-body {
           <button type="button" role="tab" class="pf-tab" data-pf="ranked" onclick="hmPfTab('ranked')">Ranked</button>
           <button type="button" role="tab" class="pf-tab" data-pf="cpu" onclick="hmPfTab('cpu')">Computer</button>
         </div>
-        <div class="pf-dtabs" id="pfDiff" role="tablist" aria-label="Computer difficulty" hidden><button type="button" class="pf-dtab" data-d="blind" onclick="hmPfDiff('blind')">Easy</button><button type="button" class="pf-dtab" data-d="reactive" onclick="hmPfDiff('reactive')">Normal</button><button type="button" class="pf-dtab" data-d="hard" onclick="hmPfDiff('hard')">Hard</button><button type="button" class="pf-dtab" data-d="expert" onclick="hmPfDiff('expert')">Expert</button></div>
+        <div class="pf-dtabs" id="pfDiff" role="tablist" aria-label="Computer difficulty" hidden><button type="button" class="pf-dtab" data-d="all" onclick="hmPfDiff('all')">All</button><button type="button" class="pf-dtab" data-d="blind" onclick="hmPfDiff('blind')">Easy</button><button type="button" class="pf-dtab" data-d="reactive" onclick="hmPfDiff('reactive')">Normal</button><button type="button" class="pf-dtab" data-d="hard" onclick="hmPfDiff('hard')">Hard</button><button type="button" class="pf-dtab" data-d="expert" onclick="hmPfDiff('expert')">Expert</button></div>
         <div class="stats-grid" id="pfMain"></div>
         <div class="section-head"><div class="section-title">Career Stats</div><div class="section-sub" id="pfCareerSub">Totals across all your battles</div></div>
         <div class="pf-career" id="pfCareer"></div>
@@ -6025,7 +6033,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#12.6 · Prototype</span>
+            <span class="settings-row-value">#12.7 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6704,7 +6712,7 @@ function pfLoad(){try{const v=JSON.parse(localStorage.getItem(PF_KEY)||'null');i
 function pfSave(p){for(let k=0;k<4;k++){try{localStorage.setItem(PF_KEY,JSON.stringify(p));return;}catch(e){ // storage full: drop the oldest full reports first
   const withRep=p.matches.filter(m=>m.rep);withRep.slice(0,Math.max(1,Math.ceil(withRep.length/3))).forEach(m=>delete m.rep);}}}
 HM.name=(function(){try{let n=localStorage.getItem('hm_guest');if(!n){n='Guest'+(1000+Math.floor(Math.random()*9000));localStorage.setItem('hm_guest',n);}return n;}catch(e){return'Guest'+(1000+Math.floor(Math.random()*9000));}})();
-HM.mode='practice';HM.opp='CPU';HM.pfTab='unranked';HM.pfDiff='blind';HM.replay=false;
+HM.mode='practice';HM.opp='CPU';HM.pfTab='unranked';HM.pfDiff='all';HM.replay=false;
 function hmApplyName(){$('pName').textContent=HM.name;$('hmLoadMe').textContent=HM.name;const R=hmSR();if(R&&R.getElementById('pfName'))R.getElementById('pfName').textContent=HM.name;hmAvApply();}
 /* 7.9 avatars: all free; saved in this browser */
 const AV_LIST=['tianming','foot_soldier','zhang_fei','dian_wei','ma_chao','cao_cao','guan_yu','lu_bu','liu_bei','zhuge_liang','sun_shangxiang','zhurong','lu_lingqi','guan_yinping','war_qilin','barded_warhorse','white_cloud_tiger','jade_spirit_stag','extra_lubu_horse','extra_white_lion','extra_zhuge_horse','extra_soldier_horse','robot','huanglong','bradley'];
@@ -6806,17 +6814,18 @@ function hmPfDiff(d){HM.pfDiff=d;hmRenderProfile();}
 function pfDiffOf(m){return m.diff||({'CPU (Easy)':'blind','CPU (Normal)':'reactive','CPU (Hard)':'hard','CPU (Expert)':'expert'}[m.opp])||'blind';}
 function hmRenderProfile(){const R=hmSR();if(!R||!R.getElementById('pfMain'))return;const g=i=>R.getElementById(i);
   R.querySelectorAll('.pf-tab').forEach(b=>b.classList.toggle('on',b.dataset.pf===HM.pfTab));
-  const cpu=HM.pfTab==='cpu',ranked=HM.pfTab==='ranked',all=pfLoad().matches,ms=all.filter(m=>cpu?m.mode==='practice':(m.mode!=='practice'&&!!m.ranked===ranked));
+  let cpu=HM.pfTab==='cpu',ranked=HM.pfTab==='ranked',all=pfLoad().matches,ms=all.filter(m=>cpu?m.mode==='practice':(m.mode!=='practice'&&!!m.ranked===ranked));
+  const DN={blind:'Easy',reactive:'Normal',hard:'Hard',expert:'Expert'}[HM.pfDiff];if(cpu&&DN)ms=ms.filter(m=>pfDiffOf(m)===HM.pfDiff);   // 12.7: everything below follows the chosen level (All = every computer game)
   g('pfDiff').hidden=!cpu;g('pfMain').classList.toggle('cpu4',cpu);R.querySelectorAll('.pf-dtab').forEach(b=>b.classList.toggle('on',b.dataset.d===HM.pfDiff));
   const W=ms.filter(m=>m.res==='win').length,Lo=ms.length-W;
   const cell=(v,l,sub)=>'<div class="stat-cell"><div class="stat-val'+(v==='—'?' empty':'')+'">'+v+'</div><div class="stat-label">'+l+'</div>'+(sub?'<div class="stat-sub">'+sub+'</div>':'')+'</div>';
   const eloSub=ranked?'':'Ranked only';
-  if(cpu){const dm=ms.filter(m=>pfDiffOf(m)===HM.pfDiff),dw=dm.filter(m=>m.res==='win').length;
+  if(cpu){const dm=ms,dw=dm.filter(m=>m.res==='win').length;
     g('pfMain').innerHTML=cell(dm.length?dw:'—','Wins')+cell(dm.length?dm.length-dw:'—','Losses')+cell(dm.length?Math.round(dw/dm.length*100)+'%':'—','Win Rate')+cell(dm.length||'—','Games Played');}
   else g('pfMain').innerHTML=cell(ms.length?W:'—','Wins')+cell(ms.length?Lo:'—','Losses')+cell(ms.length?Math.round(W/ms.length*100)+'%':'—','Win Rate')
     +cell('—','Highest Elo',eloSub)+cell('—','Current Elo',eloSub)+cell(ms.length||'—','Matches');
-  g('pfCareerSub').textContent=cpu?'Totals across all your battles vs the computer':ranked?'Totals across all your ranked battles':'Totals across all your unranked online battles';
-  if(!ms.length){g('pfCareer').innerHTML='<div class="pf-empty">'+(ranked?'No ranked battles yet. Ranked play opens in a future update.':cpu?'No battles vs the computer yet. Your totals will appear here after your first match.':'No online battles yet. Your totals will appear here after your first online match.')+'</div>';}
+  g('pfCareerSub').textContent=cpu?(DN?'Totals across your '+DN+' battles vs the computer':'Totals across all your battles vs the computer'):ranked?'Totals across all your ranked battles':'Totals across all your unranked online battles';
+  if(!ms.length){g('pfCareer').innerHTML='<div class="pf-empty">'+(ranked?'No ranked battles yet. Ranked play opens in a future update.':cpu?(DN?'No '+DN+' battles vs the computer yet.':'No battles vs the computer yet. Your totals will appear here after your first match.'):'No online battles yet. Your totals will appear here after your first online match.')+'</div>';}
   else{const sum=f=>ms.reduce((a,m)=>a+(f(m)||0),0);const U={c:sum(m=>m.units.c),s:sum(m=>m.units.s),d:sum(m=>m.units.d),h:sum(m=>m.units.h)};
     const ut=U.c+U.s+U.d+U.h,fav=Object.keys(U).sort((a,b)=>U[b]-U[a])[0];const cards=sum(m=>m.cards),busts=sum(m=>m.busts);
     let top=null;ms.forEach(m=>{if(m.top&&(!top||m.top.i>top.i))top=m.top;});
@@ -6843,7 +6852,7 @@ function hmRenderProfile(){const R=hmSR();if(!R||!R.getElementById('pfMain'))ret
       return '<button type="button" class="pf-match" onclick="hmViewReport(\''+m.id+'\')"><span class="pf-res '+m.res+'">'+({win:'Victory',loss:'Defeat',surr:'Surrendered'}[m.res])+'</span>'
         +'<img class="pf-oav" src="av/'+(m.oa||(m.mode==='practice'?'robot':'foot_soldier'))+'.webp" alt="">'+'<span class="pf-mid"><div class="pf-mode">'+(MODE[m.mode]||m.mode)+' · '+m.opp+'</div><div class="pf-when"><span class="pf-mt">Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b></span> · '+when+'</div></span>'
         +'<span class="pf-go">'+(m.rep?'Full Report ›':'')+'</span></button>';}).join('')
-    :'<div class="empty-history">'+(ranked?'No ranked matches yet.':cpu?'No matches vs the computer yet.<br>Play a battle to see your history here.':'No online matches yet.<br>Play online to see your history here.')+'</div>';}
+    :'<div class="empty-history">'+(ranked?'No ranked matches yet.':cpu?(DN?'No '+DN+' matches vs the computer yet.':'No matches vs the computer yet.<br>Play a battle to see your history here.'):'No online matches yet.<br>Play online to see your history here.')+'</div>';}
 // reopen a saved Battle Report from Match History
 function hmViewReport(id){const m=pfLoad().matches.find(x=>x.id===id);if(!m||!m.rep)return;
   hmWipe(()=>{HM.replay=true;blSetRes($('blResult'),m.rep.res);$('blTime').innerHTML='Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b>';$('blPlayer').innerHTML=m.rep.pl;$('blAI').innerHTML=m.rep.ai;$('blWavesP').innerHTML=m.rep.wp;$('blWavesE').innerHTML=m.rep.we;
@@ -7477,5 +7486,11 @@ body.gfx-none .sbub.on{animation:none}body.gfx-none .sbub.off{transition:none}
   }catch(e){}},150);
 })();
 </script>
+<style>
+/* 12.7: the Tutorial button is gold so it stands apart from the difficulty levels */
+#hmDiff .hm-diff-tut{background:linear-gradient(#f3d27a,#d9a93a)!important;border-color:#b8892a!important;box-shadow:0 0 0 1px rgba(184,137,42,.35),0 2px 10px rgba(217,169,58,.35)}
+#hmDiff .hm-diff-tut .dn{color:#3a2410!important}
+#hmDiff .hm-diff-tut:hover{filter:brightness(1.04)}
+</style>
 </body>
 </html>
