@@ -2,7 +2,7 @@
 
 A browser lane battler. Build hands of cards to 21, form Synergies, and send your army across the bridge.
 
-**Build 13.4**: Zhuge Liang advises you during battle, avatars shout their Synergy in an ink speech bubble, the battle turns sideways by itself on an upright phone, the loading screen shows the battlefield, a tutorial arrow, Animation settings in the in-game ⚙ menu, bigger menu text, seven battlefields with their own songs, live online battles, and more (see Changes below).
+**Build 13.5**: Zhuge Liang advises you during battle, avatars shout their Synergy in an ink speech bubble, the battle turns sideways by itself on an upright phone, the loading screen shows the battlefield, a tutorial arrow, Animation settings in the in-game ⚙ menu, bigger menu text, seven battlefields with their own songs, live online battles, and more (see Changes below).
 
 ## Play
 
@@ -84,6 +84,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **13.2:** at the start of each battle Zhuge Liang reminds you: "Three redraws are yours — use them wisely." His bubble no longer touches the top of the screen, and the enemy's Synergy shout now shows on top of his message. FILL and NEW have no border: when you can tap them they sit on a soft yellow box with dark letters; otherwise they're plain grey words. In Profile → Career Stats, the ♣ count is now dark ink so it's easy to read.
 - **13.3:** in the Tutorial, Zhuge Liang's small message bubble by the timer stays hidden, since he already talks to you in the tutorial's speech box.
 - **13.4:** fixed: Zhuge Liang's bubble could still pop up at the start of the Tutorial. Now it never shows in the Tutorial, and the Zhuge Liang's Counsel switch is locked off (greyed out) while you're in it; your own setting comes back when you leave.
+- **13.5:** once you've finished the Tutorial, its button leaves the Training Grounds pop-up (you can still replay it anytime from **Tactics**). The Foot Soldier avatar's unlock hint now says "Finish the Tutorial (Tactics)".
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
 - Online players must be on the same build to find each other.

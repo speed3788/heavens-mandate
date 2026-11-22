@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 13.4</title>
+<title>Heaven's Mandate · Build 13.5</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 var SONG_TITLE={
@@ -969,7 +969,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #13.4</div>
+    <div class="sub">Build #13.5</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -6077,7 +6077,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.4 · Prototype</span>
+            <span class="settings-row-value">#13.5 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6528,6 +6528,7 @@ function hmCloseAudio(){hmShow('hmAudio',false);}
 
 /* ── Play vs Computer → difficulty pop-up ── */
 function hmOpenDiff(){
+  {const tb=document.querySelector('#hmDiff .hm-diff-tut');if(tb)tb.hidden=tutDone();}   // 13.5: once finished, replay it from Tactics
   const n=hardWins(),lock=n<EXPERT_WINS_NEEDED,b=document.querySelector('.hm-diff[data-d=expert]');
   b.classList.toggle('locked',lock);b.setAttribute('aria-disabled',lock?'true':'false');
   $('hmExpertTxt').textContent=lock?('Win '+EXPERT_WINS_NEEDED+' matches on Hard to unlock ('+Math.min(n,EXPERT_WINS_NEEDED)+'/'+EXPERT_WINS_NEEDED+').'):'';$('hmExpertTxt').style.display=lock?'':'none';
@@ -6788,7 +6789,7 @@ const AV_LOCK={foot_soldier:()=>{try{return localStorage.getItem('hm_tut_done')=
   guan_yu:u=>(u.u_d0||0)>=10,lu_bu:u=>(u.u_d1||0)>=10,liu_bei:u=>(u.u_h0||0)>=10,zhuge_liang:u=>(u.u_h1||0)>=10};
 /* hints for locked avatars: [text, progress -> [have, need]] */
 const _c=k=>u=>[u[k]||0,10],_c30=k=>u=>[u[k]||0,100],_one=k=>u=>[u[k]||0,1];
-const AV_HINT={foot_soldier:['Finish the Tutorial (Training Grounds)',()=>[(function(){try{return localStorage.getItem('hm_tut_done')==='1'?1:0;}catch(e){return 0;}})(),1]],zhang_fei:['Summon Zhang Fei (♣ Standard or Fortified) 10 times in any mode',_c('u_c0')],dian_wei:['Summon Dian Wei (♣ Apex or Celestial) 10 times in any mode',_c('u_c1')],
+const AV_HINT={foot_soldier:['Finish the Tutorial (Tactics)',()=>[(function(){try{return localStorage.getItem('hm_tut_done')==='1'?1:0;}catch(e){return 0;}})(),1]],zhang_fei:['Summon Zhang Fei (♣ Standard or Fortified) 10 times in any mode',_c('u_c0')],dian_wei:['Summon Dian Wei (♣ Apex or Celestial) 10 times in any mode',_c('u_c1')],
   ma_chao:['Summon Ma Chao (♠ Standard or Fortified) 10 times in any mode',_c('u_s0')],cao_cao:['Summon Cao Cao (♠ Apex or Celestial) 10 times in any mode',_c('u_s1')],
   guan_yu:['Summon Guan Yu (♦ Standard or Fortified) 10 times in any mode',_c('u_d0')],lu_bu:['Summon Lü Bu (♦ Apex or Celestial) 10 times in any mode',_c('u_d1')],
   liu_bei:['Summon Liu Bei (♥ Standard or Fortified) 10 times in any mode',_c('u_h0')],zhuge_liang:['Summon Zhuge Liang (♥ Apex or Celestial) 10 times in any mode',_c('u_h1')],
@@ -7653,5 +7654,6 @@ setInterval(()=>{const p=document.getElementById('hmPauseTop');if(!p)return;cons
 (function(){let was=false;setInterval(()=>{try{const g=!!HM.inGame;if(was&&!g&&HM.inTut){HM.inTut=false;}was=g;hmCounselUI();}catch(e){}},300);})();
 {const _sv=window.hmStartVsCpu;if(typeof _sv==='function')window.hmStartVsCpu=function(){HM.inTut=false;return _sv.apply(this,arguments);};}
 </script>
+<style>#hmDiff .hm-diff-tut[hidden]{display:none!important}</style>
 </body>
 </html>
