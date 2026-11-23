@@ -6047,7 +6047,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.9.5 · Prototype</span>
+            <span class="settings-row-value">#13.9.6 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -7061,7 +7061,7 @@ function hmRenderProfile(){const R=hmSR();if(!R||!R.getElementById('pfMain'))ret
 // reopen a saved Battle Report from Match History
 function hmViewReport(id){const m=pfLoad().matches.find(x=>x.id===id);if(!m||!m.rep)return;
   hmWipe(()=>{HM.replay=true;blSetRes($('blResult'),m.rep.res);$('blTime').innerHTML='Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b>';$('blPlayer').innerHTML=m.rep.pl;$('blAI').innerHTML=m.rep.ai;$('blWavesP').innerHTML=m.rep.wp;$('blWavesE').innerHTML=m.rep.we;
-    hmRpHide();const c=$('blClose');c.textContent='Back to Profile';
+    hmRpHide();blZoom();const c=$('blClose');c.textContent='Back to Profile';
     c.onclick=()=>hmWipe(()=>{$('battleLog').classList.remove('show');HM.replay=false;c.onclick=()=>hmToMenu();$('hmMenu').hidden=false;try{showScreen('profile',null);}catch(e){}hmRenderProfile();});
     $('hmMenu').hidden=true;$('battleLog').scrollTop=0;$('battleLog').classList.add('show');});}
 {const _ss=window.showScreen;window.showScreen=function(id,btn){_ss(id,btn);if(id==='profile')hmRenderProfile();};}
