@@ -6047,7 +6047,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.9.4 · Prototype</span>
+            <span class="settings-row-value">#13.9.5 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -7868,7 +7868,8 @@ setInterval(()=>{const p=document.getElementById('hmPauseTop');if(!p)return;cons
 (function(){const all=[...document.querySelectorAll('#battleLog')],L=all.find(e=>e.querySelector('h2'));if(!L)return;all.forEach(e=>{if(e!==L)e.remove();});document.body.appendChild(L);  // drop the empty placeholder so getElementById finds the real report
   const w=document.createElement('div');w.id='blInner';while(L.firstChild)w.appendChild(L.firstChild);L.appendChild(w);})();
 function blZoom(){const st=document.getElementById('stage'),w=document.getElementById('blInner');if(!st||!w)return;
-  const sc=parseFloat(getComputedStyle(st).getPropertyValue('--s'))||1;w.style.zoom=sc;}
+  const sc=parseFloat(getComputedStyle(st).getPropertyValue('--s'))||1;  // 13.9.5: on wide screens zoom the report to ~90% of the window width (max 2.2×)
+  w.style.zoom=Math.max(sc,Math.min(innerWidth*0.9/700,2.2));}
 window.addEventListener('resize',()=>{if(document.getElementById('battleLog').classList.contains('show'))blZoom();});
 const RP={me:false,them:false};
 function hmRpOpp(){return (NET.oppName||'Your opponent');}
@@ -7901,7 +7902,8 @@ $('blRpNo').onclick=()=>{netSend({t:'rd'});RP.them=false;hmRpHide();hmRpNote('')
 </script>
 <style id="hm1394">
 #battleLog{position:fixed!important;inset:0!important;z-index:900!important;border-radius:0!important;padding:20px max(16px,env(safe-area-inset-left,0px))!important}
-#blInner{width:100%;display:flex;flex-direction:column;align-items:center}
+#blInner{width:100%;display:flex;flex-direction:column;align-items:center;margin:auto 0;padding-bottom:24px}
+#battleLog{justify-content:flex-start!important;overflow-y:auto!important}
 #battleLog .bl-col,#battleLog .bl-card,#battleLog .bl-waves,#battleLog .bl-btn,#battleLog .bl-wave-row{border:0!important;box-shadow:none!important}
 #battleLog .bl-best{display:flex!important;flex-direction:column;align-items:flex-end;text-align:right;line-height:1.25}
 #battleLog .bl-btns{flex-direction:column;align-items:center;gap:10px}
