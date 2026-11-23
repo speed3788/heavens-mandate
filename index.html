@@ -6055,7 +6055,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.9.11 · Prototype</span>
+            <span class="settings-row-value">#13.9.12 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -7076,14 +7076,14 @@ function hmRenderProfile(){const R=hmSR();if(!R||!R.getElementById('pfMain'))ret
   R.querySelectorAll('.pf-tab').forEach(b=>b.classList.toggle('on',b.dataset.pf===HM.pfTab));
   let cpu=HM.pfTab==='cpu',ranked=HM.pfTab==='ranked',all=pfLoad().matches,ms=all.filter(m=>cpu?m.mode==='practice':(m.mode!=='practice'&&!!m.ranked===ranked));
   const DN={blind:'Recruit',reactive:'Captain',hard:'General',expert:'Commander'}[HM.pfDiff];if(cpu&&DN)ms=ms.filter(m=>pfDiffOf(m)===HM.pfDiff);   // 12.7: everything below follows the chosen level (All = every computer game)
-  g('pfDiff').hidden=!cpu;g('pfMain').classList.toggle('cpu4',cpu);R.querySelectorAll('.pf-dtab').forEach(b=>b.classList.toggle('on',b.dataset.d===HM.pfDiff));
+  g('pfDiff').hidden=!cpu;g('pfMain').classList.toggle('cpu4',cpu||!ranked);R.querySelectorAll('.pf-dtab').forEach(b=>b.classList.toggle('on',b.dataset.d===HM.pfDiff));
   const W=ms.filter(m=>m.res==='win').length,Lo=ms.length-W;
   const cell=(v,l,sub)=>'<div class="stat-cell"><div class="stat-val'+(v==='—'?' empty':'')+'">'+v+'</div><div class="stat-label">'+l+'</div>'+(sub?'<div class="stat-sub">'+sub+'</div>':'')+'</div>';
   const eloSub=ranked?'':'Ranked only';
   if(cpu){const dm=ms,dw=dm.filter(m=>m.res==='win').length;
-    g('pfMain').innerHTML=cell(dm.length?dw:'—','Wins')+cell(dm.length?dm.length-dw:'—','Losses')+cell(dm.length?Math.round(dw/dm.length*100)+'%':'—','Win Rate')+cell(dm.length||'—','Games Played');}
+    g('pfMain').innerHTML=cell(dm.length?dw:'—','Wins')+cell(dm.length?dm.length-dw:'—','Losses')+cell(dm.length?Math.round(dw/dm.length*100)+'%':'—','Win Rate')+cell(dm.length||'—','Matches');}
   else g('pfMain').innerHTML=cell(ms.length?W:'—','Wins')+cell(ms.length?Lo:'—','Losses')+cell(ms.length?Math.round(W/ms.length*100)+'%':'—','Win Rate')
-    +cell('—','Highest Elo',eloSub)+cell('—','Current Elo',eloSub)+cell(ms.length||'—','Matches');
+    +(ranked?cell('—','Highest Elo',eloSub)+cell('—','Current Elo',eloSub):'')+cell(ms.length||'—','Matches');
   g('pfCareerSub').textContent=cpu?(DN?'Totals across your '+DN+' battles vs the computer':'Totals across all your battles vs the computer'):ranked?'Totals across all your ranked battles':'Totals across all your Skirmish and War Council battles';
   if(!ms.length){g('pfCareer').innerHTML='<div class="pf-empty">'+(ranked?'No ranked battles yet. Ranked play opens in a future update.':cpu?(DN?'No '+DN+' battles vs the computer yet.':'No battles vs the computer yet. Your totals will appear here after your first match.'):'No online battles yet. Your totals will appear here after your first online match.')+'</div>';}
   else{const sum=f=>ms.reduce((a,m)=>a+(f(m)||0),0);const U={c:sum(m=>m.units.c),s:sum(m=>m.units.s),d:sum(m=>m.units.d),h:sum(m=>m.units.h)};
