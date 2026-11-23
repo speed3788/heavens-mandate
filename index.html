@@ -1035,7 +1035,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
     </div>
   </div>
   <div class="base" id="baseE">
-    <div class="bname" id="eName">CPU (Easy)</div><div class="bav"><img id="eAv" src="av/foot_soldier.webp" alt=""></div>
+    <div class="bname" id="eName">CPU (Recruit)</div><div class="bav"><img id="eAv" src="av/foot_soldier.webp" alt=""></div>
     <div class="bhpbar"><div class="bhpfill" id="eHpFill" style="width:100%"></div><div class="bhp" id="eHpNum">3500</div></div>
     <div class="twrs">
     </div>
@@ -1062,10 +1062,10 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
   <!-- [TEMP] AI mode toggle -->
   <div id="aiMode">
     <span class="ailbl">CPU</span>
-    <button class="aibtn active" data-ai="blind" type="button">Easy</button>
-    <button class="aibtn" data-ai="reactive" type="button">Normal</button>
-    <button class="aibtn" data-ai="hard" type="button">Hard</button>
-    <button class="aibtn locked" data-ai="expert" type="button">Expert</button>
+    <button class="aibtn active" data-ai="blind" type="button">Recruit</button>
+    <button class="aibtn" data-ai="reactive" type="button">Captain</button>
+    <button class="aibtn" data-ai="hard" type="button">General</button>
+    <button class="aibtn locked" data-ai="expert" type="button">Commander</button>
   </div>
   <div id="sendCol">
     <div id="synergy"><span class="sh-sub">Stack 2+ slots to see your formation</span></div>
@@ -1107,7 +1107,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
       ['Dragon & Tiger Citadel','Full House','3 same total + 2 same total',['+30% Max HP','+30% Armor','+20% ATK','+20% Move Speed','+20% ATK Speed','+20% Status Chance']],
       ['Monolith Vanguard','Flush','5 slots, same suit',['Alone: +10% Max HP / Armor / ATK, half suit bonus','With Pair / Three: +20%, suit bonus ×1','With Two Pair / Four: +25%, ×1.25','With Full House: +30%, ×1.5','With Five of a Kind / Mandate: +35%, ×1.75','The other Synergy reaches the whole wave','Suit bonus ×1: ♣ +10% armor · ♠ +20% ATK Speed · ♦ +20% range · ♥ heals 6% / 3s']],
       ['Flowing Serpent','Straight','5 consecutive totals',['+24% Max HP','+24% Armor','+24% ATK','+30% Move Speed','+24% ATK Speed','+24% Status Chance']],
-      ['Nine Dragons Convergence','Straight Flush','5 consecutive totals, same suit',['Monolith Vanguard + Flowing Serpent, all ×1.25','Huanglong dragon sweep: burns and stuns each enemy it passes'],'sflush'],
+      ['Nine Dragons Convergence','Straight Flush','5 consecutive totals, same suit',['Monolith Vanguard + Flowing Serpent, all ×1.25','Huanglong dragon sweep: burns and stuns each enemy it passes','Dragon reaches enemy base: 150 dmg'],'sflush'],
       ["Emperor's Sovereign Army",'Royal Flush','Totals 17-18-19-20-21, same suit',['Monolith Vanguard + Flowing Serpent, all ×1.5','+36% Armor','Huanglong dragon sweep: burns and stuns each enemy it passes','Dragon reaches enemy base: 500 dmg'],'royal']
     ];
     const KEY='hm_syn_unlocked';
@@ -1258,7 +1258,7 @@ function evalPoker(slots){
   // Royal Flush
   if(n===5&&isRoyalFlush(slots))return mk('royal',flushSuit,'+36% HP/Armor/ATK/AS/Status · +45% Spd · Monolith +30% HP/Armor/ATK · '+monoEl(flushSuit,1.5)+' · Huanglong Dragon Sweep · 500 Base DMG','17-18-19-20-21 same suit');
   // Straight Flush (strict 5-card)
-  if(n===5&&flushSuit&&isStrictStraight(slots))return mk('sflush',flushSuit,'+30% HP/Armor/ATK/AS/Status · +37.5% Spd · Monolith +25% HP/Armor/ATK · '+monoEl(flushSuit,1.25)+' · Huanglong Dragon Sweep','5 consec. sums same suit');
+  if(n===5&&flushSuit&&isStrictStraight(slots))return mk('sflush',flushSuit,'+30% HP/Armor/ATK/AS/Status · +37.5% Spd · Monolith +25% HP/Armor/ATK · '+monoEl(flushSuit,1.25)+' · Huanglong Dragon Sweep · 150 Base DMG','5 consec. sums same suit');
   // v6.1: two families — TOTALS (Pair…Five of a Kind, biggest one only) and SUIT (Flush).
   // A wave that earns one of each gets BOTH bonuses.
   let tot=null;
@@ -1804,7 +1804,7 @@ function renderHUD(){
   if(S.reckon){$('phaseLabel').textContent='LAST SIEGE. REALLY.';$('phaseLabel').style.color='#e8c35a';}
   else if(S.openShoe){$('phaseLabel').textContent='FINAL SIEGE';$('phaseLabel').style.color='#e05030';}
   $('pHpNum').textContent=Math.max(0,0|S.pBaseHP);$('eHpNum').textContent=Math.max(0,0|S.eBaseHP);
-  {const en=((typeof NET!=='undefined')&&NET.online)?(NET.oppName||'Opponent'):S.tut?'Training Dummy':'CPU ('+({blind:'Easy',reactive:'Normal',hard:'Hard',expert:'Expert'}[AI_MODE]||'Easy')+')';if($('eName').textContent!==en)$('eName').textContent=en;const _A=window.AVS||{},ea=((typeof NET!=='undefined')&&NET.online)?(_A.opp||'foot_soldier'):(_A.cpu||'foot_soldier'),ei=$('eAv');if(ei&&ei.dataset.av!==ea){ei.dataset.av=ea;ei.src='av/'+ea+'.webp';}}
+  {const en=((typeof NET!=='undefined')&&NET.online)?(NET.oppName||'Opponent'):S.tut?'Training Dummy':'CPU ('+({blind:'Recruit',reactive:'Captain',hard:'General',expert:'Commander'}[AI_MODE]||'Recruit')+')';if($('eName').textContent!==en)$('eName').textContent=en;const _A=window.AVS||{},ea=((typeof NET!=='undefined')&&NET.online)?(_A.opp||'foot_soldier'):(_A.cpu||'foot_soldier'),ei=$('eAv');if(ei&&ei.dataset.av!==ea){ei.dataset.av=ea;ei.src='av/'+ea+'.webp';}}
   $('pHpFill').style.width=(Math.max(0,S.pBaseHP)/BASE_HP*100)+'%';
   $('eHpFill').style.width=(Math.max(0,S.eBaseHP)/BASE_HP*100)+'%';
   for(const [id,hp] of [['cbP',S.pBaseHP],['cbE',S.eBaseHP]]){const el=$(id);if(!el)continue;const f=Math.max(0,hp)/BASE_HP,st=f>2/3?'0':f>1/3?'1':'2';if(el.dataset.st!==st)el.dataset.st=st;}  // 8.9 fortress looks
@@ -2118,6 +2118,7 @@ function twinDragonReckoning(){
     renderHUD();
   },SWEEP_MS);
 }
+const SFLUSH_BASE_DMG=150; // 13.9: Nine Dragons' dragon hits the fortress for 150
 function mandateSweep(side,hand){hand=hand||'mandate';const baseHit=hand!=='sflush';if(S.log&&hand==='mandate')S.log[side+'Mandate']=(S.log[side+'Mandate']||0)+1;snd('roar');snd('gong',1,.75);
   const foe=side==='p'?'e':'p';
   // the dragon itself does the work as it flies: see mandateSweepTick()
@@ -2128,10 +2129,10 @@ function mandateSweep(side,hand){hand=hand||'mandate';const baseHit=hand!=='sflu
     const cx=side==='p'?(W+SWEEP_HALF)-SWEEP_TRAVEL*q:(-SWEEP_HALF)+SWEEP_TRAVEL*q;const tail=cx+(side==='p'?70:-70);
     if(tail<-20||tail>W+20)return;const c=document.createElement('i');c.className='dtrail c'+(k++%3)+(side==='p'?' flip':'');c.style.left=tail+'px';c.style.top=(Math.random()*24-6)+'px';$('bridge').appendChild(c);setTimeout(()=>c.remove(),1000);},110);}
   setTimeout(()=>{
-    if(!S.running||!baseHit)return;
-    if(side==='p')S.eBaseHP-=MANDATE_BASE_DMG;else S.pBaseHP-=MANDATE_BASE_DMG;
+    if(!S.running)return;const bd=baseHit?MANDATE_BASE_DMG:SFLUSH_BASE_DMG;
+    if(side==='p')S.eBaseHP-=bd;else S.pBaseHP-=bd;
     baseStrikeFx(side==='p'?'baseE':'baseP');
-    {const a='Huanglong strikes the enemy base! -500',b='Huanglong strikes your base! -500';netSay(side==='p'?a:b,side==='p'?'nat':'bad',side==='p'?b:a,side==='p'?'bad':'nat');}
+    {const a='Huanglong strikes the enemy base! -'+bd,b='Huanglong strikes your base! -'+bd;netSay(side==='p'?a:b,side==='p'?'nat':'bad',side==='p'?b:a,side==='p'?'bad':'nat');}
     renderHUD();
   },SWEEP_MS);
   if(side==='p'&&window.synUnlock)synUnlock(hand);else if((typeof NET!=='undefined')&&NET.online&&NET.role==='host')NET.out.push(['syn',hand]); // reveal on the in-game cheat sheet
@@ -2913,7 +2914,7 @@ function loop(now){
     setTimeout(()=>{
       netSay(S.pBaseHP<=0?(S.surrendered?'DEFEAT — You surrendered':'DEFEAT — Your base has fallen!'):'VICTORY — The Mandate is yours!',S.pBaseHP<=0?'bad':'nat');
       if(S.eBaseHP<=0&&AI_MODE==='hard'&&!S.winCounted&&!((typeof NET!=='undefined')&&NET.online)){S.winCounted=true;addHardWin();refreshExpertLock();
-        if(hardWins()===EXPERT_WINS_NEEDED)setTimeout(()=>say('EXPERT UNLOCKED','nat'),1400);}
+        if(hardWins()===EXPERT_WINS_NEEDED)setTimeout(()=>say('COMMANDER UNLOCKED','nat'),1400);}
       if(S.eBaseHP<=0&&AI_MODE==='expert'&&!S.xwCounted&&!((typeof NET!=='undefined')&&NET.online)){S.xwCounted=true;try{localStorage.setItem('hm_expert_wins',expertWins()+1);const k=expertStreak()+1;localStorage.setItem('hm_expert_streak',k);if(k>=10)localStorage.setItem('hm_robot_kept','1');}catch(e){}
 }
       if(S.pBaseHP<=0&&AI_MODE==='expert'&&!S.xwCounted&&!((typeof NET!=='undefined')&&NET.online)){S.xwCounted=true;try{localStorage.setItem('hm_expert_streak','0');}catch(e){}}  // an Expert loss or surrender ends the streak
@@ -3007,12 +3008,12 @@ function toggleTowerRange(towerId,type,rangeUnits){
   },{once:true}),150);
 }
 function refreshExpertLock(){const b=document.querySelector('.aibtn[data-ai="expert"]');if(!b)return;const n=hardWins();
-  b.classList.toggle('locked',n<EXPERT_WINS_NEEDED);b.textContent=n<EXPERT_WINS_NEEDED?'Expert '+Math.min(n,EXPERT_WINS_NEEDED)+'/'+EXPERT_WINS_NEEDED:'Expert';}
+  b.classList.toggle('locked',n<EXPERT_WINS_NEEDED);b.textContent=n<EXPERT_WINS_NEEDED?'Commander '+Math.min(n,EXPERT_WINS_NEEDED)+'/'+EXPERT_WINS_NEEDED:'Commander';}
 refreshExpertLock();
 // [TEMP] AI mode toggle
 document.querySelectorAll('.aibtn').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    if(btn.dataset.ai==='expert'&&hardWins()<EXPERT_WINS_NEEDED){say('Expert unlocks after '+EXPERT_WINS_NEEDED+' wins on Hard ('+hardWins()+'/'+EXPERT_WINS_NEEDED+')','warn');return;}
+    if(btn.dataset.ai==='expert'&&hardWins()<EXPERT_WINS_NEEDED){say('Commander unlocks after '+EXPERT_WINS_NEEDED+' wins on General ('+hardWins()+'/'+EXPERT_WINS_NEEDED+')','warn');return;}
     AI_MODE=btn.dataset.ai;
     document.querySelectorAll('.aibtn').forEach(b=>b.classList.toggle('active',b===btn));
     say('Computer difficulty: '+AI_LABEL[AI_MODE],'good');
@@ -5213,7 +5214,7 @@ html, .hm-body {
           </button>
           <button class="battle-card bc-training" type="button" onclick="hmOpenDiff()">
             <span class="bc-name">Training Grounds</span><span class="bc-kind">Practice · vs Computer</span>
-            <span class="bc-desc">Train against the computer, from Easy to Expert.</span>
+            <span class="bc-desc">Train against the computer, from Recruit to Commander.</span>
           </button>
           <button class="battle-card bc-council" type="button" onclick="hmOpenCustom()">
             <span class="bc-name">War Council</span><span class="bc-kind">Custom Game · Rooms</span>
@@ -5249,7 +5250,7 @@ html, .hm-body {
           <button type="button" role="tab" class="pf-tab" data-pf="ranked" onclick="hmPfTab('ranked')">Ranked</button>
           <button type="button" role="tab" class="pf-tab" data-pf="cpu" onclick="hmPfTab('cpu')">Computer</button>
         </div>
-        <div class="pf-dtabs" id="pfDiff" role="tablist" aria-label="Computer difficulty" hidden><button type="button" class="pf-dtab" data-d="all" onclick="hmPfDiff('all')">All</button><button type="button" class="pf-dtab" data-d="blind" onclick="hmPfDiff('blind')">Easy</button><button type="button" class="pf-dtab" data-d="reactive" onclick="hmPfDiff('reactive')">Normal</button><button type="button" class="pf-dtab" data-d="hard" onclick="hmPfDiff('hard')">Hard</button><button type="button" class="pf-dtab" data-d="expert" onclick="hmPfDiff('expert')">Expert</button></div>
+        <div class="pf-dtabs" id="pfDiff" role="tablist" aria-label="Computer difficulty" hidden><button type="button" class="pf-dtab" data-d="all" onclick="hmPfDiff('all')">All</button><button type="button" class="pf-dtab" data-d="blind" onclick="hmPfDiff('blind')">Recruit</button><button type="button" class="pf-dtab" data-d="reactive" onclick="hmPfDiff('reactive')">Captain</button><button type="button" class="pf-dtab" data-d="hard" onclick="hmPfDiff('hard')">General</button><button type="button" class="pf-dtab" data-d="expert" onclick="hmPfDiff('expert')">Commander</button></div>
         <div class="stats-grid" id="pfMain"></div>
         <div class="section-head"><div class="section-title">Career Stats</div><div class="section-sub" id="pfCareerSub">Totals across all your battles</div></div>
         <div class="pf-career" id="pfCareer"></div>
@@ -5582,6 +5583,7 @@ html, .hm-body {
               <span class="syn-buff def">+30% Armor</span>
               <span class="syn-buff clubs">Your suit's Flush bonus ×1.25</span>
               <span class="syn-buff mandate-buff">Huanglong dragon sweep · burns + stuns each enemy it passes · Celestial Burn 10/0.5s × 4s (80 total) · 3s stun</span>
+              <span class="syn-buff mandate-buff">Dragon reaches enemy Base: 150 dmg</span>
             </div>
           <div class="sx-row" aria-hidden="true"><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_7" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>12</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_8" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>13</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_9" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>14</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_10" style="left:0px"></i><i class="ci ci-spades_5" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>15</div></div><div class="sx-slot on"><div class="sx-stack" style="width:50px"><i class="ci ci-spades_K" style="left:0px"></i><i class="ci ci-spades_6" style="left:16px"></i></div><div class="sx-tot"><span>♠</span>16</div></div></div>
             <div class="syn-note-line">Flush ×1.25: +25% HP, Armor &amp; ATK · ♣ +12.5% armor · ♠ +25% ATK Speed · ♦ +25% range · ♥ heals 7.5% Max HP / 3s</div>
@@ -6095,6 +6097,7 @@ html, .hm-body {
               <div class="code-msg" id="codeMsg" role="status" hidden></div>
             </div>
             <div class="code-row"><input class="code-in" id="codeIn" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Enter code" aria-label="Code" onkeydown="if(event.key==='Enter')hmRedeem()"><button class="settings-row-action" type="button" onclick="hmRedeem()">Redeem</button></div>
+              <div class="code-avs" id="codeAvs"></div>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6159,7 +6162,23 @@ html, .hm-body {
   </div>
 </div>
 
-</div></template>
+</div><style>
+/* 13.9: How a Match Works step numbers — parchment circle, red ring */
+.htp-steps .htp-step::before{background:#f5e8c8!important;color:#8b1a1a!important;border:2px solid #8b1a1a!important;box-shadow:none!important}
+/* 13.9: Settings → Code list */
+.code-avs{display:flex;flex-direction:column;gap:8px;margin-top:12px;width:100%}
+.code-avs-h{font-family:var(--f-display);font-size:.85rem;letter-spacing:.08em;color:var(--ink,#2a2017)}
+.code-av{display:flex;align-items:center;gap:12px;border:1px solid #cdb894;border-radius:10px;padding:8px 12px;background:rgba(155,51,36,.03)}
+.code-av img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #cdb894;background:#d9c8a6;flex:none}
+.code-av .t{flex:1;min-width:0}
+.code-av .t b{display:block;font-family:var(--f-display);font-weight:400;letter-spacing:.08em;font-size:.95rem}
+.code-av .t span{font-size:.9rem;color:#5a4834}
+.code-chip{font-family:var(--f-display);letter-spacing:.1em;font-size:.75rem;padding:3px 9px;border-radius:6px;white-space:nowrap}
+.code-chip.one{color:#8a6a1c;border:1px solid #b8892a;background:rgba(184,137,42,.08)}
+.code-chip.life{color:#3f6b4a;border:1px solid #3f6b4a;background:rgba(63,107,74,.08)}
+.code-leg{display:flex;gap:16px;justify-content:center;font-size:.85rem;color:#5a4834;flex-wrap:wrap}
+.code-empty{font-size:.9rem;color:#5a4834}
+</style></template>
 
 <!-- boot / title screen -->
 <div class="hm-ov hm-full" id="hmBoot">
@@ -6173,17 +6192,76 @@ html, .hm-body {
   </div>
 </div>
 
+<style id="hm139">
+/* 13.9 shared VS row (Choose Your Trial + Skirmish) */
+.hm-mvs{display:flex;align-items:center;justify-content:center;gap:22px;margin:0 0 12px}
+.hm-mvs .side{display:flex;flex-direction:column;align-items:center;gap:4px;width:120px;min-width:0}
+.hm-mvs img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid #cdb894;background:#d9c8a6}
+.hm-mvs img.wait{opacity:.6}
+.hm-mvs .pn{font-family:Cinzel,Georgia,serif;letter-spacing:.1em;font-size:.95rem;color:#2a2017;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hm-mvs .hm-vsx{color:#9b3324}
+/* Choose Your Trial */
+.hm-trials{grid-template-columns:1fr 1fr;align-items:start}
+.hm-trials .hm-diff-tut{grid-column:1/-1}
+.hm-tcell{display:flex;flex-direction:column;gap:6px;min-width:0}
+.hm-trials .hm-tcell .hm-diff{border-color:transparent!important;height:52px}
+.hm-thint{font-size:.85rem;color:#5a4834;text-align:center;line-height:1.3}
+.hm-thint:empty{display:none}
+/* Skirmish */
+.hm-srow{display:flex;align-items:center;justify-content:center;gap:9px;margin:2px 0 0}
+.hm-srow .hm-spin{width:18px!important;height:18px!important;margin:0!important;border-width:2px!important;flex:none}
+.hm-srow .hm-sub{margin:0!important}
+#hmSearch.found{z-index:1150}
+#hmSearch.found .hm-spin{display:none}
+#hmSearch.found #hmSearchTxt{color:#3f6b4a}
+#hmSearch.found .hm-row{visibility:hidden}
+/* War Council */
+.hm-wc{gap:6px!important}
+.hm-wc .hm-diff{justify-content:center!important}
+.hm-chsub{font-size:.95rem;color:#5a4834;text-align:center;margin:0 0 10px}
+/* Room Hosting page */
+#hmRoom .hm-rban{position:relative;height:180px;margin:-4px 0 -8px}
+#hmRoom .hm-rban .art{position:absolute;inset:0;background:url(menu/ink_card_council.webp) right 40%/cover no-repeat;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 55%),linear-gradient(0deg,transparent 0%,#000 40%);-webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent 0%,#000 55%),linear-gradient(0deg,transparent 0%,#000 40%);mask-composite:intersect}
+#hmRoom .hm-panel{background:none!important;border:0!important;box-shadow:none!important;padding:0 18px!important}
+#hmRoom #hmStartBtn{width:calc(100% - 36px);margin:0 auto}
+#hmRoom #hmPrivPanel{position:absolute;left:20px;right:20px;bottom:20px}
+#hmRoom #hmPrivPanel .hm-prow{flex-direction:column;align-items:flex-start;gap:5px}
+#hmRoom #hmPrivPanel .pl{flex:none}
+#hmRoom .hm-seg button{padding:3px 9px!important;font-size:.6rem!important;letter-spacing:.1em!important}
+#hmRoom .hm-pl{background:#f3ebdb!important}
+#hmRoom .hm-pl.in{background:linear-gradient(rgba(63,107,74,.08),rgba(63,107,74,.08)),#f3ebdb!important}
+#hmRoom .hm-lbl{color:#6b5232!important}
+#hmCodePanel{display:flex;flex-direction:column;align-items:center;gap:2px}
+#hmCodePanel[hidden]{display:none!important}
+#hmCodePanel .hm-lbl{margin:0!important}
+.hm-codewrap{position:relative}
+#hmRoom .hm-code{all:unset;cursor:pointer;font:700 1.9rem/1.2 Cinzel,Georgia,serif;letter-spacing:.3em;padding-left:.3em;color:#9b3324;user-select:all}
+#hmRoom .hm-code:focus-visible{outline:2px solid #9b3324;outline-offset:3px;border-radius:4px}
+.hm-copied{position:absolute;left:100%;top:50%;margin:-14px 0 0 14px;background:#f3ebdb;border:1px solid #b4935a;border-radius:10px;padding:4px 12px;
+  font:700 .8rem/1.2 Cinzel,Georgia,serif;letter-spacing:.08em;color:#3f6b4a;white-space:nowrap;box-shadow:0 2px 6px rgba(90,72,52,.18);pointer-events:none}
+.hm-copied::after{content:"";position:absolute;left:-6px;top:50%;margin-top:-5px;width:10px;height:10px;background:#f3ebdb;border-left:1px solid #b4935a;border-bottom:1px solid #b4935a;transform:rotate(45deg)}
+.hm-copied.pop{animation:hmCopyPop 1.5s ease forwards}
+@keyframes hmCopyPop{0%{opacity:0;transform:translateX(-4px)}12%{opacity:1;transform:none}75%{opacity:1}100%{opacity:0}}
+#hmStartBtn{border-radius:0!important;border:0!important}
+#hmNetStat:empty{display:none}
+#hmArenaPanel .hm-lbl{margin-bottom:14px!important}
+@media (max-width:760px){#hmRoom .hm-panel{padding:0!important}#hmRoom #hmStartBtn{width:100%}#hmRoom #hmPrivPanel{left:4px;right:4px}
+  #hmRoom .hm-rban .art{-webkit-mask-image:linear-gradient(90deg,transparent 20%,#000 100%),linear-gradient(0deg,transparent 0%,#000 45%);mask-image:linear-gradient(90deg,transparent 20%,#000 100%),linear-gradient(0deg,transparent 0%,#000 45%)}}
+#hmArenas .hm-arena > span:last-child{font-size:15px!important}
+</style>
 <!-- CPU difficulty pop-up -->
 <div class="hm-ov hm-modal-bg" id="hmDiff" hidden onclick="if(event.target===this)hmCloseDiff()">
   <div class="hm-card" role="dialog" aria-modal="true" aria-labelledby="hmDiffH">
-    <h2 class="hm-h" id="hmDiffH">Choose Your Opponent</h2>
-    <p class="hm-sub">Battle the computer. Win on Hard to unlock Expert.</p>
-    <div class="hm-diffs">
+    <div class="hm-mvs"><div class="side"><img id="hmDiffMeA" src="av/tianming.webp" alt=""><div class="pn" id="hmDiffMeN">Guest</div></div><div class="hm-vsx">VS</div><div class="side"><img src="av/robot.webp" alt=""><div class="pn">Computer</div></div></div>
+    <h2 class="hm-h" id="hmDiffH">Choose Your Trial</h2>
+    <div class="hm-diffs hm-trials">
       <button class="hm-diff hm-diff-tut" type="button" onclick="hmStartTutorial()"><span class="dn">Tutorial</span></button>
-      <button class="hm-diff" data-d="blind" type="button" onclick="hmStartVsCpu('blind')"><span class="dn">Easy</span></button>
-      <button class="hm-diff" data-d="reactive" type="button" onclick="hmStartVsCpu('reactive')"><span class="dn">Normal</span></button>
-      <button class="hm-diff" data-d="hard" type="button" onclick="hmStartVsCpu('hard')"><span class="dn">Hard</span></button>
-      <button class="hm-diff" data-d="expert" type="button" onclick="hmStartVsCpu('expert')"><span class="dn">Expert</span><span class="dd" id="hmExpertTxt"></span></button>
+      <div class="hm-tcell"><button class="hm-diff" data-d="blind" type="button" onclick="hmStartVsCpu('blind')"><span class="dn">Recruit</span></button></div>
+      <div class="hm-tcell"><button class="hm-diff" data-d="reactive" type="button" onclick="hmStartVsCpu('reactive')"><span class="dn">Captain</span></button></div>
+      <div class="hm-tcell"><button class="hm-diff" data-d="hard" type="button" onclick="hmStartVsCpu('hard')"><span class="dn">General</span></button></div>
+      <div class="hm-tcell"><button class="hm-diff" data-d="expert" type="button" onclick="hmStartVsCpu('expert')"><span class="dn">Commander</span></button><div class="hm-thint" id="hmExpertTxt"></div></div>
     </div>
     <div class="hm-row"><button class="hm-btn hm-ghost" type="button" onclick="hmCloseDiff()">Cancel</button></div>
   </div>
@@ -6276,7 +6354,7 @@ html, .hm-body {
     <div class="hm-top"><button class="hm-back" type="button" onclick="hmClosePlay()">← Menu</button><h2 class="hm-ptitle">Choose a Battle</h2></div>
     <div class="hm-modes">
       <button class="hm-mode" type="button" onclick="hmOpenPvp()"><span class="mi">戰</span><span class="mk">PVP</span><span class="mn">Player vs Player</span><span class="md">Battle another player online. Join a public game or host a room for a friend.</span></button>
-      <button class="hm-mode" type="button" onclick="hmOpenDiff()"><span class="mi">練</span><span class="mk">PVCPU</span><span class="mn">Player vs Computer</span><span class="md">Practice against the computer, from Easy up to Expert.</span></button>
+      <button class="hm-mode" type="button" onclick="hmOpenDiff()"><span class="mi">練</span><span class="mk">PVCPU</span><span class="mn">Player vs Computer</span><span class="md">Practice against the computer, from Recruit up to Commander.</span></button>
     </div>
   </div>
 </div>
@@ -6295,9 +6373,9 @@ html, .hm-body {
 <div class="hm-ov hm-modal-bg" id="hmCustom" hidden onclick="if(event.target===this)hmShow('hmCustom',false)">
   <div class="hm-card" role="dialog" aria-modal="true" aria-labelledby="hmCustomH">
     <h2 class="hm-h" id="hmCustomH">War Council</h2><p class="hm-sub">Custom game · play with a friend.</p>
-    <div class="hm-choice">
-      <button class="hm-diff" type="button" onclick="hmShow('hmCustom',false);hmHostRoom(false)"><span class="dn">Host</span><span class="dd">Create a room. Share the room code, or make it public.</span></button>
-      <button class="hm-diff" type="button" onclick="hmShow('hmCustom',false);hmOpenJoinCode()"><span class="dn">Join</span><span class="dd">Enter a friend's room code.</span></button>
+    <div class="hm-choice hm-wc">
+      <button class="hm-diff" type="button" onclick="hmShow('hmCustom',false);hmHostRoom(false)"><span class="dn">Host</span></button><p class="hm-chsub">Create a room. Share the room code, or make it public.</p>
+      <button class="hm-diff" type="button" onclick="hmShow('hmCustom',false);hmOpenJoinCode()"><span class="dn">Join</span></button><p class="hm-chsub">Enter a friend's room code.</p>
     </div>
     <div class="hm-row"><button class="hm-btn hm-ghost" type="button" onclick="hmShow('hmCustom',false)">Cancel</button></div>
   </div>
@@ -6315,7 +6393,8 @@ html, .hm-body {
 <div class="hm-ov hm-modal-bg" id="hmSearch" hidden>
   <div class="hm-card" role="dialog" aria-modal="true" aria-labelledby="hmSearchH" style="width:min(400px,100%)">
     <h2 class="hm-h" id="hmSearchH">Skirmish</h2>
-    <div id="hmSearching"><div class="hm-spin"></div><p class="hm-sub" id="hmSearchTxt">Looking for an opponent…</p>
+    <div class="hm-mvs"><div class="side"><img id="hmSrchMeA" src="av/tianming.webp" alt=""><div class="pn" id="hmSrchMeN">Guest</div></div><div class="hm-vsx">VS</div><div class="side"><img id="hmSrchOppA" src="av/tianming.webp" alt=""><div class="pn" id="hmSrchOppN">Searching…</div></div></div>
+    <div id="hmSearching"><div class="hm-srow"><div class="hm-spin"></div><p class="hm-sub" id="hmSearchTxt">Searching for opponent…</p></div>
       <div class="hm-row"><button class="hm-btn hm-ghost" type="button" onclick="hmStopSearch()">Cancel</button></div></div>
     <div id="hmSearchNone" hidden><p class="hm-sub" id="hmNoneTxt">No open rooms right now.<br>Host a public room instead?</p>
       <div class="hm-row"><button class="hm-btn hm-ghost" type="button" onclick="hmStopSearch()">Cancel</button><button class="hm-btn hm-ghost" type="button" onclick="hmQuickJoin()">Keep Searching</button><button class="hm-btn" type="button" onclick="hmStopSearch();hmHostRoom(true)">Host Public Room</button></div></div>
@@ -6326,26 +6405,26 @@ html, .hm-body {
 <div class="hm-ov hm-page" id="hmRoom" hidden>
   <div class="wrap">
     <div class="hm-top"><button class="hm-back" type="button" onclick="hmLeaveRoom()">← Leave Room</button><h2 class="hm-ptitle" id="hmRoomH">Your Room</h2></div>
+    <div class="hm-rban"><div class="art" aria-hidden="true"></div>
     <div class="hm-panel" id="hmPrivPanel">
       <div class="hm-prow"><div class="pl"><b>Room Type</b><small id="hmPrivTxt">Private — only players with the code can join</small></div>
         <div class="hm-seg" role="group" aria-label="Room type"><button type="button" id="hmSegPriv" class="on" onclick="hmSetPublic(false)">Private</button><button type="button" id="hmSegPub" onclick="hmSetPublic(true)">Public</button></div></div>
-    </div>
-    <div class="hm-panel" id="hmCodePanel">
-      <div class="hm-lbl" style="margin-top:0;text-align:center">Room Code</div>
-      <div class="hm-code" id="hmCode">····</div>
-      <div class="hm-row" style="margin-top:6px"><button class="hm-btn hm-ghost" type="button" onclick="hmCopyCode()" id="hmCopyBtn">Copy Code</button></div>
-    </div>
-    <div class="hm-panel">
+    </div></div>
+    <div class="hm-panel hm-plpanel">
       <div class="hm-players">
         <div class="hm-pl in" id="hmP1"><img class="pav" id="hmP1a" src="av/foot_soldier.webp" alt=""><div class="pn" id="hmP1n">Guest (You)</div><div class="ps" id="hmP1s">Host</div></div>
         <div class="hm-vsx">VS</div>
         <div class="hm-pl wait" id="hmP2"><img class="pav" id="hmP2a" src="av/foot_soldier.webp" alt="" style="visibility:hidden"><div class="pn" id="hmP2n">Waiting for a player</div><div class="ps" id="hmP2s">Room is open</div></div>
       </div>
     </div>
+    <div class="hm-panel" id="hmCodePanel">
+      <div class="hm-lbl">Room Code</div>
+      <div class="hm-codewrap"><button class="hm-code" id="hmCode" type="button" onclick="hmCopyCode()" title="Copy code">····</button><span class="hm-copied" id="hmCopied" hidden>Copied!</span></div>
+    </div>
     <button class="hm-start" id="hmStartBtn" type="button" disabled onclick="hmPressStart()">Start</button>
     <div class="hm-netstat" id="hmNetStat">Connecting to the online lobby…</div>
     <div class="hm-panel" id="hmArenaPanel" style="margin-top:14px">
-      <div class="hm-lbl" style="margin-top:0">Battlefield</div>
+      <div class="hm-lbl" style="margin-top:0">Choose Your Battlefield</div>
       <div class="hm-arenas" id="hmArenas" role="radiogroup" aria-label="Battlefield"></div>
       <div class="hm-arena-note" id="hmArenaNote"></div>
     </div>
@@ -6534,7 +6613,8 @@ function hmOpenDiff(){
   {const tb=document.querySelector('#hmDiff .hm-diff-tut');if(tb)tb.hidden=tutDone();}   // 13.5: once finished, replay it from Tactics
   const n=hardWins(),lock=n<EXPERT_WINS_NEEDED,b=document.querySelector('.hm-diff[data-d=expert]');
   b.classList.toggle('locked',lock);b.setAttribute('aria-disabled',lock?'true':'false');
-  $('hmExpertTxt').textContent=lock?('Win '+EXPERT_WINS_NEEDED+' matches on Hard to unlock ('+Math.min(n,EXPERT_WINS_NEEDED)+'/'+EXPERT_WINS_NEEDED+').'):'';$('hmExpertTxt').style.display=lock?'':'none';
+  {const a=$('hmDiffMeA'),s1='av/'+AVS.me+'.webp';if(a.getAttribute('src')!==s1)a.src=s1;$('hmDiffMeN').textContent=HM.name;}
+  $('hmExpertTxt').textContent=lock?('Win '+EXPERT_WINS_NEEDED+' matches on General to unlock ('+Math.min(n,EXPERT_WINS_NEEDED)+'/'+EXPERT_WINS_NEEDED+').'):'';$('hmExpertTxt').style.display=lock?'':'none';
   hmShow('hmDiff',true);}
 function hmCloseDiff(){hmShow('hmDiff',false);}
 function hmPvpSoon(btn){const l=btn.querySelector('.menu-btn-sub');const o=l.textContent;l.textContent='Online battles arrive in a later build';setTimeout(()=>l.textContent=o,1600);}
@@ -6543,8 +6623,8 @@ function hmTip(){let i;do{i=Math.floor(Math.random()*HM.tips.length);}while(HM.t
   $('hmTip').innerHTML='<blockquote>'+esc(t.q)+'<cite>— '+esc(t.c)+'</cite></blockquote>';}
 function hmStartVsCpu(mode){
   if(mode==='expert'&&hardWins()<EXPERT_WINS_NEEDED)return;
-  AI_MODE=mode;AI.targetSuit=null;HM.mode='practice';AVS.cpu='robot';S.paused=false;document.body.classList.remove('hm-paused');hmShow('hmPaused',false);HM.opp='CPU ('+({blind:'Easy',reactive:'Normal',hard:'Hard',expert:'Expert'}[mode])+')';document.querySelectorAll('.aibtn').forEach(b=>b.classList.toggle('active',b.dataset.ai===mode));
-  hmShow('hmDiff',false);hmTip();$('hmLoadMeAv').src='av/'+AVS.me+'.webp';$('hmLoadOppAv').src='av/'+(AVS.cpu||'robot')+'.webp';$('hmLoadCpu').textContent='CPU · '+({blind:'Easy',reactive:'Normal',hard:'Hard',expert:'Expert'}[mode]);
+  AI_MODE=mode;AI.targetSuit=null;HM.mode='practice';AVS.cpu='robot';S.paused=false;document.body.classList.remove('hm-paused');hmShow('hmPaused',false);HM.opp='CPU ('+({blind:'Recruit',reactive:'Captain',hard:'General',expert:'Commander'}[mode])+')';document.querySelectorAll('.aibtn').forEach(b=>b.classList.toggle('active',b.dataset.ai===mode));
+  hmShow('hmDiff',false);hmTip();$('hmLoadMeAv').src='av/'+AVS.me+'.webp';$('hmLoadOppAv').src='av/'+(AVS.cpu||'robot')+'.webp';$('hmLoadCpu').textContent='CPU · '+({blind:'Recruit',reactive:'Captain',hard:'General',expert:'Commander'}[mode]);
   const L=$('hmLoad');L.classList.remove('out');L.hidden=false;const bar=$('hmLoadBar');bar.style.transition='none';bar.style.width='0';void bar.offsetWidth;
   bar.style.transition='width 2.6s cubic-bezier(.3,.1,.2,1)';bar.style.width='100%';
   const steps=['Preparing the battlefield…','Building the barricades…','Shuffling 4 decks into the barracks…','The armies take position…'];let k=0;$('hmLoadStat').textContent=steps[0];
@@ -6665,14 +6745,15 @@ async function netHostOpen(){NET.busy=true;hmRoomUI();hmNetStat(NET.pub?'Opening
       c.send({t:'welcome',pub:NET.pub,n:HM.name,a:AVS.me});netWire(c);try{c.send({t:'arena',v:NET.arenaPick||'random'});}catch(e){}NET.meReady=NET.themReady=false;hmRoomUI();hmNetStat('A player joined! Press Start when you\'re ready.','ok');snd('card_shuffle');});});
   p.on('error',e=>{if(e.type!=='peer-unavailable')hmNetStat(netWhy(e),'bad');});
   p.on('disconnected',()=>{try{p.reconnect();}catch(e){}});
-  hmRoomUI();hmNetStat(NET.pub?'Room is public — waiting for a player to join…':'Room ready — share the code with a friend.','ok');}
+  hmRoomUI();hmNetStat('','ok');}
 async function hmHostRoom(pub){hmShow('hmPvp',false);hmShow('hmCustom',false);netDrop();NET.role='host';NET.pub=!!pub;NET.code=null;
   hmShow('hmPlay',false);hmShow('hmRoom',true);hmRoomUI();await netHostOpen();}
 async function hmSetPublic(v){if(NET.role!=='host'||NET.busy||(NET.conn&&NET.conn.open)||NET.pub===v)return;
   try{NET.peer&&NET.peer.destroy();}catch(e){}NET.peer=null;NET.pub=v;NET.code=null;hmRoomUI();await netHostOpen();}
-function hmCopyCode(){const c=NET.code;if(!c)return;const done=()=>{$('hmCopyBtn').textContent='Copied';setTimeout(()=>$('hmCopyBtn').textContent='Copy Code',1400);};
-  try{navigator.clipboard.writeText(c).then(done,()=>{selCode();});}catch(e){selCode();}
-  function selCode(){const r=document.createRange();r.selectNodeContents($('hmCode'));const s=getSelection();s.removeAllRanges();s.addRange(r);$('hmCopyBtn').textContent='Code selected — copy it';}}
+function hmCopyCode(){const c=NET.code;if(!c)return;
+  const bub=t=>{const b=$('hmCopied');b.textContent=t;b.hidden=false;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');clearTimeout(hmCopyCode._t);hmCopyCode._t=setTimeout(()=>{b.hidden=true;},1500);};
+  const sel=()=>{const r=document.createRange();r.selectNodeContents($('hmCode'));const g=getSelection();g.removeAllRanges();g.addRange(r);bub('Selected — copy it');};
+  try{navigator.clipboard.writeText(c).then(()=>bub('Copied!'),sel);}catch(e){sel();}}
 /* guest: try to join one room id; resolves 'ok' | 'full' | 'none' */
 function netTry(peer,id){return new Promise(res=>{let done=false;const fin=v=>{if(done)return;done=true;peer.off&&peer.off('error',onErr);res(v);};
   const onErr=e=>{if(e&&e.type==='peer-unavailable'&&(!e.message||e.message.indexOf(id)>=0))fin('none');};peer.on('error',onErr);
@@ -6698,7 +6779,7 @@ async function hmJoinByCode(){const code=$('hmCodeIn').value.trim().toUpperCase(
 const NET_Q_SLOTS=8;  // 11.9: Skirmish queue slots
 /* Skirmish: knock on hosted public rooms; meanwhile wait in a queue slot. A searcher only knocks queue slots LOWER than its own,
    and a match is only made from the "idle" state with a two-step hello → welcome → take, so nobody is ever matched twice. */
-async function hmQuickJoin(){hmShow('hmPvp',false);hmShow('hmSearch',true);$('hmSearching').hidden=false;$('hmSearchNone').hidden=true;$('hmSearchTxt').textContent='Looking for an opponent…';
+async function hmQuickJoin(){hmShow('hmPvp',false);hmShow('hmSearch',true);$('hmSearching').hidden=false;$('hmSearchNone').hidden=true;$('hmSearchTxt').textContent='Searching for opponent…';hmSrchReset();
   if(NET.search)hmQEnd(NET.search);const run={stop:false,state:'idle',hp:null,slot:-1,lockC:null};NET.search=run;const t0=performance.now();
   const live=()=>!run.stop&&NET.search===run;
   try{netDrop();const p=await netGuestPeer();
@@ -6717,7 +6798,7 @@ async function hmQuickJoin(){hmShow('hmPvp',false);hmShow('hmSearch',true);$('hm
           try{r.c.send({t:'take'});}catch(e){}run.state='done';hmQEnd(run);NET.oppName=r.n||'Player 2';AVS.opp=avOk(r.a);NET.pub=true;netWire(r.c);hmShow('hmSearch',false);NET.search=null;hmQuickMatched('guest');return;}
         if(run.state==='busy')run.state='idle';}
       if(!live()||run.state==='done')return;
-      $('hmSearchTxt').textContent='Looking for an opponent… '+Math.floor((performance.now()-t0)/1000)+'s';
+      $('hmSearchTxt').textContent='Searching for opponent… '+Math.floor((performance.now()-t0)/1000)+'s';
       await new Promise(r=>setTimeout(r,700+Math.random()*1100));}
     if(live()&&run.state!=='done'){hmQEnd(run);$('hmSearching').hidden=true;$('hmSearchNone').hidden=false;$('hmNoneTxt').innerHTML='No one else is looking for a battle right now.<br>Keep searching, or host a public room?';}}
   catch(e){if(live()&&run.state!=='done'){hmQEnd(run);$('hmSearching').hidden=true;$('hmSearchNone').hidden=false;$('hmNoneTxt').textContent=netWhy(e);}}}
@@ -6743,7 +6824,12 @@ async function hmQClaim(run){const order=[...Array(NET_Q_SLOTS).keys()].sort(()=
     hp.on('error',e=>{});hp.on('disconnected',()=>{try{hp.reconnect();}catch(e){}});return;}}
 function hmQEnd(run){if(!run)return;if(run.state!=='done')run.stop=true;const hp=run.hp;run.hp=null;if(hp&&hp!==NET.peer)try{hp.destroy();}catch(e){}}
 /* both players land in the room for a moment, then the host starts the battle on a random battlefield */
-function hmQuickMatched(role){NET.role=role;NET.quick=true;NET.arenaPick='random';NET.meReady=NET.themReady=false;
+function hmSrchReset(){const m=$('hmSrchMeA'),s1='av/'+AVS.me+'.webp';if(m.getAttribute('src')!==s1)m.src=s1;$('hmSrchMeN').textContent=HM.name;
+  $('hmSrchOppA').src='av/tianming.webp';$('hmSrchOppA').classList.add('wait');$('hmSrchOppN').textContent='Searching…';$('hmSearch').classList.remove('found');}
+/* 13.9: when a match is made, show the opponent's avatar in the search pop-up for a moment */
+function hmSrchFound(){const o=$('hmSrchOppA');o.src='av/'+(AVS.opp||'foot_soldier')+'.webp';o.classList.remove('wait');$('hmSrchOppN').textContent=NET.oppName||'Player 2';
+  $('hmSearchTxt').textContent='Opponent found!';const S2=$('hmSearch');S2.classList.add('found');hmShow('hmSearch',true);setTimeout(()=>{hmShow('hmSearch',false);S2.classList.remove('found');},1300);}
+function hmQuickMatched(role){hmSrchFound();NET.role=role;NET.quick=true;NET.arenaPick='random';NET.meReady=NET.themReady=false;
   hmShow('hmPlay',false);hmShow('hmRoom',true);hmRoomUI();hmNetStat('Opponent found! The battle starts in a moment…','ok');snd('card_shuffle');
   if(role==='host')setTimeout(()=>{if(NET.quick&&NET.role==='host'&&NET.conn&&NET.conn.open){NET.meReady=NET.themReady=true;netMaybeGo();}},1800);}
 {const _ru=hmRoomUI;hmRoomUI=function(){const r=_ru.apply(this,arguments);const q=!!NET.quick;
@@ -6821,7 +6907,7 @@ const AV_HINT={foot_soldier:['Finish the Tutorial (Tactics)',()=>[(function(){tr
   extra_white_lion:['“When all five stand at the summit together, Heaven speaks.”',_one('o_mandate')],
   huanglong:['“Call down the sky’s three great wonders, and the golden dragon will stay.”',u=>[(u.o_mandate||0)+(u.o_royal||0)+(u.o_sflush||0),88]],
   extra_soldier_horse:['“Walk the hard road to victory, and a wiser teacher waits at its end.”',()=>[hardWins(),EXPERT_WINS_NEEDED]],
-  robot:['“The student who beats the master may wear the master’s face.” · Win 10 Expert battles in a row',()=>[expertStreak(),10]],
+  robot:['“The student who beats the master may wear the master’s face.” · Win 10 Commander battles in a row',()=>[expertStreak(),10]],
   bradley:['“Woof woof, woof woof woof, woof!” — Confucius’s Dog',()=>[unrankedOnline(),888]]};
 AV_LOCK.bradley=()=>bradleyCode()||unrankedOnline()>=888;
 AV_LOCK.dangmang=()=>dangmangCode();
@@ -6863,7 +6949,15 @@ function hmRedeem(){const R=hmSR(),inp=R.getElementById('codeIn'),msg=R.getEleme
     else if(v==='lookingfortwgf'){if(patekoemeCode()){msg.textContent='patokeem is already yours.';}else{try{localStorage.setItem('hm_code_patokeem','1');}catch(e){}msg.textContent='patokeem unlocked!';avCheckNew();}}
     else if(v==='swed'){if(vibecoderCode()){msg.textContent='Vibecoder is already yours.';}else{try{localStorage.setItem('hm_code_vibecoder','1');}catch(e){}msg.textContent='Vibecoder unlocked!';avCheckNew();}}
     else if(v==='ilovebradley'){if(bradleyCode()||avUnlocked('bradley')){msg.textContent='Bradley is already yours.';}else{try{localStorage.setItem('hm_code_bradley','1');}catch(e){}msg.textContent='Bradley unlocked!';avCheckNew();}}
-  else msg.textContent=v?'Unknown code.':'';msg.hidden=!msg.textContent;inp.value='';}
+  else msg.textContent=v?'Unknown code.':'';msg.hidden=!msg.textContent;inp.value='';hmCodeAvs();}
+/* 13.9: Settings → Code lists the avatars this device unlocked with a code (device only for now) */
+function hmCodeAvs(){const R=hmSR(),box=R&&R.getElementById('codeAvs');if(!box)return false;
+  const L=[['dangmang','dangmang_empress','Dangmang',dangmangCode,'empress'],['patokeem','patokeem_general','patokeem',patekoemeCode,'lookingfortwgf'],
+    ['vibecoder','vibecoder','Vibecoder',vibecoderCode,'swed'],['bradley','bradley_general','Bradley',bradleyCode,'ilovebradley']];
+  // every code today is a lifetime/promo code (anyone can use it); one-time codes come with the admin tools
+  const rows=L.filter(x=>x[3]()).map(x=>'<div class="code-av"><img src="av/'+x[1]+'.webp" alt=""><div class="t"><b>'+x[2]+'</b><span>Unlocked via code</span></div><span class="code-chip life">'+x[4].toUpperCase()+'</span></div>');
+  box.innerHTML='<div class="code-avs-h">Unlocked by Code</div>'+(rows.length?rows.join('')+'<div class="code-leg"><span><span class="code-chip one">ABC</span> one-time code</span><span><span class="code-chip life">ABC</span> lifetime / promo code</span></div>':'<div class="code-empty">No avatars unlocked via code yet</div>');return true;}
+{const t=setInterval(()=>{if(hmCodeAvs())clearInterval(t);},400);}
 function avDangmangOpen(){const R=hmSR(),b=R&&R.getElementById('avDangmang');if(!b)return;
   b.querySelector('.av-brad-row').innerHTML=DANGMANG_V.map(v=>'<button type="button" class="av-opt'+(AVS.me===v?' on':'')+'" onclick="avDangmangPick(\''+v+'\')" aria-label="Dangmang"><img src="av/'+v+'.webp" alt=""></button>').join('');b.hidden=false;}
 function avDangmangPick(v){AVS.me=avOk(v);try{localStorage.setItem('hm_avatar',AVS.me);}catch(e){}hmAvApply();const R=hmSR();R.getElementById('avDangmang').hidden=true;setTimeout(hmAvClose,160);}
@@ -6911,11 +7005,12 @@ function pfFmt(sec){sec=Math.max(0,Math.round(sec||0));return Math.floor(sec/60)
 function pfNum(x){return Math.round(x||0).toLocaleString();}
 function hmPfTab(t){HM.pfTab=t;hmRenderProfile();}
 function hmPfDiff(d){HM.pfDiff=d;hmRenderProfile();}
-function pfDiffOf(m){return m.diff||({'CPU (Easy)':'blind','CPU (Normal)':'reactive','CPU (Hard)':'hard','CPU (Expert)':'expert'}[m.opp])||'blind';}
+function pfDiffOf(m){return m.diff||({'CPU (Easy)':'blind','CPU (Normal)':'reactive','CPU (Hard)':'hard','CPU (Expert)':'expert','CPU (Recruit)':'blind','CPU (Captain)':'reactive','CPU (General)':'hard','CPU (Commander)':'expert'}[m.opp])||'blind';}
+function hmOppName(o){return ({'CPU (Easy)':'CPU (Recruit)','CPU (Normal)':'CPU (Captain)','CPU (Hard)':'CPU (General)','CPU (Expert)':'CPU (Commander)'}[o])||o;} // 13.9: old saves show the new rank names
 function hmRenderProfile(){const R=hmSR();if(!R||!R.getElementById('pfMain'))return;const g=i=>R.getElementById(i);
   R.querySelectorAll('.pf-tab').forEach(b=>b.classList.toggle('on',b.dataset.pf===HM.pfTab));
   let cpu=HM.pfTab==='cpu',ranked=HM.pfTab==='ranked',all=pfLoad().matches,ms=all.filter(m=>cpu?m.mode==='practice':(m.mode!=='practice'&&!!m.ranked===ranked));
-  const DN={blind:'Easy',reactive:'Normal',hard:'Hard',expert:'Expert'}[HM.pfDiff];if(cpu&&DN)ms=ms.filter(m=>pfDiffOf(m)===HM.pfDiff);   // 12.7: everything below follows the chosen level (All = every computer game)
+  const DN={blind:'Recruit',reactive:'Captain',hard:'General',expert:'Commander'}[HM.pfDiff];if(cpu&&DN)ms=ms.filter(m=>pfDiffOf(m)===HM.pfDiff);   // 12.7: everything below follows the chosen level (All = every computer game)
   g('pfDiff').hidden=!cpu;g('pfMain').classList.toggle('cpu4',cpu);R.querySelectorAll('.pf-dtab').forEach(b=>b.classList.toggle('on',b.dataset.d===HM.pfDiff));
   const W=ms.filter(m=>m.res==='win').length,Lo=ms.length-W;
   const cell=(v,l,sub)=>'<div class="stat-cell"><div class="stat-val'+(v==='—'?' empty':'')+'">'+v+'</div><div class="stat-label">'+l+'</div>'+(sub?'<div class="stat-sub">'+sub+'</div>':'')+'</div>';
@@ -6950,7 +7045,7 @@ function hmRenderProfile(){const R=hmSR();if(!R||!R.getElementById('pfMain'))ret
   g('pfHist').innerHTML=ms.length?ms.slice().reverse().map(m=>{const d=new Date(m.t);
       const when=d.toLocaleDateString(undefined,{month:'short',day:'numeric'})+', '+d.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});
       return '<button type="button" class="pf-match" onclick="hmViewReport(\''+m.id+'\')"><span class="pf-res '+m.res+'">'+({win:'Victory',loss:'Defeat',surr:'Surrendered'}[m.res])+'</span>'
-        +'<img class="pf-oav" src="av/'+(m.oa||(m.mode==='practice'?'robot':'foot_soldier'))+'.webp" alt="">'+'<span class="pf-mid"><div class="pf-mode">'+(MODE[m.mode]||m.mode)+' · '+m.opp+'</div><div class="pf-when"><span class="pf-mt">Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b></span> · '+when+'</div></span>'
+        +'<img class="pf-oav" src="av/'+(m.oa||(m.mode==='practice'?'robot':'foot_soldier'))+'.webp" alt="">'+'<span class="pf-mid"><div class="pf-mode">'+(MODE[m.mode]||m.mode)+' · '+hmOppName(m.opp)+'</div><div class="pf-when"><span class="pf-mt">Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b></span> · '+when+'</div></span>'
         +'<span class="pf-go">'+(m.rep?'Full Report ›':'')+'</span></button>';}).join('')
     :'<div class="empty-history">'+(ranked?'No ranked matches yet.':cpu?(DN?'No '+DN+' matches vs the computer yet.':'No matches vs the computer yet.<br>Play a battle to see your history here.'):'No online matches yet.<br>Play online to see your history here.')+'</div>';}
 // reopen a saved Battle Report from Match History
