@@ -6082,7 +6082,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.8 · Prototype</span>
+            <span class="settings-row-value">#13.9.3 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6090,15 +6090,15 @@ html, .hm-body {
               <div class="settings-row-sub">Original soundtrack by patokeem, composed with Suno.</div>
             </div>
           </div>
-          <div class="settings-row">
+          <div class="settings-row code-set">
             <div class="settings-row-left">
               <div class="settings-row-label">Code</div>
               <div class="settings-row-sub">Got a secret code? Enter it here.</div>
               <div class="code-msg" id="codeMsg" role="status" hidden></div>
             </div>
             <div class="code-row"><input class="code-in" id="codeIn" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Enter code" aria-label="Code" onkeydown="if(event.key==='Enter')hmRedeem()"><button class="settings-row-action" type="button" onclick="hmRedeem()">Redeem</button></div>
-              <div class="code-avs" id="codeAvs"></div>
           </div>
+          <div class="settings-row code-avrow"><div class="code-avs" id="codeAvs"></div></div>
           <div class="settings-row">
             <div class="settings-row-left">
               <div class="settings-row-label">Privacy Policy</div>
@@ -6178,6 +6178,16 @@ html, .hm-body {
 .code-chip.life{color:#3f6b4a;border:1px solid #3f6b4a;background:rgba(63,107,74,.08)}
 .code-leg{display:flex;gap:16px;justify-content:center;font-size:.85rem;color:#5a4834;flex-wrap:wrap}
 .code-empty{font-size:.9rem;color:#5a4834}
+</style><style>
+/* 13.9.3: Settings → Code — enter code and the unlocked list in their own sections, no borders */
+.settings-row.code-set{flex-direction:column;align-items:stretch;gap:10px}
+.code-set .code-row{width:100%}
+.code-set .code-in{flex:1;width:auto!important;max-width:none!important;border:0!important;background:rgba(90,72,52,.08)!important}
+.code-set .settings-row-action{border:0!important;background:rgba(63,107,74,.12)!important}
+.code-set,.code-avrow{border:0!important;box-shadow:none!important}
+.code-avrow .code-avs{margin-top:0}
+.code-av{border:0!important;background:rgba(90,72,52,.06)!important}
+.code-chip{border:0!important}
 </style></template>
 
 <!-- boot / title screen -->
@@ -6990,7 +7000,7 @@ function hmCodeAvs(){const R=hmSR(),box=R&&R.getElementById('codeAvs');if(!box)r
     ['vibecoder','vibecoder','Vibecoder',vibecoderCode,'swed'],['bradley','bradley_general','Bradley',bradleyCode,'ilovebradley']];
   // every code today is a lifetime/promo code (anyone can use it); one-time codes come with the admin tools
   const rows=L.filter(x=>x[3]()).map(x=>'<div class="code-av"><img src="av/'+x[1]+'.webp" alt=""><div class="t"><b>'+x[2]+'</b><span>Unlocked via code</span></div><span class="code-chip life">'+x[4].toUpperCase()+'</span></div>');
-  box.innerHTML='<div class="code-avs-h">Unlocked by Code</div>'+(rows.length?rows.join('')+'<div class="code-leg"><span><span class="code-chip one">ABC</span> one-time code</span><span><span class="code-chip life">ABC</span> lifetime / promo code</span></div>':'<div class="code-empty">No avatars unlocked via code yet</div>');return true;}
+  box.innerHTML='<div class="code-avs-h">Unlocked by Code</div>'+(rows.length?rows.join('')+'<div class="code-leg"><span class="code-chip one">one-time code</span><span class="code-chip life">lifetime / promo code</span></div>':'<div class="code-empty">No avatars unlocked via code yet</div>');return true;}
 {const t=setInterval(()=>{if(hmCodeAvs())clearInterval(t);},400);}
 function avDangmangOpen(){const R=hmSR(),b=R&&R.getElementById('avDangmang');if(!b)return;
   b.querySelector('.av-brad-row').innerHTML=DANGMANG_V.map(v=>'<button type="button" class="av-opt'+(AVS.me===v?' on':'')+'" onclick="avDangmangPick(\''+v+'\')" aria-label="Dangmang"><img src="av/'+v+'.webp" alt=""></button>').join('');b.hidden=false;}
@@ -7869,7 +7879,7 @@ setInterval(()=>{const p=document.getElementById('hmPauseTop');if(!p)return;cons
     const mk=t=>{const s=document.createElement('div');s.className='settings-section';s.innerHTML='<div class="section-head"><div class="section-title">'+t+'</div></div>';return s;};
     const game=mk('Gameplay'),code=mk('Code');
     [...disp.querySelectorAll(':scope > .settings-row')].forEach(r=>{if(!r.querySelector('#tszSel'))game.appendChild(r);});
-    [...about.querySelectorAll(':scope > .settings-row')].forEach(r=>{if(r.querySelector('.code-row'))code.appendChild(r);});
+    [...about.querySelectorAll(':scope > .settings-row')].forEach(r=>{if(r.querySelector('.code-row')||r.classList.contains('code-avrow'))code.appendChild(r);});
     disp.after(game);about.after(code);
     const inner=disp.parentElement;inner.classList.add('set-tabbed');
     const all=ORDER.map(byT);
