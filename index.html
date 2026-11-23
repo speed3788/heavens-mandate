@@ -1002,8 +1002,10 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
     <div class="bl-waves-col"><h3 id="blWavesEH">Enemy Waves</h3><div id="blWavesE" class="bl-waves-scroll"></div></div>
   </div>
     <div class="bl-btns">
-      <button class="bl-btn" id="blDownload">Download Log</button>
-      <button class="bl-btn" id="blClose">Main Menu</button>
+      <div class="bl-rpmsg" id="blRpMsg" hidden></div>
+      <div class="bl-btnrow"><button class="bl-btn go" id="blReplay">Replay</button><button class="bl-btn go" id="blRpYes" hidden>Accept</button><button class="bl-btn no" id="blRpNo" hidden>Decline</button>
+      <button class="bl-btn" id="blClose">Main Menu</button></div>
+      <div class="bl-note" id="blRpNote" hidden></div>
     </div>
   </div>
   <!-- peripheral vignettes -->
@@ -1289,7 +1291,7 @@ function blSummoned(waves){const n={c:0,s:0,d:0,h:0};waves.forEach(w=>(w.slotLab
   return '<span class="bl-sum"><span class="sc-c">\u2663 '+n.c+'</span><span class="sc-s">\u2660 '+n.s+'</span><span class="sc-d">\u2666 '+n.d+'</span><span class="sc-h">\u2665 '+n.h+'</span></span>';}
 function blBest(waves){const w=waves.reduce((b,x)=>(!b||(x.dps||0)>(b.dps||0))?x:b,null);
   if(!w)return '<span>—</span>';const nm=(!w.hand||w.hand==='none')?'No Synergy':(w.handName||w.hand);
-  return '<span>'+nm+' · <b>'+(Math.round((w.dps||0)*10)/10)+' DPS</b> <small class="bl-when">(wave '+w.wave+', '+fmtTime((w.time||0)*1000)+')</small></span>';}
+  return '<span class="bl-best"><span class="nm">'+nm+'</span><span class="dp"><b>'+(Math.round((w.dps||0)*10)/10)+' DPS</b> <small class="bl-when">(wave '+w.wave+', '+fmtTime((w.time||0)*1000)+')</small></span></span>';}
 function showBattleLog(){
   {const h=document.getElementById('blWavesEH');if(h)h.textContent=((typeof NET!=='undefined')&&NET.online)?HM.opp+"'s Waves":'Enemy Waves';}
   const L=S.log;
@@ -1345,43 +1347,6 @@ function showBattleLog(){
   const allWaves=[...L.pWaves.map(w=>({...w,side:'You'})),...L.eWaves.map(w=>({...w,side:'AI'}))].sort((a,b)=>a.time-b.time)
 
   document.getElementById('battleLog').classList.add('show');
-
-  // Download button
-  document.getElementById('blDownload').onclick=()=>{
-    const lines=[
-      'HEAVEN\'S MANDATE: TACTICS — BATTLE REPORT',
-      '==========================================',
-      `Result: ${win?'VICTORY':'DEFEAT'}`,
-      `Match Duration: ${dur}`,
-      `Date: ${new Date().toLocaleString()}`,
-      '',
-      '--- YOUR SIDE ---',
-      `Waves Sent: ${L.pWaves.length}`,
-      `Cards Bought: ${L.pCards||0}`,
-      `Busts: ${L.pBusts||0}`,
-      `Highest Damage Hand: ${blBest(L.pWaves).replace(/<[^>]+>/g,'')}`,
-      `Gold From Kills: ${L.pBounty||0}g`,
-      `Enemy Units Killed: ${L.pKills}${L.pFodder?' (+'+L.pFodder+' Foot Soldiers)':''}`,
-      `Total Gold Earned: ${Math.round((L.pInc||0)+(L.pBounty||0))}g`,
-      `Base HP Remaining: ${Math.round(S.pBaseHP)}`,
-      '',
-      '--- ENEMY SIDE ---',
-      `Waves Sent: ${L.eWaves.length}`,
-      `Cards Bought: ${L.eCards||0}`,
-      `Busts: ${L.eBusts||0}`,
-      `Highest Damage Hand: ${blBest(L.eWaves).replace(/<[^>]+>/g,'')}`,
-      `Gold From Kills: ${L.eBounty||0}g`,
-      `Enemy Units Killed: ${L.eKills}${L.eFodder?' (+'+L.eFodder+' Foot Soldiers)':''}`,
-      `Total Gold Earned: ${Math.round((L.eInc||0)+(L.eBounty||0))}g`,
-      `Base HP Remaining: ${Math.round(S.eBaseHP)}`,
-      '',
-      '--- WAVE HISTORY ---',
-      ...allWaves.map(w=>`[${fmtTime(w.time*1000)}] ${w.side} · Wave ${w.wave} · ${(!w.hand||w.hand==='none')?'No Synergy':(w.handName||w.hand)} · ${(w.suits||[]).join(' ')} · ${w.dps||0} DPS`),
-    ];
-    const blob=new Blob([lines.join('\n')],{type:'text/plain'});
-    const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-    a.download='heavens-mandate-battle-'+Date.now()+'.txt';a.click();
-  };
 
   // Close button → new match
   document.getElementById('blClose').onclick=()=>hmToMenu();
@@ -6082,7 +6047,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.9.3 · Prototype</span>
+            <span class="settings-row-value">#13.9.4 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6769,8 +6734,9 @@ function netWire(c){NET.conn=c;
     else if(m.t==='in'){netOnInput(m);}
     else if(m.t==='vready'){netGuestReady();}
     else if(m.t==='end'){netGuestEnd(m);}
-    else if(m.t==='bye'){if(NET.online){netOppLeft();return;}netGone(NET.role==='host'?'The other player left the room.':'The host closed the room.');}});
-  c.on('close',()=>{if(NET.conn===c){if(NET.online){netOppLeft();return;}}if(NET.conn===c)netGone(NET.role==='host'?'The other player left the room.':'The host closed the room.');});}
+    else if(m.t==='rq'){hmRpGotAsk();}     else if(m.t==='ra'){hmRpGo();}     else if(m.t==='rd'){hmRpGotNo();}
+     else if(m.t==='bye'){if(NET.online){if(NET.ended)hmRpGone();netOppLeft();return;}netGone(NET.role==='host'?'The other player left the room.':'The host closed the room.');}});
+  c.on('close',()=>{if(NET.conn===c){if(NET.online){if(NET.ended)hmRpGone();netOppLeft();return;}}if(NET.conn===c)netGone(NET.role==='host'?'The other player left the room.':'The host closed the room.');});}
 function netGone(msg){if(NET.quick&&!NET.online){hmLeaveRoom();hmNotice('Your opponent left before the battle began. Searching again…');hmQuickJoin();return;}if(NET.role==='host'){NET.conn=null;NET.meReady=NET.themReady=false;hmRoomUI();hmNetStat(msg+' The room is open again.','bad');}
   else{netDrop();hmShow('hmRoom',false);hmNotice(msg);}}
 function hmToastMenu(msg){hmShow('hmPvp',true);const s=document.querySelector('#hmPvp .hm-sub');s.textContent=msg;setTimeout(()=>s.textContent='Find an opponent online.',4000);}
@@ -7044,7 +7010,7 @@ function avPopNext(){if(AVPOP||!AVQ.length)return;const a=AVQ.shift(),d=document
 
 // save each live match once, right after its Battle Report is drawn
 const _hmShowBL=showBattleLog;
-showBattleLog=function(){_hmShowBL();$('blDownload').hidden=false;$('blClose').textContent='Main Menu';if(!HM.replay&&HM.inGame&&!S._pfSaved){S._pfSaved=true;try{pfRecord();}catch(e){console.error(e);}}};
+showBattleLog=function(){_hmShowBL();$('blClose').textContent='Main Menu';hmRpReset();if(!HM.replay&&HM.inGame&&!S._pfSaved){S._pfSaved=true;try{pfRecord();}catch(e){console.error(e);}}};
 function pfFmt(sec){sec=Math.max(0,Math.round(sec||0));return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');}
 function pfNum(x){return Math.round(x||0).toLocaleString();}
 function hmPfTab(t){HM.pfTab=t;hmRenderProfile();}
@@ -7095,7 +7061,7 @@ function hmRenderProfile(){const R=hmSR();if(!R||!R.getElementById('pfMain'))ret
 // reopen a saved Battle Report from Match History
 function hmViewReport(id){const m=pfLoad().matches.find(x=>x.id===id);if(!m||!m.rep)return;
   hmWipe(()=>{HM.replay=true;blSetRes($('blResult'),m.rep.res);$('blTime').innerHTML='Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b>';$('blPlayer').innerHTML=m.rep.pl;$('blAI').innerHTML=m.rep.ai;$('blWavesP').innerHTML=m.rep.wp;$('blWavesE').innerHTML=m.rep.we;
-    $('blDownload').hidden=true;const c=$('blClose');c.textContent='Back to Profile';
+    hmRpHide();const c=$('blClose');c.textContent='Back to Profile';
     c.onclick=()=>hmWipe(()=>{$('battleLog').classList.remove('show');HM.replay=false;c.onclick=()=>hmToMenu();$('hmMenu').hidden=false;try{showScreen('profile',null);}catch(e){}hmRenderProfile();});
     $('hmMenu').hidden=true;$('battleLog').scrollTop=0;$('battleLog').classList.add('show');});}
 {const _ss=window.showScreen;window.showScreen=function(id,btn){_ss(id,btn);if(id==='profile')hmRenderProfile();};}
@@ -7896,5 +7862,58 @@ setInterval(()=>{const p=document.getElementById('hmPauseTop');if(!p)return;cons
   if(!setup()){const t=setInterval(()=>{if(setup())clearInterval(t);},200);}
 })();
 </script>
+
+<script>
+/* ═══ 13.9.4: Battle Report fills the window; Replay ═══ */
+(function(){const all=[...document.querySelectorAll('#battleLog')],L=all.find(e=>e.querySelector('h2'));if(!L)return;all.forEach(e=>{if(e!==L)e.remove();});document.body.appendChild(L);  // drop the empty placeholder so getElementById finds the real report
+  const w=document.createElement('div');w.id='blInner';while(L.firstChild)w.appendChild(L.firstChild);L.appendChild(w);})();
+function blZoom(){const st=document.getElementById('stage'),w=document.getElementById('blInner');if(!st||!w)return;
+  const sc=parseFloat(getComputedStyle(st).getPropertyValue('--s'))||1;w.style.zoom=sc;}
+window.addEventListener('resize',()=>{if(document.getElementById('battleLog').classList.contains('show'))blZoom();});
+const RP={me:false,them:false};
+function hmRpOpp(){return (NET.oppName||'Your opponent');}
+function hmRpHide(){['blReplay','blRpYes','blRpNo','blRpMsg','blRpNote'].forEach(i=>{const e=$(i);if(e)e.hidden=true;});}
+function hmRpReset(){RP.me=RP.them=false;hmRpHide();blZoom();
+  const r=$('blReplay');r.textContent='Replay';r.classList.add('go');r.classList.remove('wait');r.disabled=false;
+  r.hidden=!!(HM.replay||!HM.inGame||S.tut||(NET.online&&!(NET.conn&&NET.conn.open)));}
+function hmRpNote(t){const n=$('blRpNote');n.textContent=t;n.hidden=!t;}
+function hmRpGone(){if(!$('battleLog').classList.contains('show'))return;RP.me=RP.them=false;hmRpHide();hmRpNote(hmRpOpp()+' left the battle.');}
+function hmRpGotAsk(){if(!$('battleLog').classList.contains('show'))return;if(RP.me){netSend({t:'ra'});hmRpGo();return;}RP.them=true;
+  $('blReplay').hidden=true;hmRpNote('');const m=$('blRpMsg');m.innerHTML='<img src="av/'+(AVS.opp||'foot_soldier')+'.webp" alt="">'+hmRpOpp().replace(/</g,'&lt;')+' wants to play again';m.hidden=false;
+  $('blRpYes').hidden=$('blRpNo').hidden=false;try{snd('card_shuffle');}catch(e){}}
+function hmRpGotNo(){if(!RP.me)return;RP.me=false;$('blReplay').hidden=true;hmRpNote(hmRpOpp()+' declined.');}
+/* back to the room (War Council) or straight into a new random battle (Skirmish), connection kept */
+function hmRpGo(){RP.me=RP.them=false;hmWipe(()=>{clearInterval(NET.tick);NET.tick=null;
+    if(NET.view){[...$('bridge').children].forEach(c=>{if(c.id!=='unitLayer')c.remove();});}
+    NET.online=NET.view=NET.flip=false;NET.vready=false;NET.ended=false;document.body.classList.remove('net-host','net-guest');
+    $('battleLog').classList.remove('show');$('reset').click();HM.inGame=false;['hmSurr','hmAudio'].forEach(id=>hmShow(id,false));
+    $('hmMenu').hidden=false;try{showScreen('menu',null);}catch(e){}
+    NET.meReady=NET.themReady=false;
+    if(NET.quick){NET.arenaPick='random';hmShow('hmRoom',true);hmRoomUI();hmNetStat('Rematch! The battle starts in a moment…','ok');
+      if(NET.role==='host')setTimeout(()=>{if(NET.quick&&NET.role==='host'&&NET.conn&&NET.conn.open){NET.meReady=NET.themReady=true;netMaybeGo();}},1800);}
+    else{hmShow('hmRoom',true);hmRoomUI();hmNetStat('','ok');}});}
+$('blReplay').onclick=()=>{
+  if(!NET.online){const mode=AI_MODE;hmWipe(()=>{$('battleLog').classList.remove('show');hmStartVsCpu(mode);});return;}  // vs the computer: same rank, same map
+  if(!(NET.conn&&NET.conn.open)){hmRpGone();return;}
+  RP.me=true;netSend({t:'rq'});const r=$('blReplay');r.textContent='Waiting for '+hmRpOpp()+'…';r.classList.remove('go');r.classList.add('wait');r.disabled=true;hmRpNote('Replay request sent to '+hmRpOpp());};
+$('blRpYes').onclick=()=>{netSend({t:'ra'});hmRpGo();};
+$('blRpNo').onclick=()=>{netSend({t:'rd'});RP.them=false;hmRpHide();hmRpNote('');};
+</script>
+<style id="hm1394">
+#battleLog{position:fixed!important;inset:0!important;z-index:900!important;border-radius:0!important;padding:20px max(16px,env(safe-area-inset-left,0px))!important}
+#blInner{width:100%;display:flex;flex-direction:column;align-items:center}
+#battleLog .bl-col,#battleLog .bl-card,#battleLog .bl-waves,#battleLog .bl-btn,#battleLog .bl-wave-row{border:0!important;box-shadow:none!important}
+#battleLog .bl-best{display:flex!important;flex-direction:column;align-items:flex-end;text-align:right;line-height:1.25}
+#battleLog .bl-btns{flex-direction:column;align-items:center;gap:10px}
+#battleLog .bl-btnrow{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+#battleLog .bl-btn[hidden]{display:none!important}
+#battleLog .bl-btn.go{background:#3f6b4a!important;color:#f5e8c8!important}
+#battleLog .bl-btn.wait{background:rgba(63,107,74,.14)!important;color:#3f6b4a!important;cursor:default}
+#battleLog .bl-btn.no{background:rgba(155,51,36,.10)!important;color:#9b3324!important}
+#battleLog .bl-rpmsg{display:flex;align-items:center;gap:10px;background:rgba(63,107,74,.12);color:#2a2017;padding:8px 16px;border-radius:10px;font-size:13px;font-weight:700;letter-spacing:.04em}
+#battleLog .bl-rpmsg[hidden],#battleLog .bl-note[hidden]{display:none}
+#battleLog .bl-rpmsg img{width:28px;height:28px;border-radius:50%;border:2px solid #cdb894;background:#d9c8a6;object-fit:cover}
+#battleLog .bl-note{font-size:12px;color:#5a4834}
+</style>
 </body>
 </html>
