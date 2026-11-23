@@ -6251,6 +6251,36 @@ html, .hm-body {
   #hmRoom .hm-rban .art{-webkit-mask-image:linear-gradient(90deg,transparent 20%,#000 100%),linear-gradient(0deg,transparent 0%,#000 45%);mask-image:linear-gradient(90deg,transparent 20%,#000 100%),linear-gradient(0deg,transparent 0%,#000 45%)}}
 #hmArenas .hm-arena > span:last-child{font-size:15px!important}
 </style>
+<style id="hm1392">
+/* 13.9.2 room page */
+#hmRoom .hm-rban{display:none}
+#hmRoom .hm-rart{display:flex;flex-direction:column;gap:22px;padding:0 18px 16px;margin:0 0 -18px;background-size:cover;background-position:center 35%;background-repeat:no-repeat}
+#hmRoom .hm-rband{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:0 -18px;padding:12px 18px;
+  background:linear-gradient(180deg,rgba(243,235,219,.46),rgba(243,235,219,.35))}
+#hmRoom .hm-rband:not(:has(> :not([hidden]))){display:none}
+#hmRoom #hmPrivPanel{position:static!important;flex:1;min-width:0;margin:0}
+#hmRoom #hmPrivPanel .hm-prow{flex-direction:column;align-items:flex-start;gap:4px}
+#hmRoom #hmPrivPanel .pl b{display:block}
+#hmRoom .hm-trow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#hmRoom .hm-trow small{display:inline;color:#2a2017}
+#hmRoom .hm-seg{background:rgba(243,235,219,.9)}
+#hmRoom .hm-maptxt{flex:1;text-align:center;font:400 .95rem/1.3 Cinzel,Georgia,serif;letter-spacing:.1em;color:#2a2017}
+#hmRoom .hm-maptxt[hidden]{display:none}
+#hmRoom .hm-maptxt b{color:#9b3324}
+#hmRoom #hmCodePanel{flex:none;background:rgba(243,235,219,.9)!important;border-radius:10px!important;padding:5px 14px!important;gap:0}
+#hmRoom #hmCodePanel .hm-lbl{font-size:.6rem!important;color:#3a2a1a!important}
+#hmRoom .hm-code{font-size:1.2rem!important}
+#hmRoom .hm-plpanel{padding:0 18px!important}
+#hmRoom .hm-top{padding:0 18px}
+#hmRoom .hm-pl{border:0!important;background:rgba(243,235,219,.425)!important}
+#hmRoom #hmP1.in{background:linear-gradient(rgba(63,107,74,.10),rgba(63,107,74,.10)),rgba(243,235,219,.425)!important}
+#hmRoom #hmP2.in{background:linear-gradient(rgba(155,51,36,.12),rgba(155,51,36,.12)),rgba(243,235,219,.425)!important}
+#hmRoom .hm-players .hm-vsx{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(243,235,219,.92);box-shadow:0 1px 4px rgba(42,32,23,.3)}
+#hmRoom #hmStartBtn{width:100%!important;margin:0!important;border-radius:0!important;border:0!important;box-shadow:none!important}
+#hmRoom .hm-start:not(:disabled){background:#3f6b4a!important;color:#f5e8c8!important}
+#hmRoom .hm-start.ready{background:rgba(63,107,74,.14)!important;color:#3f6b4a!important}
+@media (max-width:760px){#hmRoom .hm-plpanel{padding:0!important}#hmRoom .hm-top{padding:0 10px}#hmRoom #hmArenaPanel{padding:0 10px!important}#hmRoom .hm-rart{padding:0 12px 14px}#hmRoom .hm-rband{margin:0 -12px;padding:10px 12px}}
+</style>
 <!-- CPU difficulty pop-up -->
 <div class="hm-ov hm-modal-bg" id="hmDiff" hidden onclick="if(event.target===this)hmCloseDiff()">
   <div class="hm-card" role="dialog" aria-modal="true" aria-labelledby="hmDiffH">
@@ -6405,11 +6435,18 @@ html, .hm-body {
 <div class="hm-ov hm-page" id="hmRoom" hidden>
   <div class="wrap">
     <div class="hm-top"><button class="hm-back" type="button" onclick="hmLeaveRoom()">← Leave Room</button><h2 class="hm-ptitle" id="hmRoomH">Your Room</h2></div>
-    <div class="hm-rban"><div class="art" aria-hidden="true"></div>
+    <div class="hm-rart" id="hmRoomArt">
+    <div class="hm-rband">
     <div class="hm-panel" id="hmPrivPanel">
-      <div class="hm-prow"><div class="pl"><b>Room Type</b><small id="hmPrivTxt">Private — only players with the code can join</small></div>
-        <div class="hm-seg" role="group" aria-label="Room type"><button type="button" id="hmSegPriv" class="on" onclick="hmSetPublic(false)">Private</button><button type="button" id="hmSegPub" onclick="hmSetPublic(true)">Public</button></div></div>
-    </div></div>
+      <div class="hm-prow"><div class="pl"><b>Room Type</b><div class="hm-trow">
+        <div class="hm-seg" role="group" aria-label="Room type"><button type="button" id="hmSegPriv" class="on" onclick="hmSetPublic(false)">Private</button><button type="button" id="hmSegPub" onclick="hmSetPublic(true)">Public</button></div><small id="hmPrivTxt">Private — only players with the code can join</small></div></div></div>
+    </div>
+    <div class="hm-maptxt" id="hmMapTxt" hidden>Battlefield: <b id="hmMapName">Random</b></div>
+    <div class="hm-panel" id="hmCodePanel">
+      <div class="hm-lbl">Room Code</div>
+      <div class="hm-codewrap"><button class="hm-code" id="hmCode" type="button" onclick="hmCopyCode()" title="Copy code">····</button><span class="hm-copied" id="hmCopied" hidden>Copied!</span></div>
+    </div>
+    </div>
     <div class="hm-panel hm-plpanel">
       <div class="hm-players">
         <div class="hm-pl in" id="hmP1"><img class="pav" id="hmP1a" src="av/foot_soldier.webp" alt=""><div class="pn" id="hmP1n">Guest (You)</div><div class="ps" id="hmP1s">Host</div></div>
@@ -6417,9 +6454,6 @@ html, .hm-body {
         <div class="hm-pl wait" id="hmP2"><img class="pav" id="hmP2a" src="av/foot_soldier.webp" alt="" style="visibility:hidden"><div class="pn" id="hmP2n">Waiting for a player</div><div class="ps" id="hmP2s">Room is open</div></div>
       </div>
     </div>
-    <div class="hm-panel" id="hmCodePanel">
-      <div class="hm-lbl">Room Code</div>
-      <div class="hm-codewrap"><button class="hm-code" id="hmCode" type="button" onclick="hmCopyCode()" title="Copy code">····</button><span class="hm-copied" id="hmCopied" hidden>Copied!</span></div>
     </div>
     <button class="hm-start" id="hmStartBtn" type="button" disabled onclick="hmPressStart()">Start</button>
     <div class="hm-netstat" id="hmNetStat">Connecting to the online lobby…</div>
@@ -6715,7 +6749,7 @@ function hmRoomUI(){
   $('hmP2s').textContent=has?(NET.themReady?'Ready':'Joined — not ready'):(host?(NET.pub?'Listed in Join a Game':'Share the room code'):'');
   $('hmP2s').className='ps'+(has&&NET.themReady?' ok':'');
   const b=$('hmStartBtn');b.disabled=!has;b.classList.toggle('ready',NET.meReady);
-  b.textContent=!has?'Start · waiting for a second player':(NET.meReady?(NET.themReady?'Starting…':'Ready · waiting for the other player'):'Start');}
+  b.textContent=!has?'Waiting for a second player':(NET.meReady?(NET.themReady?'Starting…':'Ready · waiting for the other player'):'Start');}
 function netWire(c){NET.conn=c;
   c.on('data',m=>{if(!m||typeof m!=='object')return;NET.lastRx=performance.now();if(m.t==='p')return;
     if(m.t==='ready'){NET.themReady=!!m.v;if(m.n)NET.oppName=m.n;if(m.a)AVS.opp=avOk(m.a);hmRoomUI();if(NET.role==='host')netMaybeGo();}
@@ -7461,6 +7495,14 @@ function hmArenaUI(){const box=$('hmArenas');if(!box)return;const host=NET.role=
   const A=ARENAS.find(a=>a.id===pick);
   $('hmArenaNote').textContent=host?(pick==='random'?'A battlefield and its song are picked when the battle begins.':'Both players fight on '+A.n+'.'):('The host picks the battlefield'+(A?': '+A.n:': Random')+'.');}
 {const _ru=hmRoomUI;hmRoomUI=function(){const r=_ru.apply(this,arguments);try{hmArenaUI();}catch(e){}return r;};}
+/* 13.9.2: the picked battlefield is the room's background (Random: the War Council tent, toned down);
+   only the host sees the map picker; the other player reads the map name in the band */
+function hmRoomArt(){const W=$('hmRoomArt');if(!W)return;const pick=NET.arenaPick||'random',A=ARENAS.find(a=>a.id===pick);
+  W.style.backgroundImage=A?'url('+A.bg+')':'linear-gradient(rgba(58,42,26,.38),rgba(58,42,26,.38)),url(menu/ink_card_council.webp)';
+  $('hmMapName').textContent=A?A.n:'Random';const host=NET.role==='host',q=!!NET.quick;$('hmMapTxt').hidden=host&&!q;
+  const ap=$('hmArenaPanel');if(ap)ap.hidden=q||!host;}
+{const _ru=hmRoomUI;hmRoomUI=function(){const r=_ru.apply(this,arguments);try{hmRoomArt();}catch(e){}return r;};}
+{const _au=hmArenaUI;hmArenaUI=function(){const r=_au.apply(this,arguments);try{hmRoomArt();}catch(e){}return r;};}
 
 </script>
 <script>
