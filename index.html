@@ -6047,7 +6047,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.9.6 · Prototype</span>
+            <span class="settings-row-value">#13.9.7 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6153,6 +6153,12 @@ html, .hm-body {
 .code-avrow .code-avs{margin-top:0}
 .code-av{border:0!important;background:rgba(90,72,52,.06)!important}
 .code-chip{border:0!important}
+</style><style>/* 13.9.7: no borders in the menus (tab lines and the red selected-tab underline stay) */
+*:not(.nav-tab.active):not(.set-tab.on):not(.pf-tab.on):not(.hm-spin):not(.set-tabs):not(.pf-tabs):not(.app-header){border-color:transparent!important}
+.pf-unlock-btn,.tac-back,.settings-row-action:not(.danger){background:rgba(90,72,52,.10)!important}
+.settings-row-action.danger{background:rgba(155,51,36,.12)!important}
+.sx-slot.on{background:rgba(155,51,36,.18)!important}
+.syn-card{margin-bottom:14px!important;border-radius:10px!important}
 </style></template>
 
 <!-- boot / title screen -->
@@ -7916,6 +7922,11 @@ $('blRpNo').onclick=()=>{netSend({t:'rd'});RP.them=false;hmRpHide();hmRpNote('')
 #battleLog .bl-rpmsg[hidden],#battleLog .bl-note[hidden]{display:none}
 #battleLog .bl-rpmsg img{width:28px;height:28px;border-radius:50%;border:2px solid #cdb894;background:#d9c8a6;object-fit:cover}
 #battleLog .bl-note{font-size:12px;color:#5a4834}
+</style>
+<style id="hm1397">/* 13.9.7: no borders on the start screen and menu pop-ups (not in battle) */
+#hmBoot *:not(.nav-tab.active):not(.set-tab.on):not(.pf-tab.on):not(.hm-spin):not(.set-tabs):not(.pf-tabs):not(.app-header),.hm-ov:not(#hmAudio):not(#hmPaused):not(#hmSurr):not(#hmLoad):not(#hmCount) *:not(.nav-tab.active):not(.set-tab.on):not(.pf-tab.on):not(.hm-spin):not(.set-tabs):not(.pf-tabs):not(.app-header){border-color:transparent!important}
+.hm-ov:not(#hmAudio):not(#hmPaused):not(#hmSurr):not(#hmLoad):not(#hmCount) .hm-btn.hm-ghost,.hm-ov:not(#hmAudio):not(#hmPaused):not(#hmSurr):not(#hmLoad):not(#hmCount) .hm-back{background:rgba(90,72,52,.10)!important}
+#hmArenas .hm-arena.on{background:rgba(155,51,36,.18)!important}
 </style>
 </body>
 </html>
