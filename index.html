@@ -5221,7 +5221,7 @@ html, .hm-body {
     </div>
     <div class="stats-area">
       <div class="inner">
-        <div class="pf-mtabs" role="tablist" aria-label="Profile section"><button type="button" role="tab" class="pf-mtab on" data-m="stats" onclick="hmPfMain('stats')">Battle Stats</button><button type="button" role="tab" class="pf-mtab" data-m="armory" onclick="hmPfMain('armory')">Armory</button></div>
+        <div class="pf-mtabs" role="tablist" aria-label="Profile section"><button type="button" role="tab" class="pf-mtab on" data-m="stats" onclick="hmPfMain('stats')">Battle Stats</button><button type="button" role="tab" class="pf-mtab" data-m="armory" onclick="hmPfMain('armory')">Armory</button><button type="button" role="tab" class="pf-mtab" data-m="missions" onclick="hmPfMain('missions')">Missions</button></div>
         <div id="pfArmory" hidden></div>
         <div id="pfStatsPane">
         <div class="pf-tabs" role="tablist" aria-label="Stats type">
@@ -6067,7 +6067,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.10 · Prototype</span>
+            <span class="settings-row-value">#13.10.1 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6265,6 +6265,10 @@ html, .hm-body {
 .arm-mi .n{text-align:right;font:1rem 'Crimson Pro',Georgia,serif;color:#5a4834;white-space:nowrap}
 .arm-mi.done .n{color:#3f7a3a;font-family:Cinzel,Georgia,serif;font-size:.75rem;letter-spacing:.12em;font-weight:700}
 @media (max-width:640px){.arm-slots{grid-template-columns:repeat(2,1fr)}.arm-sub{gap:16px}}
+.arm-mi .bar{position:relative}.arm-mi .bar s{position:absolute;top:-2px;width:2px;height:10px;background:#5a4834;opacity:.45}
+.arm-mi .tx small b{display:inline!important;font-style:italic!important;font-weight:600!important;font-size:.88rem!important;color:#9b3324!important}
+.arm-looks{display:flex;gap:10px;flex-wrap:wrap}.arm-looks .av-opt{width:84px!important;height:84px!important}
+.code-tt{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font:22px Georgia,serif;background:#f0d89a;color:#7a5200}
 </style></template>
 
 <!-- boot / title screen -->
@@ -8115,6 +8119,10 @@ body.gfx-none .tbub.on{animation:none}body.gfx-none .tbub.off{transition:none}
 .btitle.tt-c-common{color:#e6dac6}.btitle.tt-c-uncommon{color:#93d68d}.btitle.tt-c-rare{color:#9dbcff}.btitle.tt-c-epic{color:#cfa6f5}.btitle.tt-c-legendary{color:#f2c75c}
 .rtitle{font:700 .72rem/1.2 Cinzel,Georgia,serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:2px}
 .rtitle.tt-c-common{color:#7a6a58}.rtitle.tt-c-uncommon{color:#3f7a3a}.rtitle.tt-c-rare{color:#2f5597}.rtitle.tt-c-epic{color:#7a4aa8}.rtitle.tt-c-legendary{color:#a8741a}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.avpop-g{width:56px;height:56px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font:26px Georgia,serif;border:2px solid #b4935a}
+.avpop-g.tt-g-common{background:#e3d6bf;color:#5a4834}.avpop-g.tt-g-legendary{background:#f0d89a;color:#7a5200}.avpop-g.tt-g-uncommon{background:#cfe3c8;color:#2f5d2b}.avpop-g.tt-g-rare{background:#cbd8f0;color:#24467d}.avpop-g.tt-g-epic{background:#ddcdee;color:#5a3488}
+.avpop-g.tn-g{background:#8c1c16;color:#fff;font-style:italic}
 </style>
 <script>
 /* ═══ 13.10: Armory — Titles, Taunts, Missions ═══ */
@@ -8194,11 +8202,13 @@ document.addEventListener('pointerdown',e=>{const sh=$('tauntSheet'),b=$('tauntB
 /* ── Profile: Battle Stats | Armory ── */
 HM.pfMain='stats';HM.armTab='titles';HM.misF='all';
 function hmPfMain(t){HM.pfMain=t;const R=hmSR();if(!R)return;R.querySelectorAll('.pf-mtab').forEach(b=>b.classList.toggle('on',b.dataset.m===t));
-  R.getElementById('pfStatsPane').hidden=t!=='stats';R.getElementById('pfArmory').hidden=t!=='armory';if(t==='armory')hmArmRender();}
+  R.getElementById('pfStatsPane').hidden=t!=='stats';R.getElementById('pfArmory').hidden=t==='stats';if(t!=='stats')hmArmRender();}
 function hmArmTab(t){HM.armTab=t;hmArmRender();}
 function hmMisF(f){HM.misF=f;hmArmRender();}
 function hmTtPick(id){if(!ttHave(id))return;hmLSset('hm_title',id);try{snd('card_land');}catch(e){}hmArmRender();hmTitlesTick();}
-function hmArmAv(a){if(!avUnlocked(a))return;if(a==='bradley'||a==='dangmang'||a==='patokeem'){hmAvOpen();hmAvPick(a);return;}hmAvPick(a);hmArmRender();}
+const ARM_LOOKS={bradley:BRADLEY_V,dangmang:DANGMANG_V,patokeem:PATOKEEM_V};HM.armLook=null;
+function hmArmAv(a){if(!avUnlocked(a))return;if(ARM_LOOKS[a]){HM.armLook=HM.armLook===a?null:a;hmArmRender();return;}HM.armLook=null;AVS.me=avOk(a);try{localStorage.setItem('hm_avatar',AVS.me);}catch(e){}try{snd('card_land');}catch(e){}hmAvApply();hmArmRender();}
+function hmArmLook(v){AVS.me=avOk(v);try{localStorage.setItem('hm_avatar',AVS.me);}catch(e){}HM.armLook=null;try{snd('card_land');}catch(e){}hmAvApply();hmArmRender();}
 let TN_SLOT=-1;
 function hmTnSlot(i){TN_SLOT=TN_SLOT===i?-1:i;hmArmRender();}
 function hmTnPick(id){const t=TN_LIST.find(x=>x.id===id);if(!t||!tnHave(t))return;let e=tnEq();const at=e.indexOf(id);
@@ -8210,31 +8220,54 @@ const LOCK_SVG='<span class="av-lock" aria-hidden="true"><svg width="18" height=
 function hmMissions(){const U=avUses(),L=[];
   TT_LIST.forEach(t=>{const f=TT_NEED[t.id];if(!f)return;const p=f(ttStats());L.push({k:'titles',rw:'<span class="ms-tt">號</span>',txt:{fodder:'Beat the computer on General',soldier:'Win your first Skirmish battle',apprentice:'Win 10 Skirmish battles'}[t.id],note:'Unlocks title: '+t.n,h:p[0],n:p[1]});});
   AV_LIST.forEach(a=>{const h=AV_HINT[a];if(!h)return;let txt=h[0];const riddle=txt.charAt(0)==='“';if(riddle)txt=txt.split(' · ')[0];const p=h[1](U);
-    let img=a==='bradley'?'bradley_general':a;L.push({k:'avatars',rw:'<img src="av/'+img+'.webp" alt="" loading="lazy">',sil:a==='bradley',txt,note:riddle?'':'',h:p[0],n:p[1],ok:avUnlocked(a,U)});});
-  TN_LIST.forEach(t=>{if(!t.syn)return;const F=FORMATIONS[t.syn];L.push({k:'taunts',rw:'<span class="ms-tn">“ ”</span>',txt:'Form '+F.name+' '+t.need+' times',note:'Unlocks taunt: “'+t.t+'” · online battles',h:Math.min(U['o_'+t.syn]||0,t.need),n:t.need});});
+    let img=a==='bradley'?'bradley_general':a;const m={k:'avatars',rw:'<img src="av/'+img+'.webp" alt="" loading="lazy">',sil:a==='bradley',txt,note:'',h:p[0],n:p[1],ok:avUnlocked(a,U)};
+    const sk=Object.keys(SYN_AV).find(k=>SYN_AV[k]===a);
+    if(sk){m.tn=1;m.ticks=1;const c=U['o_'+sk]||0,nx=TN_LIST.filter(t=>t.syn===sk).find(t=>c<t.need);if(nx)m.note='Taunt unlock at '+nx.need+': <b>“'+nx.t+'”</b> · online battles';}
+    L.push(m);});
   L.forEach(m=>{if(m.ok===undefined)m.ok=m.h>=m.n;});return L;}
 function hmArmRender(){const R=hmSR(),box=R&&R.getElementById('pfArmory');if(!box||box.hidden)return;
-  const tabs=[['titles','Titles'],['avatars','Avatars'],['taunts','Taunts'],['missions','Missions']];
-  let h='<div class="arm-sub" role="tablist">'+tabs.map(t=>'<button type="button" class="arm-st'+(HM.armTab===t[0]?' on':'')+'" onclick="hmArmTab(\''+t[0]+'\')">'+t[1]+'</button>').join('')+'</div>';
-  if(HM.armTab==='titles'){const cur=ttCur();
+  const tabs=[['titles','Titles'],['avatars','Avatars'],['taunts','Taunts']];const mis=HM.pfMain==='missions';if(!mis&&HM.armTab==='missions')HM.armTab='titles';
+  let h=mis?'':'<div class="arm-sub" role="tablist">'+tabs.map(t=>'<button type="button" class="arm-st'+(HM.armTab===t[0]?' on':'')+'" onclick="hmArmTab(\''+t[0]+'\')">'+t[1]+'</button>').join('')+'</div>';
+  if(mis){}else if(HM.armTab==='titles'){const cur=ttCur();
     h+='<div class="arm-h">Your Titles<i>Tap one to use it</i></div><div class="arm-tl">'+TT_LIST.filter(t=>!t.code||ttHave(t.id)).map(t=>{const ok=ttHave(t.id),on=t.id===cur;
       return '<button type="button" class="arm-tr tt-b-'+t.lv+(ok?'':' lock')+(on?' on':'')+'"'+(ok?' onclick="hmTtPick(\''+t.id+'\')"':' disabled')+'><b class="tt-c-'+t.lv+'">'+t.n+'</b><span>'+(on?'<em>Equipped</em>':ok?'':'🔒 Locked')+'</span></button>';}).join('')+'</div>';}
   else if(HM.armTab==='avatars'){const U=avUses(),SECRET=['dangmang','patokeem','vibecoder'],vis=AV_LIST.filter(a=>SECRET.indexOf(a)<0||avUnlocked(a,U)),n=vis.filter(a=>avUnlocked(a,U)).length;
     h+='<div class="arm-h">Your Avatars<i>'+n+' of '+vis.length+' unlocked · tap one to use it</i></div><div class="arm-avg">'+vis.map(a=>{const ok=avUnlocked(a,U);let img=a;
       if(a==='bradley')img=avBase(AVS.me)==='bradley'?AVS.me:'bradley_general';else if(a==='dangmang')img=avBase(AVS.me)==='dangmang'?AVS.me:'dangmang_empress';else if(a==='patokeem')img=avBase(AVS.me)==='patokeem'?AVS.me:'patokeem_general';
-      return '<button type="button" class="av-opt'+(ok?'':' locked'+(a==='bradley'?' sil':''))+(avBase(AVS.me)===a?' on':'')+'"'+(ok?' onclick="hmArmAv(\''+a+'\')" aria-label="Avatar"':' disabled aria-label="Locked avatar"')+'><img src="av/'+img+'.webp" alt="" loading="lazy">'+(ok?'':LOCK_SVG)+'</button>';}).join('')+'</div>';}
+      return '<button type="button" class="av-opt'+(ok?'':' locked'+(a==='bradley'?' sil':''))+(avBase(AVS.me)===a?' on':'')+'"'+(ok?' onclick="hmArmAv(\''+a+'\')" aria-label="Avatar"':' disabled aria-label="Locked avatar"')+'><img src="av/'+img+'.webp" alt="" loading="lazy">'+(ok?'':LOCK_SVG)+'</button>';}).join('')+'</div>'+(HM.armLook?'<div class="arm-h" style="margin-top:16px">Choose a look</div><div class="arm-looks">'+ARM_LOOKS[HM.armLook].map(v=>'<button type="button" class="av-opt'+(AVS.me===v?' on':'')+'" onclick="hmArmLook(\''+v+'\')" aria-label="Look"><img src="av/'+v+'.webp" alt=""></button>').join('')+'</div>':'');}
   else if(HM.armTab==='taunts'){const e=tnEq();
     h+='<div class="arm-h">Your Taunts<i>Pick up to 6 to use in battle. Tap a slot, then a taunt below.</i></div><div class="arm-slots">';
     for(let i=0;i<6;i++){const id=e[i];h+='<div class="arm-slot'+(id?'':' empty')+(TN_SLOT===i?' sel':'')+'" onclick="hmTnSlot('+i+')">'+(id?'<span>'+tnText(id)+'</span>'+(e.length>1?'<button type="button" class="arm-x" aria-label="Remove" onclick="event.stopPropagation();hmTnClear('+i+')">×</button>':''):'+')+'</div>';}
     h+='</div><div class="arm-h">All Taunts</div><div class="arm-tnl">'+TN_LIST.map(t=>{const ok=tnHave(t),use=e.indexOf(t.id)>=0;
       return '<button type="button" class="arm-tn'+(ok?'':' lock')+(use?' use':'')+'"'+(ok?' onclick="hmTnPick(\''+t.id+'\')"':' disabled')+'><span class="q">'+t.t+'</span><span class="s">'+(use?'In use':ok?'':'🔒 Locked')+'</span></button>';}).join('')+'</div>';}
-  else{const all=hmMissions(),f=HM.misF,list=all.filter(m=>f==='all'?true:f==='done'?m.ok:m.k===f);
+  if(mis){const all=hmMissions(),f=HM.misF,list=all.filter(m=>f==='all'?true:f==='done'?m.ok:f==='taunts'?!!m.tn:m.k===f);
     h+='<div class="arm-filt">'+[['all','All'],['avatars','Avatars'],['titles','Titles'],['taunts','Taunts'],['done','Done']].map(x=>'<button type="button" class="'+(f===x[0]?'on':'')+'" onclick="hmMisF(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div>';
-    h+='<div class="arm-ms">'+(list.length?list.map(m=>'<div class="arm-mi'+(m.ok?' done':'')+'"><div class="rw'+(m.sil&&!m.ok?' sil':'')+'">'+m.rw+'</div><div class="tx"><b>'+m.txt+'</b>'+(m.note?'<small>'+m.note+'</small>':'')+'<div class="bar"><i style="width:'+Math.min(100,m.h/m.n*100)+'%"></i></div></div><div class="n">'+(m.ok?'DONE':Math.min(m.h,m.n)+' / '+m.n)+'</div></div>').join(''):'<div class="pf-empty">Nothing here yet.</div>')+'</div>';}
+    h+='<div class="arm-ms">'+(list.length?list.map(m=>'<div class="arm-mi'+(m.ok?' done':'')+'"><div class="rw'+(m.sil&&!m.ok?' sil':'')+'">'+m.rw+'</div><div class="tx"><b>'+m.txt+'</b>'+(m.note?'<small>'+m.note+'</small>':'')+'<div class="bar"><i style="width:'+Math.min(100,m.h/m.n*100)+'%"></i>'+(m.ticks?'<s style="left:25%"></s><s style="left:50%"></s><s style="left:75%"></s>':'')+'</div></div><div class="n">'+(m.ok?'DONE':Math.min(m.h,m.n)+' / '+m.n)+'</div></div>').join(''):'<div class="pf-empty">Nothing here yet.</div>')+'</div>';}
   box.innerHTML=h;}
 {const _a=hmAvApply;hmAvApply=function(){const r=_a.apply(this,arguments);try{if(HM.pfMain==='armory'&&HM.armTab==='avatars')hmArmRender();}catch(e){}return r;};}
 {const _p=hmRenderProfile;hmRenderProfile=function(){const r=_p.apply(this,arguments);try{hmArmRender();hmTauntShowUI();}catch(e){}return r;};}
 setTimeout(()=>{try{hmTauntShowUI();hmTitlesTick();}catch(e){}},500);
+/* 13.10.1: unlock pop-ups for titles and taunts (same corner card as avatars) */
+function avPopNext(){if(AVPOP||!AVQ.length)return;const a=AVQ.shift(),d=document.createElement('div');d.className='avpop';d.setAttribute('role','status');
+  if(typeof a==='string')d.innerHTML='<img src="av/'+a+'.webp" alt=""><div class="avpop-t"><b>Avatar unlocked!</b><small>Choose it in Profile → Armory</small></div>';
+  else d.innerHTML='<span class="avpop-g '+a.c+'">'+a.g+'</span><div class="avpop-t"><b>'+a.h+'</b><small>'+a.s+'</small></div>';
+  const done=()=>{if(!AVPOP)return;clearTimeout(AVPOP.t);d.classList.add('out');AVPOP=null;setTimeout(()=>{d.remove();avPopNext();},300);};
+  d.onclick=done;document.body.appendChild(d);AVPOP={d,t:setTimeout(done,5000)};try{snd('hero_awaken',.5);}catch(e){}}
+function hmUnlockCheck(){
+  const tt=TT_LIST.filter(t=>ttHave(t.id)).map(t=>t.id),tn=TN_LIST.filter(t=>tnHave(t)).map(t=>t.id);
+  let st=hmLS('hm_tt_seen',null),sn=hmLS('hm_tn_seen',null);
+  if(st)tt.filter(id=>st.indexOf(id)<0).forEach(id=>AVQ.push({g:'號',c:'tt-g-'+ttLv(id),h:'Title unlocked: '+ttName(id),s:'Use it in Profile → Armory → Titles'}));
+  if(sn)tn.filter(id=>sn.indexOf(id)<0).forEach(id=>AVQ.push({g:'“ ”',c:'tn-g',h:'Taunt unlocked!',s:'“'+tnText(id)+'”'}));
+  hmLSset('hm_tt_seen',tt);hmLSset('hm_tn_seen',tn);avPopNext();}
+{const _r=pfRecord;pfRecord=function(){const r=_r.apply(this,arguments);try{hmUnlockCheck();}catch(e){}return r;};}
+{const _h=hmRedeem;hmRedeem=function(){const r=_h.apply(this,arguments);try{hmUnlockCheck();}catch(e){}return r;};}
+setTimeout(()=>{try{hmUnlockCheck();}catch(e){}},800);
+/* Settings → Code also lists the Emperor title */
+{const _c=hmCodeAvs;hmCodeAvs=function(){const ok=_c.apply(this,arguments);try{const R=hmSR(),box=R&&R.getElementById('codeAvs');if(box&&emperorCode()){
+  const row='<div class="code-av"><span class="code-tt">號</span><div class="t"><b>Emperor</b><span>Title unlocked via code</span></div><span class="code-chip life">'+'INEED'+'SLEEP'+'</span></div>';
+  const emp=box.querySelector('.code-empty');if(emp){emp.outerHTML=row+'<div class="code-leg"><span class="code-chip one">one-time code</span><span class="code-chip life">lifetime / promo code</span></div>';}
+  else{const leg=box.querySelector('.code-leg');if(leg)leg.insertAdjacentHTML('beforebegin',row);}}
+  if(box){const e=box.querySelector('.code-empty');if(e)e.textContent='Nothing unlocked via code yet';}}catch(e){}return ok;};}
 </script>
 </body>
 </html>
