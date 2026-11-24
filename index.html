@@ -961,6 +961,18 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 .gfx-none #stage *{box-shadow:none!important;text-shadow:none!important}
 .gfx-none #stage .hit,.gfx-none #stage .struck,.gfx-none #stage .mandateHit{animation:none!important}
 .hm-song{text-align:center;font:italic 1.05rem/1.3 'Crimson Pro',Georgia,serif;color:#f5e8c8;text-shadow:0 1px 3px rgba(0,0,0,.7),0 0 10px rgba(0,0,0,.45);margin-top:10px}.hm-song b{font-style:normal;font-family:Cinzel,Georgia,serif;letter-spacing:.08em;font-weight:400}
+
+/* 13.10.4 Battle Report */
+#battleLog .bl-num,#battleLog .bl-best .dp,#battleLog .bl-stat>span:not(.bl-best),#battleLog #blTime b,#battleLog .blc{font-family:Consolas,'Cascadia Mono',Menlo,'Courier New',monospace!important;font-variant-numeric:tabular-nums}
+#battleLog .blcs{display:flex;gap:1px;justify-content:center}
+#battleLog .blc{display:inline-flex;align-items:center;justify-content:center;width:20px;height:15px;border-radius:3.5px;font-weight:700;font-size:8.5px;line-height:1;letter-spacing:-.02em}
+#battleLog .blc.r-std{background:#e3dace}#battleLog .blc.r-fort{background:#ffdad8}#battleLog .blc.r-hero{background:#ffebb5}#battleLog .blc.r-cel{background:#eedeff}
+#battleLog .blc.sc-c{color:#1e1a14}#battleLog .blc.sc-s{color:#3b6ae0}#battleLog .blc.sc-d{color:#e0781a}#battleLog .blc.sc-h{color:#e0383c}
+#battleLog .bl-wave-row{grid-template-columns:24px minmax(0,1fr) 104px 44px 28px!important;column-gap:4px!important}
+#blX{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:calc(14px + env(safe-area-inset-right,0px));z-index:1000;width:40px;height:40px;border-radius:50%;border:0;background:rgba(42,32,23,.85);color:#f5e8c8;font-size:18px;line-height:40px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+#blX:hover{background:#9b3324}
+#battleLog .bl-best .nm{font-size:9.5px!important;font-weight:700!important}
+#battleLog .bl-best .dp b{font-weight:700!important}
 </style>
 </head>
 <body>
@@ -1288,17 +1300,25 @@ function evalPoker(slots){
 function fmtTime(ms){const s=Math.round(ms/1000);return Math.floor(s/60)+':'+(s%60).toString().padStart(2,'0');}
 
 const BL_SC={'\u2663':'c','\u2660':'s','\u2666':'d','\u2665':'h'};
-function blSuit(lbl){const k=BL_SC[String(lbl)[0]];return k?'<span class="sc-'+k+'">'+lbl+'</span>':lbl;}
+
 function blSummoned(waves){const n={c:0,s:0,d:0,h:0};waves.forEach(w=>(w.slotLabels||w.suits||[]).forEach(l=>{const k=BL_SC[String(l)[0]];if(k)n[k]++;}));
   return '<span class="bl-sum"><span class="sc-c">\u2663 '+n.c+'</span><span class="sc-s">\u2660 '+n.s+'</span><span class="sc-d">\u2666 '+n.d+'</span><span class="sc-h">\u2665 '+n.h+'</span></span>';}
+const BL_AB={none:'DS',pair:'TB',twopair:'DF',three:'TPS',four:'FP',fiveoak:'FTP',mandate:'HM\u5929\u547d',fullhouse:'D&TC',straight:'FS',sflush:'NDC',royal:'ESA'};
+function blName(w){if(!w||!w.hand||w.hand==='none')return w&&w.fl?'Monolith Vanguard':'No Synergy';const n=w.handName||w.hand;
+  if(w.hand!=='flush'&&(w.fl||/\+ Monolith Vanguard/.test(n)))return 'Monolith Vanguard + '+(BL_AB[w.hand]||n.replace(/\s*\+ Monolith Vanguard/,''));return n;}
+function blDps(v){return (Math.round((v||0)*10)/10).toFixed(1).padStart(4,'0');}
+function blW(n){return 'W'+String(n).padStart(2,'0');}
+function fmtMS(ms){const s=Math.round(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+(s%60).toString().padStart(2,'0');}
+function blSuit(lbl){lbl=String(lbl);const k=BL_SC[lbl[0]];if(!k)return lbl;const cel=/\(H\)/.test(lbl),sm=parseInt(lbl.slice(1),10)||0;
+  const r=cel?'cel':sm>=21?'hero':sm>=17?'fort':'std';return '<span class="blc r-'+r+' sc-'+k+'">'+lbl[0]+sm+'</span>';}
 function blBest(waves){const w=waves.reduce((b,x)=>(!b||(x.dps||0)>(b.dps||0))?x:b,null);
-  if(!w)return '<span>—</span>';const nm=(!w.hand||w.hand==='none')?'No Synergy':(w.handName||w.hand);
-  return '<span class="bl-best"><span class="nm">'+nm+'</span><span class="dp"><b>'+(Math.round((w.dps||0)*10)/10)+' DPS</b> <small class="bl-when">(wave '+w.wave+', '+fmtTime((w.time||0)*1000)+')</small></span></span>';}
+  if(!w)return '<span>—</span>';const nm=blName(w);
+  return '<span class="bl-best"><span class="nm">'+nm+'</span><span class="dp"><b class="bl-num">'+blDps(w.dps)+' DPS</b> <small class="bl-when bl-num">('+blW(w.wave)+', '+fmtMS((w.time||0)*1000)+')</small></span></span>';}
 function showBattleLog(){
   {const h=document.getElementById('blWavesEH');if(h)h.textContent=((typeof NET!=='undefined')&&NET.online)?HM.opp+"'s Waves":'Enemy Waves';}
   const L=S.log;
   const win=S.eBaseHP<=0;
-  const dur=fmtTime((L.duration||0)*1000);{const _t=document.getElementById('blTime');if(_t)_t.innerHTML='Match Time: <b>'+dur+'</b>';}
+  const dur=fmtMS((L.duration||0)*1000);{const _t=document.getElementById('blTime');if(_t)_t.innerHTML='Match Time: <b>'+dur+'</b>';}
 
   // Result
   const res=document.getElementById('blResult');
@@ -1335,11 +1355,11 @@ function showBattleLog(){
   // Wave history — two columns sorted oldest-first
   const waveRow=w=>`
     <div class="bl-wave-row">
-      <span>Wave ${w.wave}</span>
-      <span class="whand">${(!w.hand||w.hand==='none')?'No Synergy':(w.handName||w.hand)}</span>
-      <span>${(w.slotLabels||w.suits||[]).map(blSuit).join(' ')}</span>
-      <span style="color:#7fe0b0;font-weight:700">${w.dps||'\u2014'} DPS</span>
-      <span class="wtime">${fmtTime(w.time*1000)}</span>
+      <span class="bl-num">${blW(w.wave)}</span>
+      <span class="whand">${blName(w)}</span>
+      <span class="blcs">${(w.slotLabels||w.suits||[]).map(blSuit).join('')}</span>
+      <span class="bl-num" style="color:#7fe0b0;font-weight:700">${blDps(w.dps)} DPS</span>
+      <span class="wtime bl-num">${fmtMS(w.time*1000)}</span>
     </div>`;
   document.getElementById('blWavesP').innerHTML=
     [...L.pWaves].sort((a,b)=>a.wave-b.wave).map(waveRow).join('');
@@ -6067,7 +6087,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.10.3 · Prototype</span>
+            <span class="settings-row-value">#13.10.4 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6277,6 +6297,7 @@ html, .hm-body {
 .pf-dtab{font-family:Cinzel,Georgia,serif!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:none!important;font-size:15px!important}
 .stat-label{font-family:Cinzel,Georgia,serif!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:none!important}
 .syn-unlock-stamp.mandate{color:#8a5a00!important;background:rgba(200,150,40,.16)!important;border-color:rgba(168,116,26,.45)!important}
+.set-tab{font-family:Cinzel,Georgia,serif!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:none!important;font-size:15px!important}
 </style></template>
 
 <!-- boot / title screen -->
@@ -7123,7 +7144,7 @@ function pfCountUses(waves){const before=AV_LIST.filter(a=>avUnlocked(a));const 
   const on=HM.mode==='skirmish'||HM.mode==='custom';  // 8.3: Synergy faces only count battles vs another player
   (waves||[]).forEach(w=>{if(w._cnt)return;const h=w.hand||'none';if(on&&h!=='none')u['o_'+h]=(u['o_'+h]||0)+1;
     (w.slotLabels||w.suits||[]).forEach(l=>{l=String(l);const k=BL_SC[l[0]];if(!k)return;const sm=parseInt(l.slice(1),10)||0;const key='u_'+k+(sm>=21?1:0);u[key]=(u[key]||0)+1;});
-    if(on&&h!=='flush'&&h!=='sflush'&&h!=='royal'&&(w.fl||/Monolith/.test(w.handName||'')))u.o_flush=(u.o_flush||0)+1;});
+    if(on&&h!=='flush'&&(h==='sflush'||h==='royal'||w.fl||/Monolith/.test(w.handName||'')))u.o_flush=(u.o_flush||0)+1;});
   try{localStorage.setItem('hm_syn_uses',JSON.stringify(u));}catch(e){}
   setTimeout(avCheckNew,900);}
 /* 8.4 unlock pop-up: remembers which avatars it has announced */
@@ -8285,11 +8306,13 @@ setInterval(()=>{try{
   const u=avUses(),on=HM.mode==='skirmish'||HM.mode==='custom';
   W.forEach(w=>{if(w._cnt)return;w._cnt=1;const h=w.hand||'none';if(on&&h!=='none')u['o_'+h]=(u['o_'+h]||0)+1;
     (w.slotLabels||w.suits||[]).forEach(l=>{l=String(l);const k=BL_SC[l[0]];if(!k)return;const sm=parseInt(l.slice(1),10)||0;const key='u_'+k+(sm>=21?1:0);u[key]=(u[key]||0)+1;});
-    if(on&&h!=='flush'&&h!=='sflush'&&h!=='royal'&&(w.fl||/Monolith/.test(w.handName||'')))u.o_flush=(u.o_flush||0)+1;});
+    if(on&&h!=='flush'&&(h==='sflush'||h==='royal'||w.fl||/Monolith/.test(w.handName||'')))u.o_flush=(u.o_flush||0)+1;});
   try{localStorage.setItem('hm_syn_uses',JSON.stringify(u));}catch(e){}
   avCheckNew();hmUnlockCheck();
 }catch(e){}},700);
 {const _n=avPopNext;avPopNext=function(){const had=AVPOP;_n.apply(this,arguments);try{if(!had&&AVPOP&&typeof S!=='undefined'&&S&&S.running){AVPOP.d.classList.add('mini');clearTimeout(AVPOP.t);const d=AVPOP.d;AVPOP.t=setTimeout(()=>d.click(),3000);}}catch(e){}};}
 </script>
+<button type="button" id="blX" hidden aria-label="Close Battle Report" onclick="document.getElementById('blClose').click()">✕</button>
+<script>setInterval(()=>{const b=document.getElementById('battleLog'),x=document.getElementById('blX');if(b&&x){const on=getComputedStyle(b).display!=='none'&&!b.hidden;if(x.hidden===on)x.hidden=!on;}},250);</script>
 </body>
 </html>
