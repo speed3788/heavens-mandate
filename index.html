@@ -1094,6 +1094,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
   })();
   </script>
   <button id="synBtn" type="button" aria-expanded="false" aria-controls="synSheet">SYNERGIES</button>
+  <button id="tauntBtn" type="button" hidden onclick="hmTauntToggle()">TAUNTS</button><div id="tauntSheet" hidden role="dialog" aria-label="Taunts"></div>
   <div id="synSheet" hidden role="dialog" aria-label="Synergy cheat sheet">
     <div class="ssHead"><span>Synergies</span><button class="ssX" type="button" aria-label="Close">×</button></div>
     <div class="ssList" id="ssList"></div>
@@ -5211,6 +5212,7 @@ html, .hm-body {
       <div class="inner">
         <button type="button" class="profile-avatar" id="pfAvBtn" onclick="hmAvOpen()" aria-label="Change avatar"><img id="pfAv" src="av/foot_soldier.webp" alt=""><span class="pa-edit" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></span></button>
         <div class="profile-info">
+          <div class="pf-title tt-c-common" id="pfTitle">Peasant</div>
           <div class="profile-name" id="pfName">Guest</div>
           
           <div class="profile-meta">Playtest: progress is saved in this browser</div>
@@ -5219,6 +5221,9 @@ html, .hm-body {
     </div>
     <div class="stats-area">
       <div class="inner">
+        <div class="pf-mtabs" role="tablist" aria-label="Profile section"><button type="button" role="tab" class="pf-mtab on" data-m="stats" onclick="hmPfMain('stats')">Battle Stats</button><button type="button" role="tab" class="pf-mtab" data-m="armory" onclick="hmPfMain('armory')">Armory</button></div>
+        <div id="pfArmory" hidden></div>
+        <div id="pfStatsPane">
         <div class="pf-tabs" role="tablist" aria-label="Stats type">
           <button type="button" role="tab" class="pf-tab on" data-pf="unranked" onclick="hmPfTab('unranked')">Skirmish</button>
           <button type="button" role="tab" class="pf-tab" data-pf="ranked" onclick="hmPfTab('ranked')">Ranked</button>
@@ -5236,7 +5241,7 @@ html, .hm-body {
             <div class="pf-unlock-s">One-time $2.99 purchase saves all match history and Elo across sessions.</div></div>
           <button type="button" class="pf-unlock-btn" onclick="openPaywall()">Unlock</button>
         </div>
-        </div>
+        </div></div>
 
     </div>
   </section>
@@ -6032,6 +6037,13 @@ html, .hm-body {
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
+              <div class="settings-row-label">Show opponent&#39;s taunts</div>
+              <div class="settings-row-sub">See the taunts the other player sends you</div>
+            </div>
+            <div class="toggle on" id="tauntTgl" onclick="hmTauntShowSet(!this.classList.contains('on'))" role="switch" aria-checked="true" aria-label="Show opponent's taunts"></div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-row-left">
               <div class="settings-row-label">Unit Health &amp; Glow</div>
               <div class="settings-row-sub">Health bars above soldiers and the glow under their feet</div>
             </div>
@@ -6055,7 +6067,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.9.12 · Prototype</span>
+            <span class="settings-row-value">#13.10 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6206,6 +6218,53 @@ html, .hm-body {
 .htp-table th:nth-child(2){white-space:normal!important;width:4.5em}
 .htp-table td:nth-child(2){white-space:nowrap}
 .htp-table th:nth-child(2){white-space:normal!important}
+/* 13.10 Armory */
+.pf-title{font-family:Cinzel,Georgia,serif!important;font-size:.8rem!important;letter-spacing:.16em!important;text-transform:uppercase;font-weight:700!important;margin-bottom:2px}
+.tt-c-common{color:#7a6a58!important}.tt-c-uncommon{color:#3f7a3a!important}.tt-c-rare{color:#2f5597!important}.tt-c-epic{color:#7a4aa8!important}.tt-c-legendary{color:#a8741a!important}
+.pf-mtabs{display:flex;gap:28px;justify-content:center;box-shadow:inset 0 -1px 0 rgba(184,150,90,.35);margin:6px 0 18px}
+.pf-mtab{background:none!important;border:0!important;box-shadow:none!important;font-family:Cinzel,Georgia,serif!important;letter-spacing:.16em!important;font-size:1rem!important;font-weight:700!important;padding:10px 6px!important;color:#5a4834!important;cursor:pointer;border-radius:0!important}
+.pf-mtab.on{color:#9b3324!important;box-shadow:inset 0 -2px 0 #9b3324!important}
+.arm-sub{display:flex;gap:26px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.arm-st{background:none!important;border:0!important;box-shadow:none!important;font-family:Cinzel,Georgia,serif!important;letter-spacing:.14em!important;font-size:.85rem!important;font-weight:700!important;color:#5a4834!important;position:relative;cursor:pointer;padding:4px 2px!important}
+.arm-st.on{color:#9b3324!important}.arm-st.on:after{content:'';position:absolute;left:50%;bottom:-8px;width:6px;height:6px;border-radius:50%;background:#9b3324;transform:translateX(-50%)}
+.arm-h{font-family:Cinzel,Georgia,serif;letter-spacing:.14em;font-size:.95rem;color:#2a2017;margin:6px 0 10px;font-weight:700}
+.arm-h i{font-family:'Crimson Pro',Georgia,serif;letter-spacing:0;font-weight:400;color:#6a5844;margin-left:8px}
+.arm-tl{display:flex;flex-direction:column;gap:6px}
+.arm-tr{display:flex;justify-content:space-between;align-items:center;padding:12px 14px!important;border-radius:8px!important;border:0!important;cursor:pointer;text-align:left;width:100%}
+.arm-tr b{font-family:Cinzel,Georgia,serif;letter-spacing:.12em;font-size:.95rem}
+.arm-tr span{font:italic 1rem 'Crimson Pro',Georgia,serif;color:#8a7a64}.arm-tr em{color:#9b3324;font-weight:700}
+.arm-tr.on{box-shadow:inset 4px 0 0 #9b3324!important}.arm-tr.lock{opacity:.5;cursor:default}
+.tt-b-common{background:rgba(122,106,88,.16)!important}.tt-b-uncommon{background:rgba(63,122,58,.16)!important}.tt-b-rare{background:rgba(47,85,151,.16)!important}.tt-b-epic{background:rgba(122,74,168,.16)!important}.tt-b-legendary{background:rgba(200,150,40,.2)!important}
+.arm-avg{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:10px}
+.arm-avg .av-opt{width:100%!important;height:auto!important;aspect-ratio:1}
+.arm-slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.arm-slot{position:relative;background:rgba(120,100,80,.09);border-radius:8px;padding:12px 26px 12px 12px;font:italic 1rem/1.25 'Crimson Pro',Georgia,serif;color:#2a2017;min-height:46px;display:flex;align-items:center;cursor:pointer}
+.arm-slot.empty{color:#9a8a74;justify-content:center;font-style:normal;font-size:1.4rem;padding:12px}
+.arm-slot.sel{box-shadow:inset 0 0 0 2px #9b3324}
+.arm-x{position:absolute;top:4px;right:6px;background:none!important;border:0!important;box-shadow:none!important;color:#8a7a64;font-size:1rem;cursor:pointer;padding:0 4px!important}
+.arm-tnl{display:flex;flex-direction:column;gap:5px}
+.arm-tn{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 12px!important;border-radius:7px!important;border:0!important;background:rgba(120,100,80,.06)!important;cursor:pointer;text-align:left;width:100%}
+.arm-tn .q{font:italic 1rem 'Crimson Pro',Georgia,serif;color:#2a2017}.arm-tn .s{font:.9rem 'Crimson Pro',Georgia,serif;color:#8a7a64;white-space:nowrap}
+.arm-tn.use{background:rgba(155,51,36,.1)!important}.arm-tn.lock{opacity:.45;cursor:default}
+.arm-filt{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.arm-filt button{font-family:Cinzel,Georgia,serif!important;font-weight:700!important;font-size:.72rem!important;letter-spacing:.12em!important;padding:5px 12px!important;border-radius:14px!important;border:0!important;box-shadow:none!important;background:rgba(120,100,80,.1)!important;color:#5a4834!important;cursor:pointer}
+.arm-filt button.on{background:#9b3324!important;color:#f5e8c8!important}
+.arm-ms{display:flex;flex-direction:column;gap:8px}
+.arm-mi{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;background:rgba(120,100,80,.08);border-radius:9px;padding:10px 12px}
+.arm-mi.done{background:rgba(63,122,58,.12)}
+.arm-mi .rw{width:52px;height:52px;border-radius:50%;background:#f3e7cf;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.arm-mi .rw img{width:100%;height:100%;object-fit:cover}
+.arm-mi:not(.done) .rw img{filter:grayscale(1) brightness(.28)}.arm-mi .rw.sil img{filter:brightness(0)!important}
+.arm-mi .ms-tt{font-size:22px;color:#5a4834}.arm-mi .rw:has(.ms-tt){background:rgba(122,106,88,.22)}
+.arm-mi .rw:has(.ms-tn){background:#8c1c16}.arm-mi .ms-tn{color:#fff;font:italic 1.2rem Georgia,serif}
+.arm-mi:not(.done) .rw:has(.ms-tt),.arm-mi:not(.done) .rw:has(.ms-tn){opacity:.45}
+.arm-mi .tx{min-width:0}.arm-mi .tx b{display:block;font:1.02rem 'Crimson Pro',Georgia,serif;color:#2a2017}
+.arm-mi .tx small{display:block;font:italic .88rem 'Crimson Pro',Georgia,serif;color:#8a7a64}
+.arm-mi .bar{height:6px;border-radius:3px;background:rgba(120,100,80,.18);margin-top:5px}.arm-mi .bar i{display:block;height:100%;border-radius:3px;background:#9b3324}
+.arm-mi.done .bar i{background:#3f7a3a}
+.arm-mi .n{text-align:right;font:1rem 'Crimson Pro',Georgia,serif;color:#5a4834;white-space:nowrap}
+.arm-mi.done .n{color:#3f7a3a;font-family:Cinzel,Georgia,serif;font-size:.75rem;letter-spacing:.12em;font-weight:700}
+@media (max-width:640px){.arm-slots{grid-template-columns:repeat(2,1fr)}.arm-sub{gap:16px}}
 </style></template>
 
 <!-- boot / title screen -->
@@ -6782,14 +6841,14 @@ function hmRoomUI(){
   b.textContent=!has?'Waiting for a second player':(NET.meReady?(NET.themReady?'Starting…':'Ready · waiting for the other player'):'Start');}
 function netWire(c){NET.conn=c;
   c.on('data',m=>{if(!m||typeof m!=='object')return;NET.lastRx=performance.now();if(m.t==='p')return;
-    if(m.t==='ready'){NET.themReady=!!m.v;if(m.n)NET.oppName=m.n;if(m.a)AVS.opp=avOk(m.a);hmRoomUI();if(NET.role==='host')netMaybeGo();}
+    if(m.t==='ready'){NET.themReady=!!m.v;if(m.n)NET.oppName=m.n;if(m.a)AVS.opp=avOk(m.a);NET.oppTitle=ttOk(m.tl);hmRoomUI();if(NET.role==='host')netMaybeGo();}
     else if(m.t==='go'){if(m.ar)hmArena(m.ar);hmCountdown();}
      else if(m.t==='arena'){NET.arenaPick=m.v||'random';hmArenaUI();}
     else if(m.t==='s'){netApplySnap(m);}
     else if(m.t==='in'){netOnInput(m);}
     else if(m.t==='vready'){netGuestReady();}
     else if(m.t==='end'){netGuestEnd(m);}
-    else if(m.t==='rq'){hmRpGotAsk();}     else if(m.t==='ra'){hmRpGo();}     else if(m.t==='rd'){hmRpGotNo();}
+    else if(m.t==='tn'){hmTauntGot(m.k);}     else if(m.t==='rq'){hmRpGotAsk();}     else if(m.t==='ra'){hmRpGo();}     else if(m.t==='rd'){hmRpGotNo();}
      else if(m.t==='bye'){if(NET.online){if(NET.ended)hmRpGone();netOppLeft();return;}netGone(NET.role==='host'?'The other player left the room.':'The host closed the room.');}});
   c.on('close',()=>{if(NET.conn===c){if(NET.online){if(NET.ended)hmRpGone();netOppLeft();return;}}if(NET.conn===c)netGone(NET.role==='host'?'The other player left the room.':'The host closed the room.');});}
 function netGone(msg){if(NET.quick&&!NET.online){hmLeaveRoom();hmNotice('Your opponent left before the battle began. Searching again…');hmQuickJoin();return;}if(NET.role==='host'){NET.conn=null;NET.meReady=NET.themReady=false;hmRoomUI();hmNetStat(msg+' The room is open again.','bad');}
@@ -6805,9 +6864,9 @@ async function netHostOpen(){NET.busy=true;hmRoomUI();hmNetStat(NET.pub?'Opening
   if(!p){hmRoomUI();return hmNetStat(err&&err.type==='unavailable-id'?'All public rooms are busy — try Private.':netWhy(err),'bad');}
   p._ok=true;NET.peer=p;
   p.on('connection',c=>{c.on('open',()=>hmRoomUI());c.on('data',function first(m){
-      if(!m||m.t!=='hello')return;NET.oppName=m.n||'Player 2';AVS.opp=avOk(m.a);
+      if(!m||m.t!=='hello')return;NET.oppName=m.n||'Player 2';AVS.opp=avOk(m.a);NET.oppTitle=ttOk(m.tl);
       if(NET.conn&&NET.conn.open){c.send({t:'full'});setTimeout(()=>c.close(),300);return;}
-      c.send({t:'welcome',pub:NET.pub,n:HM.name,a:AVS.me});netWire(c);try{c.send({t:'arena',v:NET.arenaPick||'random'});}catch(e){}NET.meReady=NET.themReady=false;hmRoomUI();hmNetStat('A player joined! Press Start when you\'re ready.','ok');snd('card_shuffle');});});
+      c.send({t:'welcome',pub:NET.pub,n:HM.name,a:AVS.me,tl:ttCur()});netWire(c);try{c.send({t:'arena',v:NET.arenaPick||'random'});}catch(e){}NET.meReady=NET.themReady=false;hmRoomUI();hmNetStat('A player joined! Press Start when you\'re ready.','ok');snd('card_shuffle');});});
   p.on('error',e=>{if(e.type!=='peer-unavailable')hmNetStat(netWhy(e),'bad');});
   p.on('disconnected',()=>{try{p.reconnect();}catch(e){}});
   hmRoomUI();hmNetStat('','ok');}
@@ -6823,7 +6882,7 @@ function hmCopyCode(){const c=NET.code;if(!c)return;
 function netTry(peer,id){return new Promise(res=>{let done=false;const fin=v=>{if(done)return;done=true;peer.off&&peer.off('error',onErr);res(v);};
   const onErr=e=>{if(e&&e.type==='peer-unavailable'&&(!e.message||e.message.indexOf(id)>=0))fin('none');};peer.on('error',onErr);
   const c=peer.connect(id,{reliable:true});const t=setTimeout(()=>{try{c.close();}catch(e){}fin('none');},4000);
-  c.on('open',()=>c.send({t:'hello',n:HM.name,a:AVS.me}));
+  c.on('open',()=>c.send({t:'hello',n:HM.name,a:AVS.me,tl:ttCur()}));
   c.on('data',m=>{if(!m)return;if(m.t==='welcome'){clearTimeout(t);if(done){try{c.send({t:'bye'});c.close();}catch(e){}return;}res._c=c;fin({c,n:m.n,pub:m.pub,a:m.a});}else if(m.t==='full'){clearTimeout(t);try{c.close();}catch(e){}fin('full');}});
   c.on('error',()=>{clearTimeout(t);fin('none');});});}
 async function netGuestPeer(){await netLib();if(NET.peer)return NET.peer;const p=await netPeer(null);p._ok=true;NET.peer=p;return p;}
@@ -6832,7 +6891,7 @@ function hmOpenJoinCode(){$('hmCodeIn').value='';$('hmJoinErr').textContent='';h
 function hmCancelJoin(){hmShow('hmJoin',false);hmShow('hmCustom',true);}
 $('hmCodeIn').addEventListener('input',e=>{e.target.value=e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4);$('hmJoinErr').textContent='';});
 $('hmCodeIn').addEventListener('keydown',e=>{if(e.key==='Enter')hmJoinByCode();});
-function netUse(r){if(r&&r.c){NET.oppName=r.n||'Host';AVS.opp=avOk(r.a);NET.pub=!!r.pub;netWire(r.c);return'ok';}return r;}
+function netUse(r){if(r&&r.c){NET.oppName=r.n||'Host';AVS.opp=avOk(r.a);NET.oppTitle=ttOk(r.tl);NET.pub=!!r.pub;netWire(r.c);return'ok';}return r;}
 async function hmJoinByCode(){const code=$('hmCodeIn').value.trim().toUpperCase();if(code.length!==4){$('hmJoinErr').textContent='Room codes are 4 letters/numbers.';return;}
   const b=$('hmJoinBtn');b.disabled=true;$('hmJoinErr').textContent='';b.textContent='Joining…';
   try{netDrop();const p=await netGuestPeer();const r=netUse(await netTry(p,NET_PREFIX+'r-'+code));
@@ -6854,13 +6913,13 @@ async function hmQuickJoin(){hmShow('hmPvp',false);hmShow('hmSearch',true);$('hm
       if(run.state==='idle'){let won=null;
         await Promise.all([...Array(NET_PUB_SLOTS).keys()].map(n=>netTry(p,NET_PREFIX+'pub-'+n).then(r=>{if(r&&r.c){if(won||!live()||run.state!=='idle'){try{r.c.send({t:'bye'});r.c.close();}catch(e){}}else won=r;}})));
         if(won){if(!live()||run.state!=='idle'){try{won.c.send({t:'bye'});won.c.close();}catch(e){}}
-          else{run.state='done';hmQEnd(run);NET.oppName=won.n||'Host';AVS.opp=avOk(won.a);NET.pub=true;netWire(won.c);hmShow('hmSearch',false);NET.search=null;hmEnterAsGuest();return;}}}
+          else{run.state='done';hmQEnd(run);NET.oppName=won.n||'Host';AVS.opp=avOk(won.a);NET.oppTitle=ttOk(won.tl);NET.pub=true;netWire(won.c);hmShow('hmSearch',false);NET.search=null;hmEnterAsGuest();return;}}}
       // 2. another Skirmish player waiting in a lower queue slot, one at a time
       const lim=run.slot<0?NET_Q_SLOTS:run.slot;
       for(let n=0;n<lim;n++){if(!live()||run.state!=='idle')break;run.state='busy';
         const r=await netTry(p,NET_PREFIX+'q-'+n);
         if(r&&r.c){if(!live()){try{r.c.send({t:'bye'});r.c.close();}catch(e){}return;}
-          try{r.c.send({t:'take'});}catch(e){}run.state='done';hmQEnd(run);NET.oppName=r.n||'Player 2';AVS.opp=avOk(r.a);NET.pub=true;netWire(r.c);hmShow('hmSearch',false);NET.search=null;hmQuickMatched('guest');return;}
+          try{r.c.send({t:'take'});}catch(e){}run.state='done';hmQEnd(run);NET.oppName=r.n||'Player 2';AVS.opp=avOk(r.a);NET.oppTitle=ttOk(r.tl);NET.pub=true;netWire(r.c);hmShow('hmSearch',false);NET.search=null;hmQuickMatched('guest');return;}
         if(run.state==='busy')run.state='idle';}
       if(!live()||run.state==='done')return;
       $('hmSearchTxt').textContent='Searching for opponent… '+Math.floor((performance.now()-t0)/1000)+'s';
@@ -6879,9 +6938,9 @@ async function hmQClaim(run){const order=[...Array(NET_Q_SLOTS).keys()].sort(()=
         if(m.t==='hello'&&!c._hm){c._hm=1;
           if(run.state!=='idle'||run.stop||NET.search!==run||(NET.peer&&c.peer===NET.peer.id)){try{c.send({t:'full'});}catch(e){}setTimeout(()=>{try{c.close();}catch(e){}},300);return;}
           run.state='busy';run.lockC=c;c._m=m;c._lk=setTimeout(()=>{if(run.lockC===c&&!c._took){free();try{c.close();}catch(e){}}},3500);
-          c.send({t:'welcome',pub:true,n:HM.name,a:AVS.me});return;}
+          c.send({t:'welcome',pub:true,n:HM.name,a:AVS.me,tl:ttCur()});return;}
         if(m.t==='take'&&run.lockC===c&&!c._took){c._took=1;clearTimeout(c._lk);run.state='done';run.lockC=null;
-          NET.oppName=c._m.n||'Player 2';AVS.opp=avOk(c._m.a);
+          NET.oppName=c._m.n||'Player 2';AVS.opp=avOk(c._m.a);NET.oppTitle=ttOk(c._m.tl);
           const gp=NET.peer;NET.peer=hp;NET.role='host';NET.pub=true;NET.code=null;run.hp=null;
           setTimeout(()=>{try{gp&&gp!==hp&&gp.destroy();}catch(e){}},200);
           netWire(c);hmShow('hmSearch',false);NET.search=null;hmQuickMatched('host');return;}
@@ -6902,7 +6961,7 @@ function hmQuickMatched(role){hmSrchFound();NET.role=role;NET.quick=true;NET.are
     $('hmP1s').textContent='Ready';$('hmP2s').textContent=(NET.conn&&NET.conn.open)?'Ready':'';}return r;};}
 function hmStopSearch(){const r=NET.search;if(r){r.stop=true;hmQEnd(r);}NET.search=null;hmShow('hmSearch',false);if(NET.role!=='host')netDrop();}
 /* ready check → 3-second countdown */
-function hmPressStart(){if(!(NET.conn&&NET.conn.open))return;NET.meReady=!NET.meReady;NET.conn.send({t:'ready',v:NET.meReady,n:HM.name,a:AVS.me});hmRoomUI();snd('card_land');if(NET.role==='host')netMaybeGo();}
+function hmPressStart(){if(!(NET.conn&&NET.conn.open))return;NET.meReady=!NET.meReady;NET.conn.send({t:'ready',v:NET.meReady,n:HM.name,a:AVS.me,tl:ttCur()});hmRoomUI();snd('card_land');if(NET.role==='host')netMaybeGo();}
 function netMaybeGo(){if(NET.meReady&&NET.themReady&&NET.conn&&NET.conn.open){{const ar=hmArena(NET.arenaPick&&NET.arenaPick!=='random'?NET.arenaPick:null);NET.conn.send({t:'go',ar});}hmCountdown();}}
 function hmCountdown(){const o=$('hmCount');o.hidden=false;let n=3;$('hmCountL').textContent='Battle begins';
   const show=()=>{const e=$('hmCountN');e.textContent=n;e.style.animation='none';void e.offsetWidth;e.style.animation='';snd(n>0?'card_land':'horn');};
@@ -6998,7 +7057,7 @@ function hmAvOpen(){const R=hmSR();if(!R)return;const g=R.getElementById('avGrid
     if(a==='bradley')img=avBase(AVS.me)==='bradley'?AVS.me:'bradley_general';
     else if(a==='dangmang')img=avBase(AVS.me)==='dangmang'?AVS.me:'dangmang_empress';
     else if(a==='patokeem')img=avBase(AVS.me)==='patokeem'?AVS.me:'patokeem_general';
-    return '<button type="button" class="av-opt'+(ok?'':' locked'+(AV_HINT[a]?' hinted':'')+(a==='bradley'?' sil':''))+'" data-av="'+a+'"'+(ok?' onclick="hmAvPick(this.dataset.av)" onmouseenter="avHint(null)" aria-label="Avatar"':(AV_HINT[a]?' onclick="avHint(this.dataset.av)" onmouseenter="avHint(this.dataset.av)" title="'+avHintText(a)+'" aria-label="Locked avatar: '+avHintText(a)+'"':' disabled aria-label="Locked avatar"'))+'><img src="av/'+img+'.webp" alt="" loading="lazy">'+(ok?'':'<span class="av-lock" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>')+'</button>';
+    return '<button type="button" class="av-opt'+(ok?'':' locked'+(a==='bradley'?' sil':''))+'" data-av="'+a+'"'+(ok?' onclick="hmAvPick(this.dataset.av)" aria-label="Avatar"':' disabled aria-label="Locked avatar"')+'><img src="av/'+img+'.webp" alt="" loading="lazy">'+(ok?'':'<span class="av-lock" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>')+'</button>';
   }).join('');
   hmAvApply();{const _h=R.getElementById('avHint');if(_h)_h.hidden=true;}R.getElementById('avOv').hidden=false;try{snd('card_land');}catch(e){}}
 function hmAvClose(){const R=hmSR();if(R){R.getElementById('avOv').hidden=true;
@@ -7013,6 +7072,7 @@ function hmRedeem(){const R=hmSR(),inp=R.getElementById('codeIn'),msg=R.getEleme
   if(v==='empress'){if(dangmangCode()){msg.textContent='Dangmang is already yours.';}else{try{localStorage.setItem('hm_code_dangmang','1');}catch(e){}msg.textContent='Dangmang unlocked!';avCheckNew();}}
     else if(v==='lookingfortwgf'){if(patekoemeCode()){msg.textContent='patokeem is already yours.';}else{try{localStorage.setItem('hm_code_patokeem','1');}catch(e){}msg.textContent='patokeem unlocked!';avCheckNew();}}
     else if(v==='swed'){if(vibecoderCode()){msg.textContent='Vibecoder is already yours.';}else{try{localStorage.setItem('hm_code_vibecoder','1');}catch(e){}msg.textContent='Vibecoder unlocked!';avCheckNew();}}
+    else if(v==='ineedsleep'){if(emperorCode()){msg.textContent='The Emperor title is already yours.';}else{try{localStorage.setItem('hm_code_emperor','1');}catch(e){}msg.textContent='Emperor title unlocked!';hmTitlesTick();}}
     else if(v==='ilovebradley'){if(bradleyCode()||avUnlocked('bradley')){msg.textContent='Bradley is already yours.';}else{try{localStorage.setItem('hm_code_bradley','1');}catch(e){}msg.textContent='Bradley unlocked!';avCheckNew();}}
   else msg.textContent=v?'Unknown code.':'';msg.hidden=!msg.textContent;inp.value='';hmCodeAvs();}
 /* 13.9: Settings → Code lists the avatars this device unlocked with a code (device only for now) */
@@ -8034,6 +8094,147 @@ $('blRpNo').onclick=()=>{netSend({t:'rd'});RP.them=false;hmRpHide();hmRpNote('')
 #hmRoom .hm-arena.on{background:rgba(155,51,36,.18)!important}
 @media (max-width:760px){#hmRoom .hm-rband{flex-direction:column;align-items:stretch}#hmRoom #hmCodePanel{align-items:center!important;text-align:center}
   #hmRoom .hm-pl{padding:24px 8px!important}#hmRoom .hm-pl .pav{width:72px!important;height:72px!important}}
+/* 13.10 taunts + titles (battle, room, search) */
+.tbub{position:absolute;z-index:63;width:200px;height:64px;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35));opacity:0;visibility:hidden}
+.tbub:before{content:'';position:absolute;inset:0;background:center/100% 100% no-repeat}
+.tbub.p:before{background-image:url(menu/bubble_p_red.webp)}.tbub.e:before{background-image:url(menu/bubble_e_red.webp)}
+.tbub.p{transform-origin:5% 95%}.tbub.e{transform-origin:95% 95%;z-index:161}
+.tbub.on{visibility:visible;opacity:1;animation:sbubIn .35s cubic-bezier(.3,1.6,.5,1)}
+.tbub.off{visibility:visible;opacity:0;transition:opacity .3s}
+body.gfx-none .tbub.on{animation:none}body.gfx-none .tbub.off{transition:none}
+@media (prefers-reduced-motion:reduce){.tbub.on{animation:none}}
+.tbub span{position:absolute;left:9%;right:9%;top:12%;bottom:26%;display:flex;align-items:center;justify-content:center;text-align:center;font:italic 600 11px/1.15 'Crimson Pro',Georgia,serif;color:#fff;letter-spacing:.01em}
+#tauntBtn{position:absolute;z-index:40;padding:4px 12px;border-radius:6px;font:inherit;font-size:11px;font-weight:800;letter-spacing:1px;color:#fff;background:rgba(140,28,22,.92);border:1px solid rgba(240,160,130,.45);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.5);white-space:nowrap}
+#tauntBtn:hover{background:rgba(170,36,28,.95)}#tauntBtn.cd{opacity:.75}
+#tauntSheet{position:absolute;z-index:70;width:250px;background:rgba(20,14,6,.95);border-radius:8px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.6)}
+#tauntSheet .tsh-h{font:700 10px Cinzel,Georgia,serif;letter-spacing:.16em;text-transform:uppercase;color:#e8c35a;padding:2px 4px 6px}
+#tauntSheet .tsh-t{display:block;width:100%;text-align:left;font:italic 13px/1.25 'Crimson Pro',Georgia,serif;color:#f5e8c8;padding:6px 8px;border-radius:5px;background:rgba(140,28,22,.4);border:0;margin:0 0 4px;cursor:pointer}
+#tauntSheet .tsh-t:hover{background:rgba(160,32,24,.8)}
+.btitle{position:absolute;top:-10px;left:7px;right:7px;font:800 8px/1 Cinzel,Georgia,serif;letter-spacing:1.2px;white-space:nowrap;text-shadow:0 1px 2px #000,0 0 4px rgba(0,0,0,.9);pointer-events:none}
+#stage #baseP .btitle{text-align:left}#stage #baseE .btitle{text-align:right}
+.btitle.tt-c-common{color:#e6dac6}.btitle.tt-c-uncommon{color:#93d68d}.btitle.tt-c-rare{color:#9dbcff}.btitle.tt-c-epic{color:#cfa6f5}.btitle.tt-c-legendary{color:#f2c75c}
+.rtitle{font:700 .72rem/1.2 Cinzel,Georgia,serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:2px}
+.rtitle.tt-c-common{color:#7a6a58}.rtitle.tt-c-uncommon{color:#3f7a3a}.rtitle.tt-c-rare{color:#2f5597}.rtitle.tt-c-epic{color:#7a4aa8}.rtitle.tt-c-legendary{color:#a8741a}
 </style>
+<script>
+/* ═══ 13.10: Armory — Titles, Taunts, Missions ═══ */
+const TT_LIST=[{id:'peasant',n:'Peasant',lv:'common'},{id:'fodder',n:'Fodder',lv:'common'},{id:'soldier',n:'Soldier',lv:'common'},{id:'apprentice',n:'Apprentice',lv:'common'},{id:'emperor',n:'Emperor',lv:'legendary',code:1}];
+const TN_FREE=['Fight with honor!','May Heaven favor the worthy.','A worthy foe sharpens the blade.','The heavens tremble!'];
+const TN_SYN={pair:['Your courtesy is noted, general.','Even the wise general stumbles.','Even monkeys fall from trees.'],
+  twopair:['The tea grows cold, general.','Patience, little sparrow.','The blade passed a hair from my throat.'],
+  three:['A bold plan, poorly executed.','Fortune favored the fool today.','Your scouts must be sleeping.'],
+  straight:['Study the scrolls, then return.','A thousand cuts begin with one.','The river does not struggle to carve the stone.'],
+  flush:['May your sails be against the wind.','The mountain does not bow to the wind.','Your generals weep.'],
+  fullhouse:['Greed has drowned many generals.','I have eaten more salt than you have eaten rice.','Retreat is also a strategy.'],
+  four:['Your fortress crumbles like old rice paper.','The scroll of your defeat is already written.','I have seen children wage war with more cunning.'],
+  fiveoak:["Heaven's Mandate is mine.",'I accept no rematch from the defeated.','Bow before the Son of Heaven.']};
+const TN_LIST=TN_FREE.map((t,i)=>({id:'f'+i,t}));
+Object.keys(TN_SYN).forEach(k=>TN_SYN[k].forEach((t,i)=>TN_LIST.push({id:k+(i+1),t,syn:k,need:(i+1)*25})));
+const SYN_AV={pair:'sun_shangxiang',twopair:'lu_lingqi',three:'zhurong',straight:'jade_spirit_stag',flush:'barded_warhorse',fullhouse:'war_qilin',four:'guan_yinping',fiveoak:'white_cloud_tiger'};
+function hmLS(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}}
+function hmLSset(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+/* title progress: General wins vs the computer, online wins (seeded once from match history) */
+function ttStats(){let s=hmLS('hm_tt_stats',null);if(!s){s={gen:0,on:0};try{pfLoad().matches.forEach(m=>{if(m.res!=='win')return;if(m.mode==='practice'){if(pfDiffOf(m)==='hard')s.gen++;}else if(!m.ranked)s.on++;});}catch(e){}hmLSset('hm_tt_stats',s);}return s;}
+function emperorCode(){try{return localStorage.getItem('hm_code_emperor')==='1';}catch(e){return false;}}
+const TT_NEED={fodder:s=>[Math.min(s.gen,1),1],soldier:s=>[Math.min(s.on,1),1],apprentice:s=>[Math.min(s.on,10),10]};
+function ttHave(id){if(id==='peasant')return true;if(id==='emperor')return emperorCode();const f=TT_NEED[id];if(!f)return false;const p=f(ttStats());return p[0]>=p[1];}
+function ttOk(id){return TT_LIST.some(t=>t.id===id)?id:'peasant';}
+function ttCur(){const c=ttOk(hmLS('hm_title','peasant'));return ttHave(c)?c:'peasant';}
+function ttName(id){const t=TT_LIST.find(x=>x.id===ttOk(id));return t?t.n:'Peasant';}
+function ttLv(id){const t=TT_LIST.find(x=>x.id===ttOk(id));return t?t.lv:'common';}
+function tnHave(t){if(!t.syn)return true;return ((avUses()['o_'+t.syn])||0)>=t.need;}
+function tnEq(){let e=hmLS('hm_taunts',null);if(!Array.isArray(e))e=TN_LIST.slice(0,4).map(t=>t.id);e=e.filter(id=>{const t=TN_LIST.find(x=>x.id===id);return t&&tnHave(t);}).slice(0,6);return e;}
+function tnText(id){const t=TN_LIST.find(x=>x.id===id);return t?t.t:'';}
+/* record title progress after every saved match */
+{const _r=pfRecord;pfRecord=function(){ttStats();const r=_r.apply(this,arguments);try{if(S.eBaseHP<=0&&!HM.replay){const s=ttStats();if(HM.mode==='practice'){if(AI_MODE==='hard')s.gen++;}else s.on++;hmLSset('hm_tt_stats',s);}}catch(e){}hmArmRender();return r;};}
+
+/* ── title shown everywhere ── */
+function hmTitleEl(anchor,cls,id){if(!anchor)return null;let e=anchor.previousElementSibling;if(!e||!e.classList.contains(cls)){e=document.createElement('div');e.className=cls;anchor.parentNode.insertBefore(e,anchor);}return e;}
+function hmTitleSet(e,id){if(!e)return;if(!id){e.hidden=true;return;}e.hidden=false;const n=ttName(id).toUpperCase(),c=cls=>'tt-c-'+ttLv(id);if(e.textContent!==n)e.textContent=n;e.className=e.className.replace(/\s*tt-c-\w+/g,'')+' '+c();}
+function hmTitlesTick(){try{
+  const me=ttCur(),online=HM.mode!=='practice',opp=NET.oppTitle||'peasant';
+  hmTitleSet(hmTitleEl($('pName'),'btitle'),hmInTut()?null:me);
+  hmTitleSet(hmTitleEl($('eName'),'btitle'),online&&!hmInTut()?opp:null);
+  hmTitleSet(hmTitleEl($('hmP1n'),'rtitle'),me);
+  const has=!!(NET.conn&&NET.conn.open);hmTitleSet(hmTitleEl($('hmP2n'),'rtitle'),has?opp:null);
+  hmTitleSet(hmTitleEl($('hmSrchMeN'),'rtitle'),me);
+  const oa=$('hmSrchOppA');hmTitleSet(hmTitleEl($('hmSrchOppN'),'rtitle'),oa&&!oa.classList.contains('wait')&&NET.oppName?opp:null);
+  const R=hmSR(),pt=R&&R.getElementById('pfTitle');if(pt){const n=ttName(me);if(pt.textContent!==n)pt.textContent=n;pt.className='pf-title tt-c-'+ttLv(me);}
+  hmTauntPos();
+}catch(e){}}
+setInterval(hmTitlesTick,400);
+
+/* ── taunts in battle ── */
+let TN_LAST=0,TN_TM={};
+function hmTauntOn(){try{return localStorage.getItem('hm_taunt_show')!=='0';}catch(e){return true;}}
+function hmTauntShowSet(on){try{localStorage.setItem('hm_taunt_show',on?'1':'0');}catch(e){}hmTauntShowUI();}
+function hmTauntShowUI(){const R=hmSR(),t=R&&R.getElementById('tauntTgl');if(t){const on=hmTauntOn();t.classList.toggle('on',on);t.setAttribute('aria-checked',on);}}
+function hmTauntPos(){const b=$('tauntBtn'),sb=$('synBtn');if(!b||!sb)return;const st=sb.offsetParent||b.parentNode;
+  const hide=hmInTut()||HM.replay||sb.offsetParent===null;b.hidden=hide;if(hide){const sh=$('tauntSheet');if(sh)sh.hidden=true;return;}
+  const r=st.offsetWidth-sb.offsetLeft+6,bt=st.offsetHeight-sb.offsetTop-sb.offsetHeight;b.style.right=r+'px';b.style.bottom=bt+'px';
+  const sh=$('tauntSheet');if(sh){sh.style.right=r+'px';sh.style.bottom=(bt+b.offsetHeight+6)+'px';}
+  const left=Math.max(0,5-(performance.now()-TN_LAST)/1000);const cd=left>0?' · '+Math.ceil(left)+'s':'';const txt='TAUNTS'+cd;if(b.textContent!==txt)b.textContent=txt;b.classList.toggle('cd',left>0);}
+function hmTauntToggle(){const sh=$('tauntSheet');if(!sh)return;if(!sh.hidden){sh.hidden=true;return;}
+  sh.innerHTML='<div class="tsh-h">Taunts</div>'+tnEq().map(id=>'<button type="button" class="tsh-t" data-k="'+id+'">'+tnText(id)+'</button>').join('');
+  sh.querySelectorAll('.tsh-t').forEach(x=>x.onclick=()=>hmTauntSend(x.dataset.k));sh.hidden=false;hmTauntPos();}
+function hmTauntSend(k){const sh=$('tauntSheet');if(sh)sh.hidden=true;if(performance.now()-TN_LAST<5000)return;TN_LAST=performance.now();
+  hmTauntBub('p',k);if(HM.mode!=='practice'){netSend({t:'tn',k});}
+  else if(Math.random()<.45){const pool=TN_LIST.filter(t=>t.id!==k);const r=pool[Math.floor(Math.random()*pool.length)];setTimeout(()=>{if(S&&S.running)hmTauntBub('e',r.id);},1400+Math.random()*900);}}
+function hmTauntGot(k){if(!TN_LIST.some(t=>t.id===k))return;if(!hmTauntOn())return;hmTauntBub('e',k);}
+function hmTauntBub(side,k){const st=$('stage'),av=$(side==='p'?'pAv':'eAv');if(!st||!av)return;const txt=tnText(k);if(!txt)return;
+  let d=document.getElementById('tbub_'+side);if(!d){d=document.createElement('div');d.id='tbub_'+side;d.className='tbub '+side;d.setAttribute('aria-live','polite');d.innerHTML='<span></span>';st.appendChild(d);}
+  d.querySelector('span').textContent=txt;
+  const sr=hmLR(st.getBoundingClientRect()),k2=sr.width/1000,r=hmLR(av.getBoundingClientRect());
+  const ax=(r.left-sr.left)/k2,ay=(r.top-sr.top)/k2,aw=r.width/k2,ah=r.height/k2;
+  d.style.left=(side==='p'?ax+aw*0.9-200*0.051:ax+aw*0.1-200*0.949)+'px';d.style.top=(ay+ah*0.5-64*0.95)+'px';
+  d.classList.remove('on','off');void d.offsetWidth;d.classList.add('on');try{snd('card_land',.4);}catch(e){}
+  clearTimeout(TN_TM[side]);TN_TM[side]=setTimeout(()=>{d.classList.remove('on');d.classList.add('off');},3000);}
+document.addEventListener('pointerdown',e=>{const sh=$('tauntSheet'),b=$('tauntBtn');if(sh&&!sh.hidden&&!sh.contains(e.target)&&e.target!==b)sh.hidden=true;},true);
+
+/* ── Profile: Battle Stats | Armory ── */
+HM.pfMain='stats';HM.armTab='titles';HM.misF='all';
+function hmPfMain(t){HM.pfMain=t;const R=hmSR();if(!R)return;R.querySelectorAll('.pf-mtab').forEach(b=>b.classList.toggle('on',b.dataset.m===t));
+  R.getElementById('pfStatsPane').hidden=t!=='stats';R.getElementById('pfArmory').hidden=t!=='armory';if(t==='armory')hmArmRender();}
+function hmArmTab(t){HM.armTab=t;hmArmRender();}
+function hmMisF(f){HM.misF=f;hmArmRender();}
+function hmTtPick(id){if(!ttHave(id))return;hmLSset('hm_title',id);try{snd('card_land');}catch(e){}hmArmRender();hmTitlesTick();}
+function hmArmAv(a){if(!avUnlocked(a))return;if(a==='bradley'||a==='dangmang'||a==='patokeem'){hmAvOpen();hmAvPick(a);return;}hmAvPick(a);hmArmRender();}
+let TN_SLOT=-1;
+function hmTnSlot(i){TN_SLOT=TN_SLOT===i?-1:i;hmArmRender();}
+function hmTnPick(id){const t=TN_LIST.find(x=>x.id===id);if(!t||!tnHave(t))return;let e=tnEq();const at=e.indexOf(id);
+  if(TN_SLOT>=0){if(at>=0)e.splice(at,1);const i=Math.min(TN_SLOT,e.length);if(at<0&&i<e.length)e[i]=id;else e.splice(i,0,id);}
+  else if(at>=0){if(e.length>1)e.splice(at,1);}else if(e.length<6)e.push(id);
+  hmLSset('hm_taunts',e.slice(0,6));TN_SLOT=-1;try{snd('card_land');}catch(e){}hmArmRender();}
+function hmTnClear(i){let e=tnEq();if(e.length>1){e.splice(i,1);hmLSset('hm_taunts',e);}TN_SLOT=-1;hmArmRender();}
+const LOCK_SVG='<span class="av-lock" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>';
+function hmMissions(){const U=avUses(),L=[];
+  TT_LIST.forEach(t=>{const f=TT_NEED[t.id];if(!f)return;const p=f(ttStats());L.push({k:'titles',rw:'<span class="ms-tt">號</span>',txt:{fodder:'Beat the computer on General',soldier:'Win your first Skirmish battle',apprentice:'Win 10 Skirmish battles'}[t.id],note:'Unlocks title: '+t.n,h:p[0],n:p[1]});});
+  AV_LIST.forEach(a=>{const h=AV_HINT[a];if(!h)return;let txt=h[0];const riddle=txt.charAt(0)==='“';if(riddle)txt=txt.split(' · ')[0];const p=h[1](U);
+    let img=a==='bradley'?'bradley_general':a;L.push({k:'avatars',rw:'<img src="av/'+img+'.webp" alt="" loading="lazy">',sil:a==='bradley',txt,note:riddle?'':'',h:p[0],n:p[1],ok:avUnlocked(a,U)});});
+  TN_LIST.forEach(t=>{if(!t.syn)return;const F=FORMATIONS[t.syn];L.push({k:'taunts',rw:'<span class="ms-tn">“ ”</span>',txt:'Form '+F.name+' '+t.need+' times',note:'Unlocks taunt: “'+t.t+'” · online battles',h:Math.min(U['o_'+t.syn]||0,t.need),n:t.need});});
+  L.forEach(m=>{if(m.ok===undefined)m.ok=m.h>=m.n;});return L;}
+function hmArmRender(){const R=hmSR(),box=R&&R.getElementById('pfArmory');if(!box||box.hidden)return;
+  const tabs=[['titles','Titles'],['avatars','Avatars'],['taunts','Taunts'],['missions','Missions']];
+  let h='<div class="arm-sub" role="tablist">'+tabs.map(t=>'<button type="button" class="arm-st'+(HM.armTab===t[0]?' on':'')+'" onclick="hmArmTab(\''+t[0]+'\')">'+t[1]+'</button>').join('')+'</div>';
+  if(HM.armTab==='titles'){const cur=ttCur();
+    h+='<div class="arm-h">Your Titles<i>Tap one to use it</i></div><div class="arm-tl">'+TT_LIST.filter(t=>!t.code||ttHave(t.id)).map(t=>{const ok=ttHave(t.id),on=t.id===cur;
+      return '<button type="button" class="arm-tr tt-b-'+t.lv+(ok?'':' lock')+(on?' on':'')+'"'+(ok?' onclick="hmTtPick(\''+t.id+'\')"':' disabled')+'><b class="tt-c-'+t.lv+'">'+t.n+'</b><span>'+(on?'<em>Equipped</em>':ok?'':'🔒 Locked')+'</span></button>';}).join('')+'</div>';}
+  else if(HM.armTab==='avatars'){const U=avUses(),SECRET=['dangmang','patokeem','vibecoder'],vis=AV_LIST.filter(a=>SECRET.indexOf(a)<0||avUnlocked(a,U)),n=vis.filter(a=>avUnlocked(a,U)).length;
+    h+='<div class="arm-h">Your Avatars<i>'+n+' of '+vis.length+' unlocked · tap one to use it</i></div><div class="arm-avg">'+vis.map(a=>{const ok=avUnlocked(a,U);let img=a;
+      if(a==='bradley')img=avBase(AVS.me)==='bradley'?AVS.me:'bradley_general';else if(a==='dangmang')img=avBase(AVS.me)==='dangmang'?AVS.me:'dangmang_empress';else if(a==='patokeem')img=avBase(AVS.me)==='patokeem'?AVS.me:'patokeem_general';
+      return '<button type="button" class="av-opt'+(ok?'':' locked'+(a==='bradley'?' sil':''))+(avBase(AVS.me)===a?' on':'')+'"'+(ok?' onclick="hmArmAv(\''+a+'\')" aria-label="Avatar"':' disabled aria-label="Locked avatar"')+'><img src="av/'+img+'.webp" alt="" loading="lazy">'+(ok?'':LOCK_SVG)+'</button>';}).join('')+'</div>';}
+  else if(HM.armTab==='taunts'){const e=tnEq();
+    h+='<div class="arm-h">Your Taunts<i>Pick up to 6 to use in battle. Tap a slot, then a taunt below.</i></div><div class="arm-slots">';
+    for(let i=0;i<6;i++){const id=e[i];h+='<div class="arm-slot'+(id?'':' empty')+(TN_SLOT===i?' sel':'')+'" onclick="hmTnSlot('+i+')">'+(id?'<span>'+tnText(id)+'</span>'+(e.length>1?'<button type="button" class="arm-x" aria-label="Remove" onclick="event.stopPropagation();hmTnClear('+i+')">×</button>':''):'+')+'</div>';}
+    h+='</div><div class="arm-h">All Taunts</div><div class="arm-tnl">'+TN_LIST.map(t=>{const ok=tnHave(t),use=e.indexOf(t.id)>=0;
+      return '<button type="button" class="arm-tn'+(ok?'':' lock')+(use?' use':'')+'"'+(ok?' onclick="hmTnPick(\''+t.id+'\')"':' disabled')+'><span class="q">'+t.t+'</span><span class="s">'+(use?'In use':ok?'':'🔒 Locked')+'</span></button>';}).join('')+'</div>';}
+  else{const all=hmMissions(),f=HM.misF,list=all.filter(m=>f==='all'?true:f==='done'?m.ok:m.k===f);
+    h+='<div class="arm-filt">'+[['all','All'],['avatars','Avatars'],['titles','Titles'],['taunts','Taunts'],['done','Done']].map(x=>'<button type="button" class="'+(f===x[0]?'on':'')+'" onclick="hmMisF(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</div>';
+    h+='<div class="arm-ms">'+(list.length?list.map(m=>'<div class="arm-mi'+(m.ok?' done':'')+'"><div class="rw'+(m.sil&&!m.ok?' sil':'')+'">'+m.rw+'</div><div class="tx"><b>'+m.txt+'</b>'+(m.note?'<small>'+m.note+'</small>':'')+'<div class="bar"><i style="width:'+Math.min(100,m.h/m.n*100)+'%"></i></div></div><div class="n">'+(m.ok?'DONE':Math.min(m.h,m.n)+' / '+m.n)+'</div></div>').join(''):'<div class="pf-empty">Nothing here yet.</div>')+'</div>';}
+  box.innerHTML=h;}
+{const _a=hmAvApply;hmAvApply=function(){const r=_a.apply(this,arguments);try{if(HM.pfMain==='armory'&&HM.armTab==='avatars')hmArmRender();}catch(e){}return r;};}
+{const _p=hmRenderProfile;hmRenderProfile=function(){const r=_p.apply(this,arguments);try{hmArmRender();hmTauntShowUI();}catch(e){}return r;};}
+setTimeout(()=>{try{hmTauntShowUI();hmTitlesTick();}catch(e){}},500);
+</script>
 </body>
 </html>
