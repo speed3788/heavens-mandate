@@ -6067,7 +6067,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.10.2 · Prototype</span>
+            <span class="settings-row-value">#13.10.3 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6250,7 +6250,7 @@ html, .hm-body {
 .arm-filt button{font-family:Cinzel,Georgia,serif!important;font-weight:700!important;font-size:.72rem!important;letter-spacing:.12em!important;padding:5px 12px!important;border-radius:14px!important;border:0!important;box-shadow:none!important;background:rgba(120,100,80,.1)!important;color:#5a4834!important;cursor:pointer}
 .arm-filt button.on{background:#9b3324!important;color:#f5e8c8!important}
 .arm-ms{display:flex;flex-direction:column;gap:8px}
-.arm-mi{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;background:rgba(120,100,80,.08);border-radius:9px;padding:10px 12px}
+.arm-mi{display:grid;grid-template-columns:52px 1fr 84px;gap:12px;align-items:center;background:rgba(120,100,80,.08);border-radius:9px;padding:10px 12px}
 .arm-mi.done{background:rgba(63,122,58,.12)}
 .arm-mi .rw{width:52px;height:52px;border-radius:50%;background:#f3e7cf;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .arm-mi .rw img{width:100%;height:100%;object-fit:cover}
@@ -6272,6 +6272,11 @@ html, .hm-body {
 /* 13.10.2: start at the 15px menu minimum so nothing jumps after a redraw */
 .pf-title,.arm-st,.arm-h i,.arm-filt button,.arm-mi .tx small,.arm-mi .tx small b,.arm-tn .s,.arm-tr span,.arm-mi .n,.arm-mi.done .n,.arm-x,.code-av .t span{font-size:15px!important}
 .arm-mi .ms-tt{font-size:22px!important}
+.screen{scrollbar-width:thin;scrollbar-color:#a8875a transparent;scrollbar-gutter:stable}
+.pf-tab{font-family:Cinzel,Georgia,serif!important;font-weight:700!important;letter-spacing:.16em!important;text-transform:none!important;font-size:16px!important}
+.pf-dtab{font-family:Cinzel,Georgia,serif!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:none!important;font-size:15px!important}
+.stat-label{font-family:Cinzel,Georgia,serif!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:none!important}
+.syn-unlock-stamp.mandate{color:#8a5a00!important;background:rgba(200,150,40,.16)!important;border-color:rgba(168,116,26,.45)!important}
 </style></template>
 
 <!-- boot / title screen -->
@@ -6890,7 +6895,7 @@ function netTry(peer,id){return new Promise(res=>{let done=false;const fin=v=>{i
   const onErr=e=>{if(e&&e.type==='peer-unavailable'&&(!e.message||e.message.indexOf(id)>=0))fin('none');};peer.on('error',onErr);
   const c=peer.connect(id,{reliable:true});const t=setTimeout(()=>{try{c.close();}catch(e){}fin('none');},4000);
   c.on('open',()=>c.send({t:'hello',n:HM.name,a:AVS.me,tl:ttCur()}));
-  c.on('data',m=>{if(!m)return;if(m.t==='welcome'){clearTimeout(t);if(done){try{c.send({t:'bye'});c.close();}catch(e){}return;}res._c=c;fin({c,n:m.n,pub:m.pub,a:m.a});}else if(m.t==='full'){clearTimeout(t);try{c.close();}catch(e){}fin('full');}});
+  c.on('data',m=>{if(!m)return;if(m.t==='welcome'){clearTimeout(t);if(done){try{c.send({t:'bye'});c.close();}catch(e){}return;}res._c=c;fin({c,n:m.n,pub:m.pub,a:m.a,tl:m.tl});}else if(m.t==='full'){clearTimeout(t);try{c.close();}catch(e){}fin('full');}});
   c.on('error',()=>{clearTimeout(t);fin('none');});});}
 async function netGuestPeer(){await netLib();if(NET.peer)return NET.peer;const p=await netPeer(null);p._ok=true;NET.peer=p;return p;}
 function hmEnterAsGuest(){NET.role='guest';NET.meReady=NET.themReady=false;hmShow('hmPlay',false);hmShow('hmRoom',true);hmRoomUI();hmNetStat('Connected! Press Start when you\'re ready.','ok');snd('card_shuffle');}
@@ -6922,9 +6927,10 @@ async function hmQuickJoin(){hmShow('hmPvp',false);hmShow('hmSearch',true);$('hm
         if(won){if(!live()||run.state!=='idle'){try{won.c.send({t:'bye'});won.c.close();}catch(e){}}
           else{run.state='done';hmQEnd(run);NET.oppName=won.n||'Host';AVS.opp=avOk(won.a);NET.oppTitle=ttOk(won.tl);NET.pub=true;netWire(won.c);hmShow('hmSearch',false);NET.search=null;hmEnterAsGuest();return;}}}
       // 2. another Skirmish player waiting in a lower queue slot, one at a time
+      // 13.10.3: knock on every lower queue slot at once; the first "welcome" wins and is taken straight away
       const lim=run.slot<0?NET_Q_SLOTS:run.slot;
-      for(let n=0;n<lim;n++){if(!live()||run.state!=='idle')break;run.state='busy';
-        const r=await netTry(p,NET_PREFIX+'q-'+n);
+      if(lim>0&&live()&&run.state==='idle'){run.state='busy';
+        const r=await new Promise(res=>{let left=lim,won=null;for(let n=0;n<lim;n++)netTry(p,NET_PREFIX+'q-'+n).then(x=>{left--;if(x&&x.c){if(won||!live()){try{x.c.send({t:'bye'});x.c.close();}catch(e){}}else{won=x;res(x);}}if(left===0&&!won)res(null);});});
         if(r&&r.c){if(!live()){try{r.c.send({t:'bye'});r.c.close();}catch(e){}return;}
           try{r.c.send({t:'take'});}catch(e){}run.state='done';hmQEnd(run);NET.oppName=r.n||'Player 2';AVS.opp=avOk(r.a);NET.oppTitle=ttOk(r.tl);NET.pub=true;netWire(r.c);hmShow('hmSearch',false);NET.search=null;hmQuickMatched('guest');return;}
         if(run.state==='busy')run.state='idle';}
@@ -7115,7 +7121,7 @@ function pfRecord(){
 /* 8.1: lifetime Synergy uses (for avatar unlocks). A Flush combo also counts as Monolith Vanguard. */
 function pfCountUses(waves){const before=AV_LIST.filter(a=>avUnlocked(a));const u=avUses();
   const on=HM.mode==='skirmish'||HM.mode==='custom';  // 8.3: Synergy faces only count battles vs another player
-  (waves||[]).forEach(w=>{const h=w.hand||'none';if(on&&h!=='none')u['o_'+h]=(u['o_'+h]||0)+1;
+  (waves||[]).forEach(w=>{if(w._cnt)return;const h=w.hand||'none';if(on&&h!=='none')u['o_'+h]=(u['o_'+h]||0)+1;
     (w.slotLabels||w.suits||[]).forEach(l=>{l=String(l);const k=BL_SC[l[0]];if(!k)return;const sm=parseInt(l.slice(1),10)||0;const key='u_'+k+(sm>=21?1:0);u[key]=(u[key]||0)+1;});
     if(on&&h!=='flush'&&h!=='sflush'&&h!=='royal'&&(w.fl||/Monolith/.test(w.handName||'')))u.o_flush=(u.o_flush||0)+1;});
   try{localStorage.setItem('hm_syn_uses',JSON.stringify(u));}catch(e){}
@@ -7771,11 +7777,11 @@ try{fit();}catch(e){}
 /* menus: no text smaller than 15px (menus, Tactics, Profile, Settings and pop-ups; the battle screen is left as it is) */
 (function(){
   const F=15;
-  function fix(root){if(!root)return;root.querySelectorAll('*').forEach(el=>{if(el.closest('#stage,#hmWipe,#hmCount')||el.tagName==='STYLE'||el.tagName==='SCRIPT')return;
+  function fix(root){if(!root)return;(root.nodeType===1?[root,...root.querySelectorAll('*')]:root.querySelectorAll('*')).forEach(el=>{if(el.closest('#stage,#hmWipe,#hmCount')||el.tagName==='STYLE'||el.tagName==='SCRIPT')return;
     let own=false;for(const n of el.childNodes)if(n.nodeType===3&&n.textContent.trim()){own=true;break;}if(!own)return;
     const fs=parseFloat(getComputedStyle(el).fontSize);if(fs&&fs<F)el.style.setProperty('font-size',F+'px','important');});}
   let t=0;function run(){clearTimeout(t);t=setTimeout(()=>{try{fix(hmSR());document.querySelectorAll('body > .hm-ov:not(#hmCount)').forEach(fix);}catch(e){}},120);}
-  const mo=new MutationObserver(run);
+  const mo=new MutationObserver(recs=>{try{const seen=new Set();recs.forEach(r=>{const t=r.target;if(t&&t.nodeType===1&&!seen.has(t)){seen.add(t);fix(t);}});}catch(e){}run();});  // 13.10.3: fix new text before it is painted, so nothing jumps
   function watch(){try{const R=hmSR();if(R)mo.observe(R,{childList:true,subtree:true});document.querySelectorAll('body > .hm-ov:not(#hmCount)').forEach(o=>mo.observe(o,{childList:true,subtree:true}));}catch(e){}run();}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',watch);else watch();
 })();
@@ -8126,6 +8132,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .avpop-g{width:56px;height:56px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font:26px Georgia,serif;border:2px solid #b4935a}
 .avpop-g.tt-g-common{background:#e3d6bf;color:#5a4834}.avpop-g.tt-g-legendary{background:#f0d89a;color:#7a5200}.avpop-g.tt-g-uncommon{background:#cfe3c8;color:#2f5d2b}.avpop-g.tt-g-rare{background:#cbd8f0;color:#24467d}.avpop-g.tt-g-epic{background:#ddcdee;color:#5a3488}
 .avpop-g.tn-g{background:#8c1c16;color:#fff;font-style:italic}
+.avpop.mini{transform:scale(.78);transform-origin:100% 100%;opacity:.95}
 </style>
 <script>
 /* ═══ 13.10: Armory — Titles, Taunts, Missions ═══ */
@@ -8271,6 +8278,18 @@ setTimeout(()=>{try{hmUnlockCheck();}catch(e){}},800);
   const emp=box.querySelector('.code-empty');if(emp){emp.outerHTML=row+'<div class="code-leg"><span class="code-chip one">one-time code</span><span class="code-chip life">lifetime / promo code</span></div>';}
   else{const leg=box.querySelector('.code-leg');if(leg)leg.insertAdjacentHTML('beforebegin',row);}}
   if(box){const e=box.querySelector('.code-empty');if(e)e.textContent='Nothing unlocked via code yet';}}catch(e){}return ok;};}
+/* 13.10.3: count each wave the moment it forms, so unlocks pop up during the battle (progress is kept even if you leave) */
+setInterval(()=>{try{
+  if(typeof S==='undefined'||!S||!S.running||!S.log||HM.replay||hmInTut())return;
+  const W=S.log.pWaves||[];if(!W.some(w=>!w._cnt))return;
+  const u=avUses(),on=HM.mode==='skirmish'||HM.mode==='custom';
+  W.forEach(w=>{if(w._cnt)return;w._cnt=1;const h=w.hand||'none';if(on&&h!=='none')u['o_'+h]=(u['o_'+h]||0)+1;
+    (w.slotLabels||w.suits||[]).forEach(l=>{l=String(l);const k=BL_SC[l[0]];if(!k)return;const sm=parseInt(l.slice(1),10)||0;const key='u_'+k+(sm>=21?1:0);u[key]=(u[key]||0)+1;});
+    if(on&&h!=='flush'&&h!=='sflush'&&h!=='royal'&&(w.fl||/Monolith/.test(w.handName||'')))u.o_flush=(u.o_flush||0)+1;});
+  try{localStorage.setItem('hm_syn_uses',JSON.stringify(u));}catch(e){}
+  avCheckNew();hmUnlockCheck();
+}catch(e){}},700);
+{const _n=avPopNext;avPopNext=function(){const had=AVPOP;_n.apply(this,arguments);try{if(!had&&AVPOP&&typeof S!=='undefined'&&S&&S.running){AVPOP.d.classList.add('mini');clearTimeout(AVPOP.t);const d=AVPOP.d;AVPOP.t=setTimeout(()=>d.click(),3000);}}catch(e){}};}
 </script>
 </body>
 </html>
