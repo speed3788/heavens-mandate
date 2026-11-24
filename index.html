@@ -1311,6 +1311,19 @@ function blW(n){return 'W'+String(n).padStart(2,'0');}
 function fmtMS(ms){const s=Math.round(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+(s%60).toString().padStart(2,'0');}
 function blSuit(lbl){lbl=String(lbl);const k=BL_SC[lbl[0]];if(!k)return lbl;const cel=/\(H\)/.test(lbl),sm=parseInt(lbl.slice(1),10)||0;
   const r=cel?'cel':sm>=21?'hero':sm>=17?'fort':'std';return '<span class="blc r-'+r+' sc-'+k+'">'+lbl[0]+sm+'</span>';}
+/* 13.10.5: show reports saved before 13.10.4 in the new style (display only; saved data untouched) */
+function blShortName(n){const m=String(n).match(/^(.*?)\s*\+\s*Monolith Vanguard$/);if(!m)return n;const k=Object.keys(FORMATIONS).find(x=>FORMATIONS[x].name===m[1].trim());return 'Monolith Vanguard + '+((k&&BL_AB[k])||m[1].trim());}
+function blTimePad(t){const m=String(t).trim().match(/^(\d+):(\d\d)$/);return m?m[1].padStart(2,'0')+':'+m[2]:t;}
+function blUpgradeOld(){
+  document.querySelectorAll('#blWavesP .bl-wave-row,#blWavesE .bl-wave-row').forEach(r=>{const c=r.children;if(c.length<5||!/^Wave\s/.test(c[0].textContent))return;
+    c[0].textContent=blW(parseInt(c[0].textContent.replace(/\D/g,''),10)||0);c[0].className='bl-num';
+    c[1].textContent=blShortName(c[1].textContent);
+    const labels=[...c[2].querySelectorAll('span')].map(x=>x.textContent);if(labels.length){c[2].innerHTML=labels.map(blSuit).join('');c[2].className='blcs';}
+    const d=parseFloat(c[3].textContent);if(!isNaN(d)){c[3].textContent=blDps(d)+' DPS';c[3].classList.add('bl-num');}
+    c[4].textContent=blTimePad(c[4].textContent);c[4].classList.add('bl-num');});
+  document.querySelectorAll('#blPlayer .bl-best,#blAI .bl-best').forEach(b=>{const nm=b.querySelector('.nm');if(nm)nm.textContent=blShortName(nm.textContent);
+    const bd=b.querySelector('.dp b');if(bd&&!bd.classList.contains('bl-num')){const d=parseFloat(bd.textContent);if(!isNaN(d))bd.textContent=blDps(d)+' DPS';bd.classList.add('bl-num');}
+    const sm=b.querySelector('.bl-when');if(sm){const m=sm.textContent.match(/wave\s*(\d+),\s*(\d+:\d\d)/i);if(m){sm.textContent='('+blW(parseInt(m[1],10))+', '+blTimePad(m[2])+')';sm.classList.add('bl-num');}}});}
 function blBest(waves){const w=waves.reduce((b,x)=>(!b||(x.dps||0)>(b.dps||0))?x:b,null);
   if(!w)return '<span>—</span>';const nm=blName(w);
   return '<span class="bl-best"><span class="nm">'+nm+'</span><span class="dp"><b class="bl-num">'+blDps(w.dps)+' DPS</b> <small class="bl-when bl-num">('+blW(w.wave)+', '+fmtMS((w.time||0)*1000)+')</small></span></span>';}
@@ -6087,7 +6100,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.10.4 · Prototype</span>
+            <span class="settings-row-value">#13.10.5 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -7160,7 +7173,7 @@ function avPopNext(){if(AVPOP||!AVQ.length)return;const a=AVQ.shift(),d=document
 // save each live match once, right after its Battle Report is drawn
 const _hmShowBL=showBattleLog;
 showBattleLog=function(){_hmShowBL();$('blClose').textContent='Main Menu';hmRpReset();if(!HM.replay&&HM.inGame&&!S._pfSaved){S._pfSaved=true;try{pfRecord();}catch(e){console.error(e);}}};
-function pfFmt(sec){sec=Math.max(0,Math.round(sec||0));return Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');}
+function pfFmt(sec){sec=Math.max(0,Math.round(sec||0));return String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');}
 function pfNum(x){return Math.round(x||0).toLocaleString();}
 function hmPfTab(t){HM.pfTab=t;hmRenderProfile();}
 function hmPfDiff(d){HM.pfDiff=d;hmRenderProfile();}
@@ -7209,7 +7222,7 @@ function hmRenderProfile(){const R=hmSR();if(!R||!R.getElementById('pfMain'))ret
     :'<div class="empty-history">'+(ranked?'No ranked matches yet.':cpu?(DN?'No '+DN+' matches vs the computer yet.':'No matches vs the computer yet.<br>Play a battle to see your history here.'):'No online matches yet.<br>Play online to see your history here.')+'</div>';}
 // reopen a saved Battle Report from Match History
 function hmViewReport(id){const m=pfLoad().matches.find(x=>x.id===id);if(!m||!m.rep)return;
-  hmWipe(()=>{HM.replay=true;blSetRes($('blResult'),m.rep.res);$('blTime').innerHTML='Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b>';$('blPlayer').innerHTML=m.rep.pl;$('blAI').innerHTML=m.rep.ai;$('blWavesP').innerHTML=m.rep.wp;$('blWavesE').innerHTML=m.rep.we;
+  hmWipe(()=>{HM.replay=true;blSetRes($('blResult'),m.rep.res);$('blTime').innerHTML='Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b>';$('blPlayer').innerHTML=m.rep.pl;$('blAI').innerHTML=m.rep.ai;$('blWavesP').innerHTML=m.rep.wp;$('blWavesE').innerHTML=m.rep.we;try{blUpgradeOld();}catch(e){}
     hmRpHide();blZoom();const c=$('blClose');c.textContent='Back to Profile';
     c.onclick=()=>hmWipe(()=>{$('battleLog').classList.remove('show');HM.replay=false;c.onclick=()=>hmToMenu();$('hmMenu').hidden=false;try{showScreen('profile',null);}catch(e){}hmRenderProfile();});
     $('hmMenu').hidden=true;$('battleLog').scrollTop=0;$('battleLog').classList.add('show');});}
