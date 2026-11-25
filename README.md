@@ -108,6 +108,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **13.10.5:** Match times show as MM:SS in saved Battle Reports and Match History; reports saved before 13.10.4 now open in the new style (W01, 00.0 DPS, MM:SS, rank chips, short Monolith names).
 - **13.10.6:** Skirmish fix: a player who is out looking for an opponent still accepts an opponent who finds them, so two searching players no longer keep turning each other away.
 - **13.10.7:** Skirmish knocks on one spot at a time (iPads couldn't handle many at once) and waits up to 8 seconds for an answer; the search reconnects instead of failing if the online lobby link drops; online errors show their real reason.
+- **13.10.8:** NEW badges on newly unlocked avatars, titles and taunts (with red dots on Profile, Armory and its tabs; tapping the item clears it); an "Unlocked this battle" section at the bottom of the Battle Report (also kept in Match History); the default Tianming avatar no longer reads backwards on the opponent's side.
 - **13.7:** the Rank page is now called **Leaderboard**; it just says "Coming Soon" (no box), right under the banner. On Profile, the Unranked tab is now **Skirmish** and the GUEST tag under your name is gone. The Ranked card on the Play page no longer has a Coming Soon label (it still can't be tapped yet).
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.

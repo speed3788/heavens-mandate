@@ -973,6 +973,15 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 #blX:hover{background:#9b3324}
 #battleLog .bl-best .nm{font-size:9.5px!important;font-weight:700!important}
 #battleLog .bl-best .dp b{font-weight:700!important}
+
+/* 13.10.8 NEW badges + Battle Report unlocks */
+.bl-unl{width:100%;max-width:680px;margin:0 0 12px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.35)}
+#battleLog .bl-unl h3{font-size:9px!important;font-weight:800;letter-spacing:2px;color:var(--gold);margin:0 0 8px;text-transform:uppercase}
+.bu-list{display:flex;flex-wrap:wrap;gap:10px}
+.bu-i{display:flex;align-items:center;gap:8px;background:rgba(200,150,40,.14);border-radius:8px;padding:6px 10px 6px 6px}
+.bu-i img,.bu-g{width:34px;height:34px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#f3e7cf}
+.bu-g{display:flex;align-items:center;justify-content:center;font:18px Georgia,serif}.bu-g.tt{background:#e3d6bf;color:#5a4834}.bu-g.tn{background:#8c1c16;color:#fff;font-style:italic;font-size:14px}
+.bu-i b{display:block;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#8a6a4a}.bu-i span{font-size:11px;font-weight:700;color:#2a2017}
 </style>
 </head>
 <body>
@@ -1014,6 +1023,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
     <div class="bl-waves-col"><h3>Your Waves</h3><div id="blWavesP" class="bl-waves-scroll"></div></div>
     <div class="bl-waves-col"><h3 id="blWavesEH">Enemy Waves</h3><div id="blWavesE" class="bl-waves-scroll"></div></div>
   </div>
+    <div id="blUnl" class="bl-unl" hidden></div>
     <div class="bl-btns">
       <div class="bl-rpmsg" id="blRpMsg" hidden></div>
       <div class="bl-btnrow"><button class="bl-btn go" id="blReplay">Replay</button><button class="bl-btn go" id="blRpYes" hidden>Accept</button><button class="bl-btn no" id="blRpNo" hidden>Decline</button>
@@ -3168,6 +3178,7 @@ S=newState();barrInit();S.aiWave=0;aiReset();fit();renderAll();raf=requestAnimat
 #stage #baseP .bname{text-align:left!important}#stage #baseE .bname{text-align:right!important}
 #stage #baseP .bav{left:-54px!important;right:auto!important}#stage #baseE .bav{right:-54px!important;left:auto!important}
 #stage #baseP .bav img{transform:none!important}#stage #baseE .bav img{transform:scaleX(-1)!important}
+#stage #baseE .bav img[src*="tianming"]{transform:none!important}
 #wvP{text-align:right!important}#wvE{text-align:left!important}
 #stage #playerForm{flex-direction:row-reverse!important;-webkit-mask-image:linear-gradient(90deg,transparent,#000 22px)!important;mask-image:linear-gradient(90deg,transparent,#000 22px)!important}
 #stage #playerForm .mq{flex-direction:row-reverse!important}
@@ -6100,7 +6111,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.10.7 · Prototype</span>
+            <span class="settings-row-value">#13.10.8 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6311,6 +6322,12 @@ html, .hm-body {
 .stat-label{font-family:Cinzel,Georgia,serif!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:none!important}
 .syn-unlock-stamp.mandate{color:#8a5a00!important;background:rgba(200,150,40,.16)!important;border-color:rgba(168,116,26,.45)!important}
 .set-tab{font-family:Cinzel,Georgia,serif!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:none!important;font-size:15px!important}
+.new-tag{display:inline-block;margin-left:8px;padding:1px 7px;border-radius:9px;background:#9b3324;color:#fff!important;font:700 11px/1.5 Cinzel,Georgia,serif!important;letter-spacing:.1em;vertical-align:middle}
+.new-tag.av{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);margin:0;font-size:15px!important;line-height:1.2!important;padding:0 6px;box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.arm-avg .av-opt{position:relative}
+.pf-mtab.has-new,.arm-st.has-new,.nav-tab.has-new{position:relative}
+.pf-mtab.has-new:after,.nav-tab.has-new:after{content:'';position:absolute;top:6px;right:-4px;width:8px;height:8px;border-radius:50%;background:#9b3324}
+.arm-st.has-new:before{content:'';position:absolute;top:0;right:-9px;width:7px;height:7px;border-radius:50%;background:#9b3324}
 </style></template>
 
 <!-- boot / title screen -->
@@ -7153,7 +7170,7 @@ function pfRecord(){
     res:win?'win':(S.surrendered?'surr':'loss'),dur:Math.round(L.duration||0),waves:L.pWaves.length,units:n,
     kills:L.pKills||0,fodder:L.pFodder||0,gold:Math.round((L.pInc||0)+(L.pBounty||0)),bounty:L.pBounty||0,cards:L.pCards||0,busts:L.pBusts||0,
     nat:L.pNat||0,hero:L.pHero||0,mandate:L.pMandate||0,best:best?{name:(!best.hand||best.hand==='none')?'No Synergy':(best.handName||best.hand),dps:Math.round((best.dps||0)*10)/10}:null,top,
-    rep:{res:$('blResult').dataset.r||$('blResult').textContent,pl:$('blPlayer').innerHTML,ai:$('blAI').innerHTML,wp:$('blWavesP').innerHTML,we:$('blWavesE').innerHTML}};
+    rep:{res:$('blResult').dataset.r||$('blResult').textContent,pl:$('blPlayer').innerHTML,ai:$('blAI').innerHTML,wp:$('blWavesP').innerHTML,we:$('blWavesE').innerHTML,ul:$('blUnl').innerHTML}};
   const p=pfLoad();p.matches.push(m);pfSave(p);hmRenderProfile();pfCountUses(L.pWaves);}
 /* 8.1: lifetime Synergy uses (for avatar unlocks). A Flush combo also counts as Monolith Vanguard. */
 function pfCountUses(waves){const before=AV_LIST.filter(a=>avUnlocked(a));const u=avUses();
@@ -7225,7 +7242,7 @@ function hmRenderProfile(){const R=hmSR();if(!R||!R.getElementById('pfMain'))ret
     :'<div class="empty-history">'+(ranked?'No ranked matches yet.':cpu?(DN?'No '+DN+' matches vs the computer yet.':'No matches vs the computer yet.<br>Play a battle to see your history here.'):'No online matches yet.<br>Play online to see your history here.')+'</div>';}
 // reopen a saved Battle Report from Match History
 function hmViewReport(id){const m=pfLoad().matches.find(x=>x.id===id);if(!m||!m.rep)return;
-  hmWipe(()=>{HM.replay=true;blSetRes($('blResult'),m.rep.res);$('blTime').innerHTML='Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b>';$('blPlayer').innerHTML=m.rep.pl;$('blAI').innerHTML=m.rep.ai;$('blWavesP').innerHTML=m.rep.wp;$('blWavesE').innerHTML=m.rep.we;try{blUpgradeOld();}catch(e){}
+  hmWipe(()=>{HM.replay=true;blSetRes($('blResult'),m.rep.res);$('blTime').innerHTML='Match Time: <b>'+(m.dur>1?pfFmt(m.dur):'—')+'</b>';$('blPlayer').innerHTML=m.rep.pl;$('blAI').innerHTML=m.rep.ai;$('blWavesP').innerHTML=m.rep.wp;$('blWavesE').innerHTML=m.rep.we;$('blUnl').innerHTML=m.rep.ul||'';$('blUnl').hidden=!m.rep.ul;try{blUpgradeOld();}catch(e){}
     hmRpHide();blZoom();const c=$('blClose');c.textContent='Back to Profile';
     c.onclick=()=>hmWipe(()=>{$('battleLog').classList.remove('show');HM.replay=false;c.onclick=()=>hmToMenu();$('hmMenu').hidden=false;try{showScreen('profile',null);}catch(e){}hmRenderProfile();});
     $('hmMenu').hidden=true;$('battleLog').scrollTop=0;$('battleLog').classList.add('show');});}
@@ -8327,6 +8344,40 @@ setInterval(()=>{try{
   avCheckNew();hmUnlockCheck();
 }catch(e){}},700);
 {const _n=avPopNext;avPopNext=function(){const had=AVPOP;_n.apply(this,arguments);try{if(!had&&AVPOP&&typeof S!=='undefined'&&S&&S.running){AVPOP.d.classList.add('mini');clearTimeout(AVPOP.t);const d=AVPOP.d;AVPOP.t=setTimeout(()=>d.click(),3000);}}catch(e){}};}
+/* 13.10.8: NEW badges + unlocks section in the Battle Report */
+function hmUnlockedKeys(){const U=avUses();const k=[];TT_LIST.forEach(t=>{if(ttHave(t.id))k.push('t:'+t.id);});TN_LIST.forEach(t=>{if(tnHave(t))k.push('n:'+t.id);});
+  AV_LIST.forEach(a=>{if(avUnlocked(a,U))k.push('a:'+a);});return k;}
+function hmNewSync(){const cur=hmUnlockedKeys();let known=hmLS('hm_known',null);if(!known){hmLSset('hm_known',cur);return;}
+  const add=cur.filter(k=>known.indexOf(k)<0);if(add.length){const nw=hmLS('hm_new',[]);add.forEach(k=>{if(nw.indexOf(k)<0)nw.push(k);});hmLSset('hm_new',nw);hmLSset('hm_known',cur);try{hmArmRender();}catch(e){}hmNewDots();}}
+function hmIsNew(k){return hmLS('hm_new',[]).indexOf(k)>=0;}
+function hmSeen(k){const nw=hmLS('hm_new',[]),i=nw.indexOf(k);if(i>=0){nw.splice(i,1);hmLSset('hm_new',nw);hmNewDots();}}
+function hmNewDots(){try{const R=hmSR();if(!R)return;const nw=hmLS('hm_new',[]);const has=p=>nw.some(k=>k.indexOf(p)===0);
+  const mt=R.querySelector('.pf-mtab[data-m="armory"]');if(mt)mt.classList.toggle('has-new',nw.length>0);
+  R.querySelectorAll('.arm-st').forEach(b=>{const t=(b.getAttribute('onclick')||'').match(/'(\w+)'/);const p=t&&{titles:'t:',avatars:'a:',taunts:'n:'}[t[1]];if(p)b.classList.toggle('has-new',has(p));});
+  const nav=R.querySelector('.nav-tab[data-screen="profile"],.nav-tab[onclick*="profile"]');if(nav)nav.classList.toggle('has-new',nw.length>0);}catch(e){}}
+const NEW_TAG='<span class="new-tag">NEW</span>';
+{const _r=hmArmRender;hmArmRender=function(){_r.apply(this,arguments);try{const R=hmSR(),box=R&&R.getElementById('pfArmory');if(!box||box.hidden)return;
+  box.querySelectorAll('.arm-tr[onclick]').forEach(b=>{const m=b.getAttribute('onclick').match(/'(\w+)'/);if(m&&hmIsNew('t:'+m[1]))b.querySelector('b').insertAdjacentHTML('afterend',NEW_TAG);});
+  box.querySelectorAll('.arm-avg .av-opt[onclick]').forEach(b=>{const m=b.getAttribute('onclick').match(/'(\w+)'/);if(m&&hmIsNew('a:'+m[1]))b.insertAdjacentHTML('beforeend','<span class="new-tag av">NEW</span>');});
+  box.querySelectorAll('.arm-tn[onclick]').forEach(b=>{const m=b.getAttribute('onclick').match(/'(\w+)'/);if(m&&hmIsNew('n:'+m[1]))b.querySelector('.q').insertAdjacentHTML('beforeend',' '+NEW_TAG);});
+  hmNewDots();}catch(e){}};}
+{const f=hmTtPick;hmTtPick=function(id){hmSeen('t:'+id);return f.apply(this,arguments);};}
+{const f=hmArmAv;hmArmAv=function(a){hmSeen('a:'+a);return f.apply(this,arguments);};}
+{const f=hmTnPick;hmTnPick=function(id){hmSeen('n:'+id);return f.apply(this,arguments);};}
+{const f=hmAvPick;hmAvPick=function(a){try{hmSeen('a:'+avBase(a));}catch(e){}return f.apply(this,arguments);};}
+{const f=hmUnlockCheck;hmUnlockCheck=function(){const r=f.apply(this,arguments);try{hmNewSync();}catch(e){}return r;};}
+setInterval(()=>{try{hmNewSync();}catch(e){}},1500);
+setTimeout(()=>{try{hmNewSync();hmNewDots();}catch(e){}},900);
+/* Battle Report: what you unlocked in this battle */
+let HM_UNL_BASE=null;
+setInterval(()=>{try{if(typeof S!=='undefined'&&S&&S.running&&!HM.replay){if(!HM_UNL_BASE)HM_UNL_BASE=hmUnlockedKeys();}}catch(e){}},500);
+function hmUnlItem(k){const id=k.slice(2);
+  if(k[0]==='a'){const img=id==='bradley'?'bradley_general':id==='dangmang'?'dangmang_empress':id==='patokeem'?'patokeem_general':id;return '<div class="bu-i"><img src="av/'+img+'.webp" alt=""><div><b>Avatar</b><span>'+id.replace(/^extra_/,'').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())+'</span></div></div>';}
+  if(k[0]==='t')return '<div class="bu-i"><span class="bu-g tt">號</span><div><b>Title</b><span>'+ttName(id)+'</span></div></div>';
+  return '<div class="bu-i"><span class="bu-g tn">“ ”</span><div><b>Taunt</b><span>“'+tnText(id)+'”</span></div></div>';}
+{const _r=pfRecord;pfRecord=function(){const r=_r.apply(this,arguments);try{const el=document.getElementById('blUnl');if(el){const now=hmUnlockedKeys(),base=HM_UNL_BASE||now;
+  const got=now.filter(k=>base.indexOf(k)<0);el.innerHTML=got.length?'<h3>Unlocked this battle</h3><div class="bu-list">'+got.map(hmUnlItem).join('')+'</div>':'';el.hidden=!got.length;}}catch(e){}HM_UNL_BASE=null;return r;};}
+{const f=showBattleLog;showBattleLog=function(){try{const el=document.getElementById('blUnl');if(el){el.innerHTML='';el.hidden=true;}}catch(e){}return f.apply(this,arguments);};}
 </script>
 <button type="button" id="blX" hidden aria-label="Close Battle Report" onclick="document.getElementById('blClose').click()">✕</button>
 <script>setInterval(()=>{const b=document.getElementById('battleLog'),x=document.getElementById('blX');if(b&&x){const on=getComputedStyle(b).display!=='none'&&!b.hidden;if(x.hidden===on)x.hidden=!on;}},250);</script>
