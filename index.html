@@ -6100,7 +6100,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.10.6 · Prototype</span>
+            <span class="settings-row-value">#13.10.7 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6865,7 +6865,7 @@ function netPeer(id){return new Promise((res,rej)=>{let p;try{p=NET_LOCAL?LocalP
   p.on('open',()=>{clearTimeout(t);res(p);});p.on('error',e=>{clearTimeout(t);if(!p._ok){try{p.destroy();}catch(_){}rej(e);}});});}
 function netWhy(e){const t=e&&e.type;if(t==='lib')return'Couldn\'t load the online library. Check your internet connection.';
   if(t==='timeout'||t==='network'||t==='server-error'||t==='socket-error'||t==='socket-closed')return'Can\'t reach the online lobby. (The Claude preview blocks online play: open the game from your GitHub page.)';
-  return'Online error: '+(t||'unknown');}
+  return'Online error: '+(t||(e&&e.message)||'unknown');}
 function hmNetStat(txt,cls){const e=$('hmNetStat');e.textContent=txt;e.className='hm-netstat'+(cls?' '+cls:'');}
 function netReset(){NET.meReady=NET.themReady=false;try{NET.conn&&NET.conn.close();}catch(e){}NET.conn=null;}
 function netDrop(){netReset();try{NET.peer&&NET.peer.destroy();}catch(e){}NET.peer=null;NET.role=null;NET.quick=false;}
@@ -6927,7 +6927,9 @@ function hmCopyCode(){const c=NET.code;if(!c)return;
 /* guest: try to join one room id; resolves 'ok' | 'full' | 'none' */
 function netTry(peer,id){return new Promise(res=>{let done=false;const fin=v=>{if(done)return;done=true;peer.off&&peer.off('error',onErr);res(v);};
   const onErr=e=>{if(e&&e.type==='peer-unavailable'&&(!e.message||e.message.indexOf(id)>=0))fin('none');};peer.on('error',onErr);
-  const c=peer.connect(id,{reliable:true});const t=setTimeout(()=>{try{c.close();}catch(e){}fin('none');},4000);
+  if(peer.destroyed)return fin('none');if(peer.disconnected){try{peer.reconnect();}catch(e){}}
+  let c=null;try{c=peer.connect(id,{reliable:true});}catch(e){}if(!c)return fin('none');
+  const t=setTimeout(()=>{try{c.close();}catch(e){}fin('none');},8000);
   c.on('open',()=>c.send({t:'hello',n:HM.name,a:AVS.me,tl:ttCur()}));
   c.on('data',m=>{if(!m)return;if(m.t==='welcome'){clearTimeout(t);if(done){try{c.send({t:'bye'});c.close();}catch(e){}return;}res._c=c;fin({c,n:m.n,pub:m.pub,a:m.a,tl:m.tl});}else if(m.t==='full'){clearTimeout(t);try{c.close();}catch(e){}fin('full');}});
   c.on('error',()=>{clearTimeout(t);fin('none');});});}
@@ -6952,19 +6954,19 @@ const NET_Q_SLOTS=8;  // 11.9: Skirmish queue slots
 async function hmQuickJoin(){hmShow('hmPvp',false);hmShow('hmSearch',true);$('hmSearching').hidden=false;$('hmSearchNone').hidden=true;$('hmSearchTxt').textContent='Searching for opponent…';hmSrchReset();
   if(NET.search)hmQEnd(NET.search);const run={stop:false,state:'idle',hp:null,slot:-1,lockC:null};NET.search=run;const t0=performance.now();
   const live=()=>!run.stop&&NET.search===run;
-  try{netDrop();const p=await netGuestPeer();
+  try{netDrop();let p=await netGuestPeer();
     await hmQClaim(run);
     while(live()&&run.state!=='done'&&performance.now()-t0<90000){
+      if(p.destroyed){if(NET.peer===p)NET.peer=null;p=await netGuestPeer();}else if(p.disconnected){try{p.reconnect();}catch(e){}}
       // 1. any hosted public room (War Council → Public): knock on all at once, first "yes" wins
       if(run.state==='idle'){let won=null;
-        await Promise.all([...Array(NET_PUB_SLOTS).keys()].map(n=>netTry(p,NET_PREFIX+'pub-'+n).then(r=>{if(r&&r.c){if(won||!live()||run.state!=='idle'){try{r.c.send({t:'bye'});r.c.close();}catch(e){}}else won=r;}})));
-        if(won){if(!live()||run.state!=='idle'){try{won.c.send({t:'bye'});won.c.close();}catch(e){}}
-          else{run.state='done';hmQEnd(run);NET.oppName=won.n||'Host';AVS.opp=avOk(won.a);NET.oppTitle=ttOk(won.tl);NET.pub=true;netWire(won.c);hmShow('hmSearch',false);NET.search=null;hmEnterAsGuest();return;}}}
+        for(let n=0;n<NET_PUB_SLOTS&&!won;n++){if(!live()||run.state!=='idle')break;const r=await netTry(p,NET_PREFIX+'pub-'+n).catch(()=>'none');if(r&&r.c){if(!live()||run.state!=='idle'){try{r.c.send({t:'bye'});r.c.close();}catch(e){}}else won=r;}}
+        if(won){run.state='done';hmQEnd(run);NET.oppName=won.n||'Host';AVS.opp=avOk(won.a);NET.oppTitle=ttOk(won.tl);NET.pub=true;netWire(won.c);hmShow('hmSearch',false);NET.search=null;hmEnterAsGuest();return;}}
       // 2. another Skirmish player waiting in a lower queue slot, one at a time
       // 13.10.3: knock on every lower queue slot at once; the first "welcome" wins and is taken straight away
       const lim=run.slot<0?NET_Q_SLOTS:run.slot;
       if(lim>0&&live()&&run.state==='idle'){run.state='knock';
-        const r=await new Promise(res=>{let left=lim,won=null;for(let n=0;n<lim;n++)netTry(p,NET_PREFIX+'q-'+n).then(x=>{left--;if(x&&x.c){if(won||!live()||run.state!=='knock'){try{x.c.send({t:'bye'});x.c.close();}catch(e){}}else{won=x;res(x);}}if(left===0&&!won)res(null);});});
+        let r=null;for(let n=0;n<lim&&!r;n++){if(!live()||run.state!=='knock')break;const x=await netTry(p,NET_PREFIX+'q-'+n).catch(()=>'none');if(x&&x.c)r=x;}
         if(r&&r.c&&(!live()||run.state!=='knock')){try{r.c.send({t:'bye'});r.c.close();}catch(e){}if(!live())return;}
         else if(r&&r.c){
           try{r.c.send({t:'take'});}catch(e){}run.state='done';hmQEnd(run);NET.oppName=r.n||'Player 2';AVS.opp=avOk(r.a);NET.oppTitle=ttOk(r.tl);NET.pub=true;netWire(r.c);hmShow('hmSearch',false);NET.search=null;hmQuickMatched('guest');return;}
