@@ -6111,7 +6111,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.10.9 · Prototype</span>
+            <span class="settings-row-value">#13.10.10 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -8431,7 +8431,8 @@ const KB_FINE=matchMedia('(hover:hover) and (pointer:fine)').matches;
 function kbTutText(s){const m=kbMap(),k=a=>' ['+kbName(m[a])+']';
   return s.replace(/\b([Tt]ap|[Hh]it|[Pp]ress) slot (\d)/g,(x,v,n)=>x+k('s'+n))
     .replace(/\b([Tt]ap|[Hh]it|[Pp]ress) (FILL|NEW)\b/g,x=>x+k('fill')).replace(/\b([Tt]ap|[Hh]it|[Pp]ress) SEND\b/g,x=>x+k('send'))
-    .replace(/\b([Tt]ap|[Hh]it|[Pp]ress) SYNERGIES\b/g,x=>x+k('syn')).replace(/\b([Tt]ap|[Hh]it|[Pp]ress) TAUNTS\b/g,x=>x+k('taunts'));}
+    .replace(/\b([Tt]ap|[Hh]it|[Pp]ress) SYNERGIES\b/g,x=>x+k('syn')).replace(/\b([Tt]ap|[Hh]it|[Pp]ress) TAUNTS\b/g,x=>x+k('taunts'))
+    .replace(/\b(Now|And) slot (\d)\b/g,(x,v,n)=>x+k('s'+n)).replace(/\b([Tt]ap|[Hh]it|[Pp]ress) the sword\b/g,x=>x+k('send')).replace(/\bSend it\b/g,x=>x+k('send'));}
 if(KB_FINE)new MutationObserver(()=>{document.querySelectorAll('#tutBox .tut-say').forEach(el=>{if(el._kb===el.textContent)return;const n=kbTutText(el.textContent);if(n!==el.textContent)el.textContent=n;el._kb=el.textContent;});}).observe(document.body,{childList:true,subtree:true,characterData:true});
 setInterval(()=>{try{const R=hmSR(),sec=R&&R.getElementById('kbSec');if(sec&&!sec.querySelector('.kb-wrap'))kbRender();}catch(e){}},700);
 </script>
