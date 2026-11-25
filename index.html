@@ -6100,7 +6100,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.10.5 · Prototype</span>
+            <span class="settings-row-value">#13.10.6 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6963,14 +6963,15 @@ async function hmQuickJoin(){hmShow('hmPvp',false);hmShow('hmSearch',true);$('hm
       // 2. another Skirmish player waiting in a lower queue slot, one at a time
       // 13.10.3: knock on every lower queue slot at once; the first "welcome" wins and is taken straight away
       const lim=run.slot<0?NET_Q_SLOTS:run.slot;
-      if(lim>0&&live()&&run.state==='idle'){run.state='busy';
-        const r=await new Promise(res=>{let left=lim,won=null;for(let n=0;n<lim;n++)netTry(p,NET_PREFIX+'q-'+n).then(x=>{left--;if(x&&x.c){if(won||!live()){try{x.c.send({t:'bye'});x.c.close();}catch(e){}}else{won=x;res(x);}}if(left===0&&!won)res(null);});});
-        if(r&&r.c){if(!live()){try{r.c.send({t:'bye'});r.c.close();}catch(e){}return;}
+      if(lim>0&&live()&&run.state==='idle'){run.state='knock';
+        const r=await new Promise(res=>{let left=lim,won=null;for(let n=0;n<lim;n++)netTry(p,NET_PREFIX+'q-'+n).then(x=>{left--;if(x&&x.c){if(won||!live()||run.state!=='knock'){try{x.c.send({t:'bye'});x.c.close();}catch(e){}}else{won=x;res(x);}}if(left===0&&!won)res(null);});});
+        if(r&&r.c&&(!live()||run.state!=='knock')){try{r.c.send({t:'bye'});r.c.close();}catch(e){}if(!live())return;}
+        else if(r&&r.c){
           try{r.c.send({t:'take'});}catch(e){}run.state='done';hmQEnd(run);NET.oppName=r.n||'Player 2';AVS.opp=avOk(r.a);NET.oppTitle=ttOk(r.tl);NET.pub=true;netWire(r.c);hmShow('hmSearch',false);NET.search=null;hmQuickMatched('guest');return;}
-        if(run.state==='busy')run.state='idle';}
+        if(run.state==='knock')run.state='idle';}
       if(!live()||run.state==='done')return;
       $('hmSearchTxt').textContent='Searching for opponent… '+Math.floor((performance.now()-t0)/1000)+'s';
-      await new Promise(r=>setTimeout(r,700+Math.random()*1100));}
+      await new Promise(r=>setTimeout(r,400+Math.random()*700));}
     if(live()&&run.state!=='done'){hmQEnd(run);$('hmSearching').hidden=true;$('hmSearchNone').hidden=false;$('hmNoneTxt').innerHTML='No one else is looking for a battle right now.<br>Keep searching, or host a public room?';}}
   catch(e){if(live()&&run.state!=='done'){hmQEnd(run);$('hmSearching').hidden=true;$('hmSearchNone').hidden=false;$('hmNoneTxt').textContent=netWhy(e);}}}
 /* hold one queue slot while searching; a Skirmish player in a higher slot knocks, we say welcome, they say take → we host */
@@ -6983,7 +6984,7 @@ async function hmQClaim(run){const order=[...Array(NET_Q_SLOTS).keys()].sort(()=
       c.on('close',free);
       c.on('data',function(m){if(!m)return;
         if(m.t==='hello'&&!c._hm){c._hm=1;
-          if(run.state!=='idle'||run.stop||NET.search!==run||(NET.peer&&c.peer===NET.peer.id)){try{c.send({t:'full'});}catch(e){}setTimeout(()=>{try{c.close();}catch(e){}},300);return;}
+          if((run.state!=='idle'&&run.state!=='knock')||run.stop||NET.search!==run||(NET.peer&&c.peer===NET.peer.id)){try{c.send({t:'full'});}catch(e){}setTimeout(()=>{try{c.close();}catch(e){}},300);return;}
           run.state='busy';run.lockC=c;c._m=m;c._lk=setTimeout(()=>{if(run.lockC===c&&!c._took){free();try{c.close();}catch(e){}}},3500);
           c.send({t:'welcome',pub:true,n:HM.name,a:AVS.me,tl:ttCur()});return;}
         if(m.t==='take'&&run.lockC===c&&!c._took){c._took=1;clearTimeout(c._lk);run.state='done';run.lockC=null;
