@@ -6111,7 +6111,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.10.8 · Prototype</span>
+            <span class="settings-row-value">#13.10.9 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6321,13 +6321,21 @@ html, .hm-body {
 .pf-dtab{font-family:Cinzel,Georgia,serif!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:none!important;font-size:15px!important}
 .stat-label{font-family:Cinzel,Georgia,serif!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:none!important}
 .syn-unlock-stamp.mandate{color:#8a5a00!important;background:rgba(200,150,40,.16)!important;border-color:rgba(168,116,26,.45)!important}
-.set-tab{font-family:Cinzel,Georgia,serif!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:none!important;font-size:15px!important}
+.set-tab{font-family:Cinzel,Georgia,serif!important;font-weight:700!important;letter-spacing:.06em!important;text-transform:none!important;font-size:15px!important}
 .new-tag{display:inline-block;margin-left:8px;padding:1px 7px;border-radius:9px;background:#9b3324;color:#fff!important;font:700 11px/1.5 Cinzel,Georgia,serif!important;letter-spacing:.1em;vertical-align:middle}
 .new-tag.av{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);margin:0;font-size:15px!important;line-height:1.2!important;padding:0 6px;box-shadow:0 1px 3px rgba(0,0,0,.35)}
 .arm-avg .av-opt{position:relative}
 .pf-mtab.has-new,.arm-st.has-new,.nav-tab.has-new{position:relative}
 .pf-mtab.has-new:after,.nav-tab.has-new:after{content:'';position:absolute;top:6px;right:-4px;width:8px;height:8px;border-radius:50%;background:#9b3324}
 .arm-st.has-new:before{content:'';position:absolute;top:0;right:-9px;width:7px;height:7px;border-radius:50%;background:#9b3324}
+.kb-list{display:flex;flex-direction:column;gap:6px;max-width:560px}
+.kb-row{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-radius:8px;background:rgba(120,100,80,.08)}
+.kb-row .l{font-family:'Crimson Pro',Georgia,serif;font-size:17px;color:#2a2017}
+.kb-k{all:unset;cursor:pointer;min-width:44px;padding:5px 10px;border-radius:6px;background:#f3e7cf;box-shadow:inset 0 -2px 0 rgba(90,72,52,.25);font:700 15px Consolas,Menlo,monospace!important;color:#2a2017;text-align:center}
+.kb-k:hover{background:#fff6e2}.kb-k.wait{background:#9b3324;color:#fff;box-shadow:none}
+.kb-foot{margin-top:14px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.kb-reset{all:unset;cursor:pointer;font-family:Cinzel,Georgia,serif;font-weight:700;letter-spacing:.12em;font-size:15px;padding:8px 16px;border-radius:6px;background:rgba(155,51,36,.1);color:#9b3324}
+.kb-note{font:italic 15px 'Crimson Pro',Georgia,serif;color:#8a7a64}
 </style></template>
 
 <!-- boot / title screen -->
@@ -8008,11 +8016,11 @@ setInterval(()=>{const p=document.getElementById('hmPauseTop');if(!p)return;cons
 /* ═══ Build 13.6: Settings tabs + Profile tab style ═══ */
 (function(){
   const CSS=`.set-tabbed .settings-section .section-head{display:none!important}
-.set-tabs{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin:14px 0 18px;border-bottom:1px solid rgba(180,147,90,.45)}
+.set-tabs{display:grid;grid-template-columns:repeat(7,1fr);gap:0;margin:14px 0 18px;border-bottom:1px solid rgba(180,147,90,.45)}
 .set-tab{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px 4px 9px;border-bottom:3px solid transparent;margin-bottom:-1px;font-family:var(--f-ui);font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-dim)}
 .set-tab.on{color:#9b3324;border-bottom-color:#9b3324}
 .set-tab:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-@media (max-width:640px){.set-tabs{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){.set-tabs{grid-template-columns:repeat(4,1fr)}}
 .set-tabbed .settings-section.set-hide{display:none!important}
 .pf-tabs,.pf-tabs *{box-shadow:none!important}
 .pf-tabs{display:grid!important;grid-template-columns:repeat(3,1fr);gap:0!important;border:0!important;border-bottom:1px solid rgba(180,147,90,.45)!important;border-radius:0!important;background:none!important;padding:0!important;margin:6px 0 14px!important;width:100%!important}
@@ -8022,7 +8030,7 @@ setInterval(()=>{const p=document.getElementById('hmPauseTop');if(!p)return;cons
 .pf-dtab{all:unset;cursor:pointer;position:relative;display:flex!important;align-items:center;justify-content:center;padding:8px 4px 14px!important;border:0!important;background:none!important;border-radius:0!important;font-family:var(--f-ui);font-size:15px!important;font-weight:700;letter-spacing:.06em!important;text-transform:uppercase;color:var(--fg-dim)!important}
 .pf-dtab.on{color:#9b3324!important}
 .pf-dtab.on::after{content:"";position:absolute;bottom:2px;left:50%;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:#9b3324}`;
-  const ORDER=['Account','Audio','Display','Gameplay','About','Code'];
+  const ORDER=['Account','Audio','Display','Gameplay','About','Code','Controls'];
   function setup(){
     const R=(typeof hmSR==='function')&&hmSR();if(!R)return false;
     if(R.querySelector('.set-tabs'))return true;
@@ -8032,10 +8040,10 @@ setInterval(()=>{const p=document.getElementById('hmPauseTop');if(!p)return;cons
     const byT=t=>[...R.querySelectorAll('.settings-section')].find(s=>title(s)===t);
     const disp=byT('Display'),about=byT('About');if(!disp||!about)return false;
     const mk=t=>{const s=document.createElement('div');s.className='settings-section';s.innerHTML='<div class="section-head"><div class="section-title">'+t+'</div></div>';return s;};
-    const game=mk('Gameplay'),code=mk('Code');
+    const game=mk('Gameplay'),code=mk('Code'),ctrl=mk('Controls');ctrl.id='kbSec';
     [...disp.querySelectorAll(':scope > .settings-row')].forEach(r=>{if(!r.querySelector('#tszSel'))game.appendChild(r);});
     [...about.querySelectorAll(':scope > .settings-row')].forEach(r=>{if(r.querySelector('.code-row')||r.classList.contains('code-avrow'))code.appendChild(r);});
-    disp.after(game);about.after(code);
+    disp.after(game);about.after(code);code.after(ctrl);
     const inner=disp.parentElement;inner.classList.add('set-tabbed');
     const all=ORDER.map(byT);
     const bar=document.createElement('div');bar.className='set-tabs';bar.setAttribute('role','tablist');bar.setAttribute('aria-label','Settings sections');
@@ -8378,6 +8386,54 @@ function hmUnlItem(k){const id=k.slice(2);
 {const _r=pfRecord;pfRecord=function(){const r=_r.apply(this,arguments);try{const el=document.getElementById('blUnl');if(el){const now=hmUnlockedKeys(),base=HM_UNL_BASE||now;
   const got=now.filter(k=>base.indexOf(k)<0);el.innerHTML=got.length?'<h3>Unlocked this battle</h3><div class="bu-list">'+got.map(hmUnlItem).join('')+'</div>':'';el.hidden=!got.length;}}catch(e){}HM_UNL_BASE=null;return r;};}
 {const f=showBattleLog;showBattleLog=function(){try{const el=document.getElementById('blUnl');if(el){el.innerHTML='';el.hidden=true;}}catch(e){}return f.apply(this,arguments);};}
+/* 13.10.9: keyboard controls for battle (rebindable in Settings → Controls) */
+const KB_ACT=[['s1','Slot 1','KeyA'],['s2','Slot 2','KeyS'],['s3','Slot 3','KeyD'],['s4','Slot 4','KeyF'],['s5','Slot 5','KeyG'],
+  ['send','Send wave','Enter'],['fill','New / Fill','Space'],['taunts','Taunts','KeyT'],
+  ['t1','Taunt 1','Digit1'],['t2','Taunt 2','Digit2'],['t3','Taunt 3','Digit3'],['t4','Taunt 4','Digit4'],['t5','Taunt 5','Digit5'],['t6','Taunt 6','Digit6'],
+  ['syn','Synergy cheat sheet','Tab'],['pause','Pause','Escape']];
+function kbMap(){const d={};KB_ACT.forEach(a=>d[a[0]]=a[2]);const s=hmLS('hm_keys',{});Object.keys(s).forEach(k=>{if(d[k]!==undefined)d[k]=s[k];});return d;}
+function kbName(code){if(!code)return '—';if(/^Key[A-Z]$/.test(code))return code.slice(3);if(/^Digit\d$/.test(code))return code.slice(5);if(/^Numpad\d$/.test(code))return 'Num '+code.slice(6);
+  return ({Space:'Space',Enter:'Enter',Escape:'Esc',Tab:'Tab',ShiftLeft:'L-Shift',ShiftRight:'R-Shift',ControlLeft:'L-Ctrl',ControlRight:'R-Ctrl',AltLeft:'L-Alt',AltRight:'R-Alt',Backquote:'`',Minus:'-',Equal:'=',BracketLeft:'[',BracketRight:']',Semicolon:';',Quote:"'",Comma:',',Period:'.',Slash:'/',Backslash:'\\',ArrowUp:'↑',ArrowDown:'↓',ArrowLeft:'←',ArrowRight:'→',Backspace:'Backspace',CapsLock:'Caps'})[code]||code;}
+let KB_WAIT=null;
+function kbRender(){const R=hmSR(),sec=R&&R.getElementById('kbSec');if(!sec)return;const m=kbMap();
+  sec.querySelectorAll(':scope > .kb-wrap').forEach(e=>e.remove());const w=document.createElement('div');w.className='kb-wrap';
+  w.innerHTML='<div class="kb-list">'+KB_ACT.map(a=>'<div class="kb-row"><span class="l">'+a[1]+'</span><button type="button" class="kb-k'+(KB_WAIT===a[0]?' wait':'')+'" data-a="'+a[0]+'">'+(KB_WAIT===a[0]?'Press a key…':kbName(m[a[0]]))+'</button></div>').join('')+
+    '</div><div class="kb-foot"><button type="button" class="kb-reset">Reset to defaults</button><span class="kb-note">Click a key, then press the new one. Keys work in battle only.</span></div>';
+  sec.appendChild(w);
+  w.querySelectorAll('.kb-k').forEach(b=>b.onclick=()=>{KB_WAIT=KB_WAIT===b.dataset.a?null:b.dataset.a;kbRender();});
+  w.querySelector('.kb-reset').onclick=()=>{hmLSset('hm_keys',{});KB_WAIT=null;kbRender();};}
+function kbSet(act,code){const m=kbMap(),old=m[act];const clash=Object.keys(m).find(k=>k!==act&&m[k]===code);const s=hmLS('hm_keys',{});
+  s[act]=code;if(clash)s[clash]=old;hmLSset('hm_keys',s);}
+function kbInBattle(){try{return typeof S!=='undefined'&&S&&(S.running||S.preMatch)&&!S.paused&&!HM.replay&&HM.inGame&&$('hmMenu').hidden;}catch(e){return false;}}
+function kbClick(el){if(el&&!el.disabled&&el.offsetParent!==null)el.click();}
+document.addEventListener('keydown',e=>{
+  if(KB_WAIT){e.preventDefault();e.stopPropagation();if(e.code!=='Escape'||KB_WAIT==='pause')kbSet(KB_WAIT,e.code);KB_WAIT=null;kbRender();return;}
+  const t=e.target;if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable))return;
+  if(e.ctrlKey||e.metaKey||e.altKey||e.repeat)return;
+  const m=kbMap(),act=Object.keys(m).find(k=>m[k]===e.code);if(!act)return;
+  if(act==='pause'){const ts=$('tauntSheet'),ss=$('synSheet');
+    if(ts&&!ts.hidden){e.preventDefault();ts.hidden=true;return;}
+    if(ss&&!ss.hidden){e.preventDefault();kbClick($('synBtn'));return;}
+    if(typeof S!=='undefined'&&S&&S.paused){e.preventDefault();try{hmResume();}catch(_){}return;}
+    if(!kbInBattle())return;
+    e.preventDefault();const p=$('hmPauseTop');if(p&&!p.hidden)kbClick(p);else kbClick($('hmGear'));return;}
+  if(!kbInBattle())return;
+  e.preventDefault();e.stopPropagation();
+  if(/^s\d$/.test(act)){kbClick(document.querySelectorAll('#stage .slot')[+act[1]-1]);return;}
+  if(act==='send'){kbClick($('send'));return;}
+  if(act==='fill'){const n=$('newHand');if(n&&!n.disabled&&n.offsetParent!==null)kbClick(n);else kbClick($('fillAll'));return;}
+  if(act==='taunts'){kbClick($('tauntBtn'));return;}
+  if(act==='syn'){kbClick($('synBtn'));return;}
+  if(/^t\d$/.test(act)){if($('tauntBtn')&&$('tauntBtn').hidden)return;const id=tnEq()[+act[1]-1];if(id)hmTauntSend(id);return;}
+},true);
+/* tutorial: show the key in brackets after "tap X" (computers only) */
+const KB_FINE=matchMedia('(hover:hover) and (pointer:fine)').matches;
+function kbTutText(s){const m=kbMap(),k=a=>' ['+kbName(m[a])+']';
+  return s.replace(/\b([Tt]ap|[Hh]it|[Pp]ress) slot (\d)/g,(x,v,n)=>x+k('s'+n))
+    .replace(/\b([Tt]ap|[Hh]it|[Pp]ress) (FILL|NEW)\b/g,x=>x+k('fill')).replace(/\b([Tt]ap|[Hh]it|[Pp]ress) SEND\b/g,x=>x+k('send'))
+    .replace(/\b([Tt]ap|[Hh]it|[Pp]ress) SYNERGIES\b/g,x=>x+k('syn')).replace(/\b([Tt]ap|[Hh]it|[Pp]ress) TAUNTS\b/g,x=>x+k('taunts'));}
+if(KB_FINE)new MutationObserver(()=>{document.querySelectorAll('#tutBox .tut-say').forEach(el=>{if(el._kb===el.textContent)return;const n=kbTutText(el.textContent);if(n!==el.textContent)el.textContent=n;el._kb=el.textContent;});}).observe(document.body,{childList:true,subtree:true,characterData:true});
+setInterval(()=>{try{const R=hmSR(),sec=R&&R.getElementById('kbSec');if(sec&&!sec.querySelector('.kb-wrap'))kbRender();}catch(e){}},700);
 </script>
 <button type="button" id="blX" hidden aria-label="Close Battle Report" onclick="document.getElementById('blClose').click()">✕</button>
 <script>setInterval(()=>{const b=document.getElementById('battleLog'),x=document.getElementById('blX');if(b&&x){const on=getComputedStyle(b).display!=='none'&&!b.hidden;if(x.hidden===on)x.hidden=!on;}},250);</script>
