@@ -111,6 +111,8 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **13.10.8:** NEW badges on newly unlocked avatars, titles and taunts (with red dots on Profile, Armory and its tabs; tapping the item clears it); an "Unlocked this battle" section at the bottom of the Battle Report (also kept in Match History); the default Tianming avatar no longer reads backwards on the opponent's side.
 - **13.10.9:** keyboard controls in battle — slots A S D F G, Send Enter, New/Fill Space, Taunts T (taunts 1–6), Synergies Tab, Pause Esc (closes open lists first). Every key can be changed in Settings → Controls (Reset to defaults). The tutorial shows the key in brackets on computers.
 - **13.10.10:** the tutorial also shows the key for Send ([Enter]) and for each slot while building the Full House.
+- **13.10.11:** online fixes for the player who joins a room: the castles no longer disappear after a match ends, and new soldiers no longer fly across the bridge when they appear.
+- **13.11:** Skirmish matchmaking update; the computer no longer stalls when the Barracks runs out of cards; the battle screen and browser tab show the current build number.
 - **13.7:** the Rank page is now called **Leaderboard**; it just says "Coming Soon" (no box), right under the banner. On Profile, the Unranked tab is now **Skirmish** and the GUEST tag under your name is gone. The Ranked card on the Play page no longer has a Coming Soon label (it still can't be tapped yet).
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.

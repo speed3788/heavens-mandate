@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 13.8</title>
+<title>Heaven's Mandate · Build 13.11</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 var SONG_TITLE={
@@ -991,7 +991,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #13.8</div>
+    <div class="sub">Build #13.11</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -1338,7 +1338,7 @@ function blBest(waves){const w=waves.reduce((b,x)=>(!b||(x.dps||0)>(b.dps||0))?x
   if(!w)return '<span>—</span>';const nm=blName(w);
   return '<span class="bl-best"><span class="nm">'+nm+'</span><span class="dp"><b class="bl-num">'+blDps(w.dps)+' DPS</b> <small class="bl-when bl-num">('+blW(w.wave)+', '+fmtMS((w.time||0)*1000)+')</small></span></span>';}
 function showBattleLog(){
-  {const h=document.getElementById('blWavesEH');if(h)h.textContent=((typeof NET!=='undefined')&&NET.online)?HM.opp+"'s Waves":'Enemy Waves';}
+  {const h=document.getElementById('blWavesEH');if(h)h.textContent=(((typeof NET!=='undefined')&&NET.online)||((typeof HM!=='undefined')&&HM.bot))?HM.opp+"'s Waves":'Enemy Waves';}
   const L=S.log;
   const win=S.eBaseHP<=0;
   const dur=fmtMS((L.duration||0)*1000);{const _t=document.getElementById('blTime');if(_t)_t.innerHTML='Match Time: <b>'+dur+'</b>';}
@@ -1363,7 +1363,7 @@ function showBattleLog(){
 
   // AI stats
   document.getElementById('blAI').innerHTML=`
-    <h3><img class="nav" src="av/${((typeof NET!=='undefined')&&NET.online)?((window.AVS&&AVS.opp)||'foot_soldier'):((window.AVS&&AVS.cpu)||'robot')}.webp" alt="">${((typeof NET!=='undefined')&&NET.online)?HM.opp:'Enemy Side'}</h3>
+    <h3><img class="nav" src="av/${(((typeof NET!=='undefined')&&NET.online)||((typeof HM!=='undefined')&&HM.bot))?((window.AVS&&AVS.opp)||'foot_soldier'):((window.AVS&&AVS.cpu)||'robot')}.webp" alt="">${(((typeof NET!=='undefined')&&NET.online)||((typeof HM!=='undefined')&&HM.bot))?HM.opp:'Enemy Side'}</h3>
     <div class="bl-stat">Waves Sent <span>${L.eWaves.length}</span></div>
     <div class="bl-stat">Units Summoned ${blSummoned(L.eWaves)}</div>
     <div class="bl-stat">Cards Bought <span>${L.eCards||0}</span></div>
@@ -1815,7 +1815,7 @@ function renderHUD(){
   if(S.reckon){$('phaseLabel').textContent='LAST SIEGE. REALLY.';$('phaseLabel').style.color='#e8c35a';}
   else if(S.openShoe){$('phaseLabel').textContent='FINAL SIEGE';$('phaseLabel').style.color='#e05030';}
   $('pHpNum').textContent=Math.max(0,0|S.pBaseHP);$('eHpNum').textContent=Math.max(0,0|S.eBaseHP);
-  {const en=((typeof NET!=='undefined')&&NET.online)?(NET.oppName||'Opponent'):S.tut?'Training Dummy':'CPU ('+({blind:'Recruit',reactive:'Captain',hard:'General',expert:'Commander'}[AI_MODE]||'Recruit')+')';if($('eName').textContent!==en)$('eName').textContent=en;const _A=window.AVS||{},ea=((typeof NET!=='undefined')&&NET.online)?(_A.opp||'foot_soldier'):(_A.cpu||'foot_soldier'),ei=$('eAv');if(ei&&ei.dataset.av!==ea){ei.dataset.av=ea;ei.src='av/'+ea+'.webp';}}
+  {const en=(((typeof NET!=='undefined')&&NET.online)||((typeof HM!=='undefined')&&HM.bot))?(NET.oppName||'Opponent'):S.tut?'Training Dummy':'CPU ('+({blind:'Recruit',reactive:'Captain',hard:'General',expert:'Commander'}[AI_MODE]||'Recruit')+')';if($('eName').textContent!==en)$('eName').textContent=en;const _A=window.AVS||{},ea=(((typeof NET!=='undefined')&&NET.online)||((typeof HM!=='undefined')&&HM.bot))?(_A.opp||'foot_soldier'):(_A.cpu||'foot_soldier'),ei=$('eAv');if(ei&&ei.dataset.av!==ea){ei.dataset.av=ea;ei.src='av/'+ea+'.webp';}}
   $('pHpFill').style.width=(Math.max(0,S.pBaseHP)/BASE_HP*100)+'%';
   $('eHpFill').style.width=(Math.max(0,S.eBaseHP)/BASE_HP*100)+'%';
   for(const [id,hp] of [['cbP',S.pBaseHP],['cbE',S.eBaseHP]]){const el=$(id);if(!el)continue;const f=Math.max(0,hp)/BASE_HP,st=f>2/3?'0':f>1/3?'1':'2';if(el.dataset.st!==st)el.dataset.st=st;}  // 8.9 fortress looks
@@ -1962,7 +1962,7 @@ function killUnit(u){
   // Bounty: whoever owned the OTHER side gets gold. Only the player's purse is tracked visibly.
   const bty=bountyFor(u);
   if(u.side==='e'){ S.gold+=bty; floatGoldAt(u.x,'+'+bty); }
-  else { AI.gold+=bty; if((typeof NET!=='undefined')&&NET.online)floatGoldAt(u.x,'+'+bty,'net-g'); }
+  else { AI.gold+=bty; if(((typeof NET!=='undefined')&&NET.online)||((typeof HM!=='undefined')&&HM.bot))floatGoldAt(u.x,'+'+bty,'net-g'); }
   if(u._rkBurn){clearInterval(u._rkBurn);u._rkBurn=null;}
   if(u._dash){u._dash.g.remove();u._dash=null;}
   u.el.classList.remove('atkstance','pulsing','atking','mv','ccstop','cchg');
@@ -1973,7 +1973,7 @@ function killUnit(u){
 function floatGoldAt(x,txt,cls){
   const layer=$('unitLayer');if(!layer)return;
   const f=document.createElement('div');
-  f.className='killgold'+(cls?' '+cls:((typeof NET!=='undefined')&&NET.online?' net-h':''));
+  f.className='killgold'+(cls?' '+cls:((((typeof NET!=='undefined')&&NET.online)||((typeof HM!=='undefined')&&HM.bot))?' net-h':''));
   f.textContent=txt+'g';
   f.style.left=Math.max(0,Math.min(BRIDGE_W-40,x))+'px';
   layer.appendChild(f);
@@ -2574,9 +2574,10 @@ function aiReset(){
 }
 
 // ── AI draws a card into a chosen slot ──
+function aiShoe(){if(!S.shoe.length)peek();return S.shoe.length>0;}
 function aiDraw(slotIdx){
   if(AI.gold<DRAW_COST)return false;
-  if(!S.shoe.length)return false;
+  if(!aiShoe())return false;
   const c=S.shoe.pop();
   AI.gold-=DRAW_COST;if(S.log)S.log.eCards++;
   const slot=AI.slots[slotIdx];
@@ -2648,23 +2649,27 @@ function aiTick(dt){
   // ── 10.2 computer levels: a hidden goal level each wave; steer cards toward it; send when it's ready or patience runs out ──
   if(AI.goal==null)aiNewGoal();
   AI.drawClock+=dt;
-  if(AI.drawClock>=aiCfg().dms){AI.drawClock=0;aiGoalDraw();}
+  if(AI.drawClock>=aiDms()){AI.drawClock=0;aiGoalDraw();}
   if(AI.energyReady){
     const ready=AI.slots.filter(x=>x.length>=2&&!evalHand(x).bust);
     if(ready.length>=MIN_READY){
       AI.patience+=dt;
       const wp=evalPoker(ready.map(x=>({sum:evalHand(x).sum,suit:x[0].suit,natural:evalHand(x).tier==='natural'})));
       const r=Math.max(AI_RANK[wp&&wp.hand]||0,(wp&&(wp.flushSuit||wp.flushStack))?4:0);
-      let go=r>=AI.goal||AI.patience>=aiCfg().give;
+      let go=r>=AI.goal||AI.patience>=aiCfg().give;if(aiCfg().bot)go=aiBotSend(go&&(ready.length>=5||AI.patience>=aiCfg().give));
       if(AI_MODE==='expert')go=aiExpertSend(go,ready,r);
-      if(go){const n0=S.aiWave||0;aiSendWave();if((S.aiWave||0)>n0){AI.targetSuit=null;aiNewGoal();}}
+      if(go){const n0=S.aiWave||0;aiSendWave();if((S.aiWave||0)>n0){AI.targetSuit=null;AI.bPlan=false;AI.bRefill=S.matchTime+1.5+Math.random()*4.5;aiNewGoal();}}
     }
   }
 }
 const AI_LV={blind:{w:[80,15,5,0],give:5000,dms:1600,noise:0.15},
   reactive:{w:[25,35,40,0],give:12000,dms:1300},
   hard:{w:[15,35,50,0],give:12000,dms:1000,peek:true},
-  expert:{w:[0,10,80,10],give:25000,dms:1000,peek:true,count:true,adapt:1.3}};
+  expert:{w:[0,10,80,10],give:25000,dms:1000,peek:true,count:true,adapt:1.3},
+  bot1:{w:[10,45,45,0],give:13000,dms:1000,noise:0.10,bot:1,react:[0.8,3.5]},
+  bot2:{w:[5,35,55,5],give:14000,dms:920,noise:0.06,bot:1,react:[0.6,2.8]},
+  bot3:{w:[0,30,60,10],give:15000,dms:850,noise:0.03,peek:true,bot:1,react:[0.4,2.2]},
+  bot4:{w:[0,20,65,15],give:16000,dms:800,peek:true,count:true,adapt:1.3,bot:1,react:[0.3,1.8]}};
 const AI_RANK={none:0,high:0,pair:1,three:1,twopair:2,four:2,fullhouse:3,straight:3,flush:4,fiveoak:4,mandate:4,sflush:4,royal:4};
 function aiCfg(){return AI_LV[AI_MODE]||AI_LV.blind;}
 function aiNewGoal(){const w=aiCfg().w;let r=Math.random()*(w[0]+w[1]+w[2]+w[3]),g=4;for(let i=0;i<4;i++){if(r<w[i]){g=i+1;break;}r-=w[i];}AI.goal=g;}
@@ -2709,7 +2714,7 @@ function aiPlan(lvl,w,M){const sl=AI.slots,C={},I=[0,1,2,3,4];let best=null;
     if(lvl===4){for(let T=17;T<=21;T++)add(I.reduce((s,i)=>s+c(i,T,su),0),[T,T,T,T,T],su);if(su)add(I.reduce((s,i)=>s+c(i,0,su),0),[0,0,0,0,0],su);}
   });
   return best;}
-function aiGoalDraw(){const cf=aiCfg(),sl=AI.slots;if(AI.gold<DRAW_COST||!S.shoe.length)return;
+function aiGoalDraw(){const cf=aiCfg(),sl=AI.slots;if(AI.gold<DRAW_COST||!aiShoe())return;if(cf.bot){if(aiBotHold())return;const em=sl.map((x,i)=>x.length?-1:i).filter(i=>i>=0);if(em.length){if(AI.bRefill&&AI.bRefill-S.matchTime>8)AI.bRefill=0;if(S.matchTime<(AI.bRefill||0))return;em.forEach(i=>aiDraw(i));return;}const lo=sl.map((x,i)=>{const v=evalHand(x);return !v.bust&&v.sum<17?i:-1;}).filter(i=>i>=0);if(lo.length&&!AI.bPlan){aiDraw(lo[0|Math.random()*lo.length]);return;}AI.bPlan=true;}
   const w=aiW(),M={};let lvl=AI.goal||1;
   if(cf.adapt&&lvl===4){const p4=aiPlan(4,w,M),p3=aiPlan(3,w,M);if(p4.e>cf.adapt*p3.e)lvl=3;}
   const P=aiPlan(lvl,w,M),pref=AI_MODE!=='blind'?aiPreferredSuit():null,need=[];
@@ -2718,7 +2723,7 @@ function aiGoalDraw(){const cf=aiCfg(),sl=AI.slots;if(AI.gold<DRAW_COST||!S.shoe
     if(x.length&&P.su&&x[0].suit!==P.su){need.push([-1,i]);return;}
     if(T===0){if(x.length>=2&&v>=17)return;need.push([x.length?aiReach(h,a,0,w,M)[0]:1,i]);return;}
     if(x.length>=2&&v===T)return;const p=x.length?aiReach(h,a,T,w,M)[0]:1;need.push([x.length&&p<=0?-1:p,i]);});
-  if(!need.length){if(sl.filter(x=>x.length>=2).length>=MIN_READY)return;sl.forEach((x,i)=>{if(x.length<2)need.push([1,i]);});if(!need.length)return;}
+  if(!need.length){if(cf.bot){sl.forEach((x,i)=>{const v=evalHand(x);if(x.length<2||(!v.bust&&v.sum<17))need.push([1,i]);});if(!need.length)return;}else{if(sl.filter(x=>x.length>=2).length>=MIN_READY)return;sl.forEach((x,i)=>{if(x.length<2)need.push([1,i]);});if(!need.length)return;}}
   const k=n=>n[0]-((pref&&sl[n[1]].length&&sl[n[1]][0].suit===pref)?.001:0);need.sort((A,Bb)=>k(A)-k(Bb));
   let t=need[0][1];
   if(cf.noise&&Math.random()<cf.noise){const o=[0,1,2,3,4].filter(i=>!sl[i].length||evalHand(sl[i]).sum<21);if(o.length)t=o[0|Math.random()*o.length];}
@@ -6111,7 +6116,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.10.10 · Prototype</span>
+            <span class="settings-row-value">#13.11 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6779,9 +6784,9 @@ $('hmSfxVol').addEventListener('input',e=>{const a=hmAudioState();a.sfx=e.target
 $('hmSfxVol').addEventListener('change',()=>snd('coin',1.4));
 $('hmMusOn').addEventListener('click',()=>{const a=hmAudioState();a.musicOn=!a.musicOn;hmAudioSet(a);});
 $('hmSfxOn').addEventListener('click',()=>{const a=hmAudioState();a.sfxOn=!a.sfxOn;hmAudioSet(a);});
-function hmOpenAudio(){hmAudioSync();const vsCpu=HM.inGame&&S&&(S.running||S.preMatch)&&!((typeof NET!=='undefined')&&NET.online);
+function hmOpenAudio(){hmAudioSync();const vsCpu=HM.inGame&&S&&(S.running||S.preMatch)&&!((typeof NET!=='undefined')&&NET.online)&&!((typeof HM!=='undefined')&&HM.bot);
   $('hmPauseBtn').hidden=!vsCpu;const sub=document.querySelector('#hmAudio .hm-sub');if(sub)sub.textContent='';hmShow('hmAudio',true);}
-function hmPause(){if((typeof NET!=='undefined')&&NET.online)return;hmCloseAudio();S.paused=true;document.body.classList.add('hm-paused');hmShow('hmPaused',true);}
+function hmPause(){if(((typeof NET!=='undefined')&&NET.online)||((typeof HM!=='undefined')&&HM.bot))return;hmCloseAudio();S.paused=true;document.body.classList.add('hm-paused');hmShow('hmPaused',true);}
 function hmResume(){S.paused=false;document.body.classList.remove('hm-paused');hmShow('hmPaused',false);}
 function hmCloseAudio(){hmShow('hmAudio',false);}
 
@@ -6997,6 +7002,7 @@ async function hmQuickJoin(){hmShow('hmPvp',false);hmShow('hmSearch',true);$('hm
           try{r.c.send({t:'take'});}catch(e){}run.state='done';hmQEnd(run);NET.oppName=r.n||'Player 2';AVS.opp=avOk(r.a);NET.oppTitle=ttOk(r.tl);NET.pub=true;netWire(r.c);hmShow('hmSearch',false);NET.search=null;hmQuickMatched('guest');return;}
         if(run.state==='knock')run.state='idle';}
       if(!live()||run.state==='done')return;
+      if(run.state==='idle'&&performance.now()-t0>=BOT_WAIT){hmQEnd(run);run.state='done';NET.search=null;try{netDrop();}catch(e){}hmBotFound();return;}
       $('hmSearchTxt').textContent='Searching for opponent… '+Math.floor((performance.now()-t0)/1000)+'s';
       await new Promise(r=>setTimeout(r,400+Math.random()*700));}
     if(live()&&run.state!=='done'){hmQEnd(run);$('hmSearching').hidden=true;$('hmSearchNone').hidden=false;$('hmNoneTxt').innerHTML='No one else is looking for a battle right now.<br>Keep searching, or host a public room?';}}
@@ -7042,7 +7048,7 @@ function hmCountdown(){const o=$('hmCount');o.hidden=false;let n=3;$('hmCountL')
   const show=()=>{const e=$('hmCountN');e.textContent=n;e.style.animation='none';void e.offsetWidth;e.style.animation='';snd(n>0?'card_land':'horn');};
   show();const iv=setInterval(()=>{n--;if(n>0)show();else{clearInterval(iv);$('hmCountN').textContent='戰';$('hmCountL').textContent='Both armies are ready';snd('horn');
     setTimeout(()=>{o.hidden=true;hmOnlineStepTwo();},1400);}},1000);}
-function hmOnlineStepTwo(){netStartMatch();}
+function hmOnlineStepTwo(){if(HM.bot&&!NET.conn){botLaunch();return;}netStartMatch();}
 function hmLeaveRoom(){NET.quick=false;const c=NET.conn,p=NET.peer;try{c&&c.open&&c.send({t:'bye'});}catch(e){}NET.conn=null;NET.peer=null;NET.role=null;NET.meReady=NET.themReady=false;
   setTimeout(()=>{try{c&&c.close();}catch(e){}try{p&&p.destroy();}catch(e){}},120);hmShow('hmRoom',false);}
 
@@ -7345,14 +7351,15 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&NET.onlin
 /* ── GUEST: apply what the host sent ── */
 const MV={map:new Map()};
 const MV_SW={'side-p':'side-e','side-e':'side-p','toLeft':'toRight','toRight':'toLeft'};
-function mvReset(){MV.map=new Map([['B',$('bridge')],['L',$('unitLayer')]]);[...$('bridge').children].forEach(c=>{if(c.id!=='unitLayer')c.remove();});$('unitLayer').innerHTML='';}
+function mvReset(){MV.map=new Map([['B',$('bridge')],['L',$('unitLayer')]]);[...$('bridge').children].forEach(c=>{if(c.id!=='unitLayer'&&!c.classList.contains('cbase'))c.remove();});$('unitLayer').innerHTML='';}
 function mvCls(c){if(!c)return c;const t=c.split(/\s+/).map(x=>MV_SW[x]||x);if(t.includes('dtrail')){const i=t.indexOf('flip');if(i>=0)t.splice(i,1);else t.push('flip');}return t.join(' ');}
 function mvCol(s){return s?s.replace(/#4ae890|#c4544a|rgb\(74, ?232, ?144\)|rgb\(196, ?84, ?74\)/gi,m=>{const g=/4ae890|232/i.test(m);return m[0]==='#'?(g?'#c4544a':'#4ae890'):(g?'rgb(196, 84, 74)':'rgb(74, 232, 144)');}):s;}
 function mvStyle(el,s){s=mvCol(s||'');
   if(el._top){const m=/(^|;\s*)left:\s*(-?[\d.]+)px/.exec(s);
-    if(m){if(el._w==null){el.setAttribute('style',s);el._w=el.offsetWidth;}
+    if(m){let first=false;if(el._w==null){el.setAttribute('style',s+';transition:none');el._w=el.offsetWidth;first=true;}
       const W=el.parentNode&&el.parentNode.id==='bridge'?$('bridge').clientWidth:$('unitLayer').clientWidth;
-      s=s.replace(m[0],m[1]+'left: '+(W-parseFloat(m[2])-el._w).toFixed(1)+'px');}}
+      s=s.replace(m[0],m[1]+'left: '+(W-parseFloat(m[2])-el._w).toFixed(1)+'px');if(first){el.setAttribute('style',s+';transition:none');void el.offsetWidth;}}}
+  if(el._top&&el._w==null&&!/(^|;\s*)left:\s*-?[\d.]+px/.test(s))s+=(s?';':'')+'visibility:hidden';
   if(s)el.setAttribute('style',s);else el.removeAttribute('style');}
 function mvApply(ops){for(const o of ops){
   if(o[0]==='n'){const par=MV.map.get(o[1]);if(!par)continue;const tp=document.createElement('template');tp.innerHTML=mvCol(o[2]);const root=tp.content.firstElementChild;if(!root)continue;
@@ -7421,7 +7428,7 @@ function netStartMatch(){
     L.classList.add('out');setTimeout(()=>{L.hidden=true;L.classList.remove('out');},460);
   },2900);}
 function netLeaveMatch(){clearInterval(NET.tick);NET.tick=null;
-  if(NET.view){[...$('bridge').children].forEach(c=>{if(c.id!=='unitLayer')c.remove();});}
+  if(NET.view){[...$('bridge').children].forEach(c=>{if(c.id!=='unitLayer'&&!c.classList.contains('cbase'))c.remove();});}
   NET.online=NET.view=NET.flip=false;NET.vready=false;document.body.classList.remove('net-host','net-guest');
   const c=NET.conn,p=NET.peer;try{c&&c.open&&c.send({t:'bye'});}catch(e){}NET.conn=null;NET.peer=null;NET.role=null;NET.meReady=NET.themReady=false;
   setTimeout(()=>{try{c&&c.close();}catch(e){}try{p&&p.destroy();}catch(e){}},150);}
@@ -8000,7 +8007,7 @@ hmOptUI();
 </style>
 <script>
 /* 13.1: the Pause button by the gear shows only in a battle vs the computer */
-setInterval(()=>{const p=document.getElementById('hmPauseTop');if(!p)return;const on=!!(typeof HM!=='undefined'&&HM&&HM.inGame)&&!((typeof NET!=='undefined')&&NET.online);if(p.hidden===on)p.hidden=!on;},300);
+setInterval(()=>{const p=document.getElementById('hmPauseTop');if(!p)return;const on=!!(typeof HM!=='undefined'&&HM&&HM.inGame)&&!((typeof NET!=='undefined')&&NET.online)&&!((typeof HM!=='undefined')&&HM.bot);if(p.hidden===on)p.hidden=!on;},300);
 </script>
 <style>
 /* 13.4: Counsel switch locked off during the Tutorial */
@@ -8082,7 +8089,7 @@ function hmRpGotAsk(){if(!$('battleLog').classList.contains('show'))return;if(RP
 function hmRpGotNo(){if(!RP.me)return;RP.me=false;$('blReplay').hidden=true;hmRpNote(hmRpOpp()+' declined.');}
 /* back to the room (War Council) or straight into a new random battle (Skirmish), connection kept */
 function hmRpGo(){RP.me=RP.them=false;hmWipe(()=>{clearInterval(NET.tick);NET.tick=null;
-    if(NET.view){[...$('bridge').children].forEach(c=>{if(c.id!=='unitLayer')c.remove();});}
+    if(NET.view){[...$('bridge').children].forEach(c=>{if(c.id!=='unitLayer'&&!c.classList.contains('cbase'))c.remove();});}
     NET.online=NET.view=NET.flip=false;NET.vready=false;NET.ended=false;document.body.classList.remove('net-host','net-guest');
     $('battleLog').classList.remove('show');$('reset').click();HM.inGame=false;['hmSurr','hmAudio'].forEach(id=>hmShow(id,false));
     $('hmMenu').hidden=false;try{showScreen('menu',null);}catch(e){}
@@ -8258,7 +8265,7 @@ function hmTauntToggle(){const sh=$('tauntSheet');if(!sh)return;if(!sh.hidden){s
   sh.innerHTML='<div class="tsh-h">Taunts</div>'+tnEq().map(id=>'<button type="button" class="tsh-t" data-k="'+id+'">'+tnText(id)+'</button>').join('');
   sh.querySelectorAll('.tsh-t').forEach(x=>x.onclick=()=>hmTauntSend(x.dataset.k));sh.hidden=false;hmTauntPos();}
 function hmTauntSend(k){const sh=$('tauntSheet');if(sh)sh.hidden=true;if(performance.now()-TN_LAST<5000)return;TN_LAST=performance.now();
-  hmTauntBub('p',k);if(HM.mode!=='practice'){netSend({t:'tn',k});}
+  hmTauntBub('p',k);if(HM.bot){botTaunt(.45,1400+Math.random()*900);}else if(HM.mode!=='practice'){netSend({t:'tn',k});}
   else if(Math.random()<.45){const pool=TN_LIST.filter(t=>t.id!==k);const r=pool[Math.floor(Math.random()*pool.length)];setTimeout(()=>{if(S&&S.running)hmTauntBub('e',r.id);},1400+Math.random()*900);}}
 function hmTauntGot(k){if(!TN_LIST.some(t=>t.id===k))return;if(!hmTauntOn())return;hmTauntBub('e',k);}
 function hmTauntBub(side,k){const st=$('stage'),av=$(side==='p'?'pAv':'eAv');if(!st||!av)return;const txt=tnText(k);if(!txt)return;
@@ -8438,5 +8445,72 @@ setInterval(()=>{try{const R=hmSR(),sec=R&&R.getElementById('kbSec');if(sec&&!se
 </script>
 <button type="button" id="blX" hidden aria-label="Close Battle Report" onclick="document.getElementById('blClose').click()">✕</button>
 <script>setInterval(()=>{const b=document.getElementById('battleLog'),x=document.getElementById('blX');if(b&&x){const on=getComputedStyle(b).display!=='none'&&!b.hidden;if(x.hidden===on)x.hidden=!on;}},250);</script>
+<script>
+/* ═══ 13.11 SKIRMISH BOTS ═══
+   If Skirmish finds no player within BOT_WAIT ms, a bot fills in. It looks and plays like a player:
+   Guest + 4 digits, a title that matches its strength, a default or Synergy avatar, that avatar's taunts.
+   Strength comes from the player's Skirmish win rate. Bot matches count as Skirmish (stats, titles, missions). */
+var BOT_WAIT=15000;   // the "dial": raise it (or set Infinity) as more real players arrive
+const BOT_LV=[{id:'bot1',tl:'peasant'},{id:'bot2',tl:'fodder'},{id:'bot3',tl:'soldier'},{id:'bot4',tl:'apprentice'}];
+var BOT_AV=['tianming','foot_soldier'].concat(Object.values(SYN_AV));
+function aiDms(){const cf=aiCfg();if(!cf.bot)return cf.dms;const g=AI.gold;return g>300?cf.dms*0.4:g>150?cf.dms*0.6:cf.dms;}
+/* a finished 5-slot hand while the bridge is full: hold it and save gold, like a person */
+function aiBotHold(){const sl=AI.slots,ready=sl.filter(x=>x.length>=2&&!evalHand(x).bust);if(ready.length<5)return false;
+  if(!sl.every(x=>{const v=evalHand(x);return !v.bust&&v.sum>=17;}))return false;
+  return bridgeFull(soldiersOn('e'),ready.length);}
+/* a short human pause before pressing Send */
+function aiBotSend(go){const cf=aiCfg(),T=S.matchTime;if(!go){AI.bGo=null;return false;}
+  if(AI.bGo!=null&&AI.bGo-T>6)AI.bGo=null;
+  if(AI.bGo==null)AI.bGo=T+cf.react[0]+Math.random()*(cf.react[1]-cf.react[0]);
+  if(T<AI.bGo)return false;AI.bGo=null;return true;}
+function botClear(){AI.bRefill=0;AI.bGo=null;AI.bPlan=false;}
+/* strength from the player's Skirmish record (fewer than 5 matches → Fodder) */
+function botAuto(){let ms=[];try{ms=pfLoad().matches.filter(m=>m.mode==='skirmish');}catch(e){}
+  if(ms.length<5)return 1;const wr=ms.filter(m=>m.res==='win').length/ms.length;return wr<.35?0:wr<.5?1:wr<.65?2:3;}
+function botMake(lv){const av=BOT_AV[0|Math.random()*BOT_AV.length];
+  const syn=Object.keys(SYN_AV).find(k=>SYN_AV[k]===av);
+  const pool=TN_LIST.filter(t=>!t.syn||t.syn===syn).map(t=>t.id);
+  return {lv,name:'Guest'+(1000+(0|Math.random()*9000)),av,tl:BOT_LV[lv].tl,pool,last:0};}
+function botTaunt(p,delay){const b=HM.bot;if(!b||Math.random()>p)return;
+  setTimeout(()=>{if(!S||!S.running||HM.bot!==b)return;const now=performance.now();if(now-b.last<8000)return;b.last=now;
+    hmTauntGot(b.pool[0|Math.random()*b.pool.length]);},delay||0);}
+{const _sw=aiSendWave;aiSendWave=function(){const n=S.aiWave||0;const r=_sw.apply(this,arguments);
+  if(HM.bot&&(S.aiWave||0)>n){const w=S.log.eWaves[S.log.eWaves.length-1],big=w&&['mandate','royal','sflush','fiveoak','flush'].indexOf(w.hand)>=0;
+    botTaunt(big?.35:.06,600+Math.random()*1500);}return r;};}
+setInterval(()=>{if(HM.bot&&S&&S.running&&!S.paused)botTaunt(1/150,0);},1000);
+/* any start that isn't a bot match forgets the bot */
+{const _hs=hmStartVsCpu;hmStartVsCpu=function(){if(!window._botGo)HM.bot=null;botClear();const r=_hs.apply(this,arguments);botClear();return r;};}
+{const _ht=hmStartTutorial;hmStartTutorial=function(){HM.bot=null;return _ht.apply(this,arguments);};}
+{const _ns=netStartMatch;netStartMatch=function(){HM.bot=null;return _ns.apply(this,arguments);};}
+{const _qj=hmQuickJoin;hmQuickJoin=function(){HM.bot=null;const r=_qj.apply(this,arguments);const run=NET.search;
+  const tick=()=>{if(!run||NET.search!==run||run.stop||run.state==='done')return;if(run.state==='busy'){setTimeout(tick,1000);return;}
+    hmQEnd(run);run.state='done';NET.search=null;try{netDrop();}catch(e){}hmBotFound();};
+  setTimeout(tick,BOT_WAIT);return r;};}
+{const _tm=hmToMenu;hmToMenu=function(){const r=_tm.apply(this,arguments);setTimeout(()=>{if(!HM.inGame)HM.bot=null;},900);return r;};}
+/* the room page, like a real Skirmish match: both players Ready, then the countdown */
+function hmBotRoom(msg){const b=HM.bot;NET.role='host';NET.quick=true;NET.pub=true;NET.meReady=NET.themReady=true;
+  hmShow('hmPlay',false);hmShow('hmRoom',true);hmRoomUI();hmNetStat(msg,'ok');snd('card_shuffle');
+  setTimeout(()=>{if(HM.bot===b&&NET.quick&&!NET.conn){hmCountdown();}},1800);}
+{const _ru=hmRoomUI;hmRoomUI=function(){const r=_ru.apply(this,arguments);const b=HM.bot;
+  if(b&&NET.quick&&!NET.conn){const p2=$('hmP2');p2.classList.remove('wait');p2.classList.add('in');$('hmP2n').textContent=b.name;
+    const a2=$('hmP2a'),s2='av/'+b.av+'.webp';if(a2.getAttribute('src')!==s2)a2.src=s2;a2.style.visibility='visible';
+    $('hmP1s').textContent='Ready';$('hmP1s').className='ps ok';$('hmP2s').textContent='Ready';$('hmP2s').className='ps ok';}return r;};}
+function hmBotFound(){const b=botMake(botAuto());HM.bot=b;NET.oppName=b.name;AVS.opp=b.av;NET.oppTitle=b.tl;
+  hmSrchFound();hmBotRoom('Opponent found! The battle starts in a moment…');}
+/* the countdown ends → a local match against the bot, shown and saved as Skirmish */
+function botLaunch(){const b=HM.bot;if(!b||!NET.quick){HM.bot=null;return;}
+  NET.quick=false;NET.role=null;NET.meReady=NET.themReady=false;hmShow('hmRoom',false);
+  window._botGo=true;try{hmStartVsCpu(BOT_LV[b.lv].id);}finally{window._botGo=false;}
+  HM.mode='skirmish';HM.opp=b.name;AVS.cpu=b.av;AVS.opp=b.av;NET.oppName=b.name;NET.oppTitle=b.tl;
+  $('hmLoadOppAv').src='av/'+b.av+'.webp';$('hmLoadCpu').textContent=b.name;}
+/* Replay: the bot thinks for 2–5 s, then accepts (60%) or declines */
+{const bR=$('blReplay'),_rp=bR.onclick;bR.onclick=function(){const b=HM.bot;if(!b||NET.online)return _rp.apply(this,arguments);
+  RP.me=true;bR.textContent='Waiting for '+b.name+'…';bR.classList.remove('go');bR.classList.add('wait');bR.disabled=true;hmRpNote('Replay request sent to '+b.name);
+  setTimeout(()=>{if(HM.bot!==b||!$('battleLog').classList.contains('show'))return;
+    if(Math.random()<.6){RP.me=RP.them=false;hmWipe(()=>{$('battleLog').classList.remove('show');$('reset').click();HM.inGame=false;
+        ['hmSurr','hmAudio'].forEach(id=>hmShow(id,false));$('hmMenu').hidden=false;try{showScreen('menu',null);}catch(e){}
+        hmBotRoom('Rematch! The battle starts in a moment…');});}
+    else{RP.me=false;bR.hidden=true;hmRpNote(b.name+' declined.');}},2000+Math.random()*3000);};}
+</script>
 </body>
 </html>
