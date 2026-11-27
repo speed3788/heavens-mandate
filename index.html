@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 13.11</title>
+<title>Heaven's Mandate · Build 13.12</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 var SONG_TITLE={
@@ -991,7 +991,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #13.11</div>
+    <div class="sub">Build #13.12</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -5062,7 +5062,8 @@ html, .hm-body {
 
 
 .bc-skirmish{--art:url(menu/ink_card_skirmish.webp)!important}.bc-training{--art:url(menu/ink_card_training.webp)!important}
-.bc-ranked{--art:url(menu/ink_card_ranked.webp)!important}.bc-council{--art:url(menu/ink_card_council.webp)!important}
+.bc-ranked{--art:url(menu/ink_card_ranked.webp)!important}
+.bc-tut{--art:url(menu/tac_tut.webp)!important}.bc-council{--art:url(menu/ink_card_council.webp)!important}
 .battle-card:not(.bc-council)::before{background-size:100% auto!important;background-position:center 0%!important}
 .bc-ranked::before{filter:grayscale(1) brightness(1.08) contrast(.9)!important;opacity:.7}
 @media (min-width:641px){.battle-card:not(.bc-council){padding-top:140px!important}.battle-card:not(.bc-council)::before{-webkit-mask-image:linear-gradient(180deg,#000 40%,transparent 62%)!important;mask-image:linear-gradient(180deg,#000 40%,transparent 62%)!important}}
@@ -5227,14 +5228,18 @@ html, .hm-body {
       <div class="inner">
 
         <div class="battle-grid">
-          <button class="battle-card bc-skirmish" type="button" onclick="hmQuickJoin()">
-            <span class="bc-name">Skirmish</span><span class="bc-kind">Quick Game · Online</span>
-            <span class="bc-desc">Jump into a match against a random player online.</span>
+          <button class="battle-card bc-tut" type="button" onclick="hmStartTutorial()">
+            <span class="bc-name">Tutorial</span><span class="bc-kind">First Battle · Zhuge Liang</span>
+            <span class="bc-desc">Learn the basics from Zhuge Liang in about 5 minutes.</span>
           </button>
           <button class="battle-card bc-ranked" type="button" aria-disabled="true" tabindex="-1">
             
             <span class="bc-name">Ranked</span><span class="bc-kind">Ranked · Online</span>
             <span class="bc-desc">Climb the ranks against other players.</span>
+          </button>
+          <button class="battle-card bc-skirmish" type="button" onclick="hmOpenBattle()">
+            <span class="bc-name">Battle</span><span class="bc-kind">Online · Skirmish or Arcade</span>
+            <span class="bc-desc">Jump into a match against a player online.</span>
           </button>
           <button class="battle-card bc-training" type="button" onclick="hmOpenDiff()">
             <span class="bc-name">Training Grounds</span><span class="bc-kind">Practice · vs Computer</span>
@@ -6116,7 +6121,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.11 · Prototype</span>
+            <span class="settings-row-value">#13.12 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -6560,6 +6565,17 @@ html, .hm-body {
       <button class="hm-diff" type="button" onclick="hmShow('hmPvp',false);hmShow('hmCustom',true)"><span class="dn">Custom Game</span><span class="dd">Host your own room, or join a friend with a room code.</span></button>
     </div>
     <div class="hm-row"><button class="hm-btn hm-ghost" type="button" onclick="hmShow('hmPvp',false)">Cancel</button></div>
+  </div>
+</div>
+
+<div class="hm-ov hm-modal-bg" id="hmBattle" hidden onclick="if(event.target===this)hmShow('hmBattle',false)">
+  <div class="hm-card" role="dialog" aria-modal="true" aria-labelledby="hmBattleH">
+    <h2 class="hm-h" id="hmBattleH">Battle</h2><p class="hm-sub">Online · choose how you want to fight.</p>
+    <div class="hm-choice hm-wc">
+      <button class="hm-diff" type="button" onclick="hmShow('hmBattle',false);hmQuickJoin()"><span class="dn">Skirmish</span></button><p class="hm-chsub">Get matched with a player online. Standard rules.</p>
+      <button class="hm-diff hm-soon" type="button" disabled aria-disabled="true"><span class="dn">Arcade</span></button><p class="hm-chsub hm-soon-t">Fun rule twists and fast matches. Coming Soon.</p>
+    </div>
+    <div class="hm-row"><button class="hm-btn hm-ghost" type="button" onclick="hmShow('hmBattle',false)">Cancel</button></div>
   </div>
 </div>
 
@@ -7940,6 +7956,7 @@ try{hmTextSizeUI();gfxUI();}catch(e){}
   if(/^(VICTORY|DEFEAT) — /.test(msg||''))return _say(msg,kind);
   if(!hmCounselOn())return;
   if(hmInTut())return;   // 13.4: in the Tutorial he already speaks in the tutorial box
+  if(kind!=='tip'&&kind!=='bad'&&window._zgTip&&performance.now()<window._zgTip)return;   // 13.12: let a stage tip finish
   const st=document.getElementById('stage'),mt=document.getElementById('matchTime');if(!st||!mt)return _say(msg,kind);
   let z=document.getElementById('zgCounsel');
   if(!z){z=document.createElement('div');z.id='zgCounsel';z.setAttribute('role','status');z.setAttribute('aria-live','polite');z.innerHTML='<div class="za"></div><div class="zb"></div>';st.appendChild(z);}
@@ -7947,7 +7964,7 @@ try{hmTextSizeUI();gfxUI();}catch(e){}
   const sr=hmLR(st.getBoundingClientRect()),k=sr.width/1000,r=hmLR(mt.getBoundingClientRect());
   z.style.left=((r.right-sr.left)/k+34)+'px';{let tp=(r.bottom-sr.top)/k-18;const bt=tp+44-22-b.offsetHeight;if(bt<8)tp+=8-bt;z.style.top=tp+'px';}
   z.classList.remove('on','off');void z.offsetWidth;z.classList.add('on');
-  clearTimeout(zt);zt=setTimeout(()=>{z.classList.remove('on');z.classList.add('off');},2000);
+  clearTimeout(zt);zt=setTimeout(()=>{z.classList.remove('on');z.classList.add('off');},kind==='tip'?6500:2000);if(kind==='tip')window._zgTip=performance.now()+6500;
  };}
 </script>
 
@@ -8511,6 +8528,27 @@ function botLaunch(){const b=HM.bot;if(!b||!NET.quick){HM.bot=null;return;}
         ['hmSurr','hmAudio'].forEach(id=>hmShow(id,false));$('hmMenu').hidden=false;try{showScreen('menu',null);}catch(e){}
         hmBotRoom('Rematch! The battle starts in a moment…');});}
     else{RP.me=false;bR.hidden=true;hmRpNote(b.name+' declined.');}},2000+Math.random()*3000);};}
+</script>
+<style>
+/* 13.12 Battle pop-up: Arcade is coming soon */
+#hmBattle .hm-soon{opacity:.45;filter:grayscale(1);cursor:default;pointer-events:none}
+#hmBattle .hm-soon-t{opacity:.55}
+</style>
+<script>
+/* ═══ 13.12 ═══ */
+function hmOpenBattle(){hmShow('hmBattle',true);}
+/* play page: the Tutorial card holds Ranked's spot until the tutorial is finished (same moment the Foot Soldier avatar unlocks) */
+function hmPlayCards(){try{const R=hmSR();if(!R)return;const t=R.querySelector('.battle-grid .bc-tut'),r=R.querySelector('.battle-grid .bc-ranked');if(!t||!r)return;
+  const done=tutDone();const td=done?'none':'',rd=done?'':'none';if(t.style.display!==td)t.style.display=td;if(r.style.display!==rd)r.style.display=rd;}catch(e){}}
+hmPlayCards();setInterval(hmPlayCards,700);
+/* Zhuge Liang explains each stage change a moment after the stage shout */
+const ZG_STAGE=[[420,"The Assault begins. Send now recharges in 10 seconds instead of 15, and the bridge holds 20 soldiers."],
+  [540,"Grand Siege! Send is always ready, blows to barricades and fortresses strike twice as hard, and the bridge holds 24."],
+  [720,"Final Siege. Both sides can now see the top card of the Barracks — watch what comes next. The bridge holds 25."],
+  [900,"Last Siege! Each dragon strikes a fortress for 500. Fall to 500 or less and the stronger fortress wins. Only A, J, Q, K remain."]];
+setInterval(()=>{try{if(typeof S==='undefined'||!S||!HM.inGame||hmInTut()||S.tut)return;if(!(S.running||((typeof NET!=='undefined')&&NET.view)))return;
+  const t=S.matchTime||0;S._zgT=S._zgT||{};
+  ZG_STAGE.forEach(([T,m])=>{if(t>=T&&t<T+20&&!S._zgT[T]){S._zgT[T]=1;const s0=S;setTimeout(()=>{if(S!==s0||!HM.inGame)return;say(m,'tip');},2300);}});}catch(e){}},400);
 </script>
 </body>
 </html>

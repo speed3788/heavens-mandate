@@ -113,6 +113,7 @@ Local testing: add `?net=local` to the URL and open two tabs of the same browser
 - **13.10.10:** the tutorial also shows the key for Send ([Enter]) and for each slot while building the Full House.
 - **13.10.11:** online fixes for the player who joins a room: the castles no longer disappear after a match ends, and new soldiers no longer fly across the bridge when they appear.
 - **13.11:** Skirmish matchmaking update; the computer no longer stalls when the Barracks runs out of cards; the battle screen and browser tab show the current build number.
+- **13.12:** the play page now reads Tutorial (Ranked once the tutorial is finished), Battle, Training Grounds. **Battle** opens a pop-up: Skirmish, or Arcade (coming soon). Zhuge Liang explains each stage change (7:00, 9:00, 12:00, 15:00) a moment after it begins.
 - **13.7:** the Rank page is now called **Leaderboard**; it just says "Coming Soon" (no box), right under the banner. On Profile, the Unranked tab is now **Skirmish** and the GUEST tag under your name is gone. The Ranked card on the Play page no longer has a Coming Soon label (it still can't be tapped yet).
 - **Pause** against the computer (Options), and a **Computer** tab on your Profile with Easy / Normal / Hard / Expert records.
 - **Locked content:** secret Synergies and late-match timeline entries unlock only by playing.
