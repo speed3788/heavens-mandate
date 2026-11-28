@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 13.13</title>
+<title>Heaven's Mandate · Build 13.14</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 var SONG_TITLE={
@@ -991,7 +991,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #13.13</div>
+    <div class="sub">Build #13.14</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -1073,8 +1073,8 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
   <div id="shoe" title="Click the barracks, then click a slot. Or drag from the barracks onto a slot."><div class="card back"></div><div class="card back"></div><div class="card back"></div></div>
   <div id="drawLabel"></div>
   <div id="toolScroll" aria-hidden="true"></div>
-  <button id="fillAll" type="button" title="Fill all empty slots">FILL</button>
-  <button id="newHand" type="button" disabled title="Discard all staged cards, reshuffle, deal 5 new (max 3 uses)">NEW<span id="newCt"> 3</span></button>
+  <button id="fillAll" type="button" title="Rally: one card into every empty slot" aria-label="Rally"><span class="rl-ic"><i style="--m:url(fx/rally_s1.png)"></i><i style="--m:url(fx/rally_s2.png)"></i><i style="--m:url(fx/rally_s3.png)"></i><i style="--m:url(fx/rally_s4.png)"></i><i style="--m:url(fx/rally_s5.png)"></i><b></b></span><span class="rl-t">RALLY</span></button>
+  <button id="newHand" type="button" disabled title="Reroll: discard and deal 5 new cards (3 per match, before the battle starts)" aria-label="Reroll"><span class="rr-ic" id="rrIc"></span><span class="rl-t">REROLL</span><span id="newCt" hidden> 3</span></button>
   <div id="gold"><div class="coin">g</div><div class="amt" id="goldAmt">200</div><div class="inc" id="goldInc">+10/s</div></div>
   <div id="shoeStat"></div>
 
@@ -2319,7 +2319,7 @@ function unitTick(dt){
         const gOwn=u.side==='p'?u.x>BRIDGE_W/2:u.x<BRIDGE_W/2,gsd=Math.max(u.range,30);
         const blocked=S.units.some(e=>e.alive&&e.side!==u.side&&Math.abs(e.x-u.x)<=u.combatRange);
         const x0=u.x;
-        if(!blocked&&!(u.stunUntil&&performance.now()<u.stunUntil))u.x+=dir*u.speed*(gOwn?(S.phase>=3?1.5:1.25):0.75)*(u._auraSpd||1)*(dt/1000);
+        if(!blocked&&!(u.stunUntil&&performance.now()<u.stunUntil))u.x+=dir*u.speed*(gOwn?(S.phase>=3?1.65:1.4):0.75)*(u._auraSpd||1)*(dt/1000);
         u.x=u.side==='p'?Math.max(u.x,gsd):Math.min(u.x,BRIDGE_W-gsd);
         u.el.style.left=Math.max(0,Math.min(BRIDGE_W-32,u.x))+'px';u.el.classList.toggle('mv',Math.abs(u.x-x0)>0.001);
         const G=D.g,show=x=>{G.style.left=Math.max(0,Math.min(BRIDGE_W-32,x))+'px';};
@@ -2442,7 +2442,7 @@ function unitTick(dt){
         });
         // v6.1 home/away halves: +25% move speed on your own half of the bridge, -25% on the enemy's half
         const ownHalf=u.side==='p'?u.x>BRIDGE_W/2:u.x<BRIDGE_W/2;
-        const halfMult=ownHalf?(S.phase>=3?1.5:1.25):0.75;  // 9.7: +50% on your own half from 9:00
+        const halfMult=ownHalf?(S.phase>=3?1.65:1.4):0.75;  // 9.7: +50% on your own half from 9:00
         if(!atLimit&&!blockedByAlly){u.aClock=0;u.x+=dir*u.speed*halfMult*(u._auraSpd||1)*(1-(u.debuffs?.frost||0)*0.3)*(dt/1000);
           const bb=barrAhead(u);if(bb){const rch=u.suit==='\u2666'?u.range:u.combatRange;const lim=bb.x-dir*rch;u.x=dir<0?Math.max(u.x,lim):Math.min(u.x,lim);}}
         else if(atLimit){u.x=u.side==='p'?Math.min(u.x,stopDist):Math.max(u.x,BRIDGE_W-stopDist);}
@@ -3002,7 +3002,7 @@ $('reset').addEventListener('click',e=>{
   newHandUses=3;const ct=$('newCt');if(ct)ct.textContent=' 3';
   if($('newHand'))$('newHand').disabled=false;
   renderAll();
-  say('Match starting in '+PREMATCH_SECS+' seconds...','warn');setTimeout(()=>{try{if(HM.inGame&&!S.tut)say('Three redraws are yours \u2014 use them wisely.');}catch(e){}},2600);raf=requestAnimationFrame(loop);e.currentTarget.blur();
+  say('Match starting in '+PREMATCH_SECS+' seconds...','warn');setTimeout(()=>{try{if(HM.inGame&&!S.tut)say('Three rerolls are yours \u2014 use them wisely.');}catch(e){}},2600);raf=requestAnimationFrame(loop);e.currentTarget.blur();
 });
 document.addEventListener('contextmenu',e=>e.preventDefault());
 function fit(){const _w=HMROT?window.innerHeight:window.innerWidth,_h=HMROT?window.innerWidth:window.innerHeight;scale=Math.min(_w/1000,_h/460);try{const ba=document.querySelector('#stage .bridge-art'),br=document.getElementById('bridge');if(ba&&br){ba.style.top=br.offsetTop+'px';ba.style.height=br.offsetHeight+'px';const z=getComputedStyle(br).zIndex;ba.style.zIndex=z==='auto'?0:z;}}catch(e){}stage.style.setProperty('--s',scale);}
@@ -3059,7 +3059,7 @@ function doNewHand(){
   newHandUses--;snd('card_shuffle');
   if(!((typeof NET!=='undefined')&&NET.flip)){const ct=$('newCt');if(ct)ct.textContent=' '+newHandUses;
   if(newHandUses<=0){$('newHand').disabled=true;}
-  say(newHandUses>=2?'Two more redraws left.':newHandUses===1?'Last redraw \u2014 choose wisely!':'No redraws left.');}
+  say(newHandUses>=2?'Two more rerolls left.':newHandUses===1?'Last reroll \u2014 choose wisely!':'No rerolls left.');}
   renderAll();
   
 }
@@ -5780,7 +5780,7 @@ html, .hm-body {
           </li>
           <li class="htp-step"><div class="htp-step-body">
             <div class="htp-step-title">Reinforce the ranks</div>
-            <div class="htp-step-text">Tap a slot to put the top card of the barracks into it, or drag a card from the barracks onto a slot. Each card costs <b>10 gold</b> — <b>15 gold from 12:00</b> and <b>20 gold from 15:00</b>. <b>FILL</b> puts one card in every empty slot at once. The current price per card is shown under <b>Cost</b>, below FILL and NEW.</div>
+            <div class="htp-step-text">Tap a slot to put the top card of the barracks into it, or drag a card from the barracks onto a slot. Each card costs <b>10 gold</b> — <b>15 gold from 12:00</b> and <b>20 gold from 15:00</b>. <b>RALLY</b> puts one card in every empty slot at once. The current price per card is shown under <b>Cost</b>, next to the Barracks.</div>
           </div>
             <figure class="htp-step-fig"><img src="menu/htp_2.webp" alt="Game screen: the barracks, FILL button and card cost highlighted" loading="lazy"></figure>
           </li>
@@ -5804,7 +5804,7 @@ html, .hm-body {
           </li>
           <li class="htp-step"><div class="htp-step-body">
             <div class="htp-step-title">Break the enemy base</div>
-            <div class="htp-step-text">Soldiers fight anything they meet on the bridge. They march <b>25% faster on your half</b> of the bridge (<b>50% faster from 9:00</b>) and <b>25% slower once they cross into the enemy's half</b>. Each base (<b>3,500 HP</b>) is guarded by <b>two barricades</b>: a <b>500 HP</b> one halfway down your side and a <b>1,000 HP</b> one right in front of the base. Enemy soldiers must <b>stop and break each barricade</b> before they can pass; barricades don't fight back and stay broken. Any soldier that reaches the enemy base damages it every second. <b>Base Strike:</b> when enemies hit the barricade right in front of a base, that base strikes back — every enemy near the barricade is <b>stunned for 1 second</b> (at most once every 5 seconds). Once that barricade is broken, the base strikes whenever it is hit — a 1-second stun <b>plus 5% of each enemy's max HP</b>. <b>First to take down the enemy base wins.</b></div>
+            <div class="htp-step-text">Soldiers fight anything they meet on the bridge. They march <b>40% faster on your half</b> of the bridge (<b>65% faster from 9:00</b>) and <b>25% slower once they cross into the enemy's half</b>. Each base (<b>3,500 HP</b>) is guarded by <b>two barricades</b>: a <b>500 HP</b> one halfway down your side and a <b>1,000 HP</b> one right in front of the base. Enemy soldiers must <b>stop and break each barricade</b> before they can pass; barricades don't fight back and stay broken. Any soldier that reaches the enemy base damages it every second. <b>Base Strike:</b> when enemies hit the barricade right in front of a base, that base strikes back — every enemy near the barricade is <b>stunned for 1 second</b> (at most once every 5 seconds). Once that barricade is broken, the base strikes whenever it is hit — a 1-second stun <b>plus 5% of each enemy's max HP</b>. <b>First to take down the enemy base wins.</b></div>
           </div>
             <figure class="htp-step-fig"><img src="menu/htp_6.webp" alt="Game screen: the enemy base HP bar and its two barricades highlighted, with soldiers attacking" loading="lazy"></figure>
           </li>
@@ -6121,7 +6121,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.13 · Prototype</span>
+            <span class="settings-row-value">#13.14 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -8413,7 +8413,7 @@ function hmUnlItem(k){const id=k.slice(2);
 {const f=showBattleLog;showBattleLog=function(){try{const el=document.getElementById('blUnl');if(el){el.innerHTML='';el.hidden=true;}}catch(e){}return f.apply(this,arguments);};}
 /* 13.10.9: keyboard controls for battle (rebindable in Settings → Controls) */
 const KB_ACT=[['s1','Slot 1','KeyA'],['s2','Slot 2','KeyS'],['s3','Slot 3','KeyD'],['s4','Slot 4','KeyF'],['s5','Slot 5','KeyG'],
-  ['send','Send wave','Enter'],['fill','New / Fill','Space'],['taunts','Taunts','KeyT'],
+  ['send','Send wave','Enter'],['fill','Reroll / Rally','Space'],['taunts','Taunts','KeyT'],
   ['t1','Taunt 1','Digit1'],['t2','Taunt 2','Digit2'],['t3','Taunt 3','Digit3'],['t4','Taunt 4','Digit4'],['t5','Taunt 5','Digit5'],['t6','Taunt 6','Digit6'],
   ['syn','Synergy cheat sheet','Tab'],['pause','Pause','Escape']];
 function kbMap(){const d={};KB_ACT.forEach(a=>d[a[0]]=a[2]);const s=hmLS('hm_keys',{});Object.keys(s).forEach(k=>{if(d[k]!==undefined)d[k]=s[k];});return d;}
@@ -8598,7 +8598,7 @@ TUT_STEPS.length=0;
  {pos:'top',at:slotSel(0),allow:()=>S.log&&S.log.pBusts<1?[slotEls[0]]:[],wait:()=>S.log&&S.log.pBusts>=1,say:'Now push your luck.'},
  {pos:'top',next:true,at:slotSel(0),say:'Too far. Over 21, the slot starts over.'},
  {pos:'top',next:true,at:()=>[$('gold'),$('costBox')],glow:()=>[$('costBox')],chipAt:()=>$('costBox'),chip:'Each card costs <b>10 gold</b>',say:'Every card costs gold.'},
- {pos:'top',at:()=>[$('fillAll')],allow:()=>S.slots.some(s=>!s.length)?[$('fillAll')]:[],wait:()=>S.slots.every(s=>s.length>=1),say:'Fill every slot at once.'},
+ {pos:'top',at:()=>[$('fillAll')],allow:()=>S.slots.some(s=>!s.length)?[$('fillAll')]:[],wait:()=>S.slots.every(s=>s.length>=1),say:'Rally every slot at once.'},
  {pos:'top',...tapSlot(0,2),say:'Slot 1.'},
  {pos:'top',...tapSlot(1,2),say:'Slot 2.'},
  {pos:'top',next:true,at:()=>[$('synergy')],say:'Same totals stand together. A Synergy!'},
@@ -8665,6 +8665,34 @@ async function stIntro(){try{sndUnlock();}catch(e){}try{hmShow('hmDiff',false);h
 {const _tf=tutFinale;tutFinale=async function(){const stFirst=!tutDone();{const b=$('stPrac');if(b)b.remove();}document.querySelectorAll('.st-ring').forEach(e=>e.remove());const won=S.eBaseHP<=0;if(won){if(TUT&&TUT_STEPS[TUT.i]&&TUT_STEPS[TUT.i].narrate){const n=TUT_STEPS[TUT.i].narrate;while(TUT&&TUT.nI<n.length-1){await new Promise(r=>setTimeout(r,250));if(TUT.t-TUT.nT>=2.5){TUT.nI++;TUT.nT=TUT.t;stZg(n[TUT.nI][1]);}}await new Promise(r=>setTimeout(r,Math.max(0,(2.5-(TUT.t-TUT.nT))*1000)));}stZg('The fortress falls. The day is yours, commander.');if(TUT)TUT.done=true;await new Promise(r=>setTimeout(r,3000));stZgOff();}_tf.apply(this,arguments);if(!won)return;hmShow('hmTutDone',false);
   const v=await stCard({img:'menu/st_dawn.webp',yr:'DAWN',cap:'The last enemy figure falls. Zhuge Liang smiles and folds his fan.',q:'“You are ready. Red Cliffs awaits.”',gift:stFirst,noSkip:true,btns:[['Play again','again'],['Done','done',1]]});
   hmToMenu();if(v==='again')setTimeout(()=>hmStartTutorial(),900);};}
+</script>
+<style>
+/* 13.14 Rally / Reroll brush buttons */
+#stage #toolScroll{display:none!important}
+#stage #shoe{left:32px!important}
+#stage #shoeStat{left:8px!important;width:82px!important}
+#stage #costBox{left:96px!important;top:345px!important;width:34px!important;height:auto!important;background:none!important;border:0!important;box-shadow:none!important;padding:0!important;display:flex!important;flex-direction:column!important;align-items:center!important;gap:0!important;font:700 9.5px/1.25 'Trebuchet MS','Segoe UI',system-ui,sans-serif!important;color:#cdbf94!important;text-align:center}
+#stage #costBox .cl,#stage #costBox .cv{color:#cdbf94!important;font:inherit!important;letter-spacing:0!important;text-transform:none!important}
+#stage #costBox .coin{display:none!important}
+#stage #fillAll,#stage #newHand,#stage #fillAll:not(:disabled),#stage #newHand:not(:disabled),#stage #fillAll:hover,#stage #newHand:hover,#stage #fillAll:disabled,#stage #newHand:disabled{position:absolute;left:134px!important;width:74px!important;height:auto!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;display:flex!important;flex-direction:column;align-items:center;gap:2px;opacity:1;filter:none;cursor:pointer}
+#stage #fillAll{top:210px!important}#stage #newHand{top:298px!important}
+#stage #fillAll:disabled,#stage #newHand:disabled{cursor:default}
+#stage .rl-t{font:700 12px/1 Cinzel,Georgia,serif;letter-spacing:.08em;color:#cdbf94!important;text-shadow:0 1px 2px rgba(0,0,0,.55)}
+#stage .rl-ic{position:relative;width:70px;height:48px;display:block}
+#stage .rl-ic i{position:absolute;inset:0;-webkit-mask-image:var(--m);mask-image:var(--m);-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;background:#1c140c;transition:background .2s}
+#stage .rl-ic i.lit{background:#f1c24b;filter:drop-shadow(0 0 4px rgba(241,194,75,.9))}
+#stage .rl-ic b{position:absolute;inset:0;background:url(fx/rally_dot.png) center/contain no-repeat}
+#stage .rr-ic{display:block;width:52px;height:52px;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;background:#f1c24b;filter:drop-shadow(0 0 4px rgba(241,194,75,.9))}
+#stage #fillAll:disabled .rl-ic,#stage #newHand:disabled .rr-ic,#stage #fillAll:disabled .rl-t,#stage #newHand:disabled .rl-t{opacity:.45}
+#stage #newHand:disabled .rr-ic{background:#1c140c;filter:none}
+</style>
+<script>
+/* 13.14: the Rally strokes light for the slots one tap would fill (left to right, while gold lasts); Reroll shows uses left */
+(function(){const f=document.getElementById('fillAll'),rr=document.getElementById('rrIc');let last='';
+  function tick(){try{if(!f||!S)return;const lit=[];let g=S.gold;if(!f.disabled)S.slots.forEach((sl,i)=>{if(!sl.length&&g>=DRAW_COST){lit.push(i);g-=DRAW_COST;}});
+    const k=lit.join(',');if(k!==last){last=k;f.querySelectorAll('.rl-ic i').forEach((e,i)=>e.classList.toggle('lit',lit.includes(i)));}
+    const u=Math.max(0,Math.min(3,typeof newHandUses==='number'?newHandUses:3)),m='url(fx/reroll'+u+'.png)';if(rr&&rr.dataset.u!==String(u)){rr.dataset.u=u;rr.style.webkitMaskImage=m;rr.style.maskImage=m;}}catch(e){}}
+  setInterval(tick,120);tick();})();
 </script>
 </body>
 </html>
