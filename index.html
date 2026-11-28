@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>Heaven's Mandate · Build 13.12</title>
+<title>Heaven's Mandate · Build 13.13</title>
 <script>/* 12.5: when the battle is turned sideways (html.hm-rot) the page is rotated 90°; these map screen positions back */
 var HMROT=false;
 var SONG_TITLE={
@@ -991,7 +991,7 @@ html,body{margin:0;height:100%;background:#1d1a16;overflow:hidden;touch-action:n
 
   <div id="titlebar">
     <div class="ttl">HEAVEN'S MANDATE: TACTICS</div>
-    <div class="sub">Build #13.12</div>
+    <div class="sub">Build #13.13</div>
   </div>
   <div id="topRight">
     <span id="waves" title="Soldiers on the bridge: enemy | yours"><b class="uc-e">0</b><i class="uc-sep">|</i><b class="uc-p">0</b></span>
@@ -6121,7 +6121,7 @@ html, .hm-body {
             <div class="settings-row-left">
               <div class="settings-row-label">Build Version</div>
             </div>
-            <span class="settings-row-value">#13.12 · Prototype</span>
+            <span class="settings-row-value">#13.13 · Prototype</span>
           </div>
           <div class="settings-row">
             <div class="settings-row-left">
@@ -7629,7 +7629,7 @@ function tutMark(){
 }
 setInterval(()=>{if(!TUT||!S.tut)return;TUT.t+=0.2;const s=TUT_STEPS[TUT.i];if(!s)return;
   if(TUT.i<TUT_STEPS.length-2&&S.eBaseHP<150)S.eBaseHP=150;if(!S.running){['tutBox','tutSkip'].forEach(id=>{const b=$(id);if(b)b.style.display='none';});}               // the fort can't fall before the Full House
-  {const left=Math.max(0,S.shoe.length-TUT_EXTRA);S.gold=left*DRAW_COST;}   // exactly enough for the cards still to come
+  if(!TUT.free){const left=Math.max(0,S.shoe.length-TUT_EXTRA);S.gold=left*DRAW_COST;}   // exactly enough for the cards still to come
   if(TUT.hold>0){TUT.hold-=0.2;return;}
   if(s.wait&&s.wait())tutGo(TUT.i+1);else if(TUT.t%1<0.2)tutMark();},200);
 // only what Zhuge Liang points at can be tapped (plus the bubble and the gear / options)
@@ -7831,7 +7831,8 @@ try{gfxUI();}catch(e){}
     if(!on){if(a)a.style.display='none';return;}
     if(!a){a=document.createElement('div');a.id='tutArrow';a.innerHTML=SVG;st.appendChild(a);}
     const s=TUT_STEPS[TUT.i];let el=null,unit=false;
-    if(s&&s.allow){el=tutEls(s.allow).find(e=>e&&e.getBoundingClientRect().width>0)||null;}
+    if(s&&s.arrow){el=s.arrow();unit=!!el;if(!el){a.style.display='none';return;}}
+    else if(s&&s.allow){el=tutEls(s.allow).find(e=>e&&e.getBoundingClientRect().width>0)||null;}
     if(!el&&s&&!s.next&&!s.allow){let best=null,bx=-1e9;(S.units||[]).forEach(u=>{if(!u||!u.alive||u.side!=='p'||!u.el||!u.el.isConnected)return;const r=hmLR(u.el.getBoundingClientRect());if(r.width&&r.left>bx){bx=r.left;best=u.el;}});el=best;unit=true;}
     if(!el){a.style.display='none';return;}
     const sr=hmLR(st.getBoundingClientRect()),k=sr.width/1000,r=hmLR(el.getBoundingClientRect());
@@ -8549,6 +8550,121 @@ const ZG_STAGE=[[420,"The Assault begins. Send now recharges in 10 seconds inste
 setInterval(()=>{try{if(typeof S==='undefined'||!S||!HM.inGame||hmInTut()||S.tut)return;if(!(S.running||((typeof NET!=='undefined')&&NET.view)))return;
   const t=S.matchTime||0;S._zgT=S._zgT||{};
   ZG_STAGE.forEach(([T,m])=>{if(t>=T&&t<T+20&&!S._zgT[T]){S._zgT[T]=1;const s0=S;setTimeout(()=>{if(S!==s0||!HM.inGame)return;say(m,'tip');},2300);}});}catch(e){}},400);
+</script>
+<style>
+/* ═══ STORY TUTORIAL (sample) ═══ */
+#stCard{position:fixed;inset:0;z-index:2147483000;background:#120d08 center/cover no-repeat;display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer;opacity:0;transition:opacity .5s}
+#stCard.on{opacity:1}
+#stCard .band{background:linear-gradient(transparent,rgba(18,13,8,.9) 40%);padding:110px 8% 44px;text-align:center;color:#f3e9d5}
+#stCard .yr{font:700 15px/1 Cinzel,Georgia,serif;letter-spacing:.32em;color:#d9b45a;margin-bottom:14px}
+#stCard .cap{font:400 clamp(20px,2.6vw,30px)/1.35 Georgia,'Times New Roman',serif;text-wrap:balance;max-width:780px;margin:0 auto}
+#stCard .q{font:italic 400 clamp(18px,2.1vw,24px)/1.35 Georgia,serif;color:#ead9b2;margin-top:12px}
+#stCard .mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center}
+#stCard .tap{background:rgba(18,13,8,.78);color:#f3e9d5!important;font-size:15px!important;padding:14px 26px;border-radius:999px;box-shadow:0 4px 18px rgba(0,0,0,.4);font:600 13px/1 Inter,system-ui,sans-serif;letter-spacing:.22em;color:#c8b48c;animation:stPulse 1.8s ease-in-out infinite}
+@keyframes stPulse{50%{opacity:.45}}
+#stCard .skip{position:absolute;top:max(16px,env(safe-area-inset-top,0px));right:max(18px,env(safe-area-inset-right,0px));font:600 14px Inter,system-ui,sans-serif;color:#efe3c9;background:rgba(0,0,0,.4);border:0;padding:9px 15px;border-radius:9px;cursor:pointer}
+#stCard .gift{display:inline-flex;align-items:center;gap:12px;background:rgba(18,13,8,.7);padding:10px 20px;border-radius:999px;font:600 15px Inter,system-ui,sans-serif;color:#f3e9d5}
+#stCard .gift img{width:46px;height:46px;border-radius:50%;border:2px solid #d9b45a}
+#stCard .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+#stCard .btns button{font:700 15px Cinzel,Georgia,serif;letter-spacing:.1em;padding:12px 24px;border:0;border-radius:10px;cursor:pointer;background:#9b3324;color:#f3e9d5}
+#stCard .btns button.alt{background:rgba(18,13,8,.7);color:#f3e9d5}
+/* one-line lessons: no box, no dots, no Prev/Next */
+#tutBox.st-mini{display:flex!important;align-items:center;gap:10px;background:none!important;box-shadow:none!important;border:0!important;padding:0!important;width:auto!important;max-width:620px;pointer-events:none;left:50%!important;transform:translateX(-50%)!important;right:auto!important}
+#tutBox.st-mini .st-za{width:58px;height:58px;border-radius:50%;flex:none;background:#f3e9d5 url(av/zhuge_liang.webp) center/cover;border:2px solid #b8892a;box-shadow:0 3px 8px rgba(0,0,0,.35)}
+#tutBox.st-mini .st-zb{background:#f7efdc;border-radius:14px;padding:11px 18px;font:600 19px/1.35 Georgia,'Times New Roman',serif;text-transform:none;font-variant:normal;letter-spacing:0;color:#1c140c;box-shadow:0 5px 16px rgba(0,0,0,.28);animation:stIn .35s cubic-bezier(.3,1.5,.5,1)}
+#tutBox.st-mini.st-quiet{display:none!important}
+#tutBox.st-mini.st-nonav .st-nav{display:none}
+#tutBox.st-mini .st-nav{display:flex;gap:6px;pointer-events:auto}
+#tutBox.st-mini .st-nav button{font:700 14px Inter,system-ui,sans-serif;padding:9px 14px;border-radius:9px;border:0;background:#efe4cc;color:#3a2a18;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.25)}
+#tutBox.st-mini .st-nav button.gold{background:linear-gradient(#f6d77a,#e0b34a);color:#2a1d10}
+#tutBox.st-mini .st-nav button:disabled{opacity:.45;cursor:default}
+@keyframes stIn{from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
+.tut-chip{position:absolute;z-index:160;background:#2a1d10;color:#f3e9d5;font:700 14px/1.2 Inter,system-ui,sans-serif;padding:8px 12px;border-radius:9px;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.3);animation:stIn .35s cubic-bezier(.3,1.5,.5,1)}
+.tut-chip b{color:#f1c24b}
+#stPrac{position:absolute;z-index:150;left:14px;top:172px;max-width:330px;white-space:nowrap;white-space:normal!important;text-align:center;border-radius:12px!important;background:rgba(28,20,12,.88);color:#f3e9d5;font:600 13px/1.2 Inter,system-ui,sans-serif;padding:8px 12px;box-shadow:0 3px 10px rgba(0,0,0,.3);animation:stIn .35s cubic-bezier(.3,1.5,.5,1);pointer-events:none}
+#stPrac b{color:#f1c24b}
+.st-ring{position:absolute;z-index:155;pointer-events:none;border:3px solid #f1c24b;border-radius:10px;box-shadow:0 0 26px 8px rgba(241,194,75,.75);animation:stGlow 1.2s ease-in-out infinite}
+@keyframes stGlow{50%{box-shadow:0 0 10px 2px rgba(241,194,75,.4)}}
+</style>
+<script>
+/* ── new lesson list: one short line each; "auto" = moves on by itself after that many seconds ── */
+TUT_STEPS.length=0;
+[
+ {pos:'top',next:true,at:()=>[$('baseE')],say:'Break their fortress before they break yours.'},
+ {pos:'top',...tapSlot(0,1),say:'Raise your first soldier.'},
+ {pos:'top',next:true,at:slotSel(0),chip:'<b>J Q K</b> = 10 · <b>A</b> = 1 or 11',say:'Every card has its worth.'},
+ {pos:'top',...tapSlot(0,2),say:'Once more.'},
+ {pos:'top',next:true,at:slotSel(0),say:'Closer to 21, the stronger the soldier.'},
+ {pos:'top',at:slotSel(0),allow:()=>S.log&&S.log.pBusts<1?[slotEls[0]]:[],wait:()=>S.log&&S.log.pBusts>=1,say:'Now push your luck.'},
+ {pos:'top',next:true,at:slotSel(0),say:'Too far. Over 21, the slot starts over.'},
+ {pos:'top',next:true,at:()=>[$('gold'),$('costBox')],glow:()=>[$('costBox')],chipAt:()=>$('costBox'),chip:'Each card costs <b>10 gold</b>',say:'Every card costs gold.'},
+ {pos:'top',at:()=>[$('fillAll')],allow:()=>S.slots.some(s=>!s.length)?[$('fillAll')]:[],wait:()=>S.slots.every(s=>s.length>=1),say:'Fill every slot at once.'},
+ {pos:'top',...tapSlot(0,2),say:'Slot 1.'},
+ {pos:'top',...tapSlot(1,2),say:'Slot 2.'},
+ {pos:'top',next:true,at:()=>[$('synergy')],say:'Same totals stand together. A Synergy!'},
+ {pos:'top',...tapSlot(2,2),say:'Three ready slots make a wave.'},
+ {pos:'top',at:()=>[$('send')],allow:()=>S.waves<1?[$('send')]:[],wait:()=>S.waves>=1,on:()=>{S.energyReady=true;S.energyProgress=1;},say:'Send them.'},
+ {pos:'low',at:()=>S.barr.e.map(b=>b.el),wait:()=>S.barr&&S.barr.e[0]&&S.barr.e[0].hp<S.barr.e[0].max,say:'Barricades first, then the fortress.'},
+ {pos:'low',wait:()=>(TUT.t>2&&eAlive()===0)||TUT.t>12,on:()=>tutEnemyWave(),say:'The enemy answers. Hold the bridge.'},
+ {pos:'top',at:()=>[$('fillAll')],allow:()=>S.slots.some(s=>!s.length)?[$('fillAll')]:[],wait:()=>S.slots.every(s=>s.length>=1),say:'Now, all five as one.'},
+ {pos:'top',...tapSlot(0,2),say:'Slot 1.'},
+ {pos:'top',...tapSlot(1,2),say:'Slot 2.'},
+ {pos:'top',...tapSlot(2,2),say:'Slot 3.'},
+ {pos:'top',...tapSlot(3,2),say:'Slot 4.'},
+ {pos:'top',...tapSlot(4,2),say:'Slot 5.'},
+ {pos:'top',next:true,at:()=>[$('synergy')],glow:()=>[$('synergy')],say:'Dragon & Tiger Citadel! Every soldier in this wave gains these bonuses.'},
+ {pos:'top',at:()=>[$('send')],allow:()=>S.waves<2?[$('send')]:[],wait:()=>S.waves>=2,on:()=>{S.energyReady=true;S.energyProgress=1;S.eBaseHP=Math.min(S.eBaseHP,150);},say:'Send it.'},
+ {pos:'top',free:true,arrow:()=>citadelFront(),wait:()=>false,say:'Five as one. Every soldier shares the Citadel’s strength.',narrate:[[0,'Five as one. Every soldier shares the Citadel’s strength.'],[4.5,'See how they shrug off the blows? The Citadel hardens their armor.'],[4.5,'One barricade falls. One more stands before the fortress.',()=>S.barr&&S.barr.e.filter(b=>b.hp<=0).length>=1],[4.5,'The last barricade falls. The fortress lies open.',()=>S.barr&&S.barr.e.filter(b=>b.hp<=0).length>=2],[4.5,'Strike the fortress. Finish it.',()=>S.eBaseHP<150]]}
+].forEach(x=>TUT_STEPS.push(x));
+/* the yellow arrow follows the Citadel wave */
+function citadelFront(){let best=null,bx=-1e9;(S.units||[]).forEach(u=>{if(!u||!u.alive||u.side!=='p'||u.stW!==2||!u.el||!u.el.isConnected)return;const r=u.el.getBoundingClientRect();if(r.width&&u.x>bx){bx=u.x;best=u.el;}});return best;}
+/* practice: after the Citadel, the player builds and sends one more wave on their own */
+const ST_PRACTICE_GOLD=150;
+function stPractice(){if(TUT.prac)return;TUT.prac=true;TUT.free=true;S.gold=ST_PRACTICE_GOLD;renderAll();
+  const b=document.createElement('div');b.id='stPrac';b.innerHTML='<b>Your turn.</b> Send another wave to support them.';$('stage').appendChild(b);}
+setInterval(()=>{if(!TUT||!S||!S.tut||!TUT.prac)return;
+  if(S.waves<3){if(countReady(S.slots)>=MIN_READY){S.energyReady=true;S.energyProgress=1;}}
+  else{S.energyReady=false;const b=$('stPrac');if(b)b.remove();}},250);
+/* after the Citadel: Zhuge Liang speaks from his usual in-game spot */
+function stZg(msg){const st=$('stage'),mt=$('matchTime');if(!st||!mt)return;let z=$('zgCounsel');
+  if(!z){z=document.createElement('div');z.id='zgCounsel';z.innerHTML='<div class="za"></div><div class="zb"></div>';st.appendChild(z);}
+  z.hidden=false;z.style.display='';const b=z.querySelector('.zb');if(b.textContent===msg&&z.classList.contains('on'))return;b.textContent=msg;b.classList.remove('bad');
+  const sr=hmLR(st.getBoundingClientRect()),k=sr.width/1000,r=hmLR(mt.getBoundingClientRect());
+  z.style.left=((r.right-sr.left)/k+34)+'px';{let tp=(r.bottom-sr.top)/k-18;const bt=tp+44-22-b.offsetHeight;if(bt<8)tp+=8-bt;z.style.top=tp+'px';}
+  z.classList.remove('on','off');void z.offsetWidth;z.classList.add('on');}
+function stZgOff(){const z=$('zgCounsel');if(z){z.classList.remove('on');z.classList.add('off');}}
+/* the bubble: portrait + one line */
+tutDraw=function(){let box=$('tutBox');if(!box){box=document.createElement('div');box.id='tutBox';$('stage').appendChild(box);}
+  const s=TUT_STEPS[TUT.i];box.className='tut-'+s.pos+' st-mini'+(s.quiet||s.narrate?' st-quiet':'');if(s.narrate)setTimeout(()=>stZg(s.say),60);
+  box.innerHTML='<div class="st-za"></div><div class="st-zb"></div><div class="st-nav"><button type="button" class="tut-prev" onclick="tutBack()"'+(tutPrevIdx()>=0?'':' disabled')+'>Prev</button><button type="button" class="tut-next'+(s.next?' gold':'')+'" onclick="tutGo(TUT.i+1)"'+(s.next?'':' disabled')+'>Next</button></div>';box.querySelector('.st-zb').textContent=s.say+stKey(s);};
+function stKey(s){try{if(!matchMedia('(hover:hover) and (pointer:fine)').matches||typeof kbMap!=='function')return '';const el=tutEls(s.allow)[0];if(!el)return '';const m=kbMap();let a=null;if(el===$('fillAll'))a='fill';else if(el===$('send'))a='send';else{const i=slotEls.indexOf(el);if(i>=0)a='s'+(i+1);}return a&&m[a]?' ['+kbName(m[a])+']':'';}catch(e){return '';}}
+/* auto steps, and the value chip */
+{const _go=tutGo;tutGo=function(i){const nx=TUT_STEPS[i];if(nx&&nx.free)setTimeout(stPractice,50);document.querySelectorAll('.tut-chip').forEach(e=>e.remove());const r=_go.apply(this,arguments);
+  document.querySelectorAll('.st-ring').forEach(e=>e.remove());const s=TUT_STEPS[i];if(s&&s.glow)setTimeout(()=>{if(!TUT||TUT.i!==i)return;const st=$('stage'),sr=hmLR(st.getBoundingClientRect()),k=sr.width/1000;tutEls(s.glow).forEach(el=>{const q0=[el,...el.querySelectorAll('*')].map(e=>e.getBoundingClientRect()).filter(b=>b.width>0&&b.height>0);const u={left:Math.min(...q0.map(b=>b.left)),top:Math.min(...q0.map(b=>b.top)),right:Math.max(...q0.map(b=>b.right)),bottom:Math.max(...q0.map(b=>b.bottom))};const sb=st.getBoundingClientRect();u.left=Math.max(u.left,sb.left+8);u.top=Math.max(u.top,sb.top+8);u.right=Math.min(u.right,sb.right-12);u.bottom=Math.min(u.bottom,sb.bottom-8);u.width=u.right-u.left;u.height=u.bottom-u.top;const q=hmLR(u);const r=document.createElement('div');r.className='st-ring';r.style.left=((q.left-sr.left)/k-6)+'px';r.style.top=((q.top-sr.top)/k-6)+'px';r.style.width=(q.width/k+12)+'px';r.style.height=(q.height/k+12)+'px';st.appendChild(r);});},200);if(s&&s.chip)setTimeout(()=>{const el=s.chipAt?s.chipAt():tutEls(s.at)[0];if(!el||!TUT||TUT.i!==i)return;const st=$('stage'),sr=hmLR(st.getBoundingClientRect()),k=sr.width/1000,q=hmLR(el.getBoundingClientRect());
+    const c=document.createElement('div');c.className='tut-chip';c.innerHTML=s.chip;c.style.left=((q.right-sr.left)/k+14)+'px';c.style.top=((q.top-sr.top)/k+q.height/k*0.35)+'px';st.appendChild(c);},250);return r;};}
+setInterval(()=>{if(!TUT||!S||!S.tut)return;const n=TUT_STEPS[TUT.i]&&TUT_STEPS[TUT.i].narrate;if(n&&!TUT.done){TUT.nI=TUT.nI||0;TUT.nT=TUT.nT||0;const nx=n[TUT.nI+1];if(nx&&TUT.t>=nx[0]&&TUT.t-TUT.nT>=2.5&&(!nx[2]||nx[2]())){TUT.nI++;TUT.nT=TUT.t;}let m=n[TUT.nI][1];stZg(m);}},200);
+setInterval(()=>{if(!TUT||!S||!S.tut)return;const s=TUT_STEPS[TUT.i];if(s&&s.auto&&TUT.t>=s.auto&&!(TUT.hold>0))tutGo(TUT.i+1);},200);
+/* figures on the map: soldiers start near the middle and march fast (tutorial only) */
+{const _su=spawnUnit;spawnUnit=function(){const u=_su.apply(this,arguments);try{if(S&&S.tut&&u){u.x=u.side==='p'?Math.max(u.x,BRIDGE_W*0.36):Math.min(u.x,BRIDGE_W*0.64);u.speed=Math.round(u.speed*2.6);u.stW=S.waves;}}catch(e){}return u;};}
+/* story cards */
+{const _ts=tutStop;tutStop=function(){try{$('stage').style.backgroundImage='';}catch(e){}document.querySelectorAll('.st-ring,.tut-chip,#stPrac').forEach(e=>e.remove());try{stZgOff();}catch(e){}const c=$('stCard');if(c)c.remove();return _ts.apply(this,arguments);};}
+function stCard(o){return new Promise(res=>{let c=$('stCard');if(c)c.remove();c=document.createElement('div');c.id='stCard';c.style.backgroundImage='url('+o.img+')';
+  c.innerHTML=(o.noSkip?'':'<button class="skip" type="button">Skip story ›</button>')+'<div class="mid">'+(o.gift?'<div class="gift"><img src="av/foot_soldier.webp" alt="">Avatar unlocked · Foot Soldier</div>':'')+(o.btns?'<div class="btns"></div>':'<div class="tap">TAP TO CONTINUE</div>')+'</div>'+'<div class="band"><div class="yr"></div><div class="cap"></div>'+(o.q?'<div class="q"></div>':'')+'</div>';
+  c.querySelector('.yr').textContent=o.yr;c.querySelector('.cap').textContent=o.cap;if(o.q)c.querySelector('.q').textContent=o.q;
+  document.body.appendChild(c);requestAnimationFrame(()=>c.classList.add('on'));
+  const done=v=>{c.classList.remove('on');setTimeout(()=>c.remove(),450);res(v);};
+  if(o.btns){const B=c.querySelector('.btns');o.btns.forEach(([t,v,alt])=>{const b=document.createElement('button');b.type='button';b.textContent=t;if(alt)b.className='alt';b.onclick=e=>{e.stopPropagation();done(v);};B.appendChild(b);});}
+  else c.onclick=()=>done('next');
+  const sk=c.querySelector('.skip');if(sk)sk.onclick=e=>{e.stopPropagation();done('skip');};});}
+const _hmStartTut0=hmStartTutorial;
+hmStartTutorial=function(){stIntro();};
+async function stIntro(){try{sndUnlock();}catch(e){}try{hmShow('hmDiff',false);hmShow('hmTutAsk',false);}catch(e){}const a=await stCard({img:'menu/st_fleet.webp',yr:'AUTUMN · 208 AD',cap:'Cao Cao’s great fleet gathers on the Yangtze. Tomorrow, the river will burn.'});
+  if(a!=='skip')await stCard({img:'menu/st_tent.webp',yr:'ZHUGE LIANG’S TENT',cap:'“Before Red Cliffs, I must see how you command. Show me, on the map.”'});
+  _hmStartTut0();setTimeout(()=>{try{$('stage').style.backgroundImage='linear-gradient(rgba(46,32,18,.18),rgba(46,32,18,.30) 38%,rgba(38,26,14,.62) 52%,rgba(38,26,14,.66)),url(menu/st_map.webp)';}catch(e){}},1950);}
+/* the ending: dawn card instead of the old pop-up */
+{const _tf=tutFinale;tutFinale=async function(){const stFirst=!tutDone();{const b=$('stPrac');if(b)b.remove();}document.querySelectorAll('.st-ring').forEach(e=>e.remove());const won=S.eBaseHP<=0;if(won){if(TUT&&TUT_STEPS[TUT.i]&&TUT_STEPS[TUT.i].narrate){const n=TUT_STEPS[TUT.i].narrate;while(TUT&&TUT.nI<n.length-1){await new Promise(r=>setTimeout(r,250));if(TUT.t-TUT.nT>=2.5){TUT.nI++;TUT.nT=TUT.t;stZg(n[TUT.nI][1]);}}await new Promise(r=>setTimeout(r,Math.max(0,(2.5-(TUT.t-TUT.nT))*1000)));}stZg('The fortress falls. The day is yours, commander.');if(TUT)TUT.done=true;await new Promise(r=>setTimeout(r,3000));stZgOff();}_tf.apply(this,arguments);if(!won)return;hmShow('hmTutDone',false);
+  const v=await stCard({img:'menu/st_dawn.webp',yr:'DAWN',cap:'The last enemy figure falls. Zhuge Liang smiles and folds his fan.',q:'“You are ready. Red Cliffs awaits.”',gift:stFirst,noSkip:true,btns:[['Play again','again'],['Done','done',1]]});
+  hmToMenu();if(v==='again')setTimeout(()=>hmStartTutorial(),900);};}
 </script>
 </body>
 </html>
